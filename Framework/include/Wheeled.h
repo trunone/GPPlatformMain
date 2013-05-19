@@ -8,7 +8,6 @@
 #ifndef _WHEELED_H_
 #define _WHEELED_H_
 
-#include "Laser.h"
 #include "StrategyModule.h"
 #include "StrategyManager.h"
 #include "StrategyStatus.h"

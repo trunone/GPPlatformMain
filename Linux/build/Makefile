@@ -44,6 +44,7 @@ OBJS =  ../../Framework/src/Laser.o\
         LinuxNetwork.o
 
 $(TARGET): $(OBJS)
+	mkdir -p ../lib
 	$(AR) $(ARFLAGS) ../lib/$(TARGET) $(OBJS)
 #	$(CC) -o $(TARGET) $(OBJS) $(LFLAGS)
 
