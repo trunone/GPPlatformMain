@@ -1,5 +1,5 @@
 Install:
-    sudo apt-get install libjpeg62-dev mplay
+    sudo apt-get install libjpeg62-dev madplay libncurses5-dev alsa-base
 
 Download:
     http://sourceforge.net/projects/urgwidget/files/urg/1.0.4/urg_library-1.0.4.zip/download
