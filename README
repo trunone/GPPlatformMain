@@ -1,0 +1,6 @@
+Install:
+    sudo apt-get install libjpeg62-dev mplay
+
+Download:
+    http://sourceforge.net/projects/urgwidget/files/urg/1.0.4/urg_library-1.0.4.zip/download
+    http://github.com/downloads/satofumi/quick_robot_sdk/urg_cpp-0.0.2.tar.gz
