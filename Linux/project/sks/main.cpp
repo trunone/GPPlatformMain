@@ -18,7 +18,7 @@
 #include "urg_cpp/math_utilities.h"
 
 #define INI_FILE_PATH       "../../../Data/config.ini"
-#define SCRIPT_FILE_PATH    "script.asc"
+//#define SCRIPT_FILE_PATH    "script.asc"
 
 #define LASER_DEV_NAME      "/dev/ttyACM0"
 
@@ -96,41 +96,32 @@ int main(void)
     httpd::ini = ini;
 
     //////////////////// Framework Initialize ////////////////////////////
-    //if(MotionManager::GetInstance()->Initialize(&cm730) == false)
+    //if(StrageyManager::GetInstance()->Initialize(&cm730) == false)
     //{
     //    linux_cm730.SetPortName(U2D_DEV_NAME1);
-    //    if(MotionManager::GetInstance()->Initialize(&cm730) == false)
+    //    if(StrageyManager::GetInstance()->Initialize(&cm730) == false)
     //    {
-    //        printf("Fail to initialize Motion Manager!\n");
+    //        printf("Fail to initialize Stragey Manager!\n");
     //        return 0;
     //    }
     //}
 
     //Walking::GetInstance()->LoadINISettings(ini);
 
-    //MotionManager::GetInstance()->AddModule((MotionModule*)Action::GetInstance());
-    //MotionManager::GetInstance()->AddModule((MotionModule*)Head::GetInstance());
-    //MotionManager::GetInstance()->AddModule((MotionModule*)Walking::GetInstance());
+    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Action::GetInstance());
+    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Head::GetInstance());
+    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Walking::GetInstance());
 
-    //LinuxMotionTimer *motion_timer = new LinuxMotionTimer(MotionManager::GetInstance());
+    //LinuxStrageyTimer *motion_timer = new LinuxStrageyTimer(StrageyManager::GetInstance());
     //motion_timer->Start();
     /////////////////////////////////////////////////////////////////////
     
-    //MotionManager::GetInstance()->LoadINISettings(ini);
+    //StrageyManager::GetInstance()->LoadINISettings(ini);
 
-    //MotionManager::GetInstance()->SetEnable(true);
+    //StrageyManager::GetInstance()->SetEnable(true);
 
     //LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 	
-	//if(laser.Connect() == false)
-//		fprintf(stderr, "Fail to connect Laser\n");
-
-	//laser.SendQtCommand();
-	//usleep(100000);
-	//laser.SendMdmsCommand(0, 1080, 12, 1, 0);
-	//sleep(5);
-	//laser.SendQtCommand();
-
     //Urg_driver urg;
     //if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
     //    cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;

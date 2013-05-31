@@ -14,5 +14,6 @@
 #include "LinuxCamera.h"
 #include "LinuxNetwork.h"
 #include "LinuxActionScript.h"
+#include "LinuxEPOS.h"
 
 #endif
