@@ -2,5 +2,8 @@ Install:
     sudo apt-get install libjpeg62-dev madplay libncurses5-dev alsa-base
 
 Download:
-    http://sourceforge.net/projects/urgwidget/files/urg/1.0.4/urg_library-1.0.4.zip/download
-    http://github.com/downloads/satofumi/quick_robot_sdk/urg_cpp-0.0.2.tar.gz
+    UTM_30LX Library:
+        http://sourceforge.net/projects/urgwidget/files/urg/1.0.4/urg_library-1.0.4.zip
+        http://github.com/downloads/satofumi/quick_robot_sdk/urg_cpp-0.0.2.tar.gz
+    EPOS2 25/4 Controller Library:
+        http://www.maxonmotor.com/medias/sys_master/8806651265054/EPOS_Linux_Library_En.zip
