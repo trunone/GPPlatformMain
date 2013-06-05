@@ -69,148 +69,54 @@ int main(void)
 
     change_current_dir();
 
-    minIni* ini = new minIni(INI_FILE_PATH);
-    Image* rgb_output = new Image(Camera::WIDTH, Camera::HEIGHT, Image::RGB_PIXEL_SIZE);
-
-    LinuxCamera::GetInstance()->Initialize(0);
-    LinuxCamera::GetInstance()->SetCameraSettings(CameraSettings());    // set default
-    LinuxCamera::GetInstance()->LoadINISettings(ini);                   // load from ini
-
-    mjpg_streamer* streamer = new mjpg_streamer(Camera::WIDTH, Camera::HEIGHT);
-
-    ColorFinder* ball_finder = new ColorFinder();
-    ball_finder->LoadINISettings(ini);
-    httpd::ball_finder = ball_finder;
-
-    ColorFinder* red_finder = new ColorFinder(0, 15, 45, 0, 0.3, 50.0);
-    red_finder->LoadINISettings(ini, "RED");
-    httpd::red_finder = red_finder;
-
-    ColorFinder* yellow_finder = new ColorFinder(60, 15, 45, 0, 0.3, 50.0);
-    yellow_finder->LoadINISettings(ini, "YELLOW");
-    httpd::yellow_finder = yellow_finder;
-
-    ColorFinder* blue_finder = new ColorFinder(225, 15, 45, 0, 0.3, 50.0);
-    blue_finder->LoadINISettings(ini, "BLUE");
-    httpd::blue_finder = blue_finder;
-
-    httpd::ini = ini;
-
     TiXmlDocument doc;
 
-    //////////////////// Framework Initialize ////////////////////////////
-    //if(StrageyManager::GetInstance()->Initialize(&cm730) == false)
-    //{
-    //    linux_cm730.SetPortName(U2D_DEV_NAME1);
-    //    if(StrageyManager::GetInstance()->Initialize(&cm730) == false)
-    //    {
-    //        printf("Fail to initialize Stragey Manager!\n");
-    //        return 0;
-    //    }
-    //}
+    Urg_driver urg;
+    if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
+        cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
+        return 1;
+    }
 
-    //Walking::GetInstance()->LoadINISettings(ini);
-
-    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Action::GetInstance());
-    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Head::GetInstance());
-    //StrageyManager::GetInstance()->AddModule((StrageyModule*)Walking::GetInstance());
-
-    //LinuxStrageyTimer *motion_timer = new LinuxStrageyTimer(StrageyManager::GetInstance());
-    //motion_timer->Start();
-    /////////////////////////////////////////////////////////////////////
-    
-    //StrageyManager::GetInstance()->LoadINISettings(ini);
-
-    //StrageyManager::GetInstance()->SetEnable(true);
-
-    //LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-	
-    //Urg_driver urg;
-    //if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
-    //    cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
-    //    return 1;
-    //}
-
-    //urg.set_scanning_parameter(urg.deg2step(-135), urg.deg2step(+135), 0);
+    urg.set_scanning_parameter(urg.deg2step(-135), urg.deg2step(+135), 0);
     //urg.start_measurement(Urg_driver::Distance, 0, 0);
 
+	unsigned int ErrorCode = 0;
+	void* motorHandle0;
+	void* motorHandle1;
+	void* motorHandle2;
+
+    motorHandle0 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB0", &ErrorCode);
+    motorHandle1 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB1", &ErrorCode);
+    motorHandle2 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB2", &ErrorCode);
+
+    VCS_SetProtocolStackSettings(motorHandle0, 1000000, 500, &ErrorCode);
+    VCS_SetProtocolStackSettings(motorHandle1, 1000000, 500, &ErrorCode);
+    VCS_SetProtocolStackSettings(motorHandle2, 1000000, 500, &ErrorCode);
+
+    ////////////////// Framework Initialize ////////////////////////////
+    if(StrategyManager::GetInstance()->Initialize() == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 0;
+    }
+
+    //Motion::GetInstance()->LoadINISettings(ini);
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+
+    LinuxStrategyTimer *motion_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+    stragey_timer->Start();
+    ///////////////////////////////////////////////////////////////////
+    
+    //StrategyManager::GetInstance()->LoadINISettings(ini);
+
+    StrategyManager::GetInstance()->SetEnable(true);
+
+    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
+	
+
 	while(1) {
-		Point2D ball_pos, red_pos, yellow_pos, blue_pos;
 		
-        LinuxCamera::GetInstance()->CaptureFrame();
-        memcpy(rgb_output->m_ImageData, LinuxCamera::GetInstance()->fbuffer->m_RGBFrame->m_ImageData, LinuxCamera::GetInstance()->fbuffer->m_RGBFrame->m_ImageSize);
-
-        ball_pos = ball_finder->GetPosition(LinuxCamera::GetInstance()->fbuffer->m_HSVFrame);
-        red_pos = red_finder->GetPosition(LinuxCamera::GetInstance()->fbuffer->m_HSVFrame);
-        yellow_pos = yellow_finder->GetPosition(LinuxCamera::GetInstance()->fbuffer->m_HSVFrame);
-        blue_pos = blue_finder->GetPosition(LinuxCamera::GetInstance()->fbuffer->m_HSVFrame);
-		
-        unsigned char r, g, b;
-        for(int i = 0; i < rgb_output->m_NumberOfPixels; i++)
-        {
-            r = 0; g = 0; b = 0;
-            if(ball_finder->m_result->m_ImageData[i] == 1)
-                {
-                    r = 255;
-                    g = 128;
-                    b = 0;
-                }
-                if(red_finder->m_result->m_ImageData[i] == 1)
-                {
-                    if(ball_finder->m_result->m_ImageData[i] == 1)
-                    {
-                        r = 0;
-                        g = 255;
-                        b = 0;
-                    }
-                    else
-                    {
-                        r = 255;
-                        g = 0;
-                        b = 0;
-                    }
-                }
-                if(yellow_finder->m_result->m_ImageData[i] == 1)
-                {
-                    if(ball_finder->m_result->m_ImageData[i] == 1)
-                    {
-                        r = 0;
-                        g = 255;
-                        b = 0;
-                    }
-                    else
-                    {
-                        r = 255;
-                        g = 255;
-                        b = 0;
-                    }
-                }
-                if(blue_finder->m_result->m_ImageData[i] == 1)
-                {
-                    if(ball_finder->m_result->m_ImageData[i] == 1)
-                    {
-                        r = 0;
-                        g = 255;
-                        b = 0;
-                    }
-                    else
-                    {
-                        r = 0;
-                        g = 0;
-                        b = 255;
-                    }
-                }
-		
-                if(r > 0 || g > 0 || b > 0)
-                {
-                    rgb_output->m_ImageData[i * rgb_output->m_PixelSize + 0] = r;
-                    rgb_output->m_ImageData[i * rgb_output->m_PixelSize + 1] = g;
-                    rgb_output->m_ImageData[i * rgb_output->m_PixelSize + 2] = b;
-                }
-            }
-        
-        streamer->send_image(rgb_output);
-
         //vector<long> data;
         //long time_stamp = 0;
         //if (!urg.get_distance(data, &time_stamp)) {

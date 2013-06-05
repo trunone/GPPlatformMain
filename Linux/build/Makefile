@@ -34,6 +34,7 @@ OBJS =  ../../Framework/src/Laser.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
         ../../Framework/src/strategy/modules/Task.o\
+        ../../Framework/src/strategy/modules/Motion.o\
         LinuxStrategyTimer.o\
         streamer/httpd.o\
         streamer/jpeg_utils.o\
