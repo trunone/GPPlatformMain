@@ -12,9 +12,9 @@ TARGET = sks
 INCLUDE_DIRS = -I../../include -I../../../Framework/include
 
 CXX = g++
-CXXFLAGS += -O2 -DLINUX -Wall $(INCLUDE_DIRS)
+CXXFLAGS += -O2 -DLINUX -Wall -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall $(INCLUDE_DIRS)
-LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp
+LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp -ltinyxml
 
 OBJECTS = main.o
 
@@ -32,7 +32,7 @@ wheeled.a:
 	make -C ../../build
 
 $(TARGET): wheeled.a $(OBJECTS)
-	$(CXX) $(CFLAGS) $(OBJECTS) ../../lib/wheeled.a -o $(TARGET) $(LFLAGS)
+	$(CXX) $(OBJECTS) ../../lib/wheeled.a -o $(TARGET) $(LFLAGS)
 	chmod 755 $(TARGET)
 
 # useful to make a backup "make tgz"

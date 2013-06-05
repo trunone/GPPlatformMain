@@ -11,14 +11,15 @@
 #include <libgen.h>
 #include <signal.h>
 #include <iostream>
+#include <tinyxml.h>
+#include <omp.h>
 
 #include "mjpg_streamer.h"
 #include "LinuxWheeled.h"
 #include "urg_cpp/Urg_driver.h"
 #include "urg_cpp/math_utilities.h"
 
-#define INI_FILE_PATH       "../../../Data/config.ini"
-//#define SCRIPT_FILE_PATH    "script.asc"
+//#define INI_FILE_PATH       "../../../Data/config.ini"
 
 #define LASER_DEV_NAME      "/dev/ttyACM0"
 
@@ -94,6 +95,8 @@ int main(void)
     httpd::blue_finder = blue_finder;
 
     httpd::ini = ini;
+
+    TiXmlDocument doc;
 
     //////////////////// Framework Initialize ////////////////////////////
     //if(StrageyManager::GetInstance()->Initialize(&cm730) == false)

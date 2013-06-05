@@ -7,7 +7,7 @@
 #
 ###############################################################
 
-CC = g++
+CXX = g++
 AR = ar
 ARFLAGS = cr
 
@@ -15,7 +15,7 @@ TARGET = wheeled.a
 
 INCLUDE_DIRS = -I../include -I../../Framework/include
 
-CXXFLAGS += -O2 -DLINUX -Wall -shared $(INCLUDE_DIRS)
+CXXFLAGS += -O2 -DLINUX -Wall -shared -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall -shared $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ldl
 
@@ -43,12 +43,12 @@ OBJS =  ../../Framework/src/Laser.o\
         LinuxActionScript.o\
         LinuxNetwork.o
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
 	mkdir -p ../lib
 	$(AR) $(ARFLAGS) ../lib/$(TARGET) $(OBJS)
-#	$(CC) -o $(TARGET) $(OBJS) $(LFLAGS)
-
-all: $(TARGET)
+#	$(CXX) -o $(TARGET) $(OBJS) $(LFLAGS)
 
 clean:
 	rm -f $(OBJS) ../lib/$(TARGET)
