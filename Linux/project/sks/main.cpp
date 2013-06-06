@@ -80,19 +80,6 @@ int main(void)
     urg.set_scanning_parameter(urg.deg2step(-135), urg.deg2step(+135), 0);
     //urg.start_measurement(Urg_driver::Distance, 0, 0);
 
-	unsigned int ErrorCode = 0;
-	void* motorHandle0;
-	void* motorHandle1;
-	void* motorHandle2;
-
-    motorHandle0 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB0", &ErrorCode);
-    motorHandle1 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB1", &ErrorCode);
-    motorHandle2 = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB2", &ErrorCode);
-
-    VCS_SetProtocolStackSettings(motorHandle0, 1000000, 500, &ErrorCode);
-    VCS_SetProtocolStackSettings(motorHandle1, 1000000, 500, &ErrorCode);
-    VCS_SetProtocolStackSettings(motorHandle2, 1000000, 500, &ErrorCode);
-
     ////////////////// Framework Initialize ////////////////////////////
     if(StrategyManager::GetInstance()->Initialize() == false)
     {
@@ -104,7 +91,7 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    LinuxStrategyTimer *motion_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
     ///////////////////////////////////////////////////////////////////
     
@@ -113,10 +100,8 @@ int main(void)
     StrategyManager::GetInstance()->SetEnable(true);
 
     LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-	
 
 	while(1) {
-		
         //vector<long> data;
         //long time_stamp = 0;
         //if (!urg.get_distance(data, &time_stamp)) {

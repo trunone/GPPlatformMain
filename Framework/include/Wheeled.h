@@ -22,5 +22,7 @@
 #include "Matrix.h"
 #include "Plane.h"
 #include "minIni.h"
+#include "Task.h"
+#include "Motion.h"
 
 #endif
