@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Status>
+	<ColorModel>
+		<Model type="blue">
+			<HueMax>0.5</HueMax>
+			<HueMin>0.1</HueMin>
+			<SaturationMax></SaturationMax>
+			<SaturationMin></SaturationMin>
+			<BrightnessMax></BrightnessMax>
+			<BrightnessMin></BrightnessMin>
+			
+		</Model>
+		
+		<Model type="green">
+			<HueMax>0.5</HueMax>
+			<HueMin>0.1</HueMin>
+			<SaturationMax></SaturationMax>
+			<SaturationMin></SaturationMin>
+			<BrightnessMax></BrightnessMax>
+			<BrightnessMin></BrightnessMin>
+			
+		</Model>
+		
+		
+	</ColorModel>
+	
+	<ParameterModel>
+		<Ball>
+			<x>5</x>
+			<y>5</y>
+		</Ball>
+	</ParameterModel>
+
+</Status>
+
+
+
+
