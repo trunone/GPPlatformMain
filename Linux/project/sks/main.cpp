@@ -25,91 +25,59 @@
 
 using namespace qrk;
 using namespace std;
+using namespace Robot;
 
-void change_current_dir()
-{
-    char exepath[1024] = {0};
-    if(readlink("/proc/self/exe", exepath, sizeof(exepath)) != -1)
-    {
-        if(chdir(dirname(exepath)))
-            fprintf(stderr, "chdir error!! \n");
-    }
-}
-
-void sighandler(int sig)
-{
-    exit(0);
-}
-
-void print_data(const Urg_driver& urg,
-                const vector<long>& data, long time_stamp)
-{
-    cout << data.size() << endl;
-    int front_index = urg.deg2index(0);
-    cout << "front_index: " 
-         << data[front_index] << " [mm], ("
-         << time_stamp << " [msec]) " << front_index << endl;
-    int left_index = urg.deg2index(+90);
-    cout << "left_index: "
-         << data[left_index] << " [mm], ("
-         << time_stamp << " [msec]) " << left_index << endl;
-    int right_index = urg.deg2index(-90);
-    cout << "right_index: "
-         << data[right_index] << " [mm], ("
-         << time_stamp << " [msec]) " << right_index << endl;
-
-}
-
-int main(void)
-{
-    signal(SIGABRT, &sighandler);
-    signal(SIGTERM, &sighandler);
-    signal(SIGQUIT, &sighandler);
-    signal(SIGINT, &sighandler);
-
-    change_current_dir();
-
-    TiXmlDocument doc;
-
-    Urg_driver urg;
-    if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
-        cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
-        return 1;
-    }
-
-    urg.set_scanning_parameter(urg.deg2step(-135), urg.deg2step(+135), 0);
-    //urg.start_measurement(Urg_driver::Distance, 0, 0);
-
-    ////////////////// Framework Initialize ////////////////////////////
-    if(StrategyManager::GetInstance()->Initialize() == false)
-    {
-        printf("Fail to initialize Strategy Manager!\n");
-        return 0;
-    }
-
-    //Motion::GetInstance()->LoadINISettings(ini);
-
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
-
-    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
-    stragey_timer->Start();
-    ///////////////////////////////////////////////////////////////////
-    
-    //StrategyManager::GetInstance()->LoadINISettings(ini);
-
-    StrategyManager::GetInstance()->SetEnable(true);
-
-    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-
-	while(1) {
-        //vector<long> data;
-        //long time_stamp = 0;
-        //if (!urg.get_distance(data, &time_stamp)) {
-        //    cout << "Urg_driver:: get_distance(): " << urg.what() << endl;
-        //    return 1;
-        //}
-        //print_data(urg, data, time_stamp); 
-	}
+int main(){
+	TiXmlDocument doc("Status.xml");
+	doc.LoadFile();
+	TiXmlPrinter printer;
+	//printer.SetIndent( "\t" );
 	
-    return 0;
+	//TiXmlDocument doc;
+	//doc.Parse(printer.CStr());
+
+
+	TiXmlElement* root = doc.RootElement();//Status
+	TiXmlElement* element = root->FirstChildElement();//ColorModel
+	TiXmlElement* model = element->FirstChildElement();//Model
+	TiXmlAttribute* type= model->FirstAttribute();//Model type
+	const char *www="www";
+	double x[7]={0.1,0.2,0.3,0.4,0.5,0.6,0.7};
+	int i=0;
+
+	const char *fileName = "string2xml";
+	cout<<type->Value()<<endl;
+	for(;model != NULL;model=model->NextSiblingElement()){
+		TiXmlElement* modelchild=model->FirstChildElement();
+		for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//get node information
+			string informationType=modelchild->Value();
+			string information=modelchild->FirstAttribute()->Value();
+			modelchild->SetDoubleAttribute(www,x[i++]);
+			//modelchild->RemoveAttribute(www);
+			//doc.SaveFile(fileName);
+			doc.SaveFile();
+			cout <<	informationType << ":" << information << endl;
+		}
+	}
+	doc.Accept( &printer );
+	fscanf( stdout, "%s", printer.CStr() );
+	//printf("%s", printer.CStr());
+	int port=1234;
+	string aa="a";
+	char w;
+	w=0x08;
+	LinuxServer new_sock;
+        LinuxServer server (port);
+	while(true){
+        	cout << "[Waiting..]" << endl;         
+            	server.accept ( new_sock );
+            	cout << "[Accepted..]" << endl;	
+		
+		new_sock << printer.CStr();
+		//printf("%s", printer.CStr());
+		cout << "[success]" << endl;		
+		
+		
+	}
+return 0;
 }
