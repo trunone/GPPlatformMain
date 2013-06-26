@@ -6,8 +6,10 @@
  */
 
 #include <stdio.h>
-#include "StrategyStatus.h"
+#include "Status.h"
 #include "Motion.h"
+#include <math.h>
+#include "Vector.h"
 
 using namespace Robot;
 
@@ -64,8 +66,21 @@ void Motion::SaveINISettings(minIni* ini, const std::string &section)
     //ini->put(section,   "pan_home",     m_Pan_Home);
     //ini->put(section,   "tilt_home",    m_Tilt_Home);
 }
-
+#define PI 3.1415926
 void Motion::Process()
 {
 
+	double FI=StrategyStatus::FI;
+	double w=StrategyStatus::w;
+	Vector3D vector = StrategyStatus::vector;
+	double cmd[3]={0};
+	double robot_radius = 1;
+	double angle1 = (PI/6)+FI;
+	double angle2 = 5*(PI/6)+FI;
+	double angle3 = 9*(PI/6)+FI;
+	cmd[0]=-sin(angle1)*(vector.X)+cos(angle1)*(vector.Y)+robot_radius*w;
+	cmd[1]=-sin(angle2)*(vector.X)+cos(angle2)*(vector.Y)+robot_radius*w;
+	cmd[2]=-sin(angle3)*(vector.X)+cos(angle3)*(vector.Y)+robot_radius*w;
+	
+	
 }
