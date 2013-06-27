@@ -1,5 +1,5 @@
 /*
- *   StretagyManager.cpp
+ *   VisionManager.cpp
  *
  *   Author: Wu Chih-En
  *
@@ -7,13 +7,13 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "StrategyManager.h"
-#include "VisionCapture.h"
+#include "VisionManager.h"
+
 using namespace Robot;
 
-StrategyManager* StrategyManager::m_UniqueInstance = new StrategyManager();
+VisionManager* VisionManager::m_UniqueInstance = new VisionManager();
 
-StrategyManager::StrategyManager() :
+VisionManager::VisionManager() :
         m_ProcessEnable(false),
         m_Enabled(false),
         m_IsRunning(false),
@@ -21,11 +21,11 @@ StrategyManager::StrategyManager() :
         m_IsLogging(false),
         DEBUG_PRINT(false) {}
 
-StrategyManager::~StrategyManager()
+VisionManager::~VisionManager()
 {
 }
 
-bool StrategyManager::Initialize()
+bool VisionManager::Initialize()
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
@@ -33,14 +33,14 @@ bool StrategyManager::Initialize()
 	return true;
 }
 
-bool StrategyManager::Reinitialize()
+bool VisionManager::Reinitialize()
 {
 	m_ProcessEnable = false;
 
 	return true;
 }
 
-void StrategyManager::StartLogging()
+void VisionManager::StartLogging()
 {
     char szFile[32] = {0,};
 
@@ -62,17 +62,17 @@ void StrategyManager::StartLogging()
     m_IsLogging = true;
 }
 
-void StrategyManager::StopLogging()
+void VisionManager::StopLogging()
 {
     m_IsLogging = false;
     m_LogFileStream.close();
 }
 
-void StrategyManager::LoadINISettings(minIni* ini)
+void VisionManager::LoadINISettings(minIni* ini)
 {
     LoadINISettings(ini, OFFSET_SECTION);
 }
-void StrategyManager::LoadINISettings(minIni* ini, const std::string &section)
+void VisionManager::LoadINISettings(minIni* ini, const std::string &section)
 {
     int ivalue = INVALID_VALUE;
 
@@ -83,11 +83,11 @@ void StrategyManager::LoadINISettings(minIni* ini, const std::string &section)
     //    if((ivalue = ini->geti(section, key, INVALID_VALUE)) != INVALID_VALUE)  m_Offset[i] = ivalue;
     //}
 }
-void StrategyManager::SaveINISettings(minIni* ini)
+void VisionManager::SaveINISettings(minIni* ini)
 {
     SaveINISettings(ini, OFFSET_SECTION);
 }
-void StrategyManager::SaveINISettings(minIni* ini, const std::string &section)
+void VisionManager::SaveINISettings(minIni* ini, const std::string &section)
 {
     //for(int i = 1; i < JointData::NUMBER_OF_JOINTS; i++)
     //{
@@ -97,7 +97,7 @@ void StrategyManager::SaveINISettings(minIni* ini, const std::string &section)
     //}
 }
 
-void StrategyManager::Process()
+void VisionManager::Process()
 {
     if(m_ProcessEnable == false || m_IsRunning == true)
         return;
@@ -123,20 +123,20 @@ void StrategyManager::Process()
     m_IsRunning = false;
 }
 
-void StrategyManager::SetEnable(bool enable)
+void VisionManager::SetEnable(bool enable)
 {
 	m_Enabled = enable;
 	//if(m_Enabled == true)
 	//	m_CM730->WriteWord(CM730::ID_BROADCAST, MX28::P_MOVING_SPEED_L, 0, 0);
 }
 
-void StrategyManager::AddModule(StrategyModule *module)
+void VisionManager::AddModule(VisionModule *module)
 {
 	module->Initialize();
 	m_Modules.push_back(module);
 }
 
-void StrategyManager::RemoveModule(StrategyModule *module)
+void VisionManager::RemoveModule(VisionModule *module)
 {
 	m_Modules.remove(module);
 }

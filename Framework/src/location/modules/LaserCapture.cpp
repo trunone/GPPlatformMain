@@ -1,41 +1,46 @@
 /*
- *   Task.cpp
+ *   LaserCapture.cpp
  *
  *   Author: Wu Chih-En
  *
  */
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
+#include <iostream>
 #include <stdio.h>
 #include "Status.h"
-#include "Task.h"
+#include "LaserCapture.h"
 
 using namespace Robot;
 
+using namespace std;
+using namespace cv;
 
-Task* Task::m_UniqueInstance = new Task();
 
-Task::Task()
+LaserCapture* LaserCapture::m_UniqueInstance = new LaserCapture();
+
+LaserCapture::LaserCapture()
 {
 
 }
 
-Task::~Task()
+LaserCapture::~LaserCapture()
 {
 }
 
-void Task::Initialize()
+void LaserCapture::Initialize()
 {
 }
 
-void Task::LoadINISettings(minIni* ini)
+void LaserCapture::LoadINISettings(minIni* ini)
 {
     LoadINISettings(ini, TASK_SECTION);
 }
 
-void Task::LoadINISettings(minIni* ini, const std::string &section)
+void LaserCapture::LoadINISettings(minIni* ini, const std::string &section)
 {
-    double value = INVALID_VALUE;
-
     //if((value = ini->getd(section, "pan_p_gain", INVALID_VALUE)) != INVALID_VALUE)  m_Pan_p_gain = value;
     //if((value = ini->getd(section, "pan_d_gain", INVALID_VALUE)) != INVALID_VALUE)  m_Pan_d_gain = value;
     //if((value = ini->getd(section, "tilt_p_gain", INVALID_VALUE)) != INVALID_VALUE) m_Tilt_p_gain = value;
@@ -48,12 +53,12 @@ void Task::LoadINISettings(minIni* ini, const std::string &section)
     //if((value = ini->getd(section, "tilt_home", INVALID_VALUE)) != INVALID_VALUE)   m_Tilt_Home = value;
 }
 
-void Task::SaveINISettings(minIni* ini)
+void LaserCapture::SaveINISettings(minIni* ini)
 {
     SaveINISettings(ini, TASK_SECTION);
 }
 
-void Task::SaveINISettings(minIni* ini, const std::string &section)
+void LaserCapture::SaveINISettings(minIni* ini, const std::string &section)
 {
     //ini->put(section,   "pan_p_gain",   m_Pan_p_gain);
     //ini->put(section,   "pan_d_gain",   m_Pan_d_gain);
@@ -67,7 +72,7 @@ void Task::SaveINISettings(minIni* ini, const std::string &section)
     //ini->put(section,   "tilt_home",    m_Tilt_Home);
 }
 
-void Task::Process()
+void LaserCapture::Process()
 {
-
+	
 }

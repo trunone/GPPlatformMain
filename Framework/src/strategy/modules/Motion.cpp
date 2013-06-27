@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "StrategyStatus.h"
+#include "Status.h"
 #include "Motion.h"
 
 using namespace Robot;

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "ImgProcess.h"
 #include "BallFollower.h"
-#include "StrategyStatus.h"
+#include "Status.h"
 
 
 using namespace Robot;

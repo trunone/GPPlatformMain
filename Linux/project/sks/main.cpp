@@ -77,19 +77,35 @@ int main(void)
         return 1;
     }
 
-    urg.set_scanning_parameter(urg.deg2step(-135), urg.deg2step(+135), 0);
-    //urg.start_measurement(Urg_driver::Distance, 0, 0);
+    urg.set_scanning_parameter(urg.deg2step(-90), urg.deg2step(+90), 0);
+    urg.start_measurement(Urg_driver::Distance, 0, 0);
 
     ////////////////// Framework Initialize ////////////////////////////
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(VisionManager::GetInstance()->Initialize() == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
-        return 0;
+        return 1;
     }
 
     //Motion::GetInstance()->LoadINISettings(ini);
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+
+    LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
+    vision_timer->Start();
+
+    ////////////////////////////////////////////////////////////////////////////////////////	
+
+    if(StrategyManager::GetInstance()->Initialize() == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
+
+    //Motion::GetInstance()->LoadINISettings(ini);
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadVision::GetInstance());
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();

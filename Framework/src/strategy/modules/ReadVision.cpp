@@ -1,5 +1,5 @@
 /*
- *   Task.cpp
+ *   ReadVision.cpp
  *
  *   Author: Wu Chih-En
  *
@@ -7,32 +7,35 @@
 
 #include <stdio.h>
 #include "Status.h"
-#include "Task.h"
+#include "ReadVision.h"
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace Robot;
 
 
-Task* Task::m_UniqueInstance = new Task();
+ReadVision* ReadVision::m_UniqueInstance = new ReadVision();
 
-Task::Task()
+ReadVision::ReadVision()
 {
 
 }
 
-Task::~Task()
+ReadVision::~ReadVision()
 {
 }
 
-void Task::Initialize()
+void ReadVision::Initialize()
 {
 }
 
-void Task::LoadINISettings(minIni* ini)
+void ReadVision::LoadINISettings(minIni* ini)
 {
     LoadINISettings(ini, TASK_SECTION);
 }
 
-void Task::LoadINISettings(minIni* ini, const std::string &section)
+void ReadVision::LoadINISettings(minIni* ini, const std::string &section)
 {
     double value = INVALID_VALUE;
 
@@ -48,12 +51,12 @@ void Task::LoadINISettings(minIni* ini, const std::string &section)
     //if((value = ini->getd(section, "tilt_home", INVALID_VALUE)) != INVALID_VALUE)   m_Tilt_Home = value;
 }
 
-void Task::SaveINISettings(minIni* ini)
+void ReadVision::SaveINISettings(minIni* ini)
 {
     SaveINISettings(ini, TASK_SECTION);
 }
 
-void Task::SaveINISettings(minIni* ini, const std::string &section)
+void ReadVision::SaveINISettings(minIni* ini, const std::string &section)
 {
     //ini->put(section,   "pan_p_gain",   m_Pan_p_gain);
     //ini->put(section,   "pan_d_gain",   m_Pan_d_gain);
@@ -67,7 +70,12 @@ void Task::SaveINISettings(minIni* ini, const std::string &section)
     //ini->put(section,   "tilt_home",    m_Tilt_Home);
 }
 
-void Task::Process()
+void ReadVision::Process()
 {
 
+	//unsigned char b;
+	//b=VisionCapture::a;
+	printf("%d\n", Status::a);
+	
 }
+

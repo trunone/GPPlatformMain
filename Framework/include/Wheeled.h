@@ -10,7 +10,11 @@
 
 #include "StrategyModule.h"
 #include "StrategyManager.h"
-#include "StrategyStatus.h"
+#include "LocationModule.h"
+#include "LocationManager.h"
+#include "VisionModule.h"
+#include "VisionManager.h"
+#include "Status.h"
 #include "Image.h"
 #include "ImgProcess.h"
 #include "BallTracker.h"
@@ -24,5 +28,8 @@
 #include "minIni.h"
 #include "Task.h"
 #include "Motion.h"
+#include "VisionCapture.h"
+#include "LaserCapture.h"
+#include "ReadVision.h"
 
 #endif

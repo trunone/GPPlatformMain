@@ -1,18 +1,18 @@
 /*
- *   StrategyManager.h
+ *   LocationManager.h
  *
  *   Author: Wu Chih-En
  *
  */
 
-#ifndef _STRATEGY_MANGER_H_
-#define _STRATEGY_MANGER_H_
+#ifndef _LOCATION_MANGER_H_
+#define _LOCATION_MANGER_H_
 
 #include <list>
 #include <fstream>
 #include <iostream>
 #include "Status.h"
-#include "StrategyModule.h"
+#include "LocationModule.h"
 #include "minIni.h"
 
 #define OFFSET_SECTION "Offset"
@@ -20,11 +20,11 @@
 
 namespace Robot
 {
-	class StrategyManager
+	class LocationManager
 	{
 	private:
-		static StrategyManager* m_UniqueInstance;
-		std::list<StrategyModule*> m_Modules;
+		static LocationManager* m_UniqueInstance;
+		std::list<LocationModule*> m_Modules;
 		bool m_ProcessEnable;
 		bool m_Enabled;
 
@@ -34,24 +34,24 @@ namespace Robot
 
 		std::ofstream m_LogFileStream;
 
-        StrategyManager();
+        LocationManager();
 
 	protected:
 
 	public:
 		bool DEBUG_PRINT;
 
-		~StrategyManager();
+		~LocationManager();
 
-		static StrategyManager* GetInstance() { return m_UniqueInstance; }
+		static LocationManager* GetInstance() { return m_UniqueInstance; }
 
 		bool Initialize();
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);
 		bool GetEnable()				{ return m_Enabled; }
-		void AddModule(StrategyModule *module);
-		void RemoveModule(StrategyModule *module);
+		void AddModule(LocationModule *module);
+		void RemoveModule(LocationModule *module);
 
 		void StartLogging();
 		void StopLogging();
