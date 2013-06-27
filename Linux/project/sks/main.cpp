@@ -31,7 +31,8 @@ int main(){
 	TiXmlDocument doc("Status.xml");
 	doc.LoadFile();
 	TiXmlPrinter printer;
-	//printer.SetIndent( "\t" );
+	printer.SetStreamPrinting();
+	
 	
 	//TiXmlDocument doc;
 	//doc.Parse(printer.CStr());
@@ -61,7 +62,7 @@ int main(){
 	}
 	doc.Accept( &printer );
 	fscanf( stdout, "%s", printer.CStr() );
-	//printf("%s", printer.CStr());
+	printf("%s", printer.CStr());
 	int port=1234;
 	string aa="a";
 	char w;
