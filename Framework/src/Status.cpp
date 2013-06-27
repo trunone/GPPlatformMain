@@ -9,5 +9,6 @@
 
 using namespace Robot;
 
-CvCapture* Status::capture(NULL);
+CvCapture* Status::visioncapture(NULL);
 int Status::a(NULL);
+

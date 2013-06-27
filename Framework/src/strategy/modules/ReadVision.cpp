@@ -73,8 +73,7 @@ void ReadVision::SaveINISettings(minIni* ini, const std::string &section)
 void ReadVision::Process()
 {
 
-	//unsigned char b;
-	//b=VisionCapture::a;
+	printf("Stra Running: ");
 	printf("%d\n", Status::a);
 	
 }

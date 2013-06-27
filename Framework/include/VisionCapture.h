@@ -16,9 +16,6 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-
-
-
 #define TASK_SECTION    "VisionCapture"
 #define INVALID_VALUE   -1024.0
 

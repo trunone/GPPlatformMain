@@ -5,10 +5,10 @@
  *
  */
 
+#include <iostream>
 #include <stdio.h>
 #include "Status.h"
 #include "VisionCapture.h"
-#include <iostream>
 
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -33,7 +33,7 @@ VisionCapture::~VisionCapture()
 
 void VisionCapture::Initialize()
 {
-	Status::capture = cvCaptureFromCAM( -1 );
+	Status::visioncapture = cvCaptureFromCAM( -1 );
 }
 
 void VisionCapture::LoadINISettings(minIni* ini)
@@ -79,9 +79,9 @@ void VisionCapture::SaveINISettings(minIni* ini, const std::string &section)
 void VisionCapture::Process()
 {
 	Mat frame;
-	frame = cvQueryFrame( Status::capture);
+	frame = cvQueryFrame( Status::visioncapture);
 	IplImage img1 = IplImage (frame);
 	Status::a = img1.imageData[0];
 
-	//printf("%d",ReadVision::hello);
+	printf("Capture Image\n");
 }

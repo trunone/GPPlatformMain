@@ -4,17 +4,19 @@
  *   Author: Wu Chih-En
  *
  */
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
 
 #include <iostream>
 #include <stdio.h>
 #include "Status.h"
 #include "LaserCapture.h"
 
-using namespace Robot;
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
+#include "ReadLaser.h"
+
+using namespace Robot;
 using namespace std;
 using namespace cv;
 

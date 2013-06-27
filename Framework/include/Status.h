@@ -19,7 +19,7 @@ namespace Robot
 	private:
 
 	public:
-		static CvCapture* capture;
+		static CvCapture* visioncapture;
 		static int a;
 	};
 }

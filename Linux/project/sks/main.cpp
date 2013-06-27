@@ -71,14 +71,14 @@ int main(void)
 
     TiXmlDocument doc;
 
-    Urg_driver urg;
-    if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
-        cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
-        return 1;
-    }
+    //Urg_driver urg;
+//    if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )) {
+//        cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
+//        return 1;
+//    }
 
-    urg.set_scanning_parameter(urg.deg2step(-90), urg.deg2step(+90), 0);
-    urg.start_measurement(Urg_driver::Distance, 0, 0);
+//    urg.set_scanning_parameter(urg.deg2step(-90), urg.deg2step(+90), 0);
+//    urg.start_measurement(Urg_driver::Distance, 0, 0);
 
     ////////////////// Framework Initialize ////////////////////////////
     if(VisionManager::GetInstance()->Initialize() == false)
@@ -93,8 +93,21 @@ int main(void)
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
+    //-----------------------------------------------------------------------------------//
 
-    ////////////////////////////////////////////////////////////////////////////////////////	
+    if(LocationManager::GetInstance()->Initialize() == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
+
+    //Motion::GetInstance()->LoadINISettings(ini);
+
+    LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+
+    LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
+//    location_timer->Start();
+    //-----------------------------------------------------------------------------------//
 
     if(StrategyManager::GetInstance()->Initialize() == false)
     {
@@ -109,15 +122,19 @@ int main(void)
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
+
+
+
     ///////////////////////////////////////////////////////////////////
     
     //StrategyManager::GetInstance()->LoadINISettings(ini);
 
-    StrategyManager::GetInstance()->SetEnable(true);
+//    StrategyManager::GetInstance()->SetEnable(true);
 
-    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
+//    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
 	while(1) {
+	sleep(1);
         //vector<long> data;
         //long time_stamp = 0;
         //if (!urg.get_distance(data, &time_stamp)) {

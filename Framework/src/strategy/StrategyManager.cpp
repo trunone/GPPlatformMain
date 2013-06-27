@@ -104,6 +104,13 @@ void StrategyManager::Process()
 
     m_IsRunning = true;
 
+    if(m_Modules.size() != 0) {
+        for(std::list<StrategyModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
+        {
+            (*i)->Process();
+        }
+    }
+
     if(m_IsLogging)
     {
         //for(int id = 1; id < JointData::NUMBER_OF_JOINTS; id++)
