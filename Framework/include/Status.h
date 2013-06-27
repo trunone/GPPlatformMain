@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  *   Status.h
+=======
+ *   StrategyStatus.h
+>>>>>>> Motion
  *
  *   Author: Wu Chih-En
  *
@@ -11,6 +15,7 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "Vector.h"
 
 namespace Robot
 {
@@ -21,6 +26,11 @@ namespace Robot
 	public:
 		static CvCapture* visioncapture;
 		static int a;
+
+	public:
+        static double FI;
+        static double w;
+        static Vector3D vector;
 	};
 }
 

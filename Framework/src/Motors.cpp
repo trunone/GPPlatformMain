@@ -65,12 +65,13 @@ int Motors::SetEnable(void* motorHandle)
                 return 1;
             }
         }
-        else
-        {
+     }
+     else
+     {
             printf("Get fault state failed!, error code=0x%x\n", error_code);
             return 1;
-        }
-    }
+     }
+    
 }
 
 int Motors::Initialize()
@@ -106,7 +107,47 @@ int Motors::SetDisable(void* motorHandle)
         return 1;
     }
 }
+int Motors::ActivateProfileVelocityMode(void* motorHandle)
+{
+  	unsigned int error_code = 0;
+  	if(!VCS_ActivateProfileVelocityMode(motorHandle,mNodeId,&error_code))
+  	{
+		printf("Activate Profile Velocity Mode failed!, error code=0x%x\n", error_code);
+		return 1;
+  	}
 
+}
+int Motors::SetVelocityProfile(void* motorHandle,int ProfileAcceleration,int ProfileDeceleration)
+{
+	unsigned int error_code = 0;
+	if(!VCS_SetVelocityProfile(motorHandle,mNodeId,ProfileAcceleration,ProfileDeceleration,&error_code))
+		{
+			printf("Set Velocity Profile failed!, error code=0x%x\n", error_code);
+			return 1;
+		}
+	}	
+}
+int Motors::SetVelocity(void* motorHandle,long TargetVelocity)
+{
+	unsigned int error_code = 0;
+	while(1)
+	{
+		if(!VCS_MoveWithVelocity(motorHandle,mNodeId,TargetVelocity,&error_code))
+		{
+			printf("Move With Velocity failed!, error code=0x%x\n", error_code);
+			return 1;
+		}
+	}
+}
+int Motors::HaltVelocityMovement(void* motorHandle)
+{
+	unsigned int error_code = 0;
+	if(!VCS_HaltVelocityMovement(motorHandle,mNodeId,&error_code))
+	{
+		printf("Halt Velocity Movement failed!, error code=0x%x\n", error_code);
+		return 1;
+	}
+}	
 int Motors::OpenDeviceAll()
 {   
     OpenDevice(motorHandle0, 0);

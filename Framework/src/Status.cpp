@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  *   Status.cpp
+=======
+ *   StrategyStatus.cpp
+>>>>>>> Motion
  *
  *   Author: Wu Chih-En
  *
