@@ -12,9 +12,8 @@
 
 #include "minIni.h"
 #include "LocationModule.h"
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+#include "urg_cpp/Urg_driver.h"
+#include "urg_cpp/math_utilities.h"
 
 #define TASK_SECTION    "LaserCapture"
 #define INVALID_VALUE   -1024.0
@@ -26,8 +25,9 @@ namespace Robot
 	private:
 		static LaserCapture* m_UniqueInstance;
 		
-		LaserCapture();
+        qrk::Urg_driver urg;
 
+		LaserCapture();
 	public:
 		static LaserCapture* GetInstance() { return m_UniqueInstance; }
 		

@@ -10,16 +10,11 @@
 #include "Status.h"
 #include "LaserCapture.h"
 
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-
 #include "ReadLaser.h"
 
 using namespace Robot;
 using namespace std;
-using namespace cv;
-
+using namespace qrk;
 
 LaserCapture* LaserCapture::m_UniqueInstance = new LaserCapture();
 
@@ -34,6 +29,12 @@ LaserCapture::~LaserCapture()
 
 void LaserCapture::Initialize()
 {
+    if (!urg.open("/dev/ttyACM0", 115200, Urg_driver::Serial )) {
+        cout << "Urg_driver::open(    ): " << ": " << urg.what() << endl;
+    }
+
+    urg.set_scanning_parameter(urg.deg2step(-90), urg.deg2step(+90), 0);
+    urg.start_measurement(Urg_driver::Distance, 0, 0);
 }
 
 void LaserCapture::LoadINISettings(minIni* ini)
@@ -76,5 +77,30 @@ void LaserCapture::SaveINISettings(minIni* ini, const std::string &section)
 
 void LaserCapture::Process()
 {
-	
+    vector<long> data;
+    long time_stamp = 0;
+    if (!urg.get_distance(data, &time_stamp)) {
+        cout << "Urg_driver:: get_distance(): " << urg.what() << endl;
+    }
+    //print_data(urg, data, time_stamp); 
+
 }
+
+void print_data(const Urg_driver& urg,
+                const vector<long>& data, long time_stamp)
+{
+    cout << data.size() << endl;
+    int front_index = urg.deg2index(0);
+    cout << "front_index: " 
+         << data[front_index] << " [mm], ("
+         << time_stamp << " [msec]) " << front_index << endl;
+    int left_index = urg.deg2index(+90);
+    cout << "left_index: "
+         << data[left_index] << " [mm], ("
+         << time_stamp << " [msec]) " << left_index << endl;
+    int right_index = urg.deg2index(-90);
+    cout << "right_index: "
+         << data[right_index] << " [mm], ("
+         << time_stamp << " [msec]) " << right_index << endl;
+}
+

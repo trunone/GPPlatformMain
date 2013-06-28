@@ -16,31 +16,33 @@ namespace Robot
 	{
 	private:
 	
-		Motors();
+        int mNodeId;
+        static const bool DEBUG_PRINT = false;
+		
+        int SetEnable(void*);
+        int SetDisable(void*);
+        int ActivateProfileVelocityMode(void*);
+	
+        int OpenDevice(void**, char);
+	public:
+        Motors();
 		~Motors();
-	int mNodeId;
-	static const bool DEBUG_PRINT = false;
-
 
         void* motorHandle0;
         void* motorHandle1;
         void* motorHandle2;
-		
-	int SetEnable(void*);
-	int SetDisable(void*);
-	
-        int OpenDevice(void*, int);
-	int ActivateProfileVelocityMode(void*);
-	int SetVelocityProfile(void*,int,int );
-	int SetVelocity(void*,long);
-	int HaltVelocityMovement(void*);
-	public:
-        bool SetEnableAll();
-        bool SetDisableAll();
-        bool OpenDeviceAll();
 
-	void Initialize();
-	};
+        int SetEnableAll();
+        int SetDisableAll();
+        int OpenDeviceAll();
+        int ActivateProfileVelocityModeAll();
+
+        int Initialize();
+
+        int SetVelocityProfile(void*, int, int);
+        int SetVelocity(void*, long);
+        int HaltVelocityMovement(void*);
+    };
 }
 
 #endif

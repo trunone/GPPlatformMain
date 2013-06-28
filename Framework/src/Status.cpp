@@ -13,6 +13,9 @@
 
 using namespace Robot;
 
-CvCapture* Status::visioncapture(NULL);
+//CvCapture* Status::visioncapture(NULL);
 int Status::a(NULL);
+double Status::FI(0);
+double Status::w(0);
+Vector3D Status::vector;
 

@@ -8,12 +8,8 @@
 #include <stdio.h>
 #include "Status.h"
 #include "ReadVision.h"
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace Robot;
-
 
 ReadVision* ReadVision::m_UniqueInstance = new ReadVision();
 
@@ -72,9 +68,6 @@ void ReadVision::SaveINISettings(minIni* ini, const std::string &section)
 
 void ReadVision::Process()
 {
-
-	printf("Stra Running: ");
-	printf("%d\n", Status::a);
 	
 }
 

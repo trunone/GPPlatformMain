@@ -34,7 +34,7 @@ int main()
 	int num_param;
 	int iparam[20];	
 
-    unsigned int nodeId = 2;
+    unsigned int nodeId = 1;
 
 	unsigned int ErrorCode = 0;
 	void* keyHandle_;

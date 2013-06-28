@@ -20,8 +20,8 @@ CXXFLAGS += -O2 -DLINUX -Wall -shared -fopenmp $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ldl
 
 OBJS =  ../../Framework/src/Status.o\
-	../../Framework/src/location/LocationManager.o\
-	../../Framework/src/location/modules/LaserCapture.o\
+		../../Framework/src/location/LocationManager.o\
+		../../Framework/src/location/modules/LaserCapture.o\
         ../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
@@ -33,12 +33,13 @@ OBJS =  ../../Framework/src/Status.o\
         ../../Framework/src/vision/ColorFinder.o\
         ../../Framework/src/vision/BallFollower.o\
         ../../Framework/src/vision/BallTracker.o\
-	../../Framework/src/vision/VisionManager.o\
-	../../Framework/src/vision/modules/VisionCapture.o\
+		../../Framework/src/vision/VisionManager.o\
+		../../Framework/src/vision/modules/VisionCapture.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/modules/Task.o\
         ../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/strategy/modules/ReadVision.o\
+        ../../Framework/src/Motors.o\
         LinuxStrategyTimer.o\
         LinuxVisionTimer.o\
         LinuxLocationTimer.o\

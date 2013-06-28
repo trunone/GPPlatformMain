@@ -7,7 +7,7 @@
 #
 ###############################################################
 
-TARGET = sks
+TARGET = cmd
 
 INCLUDE_DIRS = -I../../include -I../../../Framework/include
 
@@ -16,7 +16,7 @@ CXXFLAGS += -O2 -DLINUX -Wall -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp -ltinyxml -lEposCmd #-lopencv_core -lopencv_imgproc -lopencv_highgui
 
-OBJECTS = main.o
+OBJECTS = main.o cmd_process.o
 
 all: $(TARGET)
 

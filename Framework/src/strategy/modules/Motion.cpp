@@ -6,19 +6,18 @@
  */
 
 #include <stdio.h>
-#include "Status.h"
-#include "Motion.h"
 #include <math.h>
+#include "Motion.h"
 #include "Vector.h"
 
-using namespace Robot;
+#define PI 3.1415926
 
+using namespace Robot;
 
 Motion* Motion::m_UniqueInstance = new Motion();
 
 Motion::Motion()
 {
-
 }
 
 Motion::~Motion()
@@ -27,6 +26,9 @@ Motion::~Motion()
 
 void Motion::Initialize()
 {
+    motors.OpenDeviceAll();
+    motors.SetEnableAll();
+    motors.ActivateProfileVelocityModeAll();
 }
 
 void Motion::LoadINISettings(minIni* ini)
@@ -66,21 +68,22 @@ void Motion::SaveINISettings(minIni* ini, const std::string &section)
     //ini->put(section,   "pan_home",     m_Pan_Home);
     //ini->put(section,   "tilt_home",    m_Tilt_Home);
 }
-#define PI 3.1415926
 void Motion::Process()
 {
-
-	double FI=StrategyStatus::FI;
-	double w=StrategyStatus::w;
-	Vector3D vector = StrategyStatus::vector;
+	double FI = Status::FI;
+	double w = Status::w;
+	Vector3D vector = Status::vector;
 	double cmd[3]={0};
 	double robot_radius = 1;
 	double angle1 = (PI/6)+FI;
 	double angle2 = 5*(PI/6)+FI;
-	double angle3 = 9*(PI/6)+FI;
+	double angle3 = 3*(PI/2)+FI;
 	cmd[0]=-sin(angle1)*(vector.X)+cos(angle1)*(vector.Y)+robot_radius*w;
 	cmd[1]=-sin(angle2)*(vector.X)+cos(angle2)*(vector.Y)+robot_radius*w;
 	cmd[2]=-sin(angle3)*(vector.X)+cos(angle3)*(vector.Y)+robot_radius*w;
-	
-	
+    //printf("%d %d %d\n", (long)cmd[0], (long)cmd[1], (long)cmd[2]);
+
+    motors.SetVelocity(motors.motorHandle0, (long)-cmd[0]);
+    motors.SetVelocity(motors.motorHandle1, (long)-cmd[1]);
+    motors.SetVelocity(motors.motorHandle2, (long)-cmd[2]);
 }

@@ -12,6 +12,8 @@
 
 #include "minIni.h"
 #include "StrategyModule.h"
+#include "Wheeled.h"
+#include "Motors.h"
 
 #define TASK_SECTION    "Motion"
 
@@ -21,12 +23,12 @@ namespace Robot
 	{
 	private:
 		static Motion* m_UniqueInstance;
-		
-		Motion();
+        Motors motors;
 
 	public:
 		static Motion* GetInstance() { return m_UniqueInstance; }
 		
+		Motion();
 		~Motion();
 
 		void Initialize();

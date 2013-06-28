@@ -12,9 +12,12 @@
 
 #include "minIni.h"
 #include "VisionModule.h"
+
+#ifdef ENABLE_OPENCV
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#endif
 
 #define TASK_SECTION    "VisionCapture"
 #define INVALID_VALUE   -1024.0
