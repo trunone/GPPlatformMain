@@ -31,52 +31,62 @@ int main(){
 	
 	
 ////////////////////////////////////////////////////rec
-	TiXmlDocument doc_2("Status.xml");
-	doc_2.LoadFile();
+	/*TiXmlDocument doc("Status.xml");
+	doc.LoadFile();
 	TiXmlPrinter printer;
-	printer.SetStreamPrinting();
-	doc_2.Accept( &printer );
-	fscanf( stdout, "%s", printer.CStr() );
-	//printf("%s", printer.CStr());
+	printer.SetStreamPrinting();*/
+	//doc_2.Accept( &printer );
+	//fscanf( stdout, "%s", printer.CStr() );
 	//printf("%s", printer.CStr());
 	int port=1234;
-	string aa;
+	string xml_by_str;
 	LinuxServer new_sock;
         LinuxServer server (port);
 	
         cout << "[Waiting..]" << endl;         
         server.accept ( new_sock );
         cout << "[Accepted..]" << endl;	
+//////////////////////////////////////////////////////////////////////////////////////////
 	while(true){	
-		new_sock >> aa;
+		new_sock >> xml_by_str;
+		cout << "[success recv]" << endl;
+		char *xml_by_char=new char[xml_by_str.length()+1];
+		strcpy(xml_by_char,xml_by_str.c_str());	
 	
-		cout << "[success]" << endl;
-/////////////////////////////////////////////////////
-		char *xml=new char[aa.length()+1];
-		strcpy(xml,aa.c_str());	
-		TiXmlDocument doc;
-		doc.Parse(xml);
 
+		TiXmlDocument doc;
+		doc.Parse(xml_by_char);
 		TiXmlElement* root = doc.RootElement();//Status
 		TiXmlElement* element = root->FirstChildElement();//ColorModel
-		TiXmlElement* model = element->FirstChildElement();//Model
-		TiXmlAttribute* type= model->FirstAttribute();//Model type
-		//const char *www="www";
+		//TiXmlElement* model = element->FirstChildElement();//Model
+		//TiXmlAttribute* type= model->FirstAttribute();//Model type
+		const char *www="www";
 	
 		//cout<<type->Value()<<endl;
-		for(;model != NULL;model=model->NextSiblingElement()){
-			TiXmlElement* modelchild=model->FirstChildElement();
-			for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//node information
-				string informationType=modelchild->Value();
-				string information=modelchild->FirstAttribute()->Value();
-				//modelchild->SetDoubleAttribute(www,x[i++]);
-				//doc.SaveFile(fileName);
-				//doc.SaveFile();
-				cout <<	informationType << ":" << information << endl;
+		for(;element != NULL;element=element->NextSiblingElement()){
+			TiXmlElement* model=element->FirstChildElement();
+			for(;model != NULL;model=model->NextSiblingElement()){
+				cout<<model->FirstAttribute()->Value()<<endl;
+				TiXmlElement* modelchild=model->FirstChildElement();
+				for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//node information
+					string informationType=modelchild->Value();
+					string information=modelchild->FirstAttribute()->Value();
+					modelchild->SetDoubleAttribute(www,0.85);
+					
+					//doc.SaveFile();
+					cout <<	informationType << ":" << information << endl;
+				}
 			}
 		}
-	
-		delete[]xml;
+		//doc.SaveFile(fileName);
+
+		
+		TiXmlPrinter printer;
+		printer.SetStreamPrinting();
+		doc.Accept( &printer );
+		new_sock << printer.Str();
+
+		delete[]xml_by_char;
 	}	
 	
 return 0;
