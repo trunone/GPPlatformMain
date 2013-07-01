@@ -47,38 +47,37 @@ int main(){
         cout << "[Waiting..]" << endl;         
         server.accept ( new_sock );
         cout << "[Accepted..]" << endl;	
-		
-	new_sock >> aa;
+	while(true){	
+		new_sock >> aa;
 	
-	cout << "[success]" << endl;
+		cout << "[success]" << endl;
 /////////////////////////////////////////////////////
-	char *xml=new char[aa.length()+1];
-	strcpy(xml,aa.c_str());	
-	TiXmlDocument doc;
-	doc.Parse(xml);
+		char *xml=new char[aa.length()+1];
+		strcpy(xml,aa.c_str());	
+		TiXmlDocument doc;
+		doc.Parse(xml);
 
-	TiXmlElement* root = doc.RootElement();//Status
-	TiXmlElement* element = root->FirstChildElement();//ColorModel
-	TiXmlElement* model = element->FirstChildElement();//Model
-	TiXmlAttribute* type= model->FirstAttribute();//Model type
-	//const char *www="www";
+		TiXmlElement* root = doc.RootElement();//Status
+		TiXmlElement* element = root->FirstChildElement();//ColorModel
+		TiXmlElement* model = element->FirstChildElement();//Model
+		TiXmlAttribute* type= model->FirstAttribute();//Model type
+		//const char *www="www";
 	
-	cout<<type->Value()<<endl;
-	for(;model != NULL;model=model->NextSiblingElement()){
-		TiXmlElement* modelchild=model->FirstChildElement();
-		for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//get node information
-			string informationType=modelchild->Value();
-			string information=modelchild->FirstAttribute()->Value();
-			//modelchild->SetDoubleAttribute(www,x[i++]);
-			//doc.SaveFile(fileName);
-			//doc.SaveFile();
-			cout <<	informationType << ":" << information << endl;
+		//cout<<type->Value()<<endl;
+		for(;model != NULL;model=model->NextSiblingElement()){
+			TiXmlElement* modelchild=model->FirstChildElement();
+			for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//node information
+				string informationType=modelchild->Value();
+				string information=modelchild->FirstAttribute()->Value();
+				//modelchild->SetDoubleAttribute(www,x[i++]);
+				//doc.SaveFile(fileName);
+				//doc.SaveFile();
+				cout <<	informationType << ":" << information << endl;
+			}
 		}
-	}
 	
-	delete[]xml;
-		
-		
+		delete[]xml;
+	}	
 	
 return 0;
 }
