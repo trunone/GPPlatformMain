@@ -81,9 +81,9 @@ int main(void)
 //    urg.start_measurement(Urg_driver::Distance, 0, 0);
 
     ////////////////// Framework Initialize ////////////////////////////
-    if(VisionManager::GetInstance()->Initialize() == false)
+    /*if(VisionManager::GetInstance()->Initialize() == false)
     {
-        printf("Fail to initialize Strategy Manager!\n");
+        printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
 
@@ -93,20 +93,6 @@ int main(void)
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
-    //-----------------------------------------------------------------------------------//
-
-    if(LocationManager::GetInstance()->Initialize() == false)
-    {
-        printf("Fail to initialize Strategy Manager!\n");
-        return 1;
-    }
-
-    //Motion::GetInstance()->LoadINISettings(ini);
-
-    LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
-
-    LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
-//    location_timer->Start();
     //-----------------------------------------------------------------------------------//
 
     if(StrategyManager::GetInstance()->Initialize() == false)
@@ -121,6 +107,35 @@ int main(void)
     StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadVision::GetInstance());
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+    stragey_timer->Start();*/
+    //-----------------------------------------------------------------------------------//
+
+    if(LocationManager::GetInstance()->Initialize() == false)
+    {
+        printf("Fail to initialize Location Manager!\n");
+        return 1;
+    }
+
+    //Motion::GetInstance()->LoadINISettings(ini);
+
+    LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+
+    LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
+    location_timer->Start();
+    //-----------------------------------------------------------------------------------//
+
+    if(StrategyManager::GetInstance()->Initialize() == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
+
+    //Motion::GetInstance()->LoadINISettings(ini);
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadLaser::GetInstance());
+
+    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
 
 
@@ -129,9 +144,9 @@ int main(void)
     
     //StrategyManager::GetInstance()->LoadINISettings(ini);
 
-//    StrategyManager::GetInstance()->SetEnable(true);
+    //StrategyManager::GetInstance()->SetEnable(true);
 
-//    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
+    //LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
 	while(1) {
 	sleep(1);

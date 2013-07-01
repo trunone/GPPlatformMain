@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include "Status.h"
 #include "ReadLaser.h"
-#include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
@@ -72,6 +71,9 @@ void ReadLaser::SaveINISettings(minIni* ini, const std::string &section)
 
 void ReadLaser::Process()
 {
-	printf("%d\n", Status::a);	
+
+	printf("Stra Running: "); 
+	printf("%d\n", Status::b);	
+
 }
 

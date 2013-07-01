@@ -5,8 +5,8 @@
  *
  */
 
-#ifndef _READVISION_H_
-#define _READVISION_H_
+#ifndef _READLASER_H_
+#define _READLASER_H_
 
 #include <string.h>
 

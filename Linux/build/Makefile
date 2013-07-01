@@ -21,6 +21,7 @@ LFLAGS += -lpthread -ldl
 
 OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/location/LocationManager.o\
+        ../../Framework/src/location/LocationStatus.o\
 	../../Framework/src/location/modules/LaserCapture.o\
         ../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
@@ -34,11 +35,14 @@ OBJS =  ../../Framework/src/Status.o\
         ../../Framework/src/vision/BallFollower.o\
         ../../Framework/src/vision/BallTracker.o\
 	../../Framework/src/vision/VisionManager.o\
+	../../Framework/src/vision/VisionStatus.o\
 	../../Framework/src/vision/modules/VisionCapture.o\
         ../../Framework/src/strategy/StrategyManager.o\
+        ../../Framework/src/strategy/StrategyStatus.o\
         ../../Framework/src/strategy/modules/Task.o\
         ../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/strategy/modules/ReadVision.o\
+        ../../Framework/src/strategy/modules/ReadLaser.o\
         LinuxStrategyTimer.o\
         LinuxVisionTimer.o\
         LinuxLocationTimer.o\

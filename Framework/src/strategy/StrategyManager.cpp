@@ -9,6 +9,7 @@
 #include <math.h>
 #include "StrategyManager.h"
 #include "VisionCapture.h"
+#include "LaserCapture.h"
 using namespace Robot;
 
 StrategyManager* StrategyManager::m_UniqueInstance = new StrategyManager();

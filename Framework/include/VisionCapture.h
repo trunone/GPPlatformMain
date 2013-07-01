@@ -31,7 +31,7 @@ namespace Robot
 	public:
 		static VisionCapture* GetInstance() { return m_UniqueInstance; }
 		
-		static char a;
+		//static char a;
 
 		~VisionCapture();
 

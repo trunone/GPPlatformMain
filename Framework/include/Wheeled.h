@@ -10,10 +10,13 @@
 
 #include "StrategyModule.h"
 #include "StrategyManager.h"
+#include "StrategyStatus.h"
 #include "LocationModule.h"
 #include "LocationManager.h"
+#include "LocationStatus.h"
 #include "VisionModule.h"
 #include "VisionManager.h"
+#include "VisionStatus.h"
 #include "Status.h"
 #include "Image.h"
 #include "ImgProcess.h"
@@ -31,5 +34,6 @@
 #include "VisionCapture.h"
 #include "LaserCapture.h"
 #include "ReadVision.h"
+#include "ReadLaser.h"
 
 #endif
