@@ -11,9 +11,7 @@
 #include "VisionCapture.h"
 #include "ReadVision.h"
 
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-
+//#define ENABLE_OPENCV
 
 
 using namespace Robot;
@@ -33,13 +31,16 @@ VisionCapture::~VisionCapture()
 }
 
 void VisionCapture::Initialize()
-{
+{	
 	Status::visioncapture = cvCaptureFromCAM( -1 );
+
+
 }
 
 void VisionCapture::LoadINISettings(minIni* ini)
 {
-    LoadINISettings(ini, TASK_SECTION);
+	   
+	LoadINISettings(ini, TASK_SECTION);
 }
 
 void VisionCapture::LoadINISettings(minIni* ini, const std::string &section)
@@ -79,10 +80,13 @@ void VisionCapture::SaveINISettings(minIni* ini, const std::string &section)
 
 void VisionCapture::Process()
 {
+   //#ifdef ENABLE_OPENCV
+		
 	Mat frame;
 	frame = cvQueryFrame( Status::visioncapture);
 	IplImage img1 = IplImage (frame);
 	Status::a = img1.imageData[0];
 
 	printf("Capture Image\n");
+   //#endif
 }

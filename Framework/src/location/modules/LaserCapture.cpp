@@ -8,18 +8,12 @@
 #include <iostream>
 #include <stdio.h>
 #include "Status.h"
+#include "LocationStatus.h"
 #include "LaserCapture.h"
-#include "ReadLaser.h"
 
-#include "urg_cpp/Urg_driver.h"
-#include "urg_cpp/math_utilities.h"
-
-#define LASER_DEV_NAME      "/dev/ttyACM0"
 using namespace Robot;
 using namespace std;
-using namespace cv;
 using namespace qrk;
-
 
 
 LaserCapture* LaserCapture::m_UniqueInstance = new LaserCapture();
@@ -34,8 +28,12 @@ LaserCapture::~LaserCapture()
 }
 
 void LaserCapture::Initialize()
-{
-    
+{    
+    if (!urg.open("/dev/ttyACM0", 115200, Urg_driver::Serial )) {
+        cout << "Urg_driver::open(    ) : " << " /dev/ttyACM0 : " << urg.what() << endl;
+    }
+    urg.set_scanning_parameter(urg.deg2step(+90), urg.deg2step(-90), 0);
+    urg.start_measurement(Urg_driver::Distance, 0, 0);
 
 }
 
@@ -77,32 +75,14 @@ void LaserCapture::SaveINISettings(minIni* ini, const std::string &section)
     //ini->put(section,   "tilt_home",    m_Tilt_Home);
 }
 
-
-
 void LaserCapture::Process()
 {
-    Urg_driver urg;
-    urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial );
-    //if (!urg.open(LASER_DEV_NAME, 115200, Urg_driver::Serial )){
-    //    cout << "Urg_driver::open(    ): "<< LASER_DEV_NAME << ": " << urg.what() << endl;
-    //   return 1;
-    //}
-
-    urg.set_scanning_parameter(urg.deg2step(-90), urg.deg2step(+90), 0);
-    urg.start_measurement(Urg_driver::Distance, 0, 0);
-    while(1) {
-    	sleep(1);
-        vector<long> data;
-        long time_stamp = 0;
-        urg.get_distance(data, &time_stamp);
-        Status::b = data;
-	 
-        //if (!urg.get_distance(data, &time_stamp)) {
-        //    cout << "Urg_driver:: get_distance(): " << urg.what() << endl;
-        //    return 1;
-        //}
-        //print_data(urg, data, time_stamp); 
+    if (!urg.get_distance(LocationStatus::data, &LocationStatus::time_stamp)) {
+        cout << "Urg_driver::get_distance() : " << urg.what() << endl;
     }
-    printf("Capture Image\n");
-
+    Status::front = LocationStatus::data[urg.deg2index(0)];
+    Status::left  = LocationStatus::data[urg.deg2index(+90)];
+    Status::right = LocationStatus::data[urg.deg2index(-90)];
+    Status::time = LocationStatus::time_stamp;
 }
+

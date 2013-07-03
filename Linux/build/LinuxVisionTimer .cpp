@@ -47,6 +47,7 @@ void *LinuxVisionTimer::TimerProc(void *param)
 
 void LinuxVisionTimer::Start(void)
 {
+    printf("123\n");
     int error;
     struct sched_param param;    
     pthread_attr_t attr;//build inital attributes of pthread 

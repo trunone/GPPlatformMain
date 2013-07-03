@@ -104,7 +104,7 @@ void LocationManager::Process()
 
     m_IsRunning = true;
 
-	if(m_Modules.size() != 0) {
+    if(m_Modules.size() != 0) {
         for(std::list<LocationModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
         {
             (*i)->Process();

@@ -24,9 +24,10 @@ namespace Robot
 	{
 	private:
 		static LaserCapture* m_UniqueInstance;
+
+ 		qrk::Urg_driver urg;   
 		
 		LaserCapture();
-
 	public:
 		static LaserCapture* GetInstance() { return m_UniqueInstance; }
 		

@@ -11,8 +11,9 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include "urg_cpp/Urg_driver.h"
-#include "urg_cpp/math_utilities.h"
+#include "Vector.h"
+#include "Wheeled.h"
+#include "Motors.h"
 
 namespace Robot
 {
@@ -24,8 +25,15 @@ namespace Robot
 		static CvCapture* visioncapture;
 		static int a;
 
-		static int b;
+                static int front;
+                static int left;
+                static int right;
+                static long time;
+                static double FI;
+                static double w;
+                static Vector3D vector;
 
+                static Motors motors;
 	};
 }
 

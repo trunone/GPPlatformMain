@@ -8,11 +8,8 @@
 #include <stdio.h>
 #include "Status.h"
 #include "ReadLaser.h"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace Robot;
-
 
 ReadLaser* ReadLaser::m_UniqueInstance = new ReadLaser();
 
@@ -71,9 +68,12 @@ void ReadLaser::SaveINISettings(minIni* ini, const std::string &section)
 
 void ReadLaser::Process()
 {
-
-	printf("Stra Running: "); 
-	printf("%d\n", Status::b);	
-
+    printf("front_index : %d  [mm], ( %d [msec]) \n", Status::front,Status::time);
+    printf("left_index  : %d  [mm], ( %d [msec]) \n", Status::left,Status::time);
+    printf("right_index : %d  [mm], ( %d [msec]) \n", Status::right,Status::time);
+    printf("====================================================\n");
 }
+
+
+
 
