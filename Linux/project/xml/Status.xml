@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Status>
-    <ColorModel>
+    <Vision>
         <Model Color="blue">
             <HueMax www="0.7" />
             <HueMin www="0.6" />
@@ -9,11 +9,9 @@
             <BrightnessMax www="0.3" />
             <BrightnessMin www="0.2" />
         </Model>
-    </ColorModel>
-    <ParameterModel>
-        <Model information="Ball">
-            <x>5</x>
-            <y>5</y>
-        </Model>
-    </ParameterModel>
+    </Vision>
+   <ManualDirection>
+    	<Vector x="0" y="0"/>
+    	<Rotate w="0" />
+  </ManualDirection>
 </Status>
