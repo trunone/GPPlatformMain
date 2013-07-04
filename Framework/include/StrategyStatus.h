@@ -20,7 +20,8 @@ namespace Robot
         static long Motor1Speed, Motor2Speed, Motor3Speed;
         static double FI;
         static double w;
-        static Vector3D vector;
+        static double x;
+        static double y;
 	};
 }
 

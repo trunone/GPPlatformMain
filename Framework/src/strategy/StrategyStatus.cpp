@@ -15,5 +15,5 @@ long StrategyStatus::Motor3Speed(0);
 
 double StrategyStatus::FI(0);
 double StrategyStatus::w(0);
-Vector3D StrategyStatus::vector;
-
+double StrategyStatus::x(0);
+double StrategyStatus::y(0);

@@ -29,7 +29,6 @@ using namespace Robot;
 
 int main(){
 	
-	
 ////////////////////////////////////////////////////rec
 	/*TiXmlDocument doc("Status.xml");
 	doc.LoadFile();
@@ -59,7 +58,6 @@ int main(){
 		cout << "[success recv]" << endl;
 		char *xml_by_char=new char[xml_by_str.length()+1];
 		strcpy(xml_by_char,xml_by_str.c_str());
-		//cout << xml_by_char<<endl;
 		if(strcmp(xml_by_char,just_cmp)==0){
 			new_sock << "fuck you";
 		}else{
@@ -67,7 +65,6 @@ int main(){
 			doc.Parse(xml_by_char);
 			TiXmlElement* root = doc.RootElement();
 			TiXmlElement* element;
-			//for(;element != NULL;element=element->NextSiblingElement()){
 			element= root->FirstChildElement("ManualDirection");
 			if(element != NULL){	
 				TiXmlElement* modelchild;
