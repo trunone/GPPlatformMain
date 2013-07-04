@@ -7,3 +7,20 @@ Download:
         http://github.com/downloads/satofumi/quick_robot_sdk/urg_cpp-0.0.2.tar.gz
     EPOS2 25/4 Controller Library:
         http://www.maxonmotor.com/medias/sys_master/8806651265054/EPOS_Linux_Library_En.zip
+
+Install OpenCV:
+    # Build tools
+    sudo apt-get install build-essential checkinstall cmake pkg-config yasm
+    # Image Libraries
+    sudo apt-get install libtiff4-dev libjpeg-dev libjasper-dev
+    # Intel TBB Parallel Libraries
+    sudo apt-get install libtbb-dev
+
+    tar -xvf OpenCV-2.x.x.tar.gz
+    cd OpenCV-2.x.x/
+    mkdir build
+    cd build
+
+    cmake -D WITH_OPENGL=ON -D WITH_TBB=ON -D BUILD_EXAMPLES=ON ..
+
+    sudo ldconfig
