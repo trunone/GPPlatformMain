@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Status>
+    <ColorModel>
+        <Model Color="vision">
+            <HueMax www="0.1" />
+            <HueMin www="0.2" />
+            <SaturationMax www="0.3" />
+            <SaturationMin www="0.4" />
+            <BrightnessMax www="0.5" />
+            <BrightnessMin www="0.6" />
+        </Model>
+    </ColorModel>
+    <ParameterModel>
+        <Model information="controll">
+            <x www="16"></x>
+            <y www="15"></y>
+        </Model>
+    </ParameterModel>
+</Status>
