@@ -12,11 +12,8 @@
 #include "LinuxStrategyTimer.h"
 #include "LinuxLocationTimer.h"
 #include "LinuxVisionTimer.h"
-#include "LinuxLaser.h"
-#include "LinuxCamera.h"
 #include "LinuxNetwork.h"
 #include "LinuxActionScript.h"
 #include "LinuxEPOS.h"
-
 
 #endif

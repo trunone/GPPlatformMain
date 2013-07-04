@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "StrategyManager.h"
-#include "VisionCapture.h"
+
 using namespace Robot;
 
 StrategyManager* StrategyManager::m_UniqueInstance = new StrategyManager();
@@ -25,8 +25,9 @@ StrategyManager::~StrategyManager()
 {
 }
 
-bool StrategyManager::Initialize()
+bool StrategyManager::Initialize(Motors *motors)
 {
+    mMotors = motors;
 	m_Enabled = false;
 	m_ProcessEnable = true;
 
@@ -68,35 +69,6 @@ void StrategyManager::StopLogging()
     m_LogFileStream.close();
 }
 
-void StrategyManager::LoadINISettings(minIni* ini)
-{
-    LoadINISettings(ini, OFFSET_SECTION);
-}
-void StrategyManager::LoadINISettings(minIni* ini, const std::string &section)
-{
-    int ivalue = INVALID_VALUE;
-
-    //for(int i = 1; i < JointData::NUMBER_OF_JOINTS; i++)
-    //{
-    //    char key[10];
-    //    sprintf(key, "ID_%.2d", i);
-    //    if((ivalue = ini->geti(section, key, INVALID_VALUE)) != INVALID_VALUE)  m_Offset[i] = ivalue;
-    //}
-}
-void StrategyManager::SaveINISettings(minIni* ini)
-{
-    SaveINISettings(ini, OFFSET_SECTION);
-}
-void StrategyManager::SaveINISettings(minIni* ini, const std::string &section)
-{
-    //for(int i = 1; i < JointData::NUMBER_OF_JOINTS; i++)
-    //{
-    //    char key[10];
-    //    sprintf(key, "ID_%.2d", i);
-    //    ini->put(section, key, m_Offset[i]);
-    //}
-}
-
 void StrategyManager::Process()
 {
     if(m_ProcessEnable == false || m_IsRunning == true)
@@ -104,12 +76,17 @@ void StrategyManager::Process()
 
     m_IsRunning = true;
 
-    if(m_Modules.size() != 0) {
+    if(m_Modules.size() != 0)
+    {
         for(std::list<StrategyModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
         {
             (*i)->Process();
         }
     }
+    
+    mMotors->SetVelocity(mMotors->motorHandle0, -StrategyStatus::Motor1Speed);
+    mMotors->SetVelocity(mMotors->motorHandle1, -StrategyStatus::Motor2Speed);
+    mMotors->SetVelocity(mMotors->motorHandle2, -StrategyStatus::Motor3Speed);
 
     if(m_IsLogging)
     {

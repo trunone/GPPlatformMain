@@ -12,14 +12,23 @@
 #include <signal.h>
 #include <iostream>
 #include <tinyxml.h>
-#include <omp.h>
 
-#include "mjpg_streamer.h"
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+#include "Motors.h"
+#include "urg_cpp/Urg_driver.h"
+#include "urg_cpp/math_utilities.h"
+
 #include "LinuxWheeled.h"
 
-//#define INI_FILE_PATH       "../../../Data/config.ini"
-
+using namespace Robot;
 using namespace std;
+
+Motors motors;
+qrk::Urg_driver urg;
+CvCapture *VisionCapture;
 
 void change_current_dir()
 {
@@ -48,45 +57,44 @@ int main(void)
 
     TiXmlDocument doc;
 
+    motors.OpenDeviceAll();
+    motors.SetEnableAll();
+    motors.ActivateProfileVelocityModeAll();
+
+	VisionCapture = cvCaptureFromCAM( -1 );
+
     ////////////////// Framework Initialize ////////////////////////////
-    //if(VisionManager::GetInstance()->Initialize() == false)
-    //{
-    //    printf("Fail to initialize Strategy Manager!\n");
-    //    return 1;
-    //}
-
-    ////Motion::GetInstance()->LoadINISettings(ini);
-
-    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
-
-    //LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
-    //vision_timer->Start();
-    //-----------------------------------------------------------------------------------//
-
-    //if(LocationManager::GetInstance()->Initialize() == false)
-    //{
-    //    printf("Fail to initialize Strategy Manager!\n");
-    //    return 1;
-    //}
-
-    ////Motion::GetInstance()->LoadINISettings(ini);
-
-    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
-
-    //LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
-    //location_timer->Start();
-    ////-----------------------------------------------------------------------------------//
-
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
 
-    //Motion::GetInstance()->LoadINISettings(ini);
+    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+
+    LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
+    vision_timer->Start();
+    //-----------------------------------------------------------------------------------//
+
+    if(LocationManager::GetInstance()->Initialize(&urg) == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
+
+    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+
+    LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
+    location_timer->Start();
+    ////-----------------------------------------------------------------------------------//
+
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
+    {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadVision::GetInstance());
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
@@ -94,15 +102,11 @@ int main(void)
 
     ///////////////////////////////////////////////////////////////////
     
-    //StrategyManager::GetInstance()->LoadINISettings(ini);
-
 //    StrategyManager::GetInstance()->SetEnable(true);
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
 	while(1) {
-        cout<<"Input";
-        cin>>Status::vector.X>>Status::vector.Y>>Status::w;
 
 	}
 	

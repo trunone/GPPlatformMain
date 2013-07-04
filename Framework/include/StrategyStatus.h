@@ -15,6 +15,7 @@ namespace Robot
 	private:
 
 	public:
+        static long Motor1Speed, Motor2Speed, Motor3Speed;
 
 	};
 }

@@ -11,12 +11,9 @@
 #include <list>
 #include <fstream>
 #include <iostream>
-#include "Status.h"
+#include "StrategyStatus.h"
 #include "StrategyModule.h"
-#include "minIni.h"
-
-#define OFFSET_SECTION "Offset"
-#define INVALID_VALUE   -1024.0
+#include "Motors.h"
 
 namespace Robot
 {
@@ -32,7 +29,9 @@ namespace Robot
 		bool m_IsThreadRunning;
 		bool m_IsLogging;
 
-		std::ofstream m_LogFileStream;
+        Motors *mMotors;
+
+        std::ofstream m_LogFileStream;
 
         StrategyManager();
 
@@ -45,7 +44,8 @@ namespace Robot
 
 		static StrategyManager* GetInstance() { return m_UniqueInstance; }
 
-		bool Initialize();
+		//bool Initialize();
+        bool Initialize(Motors*);
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);
@@ -55,11 +55,6 @@ namespace Robot
 
 		void StartLogging();
 		void StopLogging();
-
-        void LoadINISettings(minIni* ini);
-        void LoadINISettings(minIni* ini, const std::string &section);
-        void SaveINISettings(minIni* ini);
-        void SaveINISettings(minIni* ini, const std::string &section);
 	};
 }
 

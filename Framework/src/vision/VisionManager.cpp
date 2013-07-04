@@ -10,6 +10,7 @@
 #include "VisionManager.h"
 
 using namespace Robot;
+using namespace cv;
 
 VisionManager* VisionManager::m_UniqueInstance = new VisionManager();
 
@@ -25,7 +26,7 @@ VisionManager::~VisionManager()
 {
 }
 
-bool VisionManager::Initialize()
+bool VisionManager::Initialize(CvCapture *capture)
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
@@ -68,41 +69,16 @@ void VisionManager::StopLogging()
     m_LogFileStream.close();
 }
 
-void VisionManager::LoadINISettings(minIni* ini)
-{
-    LoadINISettings(ini, OFFSET_SECTION);
-}
-void VisionManager::LoadINISettings(minIni* ini, const std::string &section)
-{
-    int ivalue = INVALID_VALUE;
-
-    //for(int i = 1; i < JointData::NUMBER_OF_JOINTS; i++)
-    //{
-    //    char key[10];
-    //    sprintf(key, "ID_%.2d", i);
-    //    if((ivalue = ini->geti(section, key, INVALID_VALUE)) != INVALID_VALUE)  m_Offset[i] = ivalue;
-    //}
-}
-void VisionManager::SaveINISettings(minIni* ini)
-{
-    SaveINISettings(ini, OFFSET_SECTION);
-}
-void VisionManager::SaveINISettings(minIni* ini, const std::string &section)
-{
-    //for(int i = 1; i < JointData::NUMBER_OF_JOINTS; i++)
-    //{
-    //    char key[10];
-    //    sprintf(key, "ID_%.2d", i);
-    //    ini->put(section, key, m_Offset[i]);
-    //}
-}
-
 void VisionManager::Process()
 {
     if(m_ProcessEnable == false || m_IsRunning == true)
         return;
 
     m_IsRunning = true;
+
+	Mat frame;
+	frame = cvQueryFrame(VisionCapture);
+	IplImage img1 = IplImage (frame);
 
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)

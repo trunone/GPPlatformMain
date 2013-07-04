@@ -13,10 +13,10 @@
 #include <iostream>
 #include "Status.h"
 #include "VisionModule.h"
-#include "minIni.h"
 
-#define OFFSET_SECTION "Offset"
-#define INVALID_VALUE   -1024.0
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 namespace Robot
 {
@@ -34,6 +34,8 @@ namespace Robot
 
 		std::ofstream m_LogFileStream;
 
+        CvCapture *VisionCapture;
+
         VisionManager();
 
 	protected:
@@ -45,7 +47,7 @@ namespace Robot
 
 		static VisionManager* GetInstance() { return m_UniqueInstance; }
 
-		bool Initialize();
+		bool Initialize(CvCapture*);
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);
@@ -55,11 +57,6 @@ namespace Robot
 
 		void StartLogging();
 		void StopLogging();
-
-        void LoadINISettings(minIni* ini);
-        void LoadINISettings(minIni* ini, const std::string &section);
-        void SaveINISettings(minIni* ini);
-        void SaveINISettings(minIni* ini, const std::string &section);
 	};
 }
 

@@ -10,12 +10,8 @@
 
 #include <string.h>
 
-#include "minIni.h"
 #include "StrategyModule.h"
 #include "Wheeled.h"
-#include "Motors.h"
-
-#define TASK_SECTION    "Motion"
 
 namespace Robot
 {
@@ -23,7 +19,6 @@ namespace Robot
 	{
 	private:
 		static Motion* m_UniqueInstance;
-        Motors motors;
 
 	public:
 		static Motion* GetInstance() { return m_UniqueInstance; }
@@ -33,11 +28,6 @@ namespace Robot
 
 		void Initialize();
 		void Process();
-
-        void LoadINISettings(minIni* ini);
-        void LoadINISettings(minIni* ini, const std::string &section);
-        void SaveINISettings(minIni* ini);
-        void SaveINISettings(minIni* ini, const std::string &section);
 	};
 }
 

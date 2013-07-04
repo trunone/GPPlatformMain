@@ -10,11 +10,7 @@
 
 #include <string.h>
 
-#include "minIni.h"
 #include "StrategyModule.h"
-
-#define TASK_SECTION    "Task"
-#define INVALID_VALUE   -1024.0
 
 namespace Robot
 {
@@ -32,11 +28,6 @@ namespace Robot
 
 		void Initialize();
 		void Process();
-
-        void LoadINISettings(minIni* ini);
-        void LoadINISettings(minIni* ini, const std::string &section);
-        void SaveINISettings(minIni* ini);
-        void SaveINISettings(minIni* ini, const std::string &section);
 	};
 }
 

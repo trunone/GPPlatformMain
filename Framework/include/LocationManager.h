@@ -13,10 +13,8 @@
 #include <iostream>
 #include "Status.h"
 #include "LocationModule.h"
-#include "minIni.h"
-
-#define OFFSET_SECTION "Offset"
-#define INVALID_VALUE   -1024.0
+#include "urg_cpp/Urg_driver.h"
+#include "urg_cpp/math_utilities.h"
 
 namespace Robot
 {
@@ -34,6 +32,8 @@ namespace Robot
 
 		std::ofstream m_LogFileStream;
 
+        qrk::Urg_driver *urg;
+
         LocationManager();
 
 	protected:
@@ -45,7 +45,7 @@ namespace Robot
 
 		static LocationManager* GetInstance() { return m_UniqueInstance; }
 
-		bool Initialize();
+		bool Initialize(qrk::Urg_driver*);
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);
@@ -55,11 +55,6 @@ namespace Robot
 
 		void StartLogging();
 		void StopLogging();
-
-        void LoadINISettings(minIni* ini);
-        void LoadINISettings(minIni* ini, const std::string &section);
-        void SaveINISettings(minIni* ini);
-        void SaveINISettings(minIni* ini, const std::string &section);
 	};
 }
 
