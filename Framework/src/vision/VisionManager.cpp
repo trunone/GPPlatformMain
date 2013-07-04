@@ -31,7 +31,10 @@ bool VisionManager::Initialize(CvCapture *capture)
 	m_Enabled = false;
 	m_ProcessEnable = true;
 
-	return true;
+    if(capture)
+	    return true;
+    else
+        return false;
 }
 
 bool VisionManager::Reinitialize()
