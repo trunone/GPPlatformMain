@@ -43,48 +43,70 @@ int main(){
 	LinuxServer new_sock;
         LinuxServer server (port);
 	
-        cout << "[Waiting..]" << endl;         
+        cout << "[Waiting..]" << endl;
         server.accept ( new_sock );
         cout << "[Accepted..]" << endl;	
+///////////////////////////////////////////////////intial
+	
+	TiXmlPrinter printer;
+	const char *fileName = "last_mode.xml";
+	const char *just_cmp = "halt";
+	
+	double x,y,w;
 //////////////////////////////////////////////////////////////////////////////////////////
 	while(true){	
 		new_sock >> xml_by_str;
 		cout << "[success recv]" << endl;
 		char *xml_by_char=new char[xml_by_str.length()+1];
-		strcpy(xml_by_char,xml_by_str.c_str());	
-	
-
-		TiXmlDocument doc;
-		doc.Parse(xml_by_char);
-		TiXmlElement* root = doc.RootElement();//Status
-		TiXmlElement* element = root->FirstChildElement();//ColorModel
-		//TiXmlElement* model = element->FirstChildElement();//Model
-		//TiXmlAttribute* type= model->FirstAttribute();//Model type
-		const char *www="www";
-	
-		//cout<<type->Value()<<endl;
-		for(;element != NULL;element=element->NextSiblingElement()){
-			TiXmlElement* model=element->FirstChildElement();
-			for(;model != NULL;model=model->NextSiblingElement()){
-				cout<<model->FirstAttribute()->Value()<<endl;
-				TiXmlElement* modelchild=model->FirstChildElement();
-				for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//node information
-					string informationType=modelchild->Value();
-					string information=modelchild->FirstAttribute()->Value();
-					modelchild->SetDoubleAttribute(www,0.85);
-					
-					//doc.SaveFile();
-					cout <<	informationType << ":" << information << endl;
+		strcpy(xml_by_char,xml_by_str.c_str());
+		//cout << xml_by_char<<endl;
+		if(strcmp(xml_by_char,just_cmp)==0){
+			new_sock << "fuck you";
+		}else{
+			TiXmlDocument doc;
+			doc.Parse(xml_by_char);
+			TiXmlElement* root = doc.RootElement();
+			TiXmlElement* element;
+			//for(;element != NULL;element=element->NextSiblingElement()){
+			element= root->FirstChildElement("ManualDirection");
+			if(element != NULL){	
+				TiXmlElement* modelchild;
+				modelchild=element->FirstChildElement("Rotate");
+				if(modelchild != NULL){
+					modelchild->Attribute("w", &w);
+				}
+				modelchild=element->FirstChildElement("Vector");
+				if(modelchild != NULL){
+					modelchild->Attribute("x", &x);
+					modelchild->Attribute("y", &y);						
 				}
 			}
+			element= root->FirstChildElement("Vision");
+			if(element != NULL){
+				cout<<"I got vision"<<endl;
+					/*TiXmlElement* model=element->FirstChildElement();
+					for(;model != NULL;model=model->NextSiblingElement()){
+					//cout<<model->FirstAttribute()->Value()<<endl;
+						TiXmlElement* modelchild=model->FirstChildElement();
+						for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//node information
+							string informationType=modelchild->Value();
+							string parameter=modelchild->FirstAttribute()->Value();
+							//modelchild->SetDoubleAttribute(www,0.85);
+							//cout <<	informationType << ":" << parameter << endl;
+						}
+					}*/
+				
+			}
+			cout<<"X:"<<x<<endl<<"Y:"<<y<<endl<<"W:"<<w<<endl;
+			//doc.SaveFile(fileName);
+			//doc.SaveFile();
+			printer.SetStreamPrinting();
+			doc.Accept( &printer );
+			//new_sock << printer.Str();
+			new_sock << "recv";
+			
 		}
-		//doc.SaveFile(fileName);
-
 		
-		TiXmlPrinter printer;
-		printer.SetStreamPrinting();
-		doc.Accept( &printer );
-		new_sock << printer.Str();
 
 		delete[]xml_by_char;
 	}	
