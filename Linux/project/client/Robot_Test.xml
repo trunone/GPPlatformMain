@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Status>
-    <Vision>
-        <Model Color="blue">
-            <HueMax www="0.7" />
-            <HueMin www="0.6" />
-            <SaturationMax www="0.5" />
-            <SaturationMin www="0.4" />
-            <BrightnessMax www="0.3" />
-            <BrightnessMin www="0.2" />
-        </Model>
-    </Vision>
+<Command>
    <ManualDirection>
-    	<Vector x="0" y="0"/>
-    	<Rotate w="0" />
+    	<Vector x="0.1" y="0.2"/>
+    	<Rotate w="0.3" />
   </ManualDirection>
-</Status>
+</Command>

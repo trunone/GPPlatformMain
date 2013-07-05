@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Status>
-  <ManualDirection>
-    <Vector x="0" y="0"/>
-    <Rotate w="0" />
-  </<ManualDirection>
-  <Vision>
-  </Vision>
-</Status>
