@@ -6,7 +6,6 @@
  */
 
 #include <stdio.h>
-#include "Status.h"
 #include "Task.h"
 
 using namespace Robot;

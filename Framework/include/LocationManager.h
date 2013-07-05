@@ -11,7 +11,7 @@
 #include <list>
 #include <fstream>
 #include <iostream>
-#include "Status.h"
+#include "LocationStatus.h"
 #include "LocationModule.h"
 #include "urg_cpp/Urg_driver.h"
 #include "urg_cpp/math_utilities.h"

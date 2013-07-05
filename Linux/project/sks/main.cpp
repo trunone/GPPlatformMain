@@ -102,46 +102,56 @@ int main(void)
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 //
-	while(1) {
+    try
+    {
+        while(1) {
 
-        int port=1234;
-        string xml_by_str;
-        LinuxServer new_sock;
-        LinuxServer server (port);
+            string xml;
+            LinuxServer new_sock;
+            LinuxServer server (1234);
 	
-        cout << "[Waiting..]" << endl;
-        server.accept ( new_sock );
-        cout << "[Accepted..]" << endl;	
+            cout << "[Waiting..]" << endl;
+            server.accept ( new_sock );
+            cout << "[Accepted..]" << endl;	
 
-        while(true){	
-            new_sock >> xml_by_str;
-            cout << "[success recv]" << endl << xml_by_str;
-            char *xml_by_char = new char[xml_by_str.length()+1];
-            strcpy(xml_by_char, xml_by_str.c_str());
-            TiXmlDocument doc;
-            doc.Parse(xml_by_char);
-            TiXmlElement* root = doc.RootElement();
-            TiXmlElement* element;
-            element = root->FirstChildElement("ManualDirection");
-            if(element != NULL) {
-                TiXmlElement* modelchild;
-                modelchild = element->FirstChildElement("Rotate");
-                if(modelchild != NULL){
-                    modelchild->Attribute("w", &StrategyStatus::w);
-                }
-                modelchild = element->FirstChildElement("Vector");
-                if(modelchild != NULL){
-                    modelchild->Attribute("x", &StrategyStatus::x);
-                    modelchild->Attribute("y", &StrategyStatus::y);
+            try
+            {
+                while(true){	
+                    new_sock >> xml;
+                    cout << "[success recv]" << endl << xml;
+                    TiXmlDocument doc;
+                    doc.Parse(xml.c_str());
+                    TiXmlElement* root = doc.RootElement();
+                    TiXmlElement* element;
+                    element = root->FirstChildElement("ManualDirection");
+                    if(element != NULL) {
+                        TiXmlElement* modelchild;
+                        modelchild = element->FirstChildElement("Rotate");
+                        if(modelchild != NULL){
+                            modelchild->Attribute("w", &StrategyStatus::w);
+                        }
+                        modelchild = element->FirstChildElement("Vector");
+                        if(modelchild != NULL){
+                            modelchild->Attribute("x", &StrategyStatus::x);
+                            modelchild->Attribute("y", &StrategyStatus::y);
+                        }
+                    }
+                    element = root->FirstChildElement("Vision");
+                    if(element != NULL){
+                        cout<<"I got vision"<<endl;
+                    }
+                    new_sock << "recv";
                 }
             }
-            element = root->FirstChildElement("Vision");
-            if(element != NULL){
-                cout<<"I got vision"<<endl;
+            catch ( LinuxSocketException& )
+            {
+                cout << "[Disconnected]" << endl;
             }
-            cout<<"X:"<<StrategyStatus::x<<endl<<"Y:"<<StrategyStatus::y<<endl<<"W:"<<StrategyStatus::w<<endl;
-            new_sock << "recv";
         }
+    }
+    catch ( LinuxSocketException& e )
+    {
+        cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
     return 0;
 }

@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "Motion.h"
-#include "Vector.h"
 
 #define PI 3.1415926
 

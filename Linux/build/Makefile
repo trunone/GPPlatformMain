@@ -19,8 +19,7 @@ CXXFLAGS += -O2 -DLINUX -Wall -shared -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall -shared $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ldl
 
-OBJS =  ../../Framework/src/Status.o\
-		../../Framework/src/location/LocationManager.o\
+OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
