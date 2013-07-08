@@ -1,7 +1,7 @@
 #ifndef TCoordinateH
 
 #define TCoordinateH
-
+namespace Robot{
 class TCoordinate
 
 {
@@ -90,11 +90,11 @@ public:
 
 	//-----------------------------------------------------------------
 
-	friend TCoordinate  aVector(double xValue , double yValue);	    
+	static TCoordinate  aVector(double xValue , double yValue);	    
 
-	friend TCoordinate  operator*(TCoordinate op , double scale);	
+        friend TCoordinate  operator*(TCoordinate op , double scale);	
 
-	friend TCoordinate  operator*(double scale , TCoordinate op);	
+        friend TCoordinate  operator*(double scale , TCoordinate op);	
 
 
 
@@ -105,7 +105,7 @@ public:
 double NormalizeAngle(double Angle);			
 
 
-
+}
 //---------------------------------------------------------------------------
 
 #endif

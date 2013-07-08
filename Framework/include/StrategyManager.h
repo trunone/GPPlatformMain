@@ -45,9 +45,9 @@ namespace Robot
 		static StrategyManager* GetInstance() { return m_UniqueInstance; }
 
 		//bool Initialize();
-        bool Initialize(Motors*);
+        	bool Initialize(Motors*);
 		bool Reinitialize();
-        void Process();
+        	void Process();
 		void SetEnable(bool enable);
 		bool GetEnable()				{ return m_Enabled; }
 		void AddModule(StrategyModule *module);

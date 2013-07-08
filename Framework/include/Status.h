@@ -14,7 +14,7 @@
 
 #include "Vector.h"
 #include "Wheeled.h"
-
+#include "TCoordinate.h"
 namespace Robot
 {
 	class Status
@@ -27,6 +27,7 @@ namespace Robot
         static double FI;
         static double w;
         static Vector3D vector;
+	
 	};
 }
 
