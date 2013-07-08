@@ -9,3 +9,10 @@
 
 using namespace Robot;
 
+TLocUnit::TLocUnit()
+{
+}
+TLocUnit::~TLocUnit()
+{
+}
+
