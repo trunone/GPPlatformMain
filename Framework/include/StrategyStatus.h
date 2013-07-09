@@ -142,7 +142,7 @@ namespace Robot
 
         	static tsStraBallInfo RadBallInfo;
 
-
+                static int AX12_Angle;
 
         	//tsObjectiveInfo RedBall;
 
