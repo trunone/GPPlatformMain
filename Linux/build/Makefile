@@ -32,6 +32,7 @@ OBJS =  ../../Framework/src/Status.o\
         ../../Framework/src/strategy/StrategyStatus.o\
         ../../Framework/src/strategy/modules/Task.o\
 	../../Framework/src/strategy/modules/Stra_PathPlan.o\
+	../../Framework/src/strategy/modules/Stra_VelocityControl.o\
 	../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/Motors.o\
 	LinuxStrategyTimer.o\

@@ -14,7 +14,6 @@
 
 #define Stra_PathPlanH
 
-#include <string.h>
 #include "StrategyModule.h"
 //----------------------------------------------------------------------------
 namespace Robot

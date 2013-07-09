@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include "Status.h"
-#include "Stra_PathPlan.h"
 #include "TCoordinate.h"
 #include "StrategyStatus.h"
+#include "Stra_PathPlan.h"
 using namespace Robot;
 
 Stra_PathPlan* Stra_PathPlan::m_UniqueInstance = new Stra_PathPlan();
@@ -48,13 +46,13 @@ void Stra_PathPlan::Initialize(void)
 {
 //    string str_ = this->Caption +" Initial";
 
-    this->P1_Dis = 0;         //¥ØŒÐ¶ZÂ÷
+    P1_Dis = 0;         //¥ØŒÐ¶ZÂ÷
 
-    this->P1_CutAng = 0;      //¥ØŒÐš€«×
+    P1_CutAng = 0;      //¥ØŒÐš€«×
 
-    this->P2_Dis = 0;
+    P2_Dis = 0;
 
-    this->P2_CutAng = 0;      //¥ØŒÐ2š€«×  š®ÀYš€«×
+    P2_CutAng = 0;      //¥ØŒÐ2š€«×  š®ÀYš€«×
 
 
 //    return str_;
@@ -95,15 +93,13 @@ void Stra_PathPlan::Process( void )
 
     {
 
-        this->P1_Dis    = StrategyStatus::Goal1.Length();
+        P1_Dis    = StrategyStatus::Goal1.Length();
 
-        this->P1_CutAng = StrategyStatus::Goal1.Angle();
+        P1_CutAng = StrategyStatus::Goal1.Angle();
 
+        P2_Dis    = StrategyStatus::Goal2.Length();
 
-
-        this->P2_Dis    = StrategyStatus::Goal2.Length();
-
-        this->P2_CutAng = StrategyStatus::Goal2.Angle();
+        P2_CutAng = StrategyStatus::Goal2.Angle();
 
 
         PathPlan();
@@ -137,7 +133,7 @@ void Stra_PathPlan::Process( void )
 double Stra_PathPlan::Trajectory( void )
 {
 
-    double dAlpha = NormalizeAngle( this->P1_CutAng - this->P2_CutAng);
+    double dAlpha = NormalizeAngle( P1_CutAng - P2_CutAng);
 
     //-----­YP2šìP1ªºš€«×¬°¥¿¡A«hš®ÀYšìP1ªºš€«×¶·ŠV¥¿€èŠV­×¥¿¡A€Ï€§
 
@@ -148,7 +144,7 @@ double Stra_PathPlan::Trajectory( void )
 
         dAlpha = fabs( dAlpha );
 
-        return this->P1_CutAng + Sgn_Alpha * GetMin( dAlpha ,atan2( this->DetourConst , this->P1_Dis) );
+        return P1_CutAng + Sgn_Alpha * GetMin( dAlpha ,atan2( DetourConst , P1_Dis) );
 
     //---------Â¶Šæ­yžñ¬°»·Â÷P2
 
@@ -156,7 +152,7 @@ double Stra_PathPlan::Trajectory( void )
 
         dAlpha = M_PI - fabs( dAlpha );
 
-        return this->P1_CutAng - Sgn_Alpha * GetMin( dAlpha ,atan2( this->DetourConst , this->P1_Dis) );
+        return P1_CutAng - Sgn_Alpha * GetMin( dAlpha ,atan2( DetourConst , P1_Dis) );
     }
 
 }
@@ -167,9 +163,9 @@ void Stra_PathPlan::PathPlan( void )
 {
     double TmpAngle = Trajectory();
 
-    this->P1_Dis = this->P1_Dis*((fabs(sin( TmpAngle - this->P1_CutAng))+1)/fabs(cos( TmpAngle - this->P1_CutAng )));//·s¥ØŒÐ¶ZÂ÷
+    P1_Dis = P1_Dis*((fabs(sin( TmpAngle - P1_CutAng))+1)/fabs(cos( TmpAngle - P1_CutAng )));//·s¥ØŒÐ¶ZÂ÷
 
-    this->P1_CutAng = TmpAngle;
+    P1_CutAng = TmpAngle;
 
 }
 
