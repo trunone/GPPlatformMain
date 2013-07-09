@@ -13,9 +13,8 @@
 
 using namespace Robot;
 
-int  DXL::initialize()
+int  DXL::initialize(int deviceIndex)
 {
-	int deviceIndex = 0;
 	float baudrate;	
 	baudrate = 115200;
 	if( dxl_hal_open(deviceIndex, baudrate) == 0 )
@@ -26,7 +25,6 @@ int  DXL::initialize()
 }
 void DXL::Degree(int deg)
 {
-	printf("Which degrees do you want ? (0~90)\n");
 	if(deg>90)
 	{
 		deg=90;
@@ -37,25 +35,30 @@ void DXL::Degree(int deg)
 	deg=(deg*1023/300)+512;
 	dxl_write_word( 1, P_GOAL_POSITION_L ,deg);
 }
-void DXL::EndlessTurn(int i)
+void DXL::EndlessTurn(int mode)
 {
 	int left = 0;
 	int right  = 0;	
-	printf("Mode of catching ball ? (0~2)\n");
-	switch(i)
+	switch(mode)
 	{
 		case 0 : left=0; right=0; break;	//1~1023=>CCW 1024~2047=>CW
 			
 		case 1 : left=1023; right=2047; break;
 
-		case 2 : left=1536; right=512; break;  
+		case 2 : left=1535; right=512; break;  
 	}
 	dxl_write_word( 2, Moving_Speed_L ,left);
 	dxl_write_word( 3, Moving_Speed_L ,right);
-	}
 	
+
 }
 void DXL::dxl_terminate(void)
 {
 	dxl_hal_close();
+}
+DXL::~DXL()
+{		
+}
+DXL::DXL()
+{
 }

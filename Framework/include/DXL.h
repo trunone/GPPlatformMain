@@ -11,17 +11,18 @@ namespace Robot
 	class DXL
 	{
 	private:
-
-
+		
 	public:
-		int deviceIndex = 0;
-		int left = 0;
-		int right  = 0;		
+		DXL();
+		virtual ~DXL();
+		
+		int initialize(int deviceIndex);
+		
+		void Degree(int deg );
 
-		int initialize();
-		void Degree(int );
-		void EndlessTurn(int );
-		void dxl_terminate(void);
+		void EndlessTurn(int mode); //0:stop, 1:catch ball, 2:throw ball
+
+		void dxl_terminate();
 
 	};
 }
