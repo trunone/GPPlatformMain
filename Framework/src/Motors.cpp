@@ -27,141 +27,152 @@ int Motors::Initialize()
 }
 
 
-int Motors::OpenDevice(void** motorHandle, short unsigned int device_id)
+int Motors::OpenDevice(short unsigned device_id)
 {
-    error_code = 0;
+    mErrorCode = 0;
     char device_name[5] = {0,};
     sprintf(device_name, "USB%d", device_id);
-    *motorHandle = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", device_name, &error_code);
+    mMotorHandle[device_id] = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", device_name, &mErrorCode);
 
-	if(*motorHandle != NULL)
+	if(mMotorHandle[device_id] != NULL)
 	{
-		if(!VCS_SetProtocolStackSettings(*motorHandle, 1000000, 500, &error_code))
+		if(!VCS_SetProtocolStackSettings(mMotorHandle[device_id], 1000000, 500, &mErrorCode))
 		{
-			fprintf(stderr,  "Open device failure, error code=0x%x\n", error_code);
+			fprintf(stderr,  "Open device failure, error code=0x%x\n", mErrorCode);
             return 1;
 		}
     }
     else
     {
-        fprintf(stderr, "(OpenDevice)Get fault state failed!, error code=0x%x\n", error_code);
+        fprintf(stderr, "(OpenDevice)Get fault state failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
 }
 
-int Motors::SetEnable(void* motorHandle)
+int Motors::SetEnable(short device_id)
 {
-    error_code = 0;
+    mErrorCode = 0;
     int IsInFault = 0;
 
-    if( VCS_GetFaultState(motorHandle, mNodeId, &IsInFault, &error_code) )
+    if( VCS_GetFaultState(mMotorHandle[device_id], NODE_ID, &IsInFault, &mErrorCode) )
     {
-        if( IsInFault && !VCS_ClearFault(motorHandle, mNodeId, &error_code) )
+        if( IsInFault && !VCS_ClearFault(mMotorHandle[device_id], NODE_ID, &mErrorCode) )
         {
-            fprintf(stderr, "Clear fault failed!, error code=0x%x\n", error_code);
+            fprintf(stderr, "Clear fault failed!, error code=0x%x\n", mErrorCode);
             return 1;
         }
 
         int IsEnabled = FALSE;
-        if( VCS_GetEnableState(motorHandle, mNodeId, &IsEnabled, &error_code) )
+        if( VCS_GetEnableState(mMotorHandle[device_id], NODE_ID, &IsEnabled, &mErrorCode) )
         {
-            if( !IsEnabled && !VCS_SetEnableState(motorHandle, mNodeId, &error_code) )
+            if( !IsEnabled && !VCS_SetEnableState(mMotorHandle[device_id], NODE_ID, &mErrorCode) )
             {
-                fprintf(stderr, "Set enable state failed!, error code=0x%x\n", error_code);
+                fprintf(stderr, "Set enable state failed!, error code=0x%x\n", mErrorCode);
                 return 1;
             }
         }
     }
     else
     {
-            fprintf(stderr, "(SetEnable)Get fault state failed!, error code=0x%x\n", error_code);
+            fprintf(stderr, "(SetEnable)Get fault state failed!, error code=0x%x\n", mErrorCode);
             return 1;
     }
     return 0;
 }
 
-int Motors::SetDisable(void* motorHandle)
+int Motors::SetDisable(short device_id)
 {
-    error_code = 0;
+    mErrorCode = 0;
     int IsInFault = FALSE;
 
-    if( VCS_GetFaultState(motorHandle, mNodeId, &IsInFault, &error_code) )
+    if( VCS_GetFaultState(mMotorHandle[device_id], NODE_ID, &IsInFault, &mErrorCode) )
     {
-        if( IsInFault && !VCS_ClearFault(motorHandle, mNodeId, &error_code) )
+        if( IsInFault && !VCS_ClearFault(mMotorHandle[device_id], NODE_ID, &mErrorCode) )
         {
-            fprintf(stderr, "Clear fault failed!, error code=0x%x\n", error_code);
+            fprintf(stderr, "Clear fault failed!, error code=0x%x\n", mErrorCode);
             return 1;
         }
 
         int IsEnabled = FALSE;
-        if( VCS_GetEnableState(motorHandle, mNodeId, &IsEnabled, &error_code) )
+        if( VCS_GetEnableState(mMotorHandle[device_id], NODE_ID, &IsEnabled, &mErrorCode) )
         {
-            if( IsEnabled && !VCS_SetDisableState(motorHandle, mNodeId, &error_code) )
+            if( IsEnabled && !VCS_SetDisableState(mMotorHandle[device_id], NODE_ID, &mErrorCode) )
             {
-                fprintf(stderr, "Set enable state failed!, error code=0x%x\n", error_code);
+                fprintf(stderr, "Set enable state failed!, error code=0x%x\n", mErrorCode);
                 return 1;
             }
         }
     }
     else
     {
-        fprintf(stderr, "Get fault state failed!, error code=0x%x\n", error_code);
+        fprintf(stderr, "Get fault state failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
 }
 
-int Motors::ActivateProfileVelocityMode(void* motorHandle)
+int Motors::ActivateProfileVelocityMode(short device_id)
 {
-  	error_code = 0;
-  	if(!VCS_ActivateProfileVelocityMode(motorHandle,mNodeId,&error_code))
+  	mErrorCode = 0;
+  	if(!VCS_ActivateProfileVelocityMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
   	{
-		fprintf(stderr, "Activate Profile Velocity Mode failed!, error code=0x%x\n", error_code);
+		fprintf(stderr, "Activate Profile Velocity Mode failed!, error code=0x%x\n", mErrorCode);
 		return 1;
   	}
     return 0;
 }
 
-int Motors::SetVelocityProfile(void* motorHandle, int ProfileAcceleration, int ProfileDeceleration)
+int Motors::SetVelocityProfile(short device_id, int ProfileAcceleration, int ProfileDeceleration)
 {
-	error_code = 0;
-	if(!VCS_SetVelocityProfile(motorHandle,mNodeId,ProfileAcceleration,ProfileDeceleration,&error_code))
+	mErrorCode = 0;
+	if(!VCS_SetVelocityProfile(mMotorHandle[device_id], NODE_ID,ProfileAcceleration,ProfileDeceleration,&mErrorCode))
     {
-        fprintf(stderr, "Set Velocity Profile failed!, error code=0x%x\n", error_code);
+        fprintf(stderr, "Set Velocity Profile failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
 }
 
-int Motors::SetVelocity(void* motorHandle, long TargetVelocity)
+int Motors::SetVelocity(short device_id, long TargetVelocity)
 {
-	unsigned int error_code = 0;
-    if(!VCS_MoveWithVelocity(motorHandle,mNodeId,TargetVelocity,&error_code))
+	mErrorCode = 0;
+    if(!VCS_MoveWithVelocity(mMotorHandle[device_id], NODE_ID,TargetVelocity,&mErrorCode))
     {
-        fprintf(stderr, "Move With Velocity failed!, error code=0x%x\n", error_code);
+        fprintf(stderr, "Move With Velocity failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
 }
 
-int Motors::HaltVelocityMovement(void* motorHandle)
+int Motors::HaltVelocityMovement(short device_id)
 {
-	error_code = 0;
-	if(!VCS_HaltVelocityMovement(motorHandle,mNodeId,&error_code))
+	mErrorCode = 0;
+	if(!VCS_HaltVelocityMovement(mMotorHandle[device_id], NODE_ID,&mErrorCode))
 	{
-		fprintf(stderr, "Halt Velocity Movement failed!, error code=0x%x\n", error_code);
+		fprintf(stderr, "Halt Velocity Movement failed!, error code=0x%x\n", mErrorCode);
 		return 1;
 	}
     return 0;
 }
 
-int Motors::GetIncEncoderParameter(void* motorHandle, unsigned int* pEncoderResolution, int* pInvertedPolarity)
+int Motors::GetIncEncoderParameter(short device_id, unsigned int* pEncoderResolution, int* pInvertedPolarity)
 {
-    error_code = 0;
-    if(!VCS_GetIncEncoderParameter(motorHandle, mNodeId, pEncoderResolution, pInvertedPolarity, &error_code))
+    mErrorCode = 0;
+    if(!VCS_GetIncEncoderParameter(mMotorHandle[device_id], NODE_ID, pEncoderResolution, pInvertedPolarity, &mErrorCode))
     {
-        fprintf(stderr, "GetIncEncoderParameter failed!, error code=0x%x\n", error_code);
+        fprintf(stderr, "Get Increment Encoder Parameter failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+    return 0;
+}
+
+int Motors::GetCurrentIs(short device_id, short* pCurrentIsAveraged)
+{
+    mErrorCode = 0;
+    if(!VCS_GetCurrentIs(mMotorHandle[device_id], NODE_ID, pCurrentIsAveraged, &mErrorCode))
+    {
+        fprintf(stderr, "Get Current Is Averaged failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
@@ -169,43 +180,60 @@ int Motors::GetIncEncoderParameter(void* motorHandle, unsigned int* pEncoderReso
 
 int Motors::OpenDeviceAll()
 {
-    if(OpenDevice(&motorHandle0, 0) || OpenDevice(&motorHandle1, 1) || OpenDevice(&motorHandle2, 2))
+    if(OpenDevice(0) || OpenDevice(1) || OpenDevice(2))
+    {
         return 1;
+    }
     return 0;
 }
 
 int Motors::SetEnableAll()
 {
-    if(SetEnable(motorHandle0) || SetEnable(motorHandle1) || SetEnable(motorHandle2))
+    if(SetEnable(0) || SetEnable(1) || SetEnable(2))
         return 1;
     return 0;
 }
 
 int Motors::SetDisableAll()
 {
-    if( SetDisable(motorHandle0) || SetDisable(motorHandle1) || SetDisable(motorHandle2))
+    if(SetDisable(0) || SetDisable(1) || SetDisable(2))
         return 1;
     return 0;
 }
 
 int Motors::SetVelocityProfileAll(int ProfileAcceleration, int ProfileDeceleration)
 {
-    if(SetVelocityProfile(&motorHandle0, ProfileAcceleration, ProfileDeceleration) || SetVelocityProfile(&motorHandle1, ProfileAcceleration, ProfileDeceleration) || SetVelocityProfile(&motorHandle2, ProfileAcceleration, ProfileDeceleration))
+    if(
+        SetVelocityProfile(0, ProfileAcceleration, ProfileDeceleration) ||
+        SetVelocityProfile(1, ProfileAcceleration, ProfileDeceleration) ||
+        SetVelocityProfile(2, ProfileAcceleration, ProfileDeceleration))
+    {
         return 1;
+    }
     return 0;
 }
 
 int Motors::SetVelocityAll(long Velocity1, long Velocity2, long Velocity3)
 {
-    if(SetVelocity(&motorHandle0, Velocity1) || SetVelocity(&motorHandle1, Velocity2) || SetVelocity(&motorHandle2, Velocity3))
+    if(
+        SetVelocity(0, Velocity1) ||
+        SetVelocity(1, Velocity2) ||
+        SetVelocity(2, Velocity3))
+    {
         return 1;
+    }
     return 0;
 }
 
 int Motors::ActivateProfileVelocityModeAll()
 {
-    if(ActivateProfileVelocityMode(motorHandle0) || ActivateProfileVelocityMode(motorHandle1) || ActivateProfileVelocityMode(motorHandle2))
+    if(
+        ActivateProfileVelocityMode(0) ||
+        ActivateProfileVelocityMode(1) ||
+        ActivateProfileVelocityMode(2))
+    {
         return 1;
+    }
     return 0;
 }
 
@@ -214,8 +242,13 @@ int Motors::GetIncEncoderParameterAll(
     unsigned int* pEncoderResolution2, int* pInvertedPolarity2,
     unsigned int* pEncoderResolution3, int* pInvertedPolarity3)
 {
-    if(GetIncEncoderParameter(&motorHandle0, pEncoderResolution1, pInvertedPolarity1) || GetIncEncoderParameter(&motorHandle1, pEncoderResolution2, pInvertedPolarity2) || GetIncEncoderParameter(&motorHandle2, pEncoderResolution3, pInvertedPolarity3))
+    if(
+        GetIncEncoderParameter(0, pEncoderResolution1, pInvertedPolarity1) ||
+        GetIncEncoderParameter(1, pEncoderResolution2, pInvertedPolarity2) ||
+        GetIncEncoderParameter(2, pEncoderResolution3, pInvertedPolarity3))
+    {
         return 1;
+    }
     return 0;
 }
 

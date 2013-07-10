@@ -31,9 +31,8 @@ bool StrategyManager::Initialize(Motors *motors)
 	m_Enabled = false;
 	m_ProcessEnable = true;
 
-    motors->SetEnableAll();
-    motors->SetVelocityProfileAll(1000, 1000);
-    motors->ActivateProfileVelocityModeAll();
+    mMotors->SetVelocityProfileAll(1000, 1000);
+    mMotors->ActivateProfileVelocityModeAll();
 
 	return true;
 }
@@ -60,9 +59,9 @@ void StrategyManager::StartLogging()
     }
 
     m_LogFileStream.open(szFile, std::ios::out);
-    //for(int id = 1; id < JointData::NUMBER_OF_JOINTS; id++)
-    //    m_LogFileStream << "ID_" << id << "_GP,ID_" << id << "_PP,";
-    //m_LogFileStream << "GyroFB,GyroRL,AccelFB,AccelRL,L_FSR_X,L_FSR_Y,R_FSR_X,R_FSR_Y" << std::endl;
+    for(short id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
+        m_LogFileStream << "ID_" << id << "_CURRENT,";
+    m_LogFileStream << std::endl;
 
     m_IsLogging = true;
 }
@@ -87,13 +86,20 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-    
-    mMotors->SetVelocityAll(-StrategyStatus::Motor1Speed, -StrategyStatus::Motor2Speed, -StrategyStatus::Motor3Speed);
+
+        mMotors->SetVelocityAll(
+                -StrategyStatus::Motor1Speed,
+                -StrategyStatus::Motor2Speed,
+                -StrategyStatus::Motor3Speed);
 
     if(m_IsLogging)
     {
-        //for(int id = 1; id < JointData::NUMBER_OF_JOINTS; id++)
-        //    m_LogFileStream << Status::m_CurrentJoints.GetValue(id) << "," << m_CM730->m_BulkReadData[id].ReadWord(MX28::P_PRESENT_POSITION_L) << ",";
+        for(int id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
+        {
+            short current;
+            mMotors->GetCurrentIs(id-1, &current);
+            m_LogFileStream << current << ",";
+        }
 
         //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_GYRO_Y_L) << ",";
         //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_GYRO_X_L) << ",";
@@ -103,7 +109,7 @@ void StrategyManager::Process()
         //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_L_FSR].ReadByte(FSR::P_FSR_Y) << ",";
         //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_R_FSR].ReadByte(FSR::P_FSR_X) << ",";
         //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_R_FSR].ReadByte(FSR::P_FSR_Y) << ",";
-        //m_LogFileStream << std::endl;
+        m_LogFileStream << std::endl;
     }
 
     m_IsRunning = false;
@@ -112,8 +118,8 @@ void StrategyManager::Process()
 void StrategyManager::SetEnable(bool enable)
 {
 	m_Enabled = enable;
-	//if(m_Enabled == true)
-	//	m_CM730->WriteWord(CM730::ID_BROADCAST, MX28::P_MOVING_SPEED_L, 0, 0);
+	if(m_Enabled == true)
+        mMotors->SetEnableAll();
 }
 
 void StrategyManager::AddModule(StrategyModule *module)

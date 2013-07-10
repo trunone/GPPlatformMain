@@ -15,29 +15,30 @@ namespace Robot
 	class Motors
 	{
 	private:
-        static const short unsigned int mNodeId = 1;
+        static const short unsigned int NODE_ID = 1;
         static const bool DEBUG_PRINT = false;
 
-		void* motorHandle0;
-        void* motorHandle1;
-        void* motorHandle2;
+        void* mMotorHandle[3];
 
-        int OpenDevice(void**, short unsigned int);
-        int SetEnable(void*);
-        int SetDisable(void*);
-        int SetVelocityProfile(void*, int, int);
-        int SetVelocity(void*, long);
-        int ActivateProfileVelocityMode(void*);
-        int HaltVelocityMovement(void*);
-        int GetIncEncoderParameter(void*, unsigned int*, int*);
-
-        unsigned int error_code;
+        unsigned int mErrorCode;
 
 	public:
+        static const short unsigned NUMBER_OF_MOTORS = 3;
+
         Motors();
 		~Motors();
 
         int Initialize();
+
+        int OpenDevice(short unsigned);
+        int SetEnable(short);
+        int SetDisable(short);
+        int SetVelocityProfile(short, int, int);
+        int SetVelocity(short, long);
+        int ActivateProfileVelocityMode(short);
+        int HaltVelocityMovement(short);
+        int GetIncEncoderParameter(short, unsigned int*, int*);
+        int GetCurrentIs(short, short*);
 
         int SetEnableAll();
         int SetDisableAll();
@@ -45,7 +46,7 @@ namespace Robot
         int SetVelocityProfileAll(int, int);
         int SetVelocityAll(long, long, long);
         int ActivateProfileVelocityModeAll();
-        int HaltVelocityMoventAll();
+        int HaltVelocityMovementAll();
         int GetIncEncoderParameterAll(unsigned int*, int*, unsigned int*, int*, unsigned int*, int*);
    };
 }

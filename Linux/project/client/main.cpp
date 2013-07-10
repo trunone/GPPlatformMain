@@ -16,7 +16,7 @@ int main(){
 	printf("%s", printer.CStr());
 	LinuxSocket client;
 	client.create();
-	if(client.connect ( "127.0.0.1" , 1234 )) {	
+	if(client.connect ( "192.168.137.75" , 10373 )) {	
 		client.send(printer.CStr());
 	}
 	

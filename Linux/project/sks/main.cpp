@@ -3,6 +3,7 @@
  *
  *   Author: Wu Chih-En
  */
+#define ENABLE_STRATEGY
 
 #include <stdio.h>
 #include <unistd.h>
@@ -54,8 +55,6 @@ int main(void)
 
     change_current_dir();
 
-    TiXmlDocument doc;
-
     motors.OpenDeviceAll();
 
 	VisionCapture = cvCaptureFromCAM( -1 );
@@ -96,21 +95,22 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
+    StrategyManager::GetInstance()->SetEnable(true);
+
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
 #endif
     ///////////////////////////////////////////////////////////////////
-//    StrategyManager::GetInstance()->SetEnable(true);
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-//
+
     try
     {
         while(1) {
 
             string xml;
             LinuxServer new_sock;
-            LinuxServer server(1234);
+            LinuxServer server(10373);
 	
             cout << "[Waiting..]" << endl;
             server.accept ( new_sock );
@@ -119,6 +119,7 @@ int main(void)
             try
             {
                 while(true){	
+                    TiXmlDocument doc;
                     new_sock >> xml;
                     cout << "[success recv]" << endl;
                     doc.Parse(xml.c_str());
@@ -147,7 +148,8 @@ int main(void)
                             cout<<"I got vision"<<endl;
                         }
                     }
-                    cout << StrategyStatus::x << StrategyStatus::y << endl;
+                    cout << StrategyStatus::x << StrategyStatus::y << StrategyStatus::w << endl;
+                    cout << StrategyStatus::Motor1Speed << StrategyStatus::Motor2Speed << StrategyStatus::Motor3Speed << endl;
                 }
             }
             catch ( LinuxSocketException& )
