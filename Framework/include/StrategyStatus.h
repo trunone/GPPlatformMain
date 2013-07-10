@@ -25,6 +25,9 @@ namespace Robot
         	static double FI;
        		static double w;
         	static Vector3D vector;
+		static TCoordinate StartPosition;
+		static TCoordinate EscapePosition;
+	        static TCoordinate EndPosition; 
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
@@ -32,28 +35,28 @@ namespace Robot
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
-		typedef struct{ int Status;
-				Vector3D StartPos;
-				Vector3D GoalPos;
+	        typedef struct{ int Status;
+				TCoordinate StartPos;
+				TCoordinate GoalPos;
 				int PCnt; 
 			      }tsAStarPath;
 			
-		typedef struct{ Vector3D Origin;
+		typedef struct{ TCoordinate Origin;
 				float Scale;
 				int Width,Height;
 			      }tsMapInfo;
 		
 		typedef struct{ bool Enable; 
-				Vector3D Door; 
-				Vector3D Center;
-				Vector3D LeftBottom;
-				Vector3D RightTop; 
+			        TCoordinate Door; 
+				TCoordinate Center;
+			        TCoordinate LeftBottom;
+				TCoordinate RightTop; 
 				short BallDirection; 
 			      }tsRoom;
 		
 		typedef struct{ tsRoom Info[5]; int Cnt; teSKSState SKSRoomState; }tsRoomInfo;
 		
-		typedef struct{ Vector3D Position; float Angle; int Distance;
+		typedef struct{ TCoordinate Position; float Angle; int Distance;
 				short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
 				short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
 				unsigned char FindBallCnt; }tsStraBallInfo;
@@ -65,31 +68,31 @@ namespace Robot
 
         	void Initial();
 
-        	bool FlagRoomRenew;
+                static	bool FlagRoomRenew;
 
-        	tsRoomInfo Room;
+        	static tsRoomInfo Room;
+		static int ThiefRoom;
+        	static int RoomSort;		
 
-        	int RoomSort;		
+        	static int FindBallEn;		
 
-        	int FindBallEn;		
-
-        	int LivRM, DinRM, Lib, BedRM;
-		tsAStarPath AStarPath;
+        	static int LivRM, DinRM, Lib, BedRM;
+		static tsAStarPath AStarPath;
 		 //---------- Strategy -----------------------------------
 
 
 
-        	TCoordinate Goal1;                   // Target1 vector
+        	static TCoordinate Goal1;                   // Target1 vector
 
-        	TCoordinate Goal2;                   // Target2 vector
+        	static TCoordinate Goal2;                   // Target2 vector
 
-        	double Direction;                    // Target direction
+        	static double Direction;                    // Target direction
 
 
 
-        	bool FlagDetour;                     //true: Ÿaªñ¥ØŒÐÂIP2 , flase: »·Â÷¥ØŒÐÂIp2
+        	static bool FlagDetour;                     //true: Ÿaªñ¥ØŒÐÂIP2 , flase: »·Â÷¥ØŒÐÂIp2
 
-        	bool FlagForward;                     
+        	static bool FlagForward;                     
 
         	//----------------------------------------------------------------------
 
@@ -97,7 +100,7 @@ namespace Robot
 
         	//----------- Path Plan ------------------------------------------------
 
-        	TCoordinate GoalVector;
+        	static TCoordinate GoalVector;
 
         	//----------------------------------------------------------------------
 
@@ -105,9 +108,9 @@ namespace Robot
 
         	//----------- Avoidance ------------------------------------------------
 
-        	bool FlagAvoidEnable;
+        	static bool FlagAvoidEnable;
 
-        	TCoordinate CorrectionVector;
+        	static TCoordinate CorrectionVector;
 
         	//----------------------------------------------------------------------
 
@@ -115,21 +118,21 @@ namespace Robot
 
         	//----------- Velocity Control -----------------------------------------
 
-        	float FixSpeed;                                 // Speed Power 1~100 %
+        	static float FixSpeed;                                 // Speed Power 1~100 %
 
-        	double MotionDistance;		//²Ÿ°Ê¶ZÂ÷
+        	static double MotionDistance;		//²Ÿ°Ê¶ZÂ÷
 
-        	double MotionAngle;		//²Ÿ°Êš€«×
+        	static double MotionAngle;		//²Ÿ°Êš€«×
 
 
 
-        	TCoordinate PathMotion;
+        	static TCoordinate PathMotion;
 
-        	float PathRotation;
+        	static float PathRotation;
 
         	//----------------------------------------------------------------------
 
-        	bool PathR_Priority;
+        	static bool PathR_Priority;
 
         	//-----------------------------
 
@@ -137,37 +140,37 @@ namespace Robot
 
         	//----------- Ball Data -----------------------------------------
 
-        	tsStraBallInfo RadBallInfo;
+        	static tsStraBallInfo RadBallInfo;
 
-
+                static int AX12_Angle;
 
         	//tsObjectiveInfo RedBall;
 
-        	unsigned char FindBallCnt;
+        	static unsigned char FindBallCnt;
 
-        	bool FlagRecognize;
+        	static bool FlagRecognize;
 
 
 
         	//---------- Laser Average Data-----------------
 
-        	int LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
+		static int LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
 
 
 
         	//---------- ŽM²yµŠ²€šBÆJ-----------------
 
-        	int FindBallState;
+        	static int FindBallState;
 
 
 
         	//---------- ŽM²y­«·sÅxÂI-----------------
 
-        	bool FindLocResample;
+        	static bool FindLocResample;
 
 
 
-        	TCoordinate RseLocPos;        //·sªº©wŠìÂI	
+        	static TCoordinate RseLocPos;        //·sªº©wŠìÂI	
 	};
 }
 

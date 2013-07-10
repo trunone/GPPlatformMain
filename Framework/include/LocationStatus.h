@@ -8,9 +8,15 @@
 #include <vector>
 #include <fstream>
 #include <string.h>
+#include <vector>
+#include <fstream>
+#include <string.h>
 #include <math.h>
+<<<<<<< HEAD
 #include <TCoordinate.h>
 #include <Normalrand.h>
+#include "TCoordinate.h"
+#include "Normalrand.h"
 
 #ifndef _LOCATION_STATUS_H_
 #define _LOCATION_STATUS_H_
@@ -32,6 +38,7 @@ namespace Robot
 
 	public:
 
+
         float ScanLineData[24];
 
         bool FlagEvaluatuonEnable;		
@@ -41,7 +48,6 @@ namespace Robot
         TCoordinate Position;
 
         double Handle;
-	
 
 	};
 }

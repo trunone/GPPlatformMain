@@ -14,7 +14,7 @@
 
 #include "Vector.h"
 #include "Wheeled.h"
-
+#include "TCoordinate.h"
 namespace Robot
 {
 	class Status
@@ -22,11 +22,11 @@ namespace Robot
 	private:
 
 	public:
-		static int a;
-
+	static int a;
         static double FI;
         static double w;
         static Vector3D vector;
+	static bool FlagNewFeedback;
 	};
 }
 

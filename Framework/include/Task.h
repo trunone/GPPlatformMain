@@ -8,13 +8,18 @@
 #ifndef _Task_H_
 #define _Task_H_
 
+#include <stdio.h>
 #include <string.h>
-#include "Vector.h"
 #include <vector>
-#include "StrategyStatus.h" 
+#include "StrategyStatus.h"
+#include "LocationStatus.h"
+#include "Status.h"
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 
+
+#define Def_AnglePrecision (5*M_PI/180.0)
+#define Def_MinTurnAngle (20*M_PI/180.0)
 using namespace std;
 
 namespace Robot
@@ -62,7 +67,7 @@ namespace Robot
 		
 		//============= Active Function ==================
 
-    		bool MotionToPosition( Vector3D  Goal );
+    		bool MotionToPosition( TCoordinate  Goal );
 
     		bool TurnToAngle( float GoalAngle );
 		
@@ -115,7 +120,7 @@ namespace Robot
 
 		void Initialize();
 		void Process();
-		static Vector3D vector;
+		static TCoordinate vector;
 		    
 		};
 }
