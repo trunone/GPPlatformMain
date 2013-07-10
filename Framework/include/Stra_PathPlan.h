@@ -15,6 +15,8 @@
 #define Stra_PathPlanH
 
 #include "StrategyModule.h"
+#include "TCoordinate.h"
+#include "StrategyStatus.h"
 //----------------------------------------------------------------------------
 namespace Robot
 {

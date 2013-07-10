@@ -30,10 +30,13 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/vision/VisionManager.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
+	../../Framework/src/strategy/AstarTool.o\
         ../../Framework/src/strategy/modules/Task.o\
 	../../Framework/src/strategy/modules/Stra_FindBall.o\
+	../../Framework/src/strategy/modules/Stra_Avoid.o\
 	../../Framework/src/strategy/modules/Stra_PathPlan.o\
 	../../Framework/src/strategy/modules/Stra_VelocityControl.o\
+	../../Framework/src/strategy/modules/Stra_AStar.o\
 	../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/Motors.o\
 	LinuxStrategyTimer.o\

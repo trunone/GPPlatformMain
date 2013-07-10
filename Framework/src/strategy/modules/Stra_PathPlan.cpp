@@ -1,5 +1,3 @@
-#include "TCoordinate.h"
-#include "StrategyStatus.h"
 #include "Stra_PathPlan.h"
 using namespace Robot;
 
