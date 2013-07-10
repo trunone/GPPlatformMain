@@ -1,14 +1,7 @@
-//---------------------------------------------------------------------------
-
-
-//#pragma hdrstop
-
 #include "ProbabilityEvaluation.h"
 #include <math.h>
 #include "ImgUnit.h"
 
-
-//#pragma package(smart_init)
 TLocProbEvaluation::TLocProbEvaluation()
 {
     this->VirtualLineMap = NULL;
@@ -22,7 +15,6 @@ TLocProbEvaluation::~TLocProbEvaluation()
 void TLocProbEvaluation::AssignVirtualMap(tsBmpPtr *VirtiulMap)
 {
     this->VirtualLineMap = new tsBmpPtr;
-
     this->VirtualLineMap->Width  = VirtiulMap->Width;
     this->VirtualLineMap->Height = VirtiulMap->Height;
     this->VirtualLineMap->Dimension = 1; //

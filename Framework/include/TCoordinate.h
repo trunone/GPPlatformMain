@@ -2,6 +2,7 @@
 
 #define TCoordinateH
 
+
 class TCoordinate
 
 {
@@ -90,7 +91,7 @@ public:
 
 	//-----------------------------------------------------------------
 
-	friend TCoordinate  aVector(double xValue , double yValue);	    
+	static TCoordinate  aVector(double xValue , double yValue);	    
 
 	friend TCoordinate  operator*(TCoordinate op , double scale);	
 
@@ -103,7 +104,6 @@ public:
 
 
 double NormalizeAngle(double Angle);			
-
 
 
 //---------------------------------------------------------------------------

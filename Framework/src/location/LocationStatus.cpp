@@ -6,13 +6,15 @@
  */
 
 #include "LocationStatus.h"
+#include "TCoordinate.h"
+#include <stdio.h>
 
 using namespace Robot;
 
-TLocUnit::TLocUnit()
-{
-}
-TLocUnit::~TLocUnit()
-{
-}
+
+
+
+
+
+
 
