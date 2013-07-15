@@ -155,8 +155,27 @@ int Motors::ActivateCurrentMode(short device_id)
 	}
 	return 0;
 }
-int Motors::SetEcMotorParameter
-
+int Motors::SetEcMotorParameter(short device_id,short NominalCurrent,short MaxOutputCurrent,short ThermalTimeConstant,char NbOfPolePairs)
+{
+    mErrorCode = 0;
+    if(!VCS_SetEcMotorParameter(mMotorHandle[device_id], NODE_ID,NominalCurrent,MaxOutputCurrent,ThermalTimeConstant,NbOfPolePairs,&mErrorCode))
+    {
+		fprintf(stderr, "Set EcMotor Parameter failed!, error code=0x%x\n", mErrorCode);
+		return 1;
+    }
+    return 0;
+}
+int Motors::SetCurrentMust(short device_id,short CurrentMust)
+{
+    mErrorCode = 0;
+    if(!VCS_SetCurrentMust(mMotorHandle[device_id],NODE_ID,CurrentMust,&mErrorCode))
+    {
+            	fprintf(stderr, "Set Current Must failed!, error code=0x%x\n", mErrorCode);
+		return 1;
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::HaltVelocityMovement(short device_id)
 {
 	mErrorCode = 0;

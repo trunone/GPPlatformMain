@@ -36,9 +36,12 @@ namespace Robot
         int SetVelocityProfile(short, int, int);
         int SetVelocity(short, long);
         int ActivateProfileVelocityMode(short);
+	int ActivateCurrentMode(short);
+	int SetEcMotorParameter(short,short,short,short,char);
+	int SetCurrentMust(short,short);
         int HaltVelocityMovement(short);
         int GetIncEncoderParameter(short, unsigned int*, int*);
-	int GetVelocityIs(short , long* )
+	int GetVelocityIs(short , long*)
         int GetCurrentIs(short, short*);
 
         int SetEnableAll();
