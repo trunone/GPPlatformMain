@@ -26,6 +26,7 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/math/Vector.o\
 	../../Framework/src/vision/VisionStatus.o\
 	../../Framework/src/vision/modules/SegmentationFunction.o\
+	../../Framework/src/vision/modules/Colormodel.o\
 		../../Framework/src/vision/VisionManager.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
