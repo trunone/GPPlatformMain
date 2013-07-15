@@ -38,6 +38,7 @@ namespace Robot
         int ActivateProfileVelocityMode(short);
         int HaltVelocityMovement(short);
         int GetIncEncoderParameter(short, unsigned int*, int*);
+	int GetVelocityIs(short , long* )
         int GetCurrentIs(short, short*);
 
         int SetEnableAll();
