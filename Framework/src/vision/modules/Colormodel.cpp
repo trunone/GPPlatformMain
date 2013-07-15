@@ -3,16 +3,16 @@
 using namespace Robot;
 
 
-bool Colormodel::HSV_hsvCheckRange_Yellow(VisionStatus::ColorRange VisionStatus::hsvYellowRange, float hValue, float sValue, float vValue){  
-	if(VisionStatus::hsvYellowRange.HueMax >= VisionStatus::hsvYellowRange.HueMin){   
-		if(VisionStatus::hsvYellowRange.HueMax >= hValue && VisionStatus::hsvYellowRange.HueMin <= hValue
-	   	&& VisionStatus::hsvYellowRange.SaturationMax >= sValue && VisionStatus::hsvYellowRange.SaturationMin <= sValue
-	   	&& VisionStatus::hsvYellowRange.BrightnessMax >= vValue && VisionStatus::hsvYellowRange.BrightnessMin <= vValue)
+bool Colormodel::HSV_hsvCheckRange_Blue(VisionStatus::ColorRange VisionStatus::hsvBlueRange, float hValue, float sValue, float vValue){  
+	if(VisionStatus::hsvBlueRange.HueMax >= VisionStatus::hsvBlueRange.HueMin){   
+		if(VisionStatus::hsvBlueRange.HueMax >= hValue && VisionStatus::hsvBlueRange.HueMin <= hValue
+	   	&& VisionStatus::hsvBlueRange.SaturationMax >= sValue && VisionStatus::hsvBlueRange.SaturationMin <= sValue
+	   	&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
 		return true;
 	}else{
-		if( (VisionStatus::hsvYellowRange.HueMax >= hValue || VisionStatus::hsvYellowRange.HueMin <= hValue)
-		&& VisionStatus::hsvYellowRange.SaturationMax >= sValue && VisionStatus::hsvYellowRange.SaturationMin <= sValue
-		&& VisionStatus::hsvYellowRange.BrightnessMax >= vValue && VisionStatus::hsvYellowRange.BrightnessMin <= vValue)
+		if( (VisionStatus::hsvBlueRange.HueMax >= hValue || VisionStatus::hsvBlueRange.HueMin <= hValue)
+		&& VisionStatus::hsvBlueRange.SaturationMax >= sValue && VisionStatus::hsvBlueRange.SaturationMin <= sValue
+		&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
 		return true;
 	}
 	        return false;
@@ -49,8 +49,8 @@ bool Colormodel::HSV_hsvCheckRange_Green(VisionStatus::ColorRange VisionStatus::
 void Colormodel::ColorProcess(unsigned char * WebcamBuffer){ 
 	//------get hsv value
 	
-	//------catch Yellow
-	if(Colormodel::HSV_hsvCheckRange_Yellow(&colorrange, hValue, sValue, vValue)){
+	//------catch Blue
+	if(Colormodel::HSV_hsvCheckRange_Blue(&colorrange, hValue, sValue, vValue)){
 					 
 		WebcamBuffer[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2] = 0;
 		WebcamBuffer[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1] = 255;

@@ -12,7 +12,7 @@ namespace Robot
 	{
 
 	private:
-		bool HSV_hsvCheckRange_Yellow(VisionStatus::ColorRange VisionStatus::hsvYellowRange, float hValue, float sValue, float vValue);
+		bool HSV_hsvCheckRange_Blue(VisionStatus::ColorRange VisionStatus::hsvYellowRange, float hValue, float sValue, float vValue);
 
 		bool HSV_hsvCheckRange_Red(VisionStatus::ColorRange VisionStatus::hsvRedRange, float hValue, float sValue, float vValue);
 

@@ -24,7 +24,7 @@ cv::Mat VisionStatus::frame;
 
 
 
-VisionStatus::ColorRange VisionStatus::hsvYellowRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
+VisionStatus::ColorRange VisionStatus::hsvBlueRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 
 VisionStatus::ColorRange VisionStatus::hsvRedRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 
