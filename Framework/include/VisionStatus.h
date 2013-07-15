@@ -54,7 +54,7 @@ namespace Robot
 		
 
 		//--- ModelUnit
-		static ColorRange hsvGreenRange, hsvYellowRange, hsvRedRange;
+		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;
 
 		static int ColorDeep;
 
