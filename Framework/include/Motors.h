@@ -41,7 +41,7 @@ namespace Robot
 	int SetCurrentMust(short,short);
         int HaltVelocityMovement(short);
         int GetIncEncoderParameter(short, unsigned int*, int*);
-	int GetVelocityIs(short , long*)
+	int GetVelocityIs(short , long*);
         int GetCurrentIs(short, short*);
 
         int SetEnableAll();
