@@ -25,7 +25,7 @@ namespace Robot
 		vector <SegmentLocation> LocationList;
 	
 		SegmentationFunction(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
-		void DrawLine(unsigned char *WebcamBuffer);
+		DrawLine(unsigned char *WebcamBuffer);
 	};
 		
 }

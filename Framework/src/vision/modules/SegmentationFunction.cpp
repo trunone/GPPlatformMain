@@ -1,5 +1,5 @@
 #include "SegmentationFunction.h"
-#include "VisionStatus.h"
+
 
 using namespace std;
 using namespace Robot;
@@ -106,7 +106,7 @@ SegmentationFunction::SegmentationFunction(unsigned char * TMPWebcamBoolBuffer, 
 	SegmentationFunction::Ymax=y2_temp;
 	SegmentationFunction::DrawLine(WebcamBoolBuffer);
 }
-void SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
+SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
 		
 	for(int j=SegmentationFunction::Ymin; j < SegmentationFunction::Ymax; j++){
 		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmin)+2] = 255;  //紅線
