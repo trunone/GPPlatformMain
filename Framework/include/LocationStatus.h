@@ -12,7 +12,6 @@
 #include <fstream>
 #include <string.h>
 #include <math.h>
-<<<<<<< HEAD
 #include <TCoordinate.h>
 #include <Normalrand.h>
 #include "TCoordinate.h"
@@ -39,15 +38,15 @@ namespace Robot
 	public:
 
 
-        float ScanLineData[24];
+        static float ScanLineData[24];
 
-        bool FlagEvaluatuonEnable;		
+        static bool FlagEvaluatuonEnable;		
 
-        bool FlagCoerceEvaluatuon;
+        static bool FlagCoerceEvaluatuon;
 
-        TCoordinate Position;
+        static TCoordinate Position;
 
-        double Handle;
+        static double Handle;
 
 	};
 }

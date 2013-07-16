@@ -10,11 +10,7 @@
 #include <vector>
 #include "LocationManager.h"
 #include "TCoordinate.h"
-<<<<<<< HEAD
-
-=======
 #include "LocationStatus.h"
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
 
 using namespace Robot;
 using namespace qrk;
@@ -37,18 +33,14 @@ bool LocationManager::Initialize(Urg_driver *urg)
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
-<<<<<<< HEAD
 	Position = TCoordinate::aVector(26,273);
     	Handle   = 0.0;
     	FlagEvaluatuonEnable = true;
     	FlagCoerceEvaluatuon = false;
-=======
 	LocationStatus::Position = TCoordinate::aVector(26,273);
     	LocationStatus::Handle   = 0.0;
     	LocationStatus::FlagEvaluatuonEnable = true;
     	LocationStatus::FlagCoerceEvaluatuon = false;
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
-
 
     urg = urg;
 

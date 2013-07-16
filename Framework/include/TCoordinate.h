@@ -1,12 +1,10 @@
 #ifndef TCoordinateH
 
 #define TCoordinateH
-<<<<<<< HEAD
 
 
-=======
 namespace Robot{
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
+
 class TCoordinate
 
 {
@@ -110,10 +108,7 @@ public:
 double NormalizeAngle(double Angle);			
 
 
-<<<<<<< HEAD
-=======
 }
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
 //---------------------------------------------------------------------------
 
 #endif

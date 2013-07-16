@@ -31,9 +31,6 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/vision/VisionManager.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
-<<<<<<< HEAD
-        ../../Framework/src/strategy/modules/Motion.o\
-=======
 	../../Framework/src/strategy/AstarTool.o\
         ../../Framework/src/strategy/modules/Task.o\
 	../../Framework/src/strategy/modules/Stra_FindBall.o\
@@ -42,7 +39,6 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/strategy/modules/Stra_VelocityControl.o\
 	../../Framework/src/strategy/modules/Stra_AStar.o\
 	../../Framework/src/strategy/modules/Motion.o\
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
         ../../Framework/src/Motors.o\
 	LinuxStrategyTimer.o\
         LinuxVisionTimer.o\
