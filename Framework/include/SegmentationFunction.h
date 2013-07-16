@@ -8,10 +8,14 @@ using namespace std;
 
 namespace Robot
 {
-	class SegmentationFunction
+	class SegmentationFunction : public VisionModule
 	{
 
 	private:
+		static SegmentationFunction* m_UniqueInstance;
+		
+		SegmentationFunction();
+
 		static int Xmax, Xmin, Ymax, Ymin;
 		static int PointCnt;
 	public:
@@ -19,13 +23,18 @@ namespace Robot
 		{
 			int x, y;
 		};
+		static SegmentationFunction* GetInstance() { return m_UniqueInstance; }
+		
+		~SegmentationFunction();
 		
 		void SegmentationInit(int Xvalue, int Yvalue);
 		void SegmentationInsert(int Xvalue, int Yvalue);
 		vector <SegmentLocation> LocationList;
 	
-		SegmentationFunction(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
-		DrawLine(unsigned char *WebcamBuffer);
+		Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
+		void DrawLine(unsigned char *WebcamBuffer);
+
+		void Process();
 	};
 		
 }

@@ -8,17 +8,29 @@ using namespace std;
 
 namespace Robot
 {
-	class Colormodel
+	class Colormodel : public VisionModule
 	{
+	
 
 	private:
-		bool HSV_hsvCheckRange_Blue(VisionStatus::ColorRange VisionStatus::hsvYellowRange, float hValue, float sValue, float vValue);
+		
+		static Colormodel* m_UniqueInstance;
+		
+		Colormodel();
+		bool HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue);
 
-		bool HSV_hsvCheckRange_Red(VisionStatus::ColorRange VisionStatus::hsvRedRange, float hValue, float sValue, float vValue);
+		bool HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue);
 
-		bool HSV_hsvCheckRange_Green(VisionStatus::ColorRange VisionStatus::hsvGreenRange, float hValue, float sValue, float vValue);
+		bool HSV_hsvCheckRange_Green(float hValue, float sValue, float vValue);
+		void Erosion(unsigned char *source, unsigned char *target);
+		void Dilation(unsigned char *source, unsigned char *target);
+	public:
+		static Colormodel* GetInstance() { return m_UniqueInstance; }
+		
+		~Colormodel();
+		void Process();
 
-		void ColorProcess(unsigned char * WebcamBuffer);
+		
 	};
 }
 #endif

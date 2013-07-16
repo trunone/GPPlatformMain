@@ -52,6 +52,7 @@ namespace Robot
 
 		static cv::Mat frame;
 		
+		static unsigned char Blue_Ball,Green_Ball,Red_Ball;
 
 		//--- ModelUnit
 		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;

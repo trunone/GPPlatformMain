@@ -36,7 +36,7 @@ void SegmentationFunction::SegmentationInsert(int Xvalue, int Yvalue)
 }
 
 
-SegmentationFunction::SegmentationFunction(unsigned char * TMPWebcamBoolBuffer, unsigned char * WebcamBoolBuffer)//物件抓取
+SegmentationFunction::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * WebcamBoolBuffer)//物件抓取
 {
 	int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
 	for(int i=1; i<VisionStatus::ImageWidth-1; i++){
@@ -106,7 +106,7 @@ SegmentationFunction::SegmentationFunction(unsigned char * TMPWebcamBoolBuffer, 
 	SegmentationFunction::Ymax=y2_temp;
 	SegmentationFunction::DrawLine(WebcamBoolBuffer);
 }
-SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
+void SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
 		
 	for(int j=SegmentationFunction::Ymin; j < SegmentationFunction::Ymax; j++){
 		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmin)+2] = 255;  //紅線
@@ -124,4 +124,9 @@ SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
 		WebcamBuffer[3*(SegmentationFunction::Ymax * VisionStatus::ImageWidth + i)+1] = 0;
 		WebcamBuffer[3*(SegmentationFunction::Ymax * VisionStatus::ImageWidth + i)+0] = 0;
 	}
+}
+SegmentationFunction::Process(){
+	Segment(VisionStatus::Blue_Ball, VisionStatus::frame.data);
+	Segment(VisionStatus::Red_Ball, VisionStatus::frame.data);
+	Segment(VisionStatus::Green_Ball, VisionStatus::frame.data);
 }

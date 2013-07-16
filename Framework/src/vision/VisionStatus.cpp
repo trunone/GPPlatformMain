@@ -21,6 +21,10 @@ int VisionStatus::ImageHeight(480);
 //-----cvimage
 cv::Mat VisionStatus::frame;
 
+//-----ObjCut
+unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+unsigned char VisionStatus::Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 
 
 
