@@ -1,17 +1,10 @@
-//---------------------------------------------------------------------------
-
-
-//#pragma hdrstop
-
 #include "ProbabilityEvaluation.h"
 #include <math.h>
 #include "Status.h"
 #include "LocationStatus.h"
 #include "VisionStatus.h"
-//#include "ImgUnit.h"
 
 
-//#pragma package(smart_init)
 TLocProbEvaluation::TLocProbEvaluation()
 {
     this->VirtualLineMap = NULL;

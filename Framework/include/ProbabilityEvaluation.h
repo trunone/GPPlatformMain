@@ -1,11 +1,7 @@
-//---------------------------------------------------------------------------
-
 #ifndef ProbabilityEvaluationH
 #define ProbabilityEvaluationH
 #include "LocationStatus.h"
 #include "VisionStatus.h"
-//#include "LocUnit.h"
-//#include "ImgUnit.h"
 
 #define Def_ScanScale 0.15707963267948966192313216916398
 #define Def_ScanStarAngle -1.5707963267948966192313216916398
