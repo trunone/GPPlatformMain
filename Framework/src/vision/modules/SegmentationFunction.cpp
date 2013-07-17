@@ -9,6 +9,9 @@ int SegmentationFunction::Xmin(0);
 int SegmentationFunction::Ymax(0);
 int SegmentationFunction::Ymin(0);
 int SegmentationFunction::PointCnt(0);
+int SegmentationFunction::Xcenter(0);
+int SegmentationFunction::Ycenter(0);
+
 
 void SegmentationFunction::SegmentationInit(int Xvalue, int Yvalue)  //初始push第一個為0
 {
@@ -16,11 +19,11 @@ void SegmentationFunction::SegmentationInit(int Xvalue, int Yvalue)  //初始pus
 	node.x = Xvalue;
 	node.y = Yvalue;
 	LocationList.push_back(node);   
-	SegmentationFunction::Xmax = Xvalue; 
-	SegmentationFunction::Xmin = Xvalue;
-	SegmentationFunction::Ymax = Yvalue;
-	SegmentationFunction::Ymin = Yvalue;
-	SegmentationFunction::PointCnt = 0;
+	Xmax = Xvalue; 
+	Xmin = Xvalue;
+	Ymax = Yvalue;
+	Ymin = Yvalue;
+	PointCnt = 0;
 }
 void SegmentationFunction::SegmentationInsert(int Xvalue, int Yvalue)
 {
@@ -28,61 +31,61 @@ void SegmentationFunction::SegmentationInsert(int Xvalue, int Yvalue)
 	node.x = Xvalue;
 	node.y = Yvalue;
 	LocationList.push_back(node);
-	if(Xvalue > SegmentationFunction::Xmax)	SegmentationFunction::Xmax = Xvalue;  //XY最大值最小值
-	if(Xvalue < SegmentationFunction::Xmin)	SegmentationFunction::Xmin = Xvalue;
-	if(Yvalue > SegmentationFunction::Ymax)	SegmentationFunction::Ymax = Yvalue;
-	if(Yvalue < SegmentationFunction::Ymin)	SegmentationFunction::Ymin = Yvalue;
-	SegmentationFunction::PointCnt++;
+	if(Xvalue > Xmax)	Xmax = Xvalue;  //XY最大值最小值
+	if(Xvalue < Xmin)	Xmin = Xvalue;
+	if(Yvalue > Ymax)	Ymax = Yvalue;
+	if(Yvalue < Ymin)	Ymin = Yvalue;
+	PointCnt++;
 }
 
 
-SegmentationFunction::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * WebcamBoolBuffer)//物件抓取
+void SegmentationFunction::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * WebcamBoolBuffer)//物件抓取
 {
 	int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
 	for(int i=1; i<VisionStatus::ImageWidth-1; i++){
 		for(int j=1; j<VisionStatus::ImageHeight-1; j++){
 			if(TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]==1){  //找到第一個被mark的點
 				
-				SegmentationFunction::SegmentationInit(i,j);
+				SegmentationInit(i,j);
 				TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]=0;  //清除標記
 				int s=0;
-				while (s <= SegmentationFunction::PointCnt){   //判斷是否抓完
-					int x = SegmentationFunction::LocationList[s].x;  //pop
-					int y = SegmentationFunction::LocationList[s].y;
+				while (s <= PointCnt){   //判斷是否抓完
+					int x = LocationList[s].x;  //pop
+					int y = LocationList[s].y;
 					if(x == 0 || y == 0){  //防止超值(避免掃入邊緣點)
 						s++;
 						continue;
 					}
 					if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]==1){ //判斷周圍左上
-						SegmentationFunction::SegmentationInsert(x-1,y-1);
+						SegmentationInsert(x-1,y-1);
 						TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]=0;  //消除標記
 					}
 					if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]==1){  //上
-						SegmentationFunction::SegmentationInsert(x,y-1);
+						SegmentationInsert(x,y-1);
 						TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]=0;
 					}
 					if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]==1){ //右上
-						SegmentationFunction::SegmentationInsert(x+1,y-1);
+						SegmentationInsert(x+1,y-1);
 						TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]=0;
 					}
 					if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]==1){  //左
-						SegmentationFunction::SegmentationInsert(x-1,y);
+						SegmentationInsert(x-1,y);
 						TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]=0;
 					}
 					if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]==1){  //右
-						SegmentationFunction::SegmentationInsert(x+1,y);
+						SegmentationInsert(x+1,y);
 						TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]=0;
 					}
 					if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]==1){  //左下
-						SegmentationFunction::SegmentationInsert(x-1,y+1);
+						SegmentationInsert(x-1,y+1);
 						TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]=0;
 					}
 					if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]==1){  //下
-						SegmentationFunction::SegmentationInsert(x,y+1);
+						SegmentationInsert(x,y+1);
 						TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]=0;
 					}
 					if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]==1){  //右下
-						SegmentationFunction::SegmentationInsert(x+1,y+1);
+						SegmentationInsert(x+1,y+1);
 						TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]=0;
 					}
 					s++;
@@ -90,43 +93,55 @@ SegmentationFunction::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char
 				if (temp<s)
 				{
 					temp=s;
-					x1_temp=SegmentationFunction::Xmin;
-					x2_temp=SegmentationFunction::Xmax;
-					y1_temp=SegmentationFunction::Ymin;
-					y2_temp=SegmentationFunction::Ymax;
+					x1_temp=Xmin;
+					x2_temp=Xmax;
+					y1_temp=Ymin;
+					y2_temp=Ymax;
 				}
 				
 				
 			}
 		}
 	}
-	SegmentationFunction::Xmin=x1_temp;
-	SegmentationFunction::Xmax=x2_temp;
-	SegmentationFunction::Ymin=y1_temp;
-	SegmentationFunction::Ymax=y2_temp;
-	SegmentationFunction::DrawLine(WebcamBoolBuffer);
+	Xmin=x1_temp;
+	Xmax=x2_temp;
+	Ymin=y1_temp;
+	Ymax=y2_temp;
+	Xcenter=(Xmax+Xmin)/2;
+	Ycenter=(Ymax+Ymin)/2;
+	DrawLine(WebcamBoolBuffer);
 }
 void SegmentationFunction::DrawLine(unsigned char *WebcamBuffer){  //畫框框
 		
-	for(int j=SegmentationFunction::Ymin; j < SegmentationFunction::Ymax; j++){
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmin)+2] = 255;  //紅線
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmin)+1] = 0;
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmin)+0] = 0;
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmax)+2] = 255;
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmax)+1] = 0;
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + SegmentationFunction::Xmax)+0] = 0;
+	for(int j=Ymin; j < Ymax; j++){
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmin)+2] = 255;  //紅線
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmin)+1] = 0;
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmin)+0] = 0;
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmax)+2] = 255;
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmax)+1] = 0;
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + Xmax)+0] = 0;
 	}
-	for(int i=SegmentationFunction::Xmin; i < SegmentationFunction::Xmax; i++){
-		WebcamBuffer[3*(SegmentationFunction::Ymin * VisionStatus::ImageWidth + i)+2] = 255;
-		WebcamBuffer[3*(SegmentationFunction::Ymin * VisionStatus::ImageWidth + i)+1] = 0;
-		WebcamBuffer[3*(SegmentationFunction::Ymin * VisionStatus::ImageWidth + i)+0] = 0;
-		WebcamBuffer[3*(SegmentationFunction::Ymax * VisionStatus::ImageWidth + i)+2] = 255;
-		WebcamBuffer[3*(SegmentationFunction::Ymax * VisionStatus::ImageWidth + i)+1] = 0;
-		WebcamBuffer[3*(SegmentationFunction::Ymax * VisionStatus::ImageWidth + i)+0] = 0;
+	for(int i=Xmin; i < Xmax; i++){
+		WebcamBuffer[3*(Ymin * VisionStatus::ImageWidth + i)+2] = 255;
+		WebcamBuffer[3*(Ymin * VisionStatus::ImageWidth + i)+1] = 0;
+		WebcamBuffer[3*(Ymin * VisionStatus::ImageWidth + i)+0] = 0;
+		WebcamBuffer[3*(Ymax * VisionStatus::ImageWidth + i)+2] = 255;
+		WebcamBuffer[3*(Ymax * VisionStatus::ImageWidth + i)+1] = 0;
+		WebcamBuffer[3*(Ymax * VisionStatus::ImageWidth + i)+0] = 0;
 	}
 }
-SegmentationFunction::Process(){
+void SegmentationFunction::Process(){
+	
 	Segment(VisionStatus::Blue_Ball, VisionStatus::frame.data);
+	VisionStatus::Blue_X=Xcenter; 
+	VisionStatus::Blue_Y=Ycenter;
 	Segment(VisionStatus::Red_Ball, VisionStatus::frame.data);
+	VisionStatus::Red_X=Xcenter;
+	VisionStatus::Red_Y=Ycenter;
 	Segment(VisionStatus::Green_Ball, VisionStatus::frame.data);
+	VisionStatus::Green_X=Xcenter;
+	VisionStatus::Green_Y=Ycenter;
+	cv::imwrite("a.jpg",VisionStatus::frame);
+	
+	//cvSaveImage(VisionStatus::send_frame.data,VisionStatus::frame.data);
 }

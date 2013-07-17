@@ -10,7 +10,7 @@ bool Colormodel::HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue
 	if(VisionStatus::hsvBlueRange.HueMax >= VisionStatus::hsvBlueRange.HueMin){   
 		if(VisionStatus::hsvBlueRange.HueMax >= hValue && VisionStatus::hsvBlueRange.HueMin <= hValue
 	   	&& VisionStatus::hsvBlueRange.SaturationMax >= sValue && VisionStatus::hsvBlueRange.SaturationMin <= sValue
-	   	&& VisionStatus::hsvBlueRange.BrigshtnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
+	   	&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
 		return true;
 	}else{
 		if( (VisionStatus::hsvBlueRange.HueMax >= hValue || VisionStatus::hsvBlueRange.HueMin <= hValue)
@@ -49,8 +49,8 @@ bool Colormodel::HSV_hsvCheckRange_Green(float hValue, float sValue, float vValu
 	        return false;
 }
 void Colormodel::Erosion(unsigned char *source, unsigned char *target){
-	for(int j=1;j<479;j++){
-		for(int i=1;i<639;i++){
+	for(int j=1;j<(VisionStatus::ImageHeight-1);j++){
+		for(int i=1;i<(VisionStatus::ImageWidth-1);i++){
 				 target[j*640+i]=source[(j-1)*640+(i-1)]&source[(j-1)*640+(i)]&source[(j-1)*640+(i+1)]&
 						 source[(j)*640+(i-1)]&source[(j-1)*640+(i+1)]&source[(j+1)*640+(i-1)]&
 						 source[(j+1)*640+(i)]&source[(j+1)*640+(i+1)];
@@ -58,8 +58,8 @@ void Colormodel::Erosion(unsigned char *source, unsigned char *target){
 		}
 }
 void Colormodel::Dilation(unsigned char *source, unsigned char *target){
-	for(int j=1;j<479;j++){
-		for(int i=1;i<639;i++){
+	for(int j=1;j<(VisionStatus::ImageHeight-1);j++){
+		for(int i=1;i<(VisionStatus::ImageWidth-1);i++){
 			target[j*640+i]=source[(j-1)*640+(i-1)]|source[(j-1)*640+(i)]|source[(j-1)*640+(i+1)]|
 					source[(j)*640+(i-1)]|source[(j-1)*640+(i+1)]|source[(j+1)*640+(i-1)]|
 					source[(j+1)*640+(i)]|source[(j+1)*640+(i+1)];
@@ -78,7 +78,7 @@ void Colormodel::Process(){
 			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1];
 			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2];
 			//------catch Blue
-			if(Colormodel::HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){					 
+			if(HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){					 
 				VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
 			}else{
 				VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;			
@@ -96,15 +96,15 @@ void Colormodel::Process(){
 			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1];
 			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2];
 			//------catch red
-			if(Colormodel::HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
-				VisionStatus::Green_BallRed_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
+			if(HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
+				VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
 			}else{
-				VisionStatus::Green_BallRed_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
+				VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
 			}
 		}
 	}
-	Erosion(VisionStatus::Green_BallRed_Ball,temp);
-	Dilation(temp,VisionStatus::Green_BallRed_Ball);
+	Erosion(VisionStatus::Red_Ball,temp);
+	Dilation(temp,VisionStatus::Red_Ball);
 	//SegmentationFunction::SegmentationFunction(TMPWebcamBoolBuffer,VisionStatus::frame.data);
 
 	for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
@@ -114,15 +114,15 @@ void Colormodel::Process(){
 			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1];
 			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2];
 			//------catch Green
-			if(Colormodel::HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
-				VisionStatus::Green_BallGreen_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
+			if(HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
+				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
 			}else{
-				VisionStatus::Green_BallGreen_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
+				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
 			}
 		}
 	}
-	Erosion(VisionStatus::Green_BallGreen_Ball,temp);
-	Dilation(temp,VisionStatus::Green_BallGreen_Ball);
+	Erosion(VisionStatus::Green_Ball,temp);
+	Dilation(temp,VisionStatus::Green_Ball);
 	//SegmentationFunction::SegmentationFunction(TMPWebcamBoolBuffer,VisionStatus::frame.data);
 	
 	

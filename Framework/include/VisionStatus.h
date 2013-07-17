@@ -48,11 +48,15 @@ namespace Robot
 		static vector <SegmentLocation> LocationList;*/
 	
 		//--- Global
-		static int ImageWidth, ImageHeight;
+		static const int ImageWidth = 640, ImageHeight = 480;
 
 		static cv::Mat frame;
+		static cv::Mat send_frame;
 		
-		static unsigned char Blue_Ball,Green_Ball,Red_Ball;
+		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+				     Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+				     Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+		static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
 
 		//--- ModelUnit
 		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;

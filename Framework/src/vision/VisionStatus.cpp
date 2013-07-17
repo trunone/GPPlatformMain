@@ -15,18 +15,23 @@
 
 using namespace Robot;
 
-int VisionStatus::ImageWidth(640);
-int VisionStatus::ImageHeight(480);
 //unsigned char *VisionStatus::pImage = new unsigned char[3 * VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 //-----cvimage
 cv::Mat VisionStatus::frame;
+cv::Mat VisionStatus::send_frame;
 
 //-----ObjCut
 unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 
-
+//-----ball posistion
+int VisionStatus::Red_X(0);
+int VisionStatus::Red_Y(0);
+int VisionStatus::Green_X(0);
+int VisionStatus::Green_Y(0);
+int VisionStatus::Blue_X(0); 
+int VisionStatus::Blue_Y(0); 
 
 VisionStatus::ColorRange VisionStatus::hsvBlueRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 

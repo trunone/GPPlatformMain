@@ -1,6 +1,11 @@
 #ifndef _SEGMENTATIONFUNCTION_H_
 #define _SEGMENTATIONFUNCTION_H_
+#include "VisionModule.h"
 #include "VisionStatus.h"
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
 #include <vector>
 
 using namespace std;
@@ -26,12 +31,13 @@ namespace Robot
 		static SegmentationFunction* GetInstance() { return m_UniqueInstance; }
 		
 		~SegmentationFunction();
+		static int Xcenter,Ycenter;
 		
 		void SegmentationInit(int Xvalue, int Yvalue);
 		void SegmentationInsert(int Xvalue, int Yvalue);
 		vector <SegmentLocation> LocationList;
 	
-		Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
+		void Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
 		void DrawLine(unsigned char *WebcamBuffer);
 
 		void Process();
