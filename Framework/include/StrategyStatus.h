@@ -23,7 +23,9 @@ namespace Robot
 		//motion data        	
 		static long Motor1Speed, Motor2Speed, Motor3Speed;
         	static double FI;
-       		static double w;
+ 	        static double x;
+       		static double y;
+		static double w;
         	static Vector3D vector;
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
@@ -171,6 +173,7 @@ namespace Robot
 
 
         	static TCoordinate RseLocPos;        //·sªº©wŠìÂI	
+
 	};
 }
 

@@ -3,7 +3,6 @@
  *
  *   Author: Wu Chih-En
  */
-
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
@@ -25,7 +24,6 @@
 
 using namespace Robot;
 using namespace std;
-using namespace Robot;
 
 Motors motors;
 qrk::Urg_driver urg;
@@ -72,20 +70,29 @@ int main(void)
 
     //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
 
-    LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
-    vision_timer->Start();
+   ////////////////// Framework Initialize ////////////////////////////
+    //if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
+    //{
+    //    printf("Fail to initialize Strategy Manager!\n");
+    //    return 1;
+    //}
+
+    ////VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+
+    //LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
+    //vision_timer->Start();
     //-----------------------------------------------------------------------------------//
 
-    if(LocationManager::GetInstance()->Initialize(&urg) == false)
-    {
-        printf("Fail to initialize Strategy Manager!\n");
-        return 1;
-    }
+    //if(LocationManager::GetInstance()->Initialize(&urg) == false)
+    //{
+    //    printf("Fail to initialize Strategy Manager!\n");
+    //    return 1;
+    //}
 
-    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+    ////LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
 
-    LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
-    location_timer->Start();
+    //LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
+    //location_timer->Start();
     ////-----------------------------------------------------------------------------------//
 
     if(StrategyManager::GetInstance()->Initialize(&motors) == false)
@@ -94,7 +101,7 @@ int main(void)
         return 1;
     }
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadVision::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
@@ -105,52 +112,44 @@ int main(void)
 //
 	while(1) {
 
-        TiXmlDocument doc("Status.xml");
-        doc.LoadFile();
-        TiXmlPrinter printer;
-        printer.SetStreamPrinting();
-        //TiXmlDocument doc;
-        //doc.Parse(printer.CStr());
-        TiXmlElement* root = doc.RootElement();//Status
-        TiXmlElement* element = root->FirstChildElement();//ColorModel
-        TiXmlElement* model = element->FirstChildElement();//Model
-        TiXmlAttribute* type= model->FirstAttribute();//Model type
-        const char *www="www";
-        double x[7]={0.1,0.2,0.3,0.4,0.5,0.6,0.7};
-        int i=0;
-
-        const char *fileName = "string2xml";
-        cout<<type->Value()<<endl;
-        for(;model != NULL;model=model->NextSiblingElement()){
-            TiXmlElement* modelchild=model->FirstChildElement();
-            for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//get node information
-                string informationType=modelchild->Value();
-                string information=modelchild->FirstAttribute()->Value();
-                modelchild->SetDoubleAttribute(www,x[i++]);
-                //modelchild->RemoveAttribute(www);
-                //doc.SaveFile(fileName);
-                doc.SaveFile();
-                cout <<	informationType << ":" << information << endl;
-            }
-        }
-        doc.Accept( &printer );
-        fscanf( stdout, "%s", printer.CStr() );
-        printf("%s", printer.CStr());
         int port=1234;
-        string aa="a";
-        char w;
-        w=0x08;
-
+        string xml_by_str;
         LinuxServer new_sock;
         LinuxServer server (port);
+	
+        cout << "[Waiting..]" << endl;
+        server.accept ( new_sock );
+        cout << "[Accepted..]" << endl;	
 
-        while(true) {
-            cout << "[Waiting..]" << endl;         
-            server.accept ( new_sock );
-            cout << "[Accepted..]" << endl;	
-            new_sock << printer.CStr();
-            //printf("%s", printer.CStr());
-            cout << "[success]" << endl;		
+        while(true){	
+            new_sock >> xml_by_str;
+            cout << "[success recv]" << endl << xml_by_str;
+            char *xml_by_char = new char[xml_by_str.length()+1];
+            strcpy(xml_by_char, xml_by_str.c_str());
+            TiXmlDocument doc;
+            doc.Parse(xml_by_char);
+            TiXmlElement* root = doc.RootElement();
+            TiXmlElement* element;
+            element = root->FirstChildElement("ManualDirection");
+            if(element != NULL) {
+                TiXmlElement* modelchild;
+                modelchild = element->FirstChildElement("Rotate");
+                if(modelchild != NULL){
+                    modelchild->Attribute("w", &StrategyStatus::w);
+                }
+                modelchild = element->FirstChildElement("Vector");
+                if(modelchild != NULL){
+                    modelchild->Attribute("x", &StrategyStatus::x);
+                    modelchild->Attribute("y", &StrategyStatus::y);
+                }
+            }
+            element = root->FirstChildElement("Vision");
+            if(element != NULL){
+                cout<<"I got vision"<<endl;
+            }
+            cout<<"X:"<<StrategyStatus::x<<endl<<"Y:"<<StrategyStatus::y<<endl<<"W:"<<StrategyStatus::w<<endl;
+            new_sock << "recv";
         }
+   }
     return 0;
 }
