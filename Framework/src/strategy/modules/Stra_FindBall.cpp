@@ -1,8 +1,6 @@
 #include "Stra_FindBall.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-//#include "TestFindBall.h"
-//#include "SimLaserControl.h"
 #define Def_AnglePrecision (5*M_PI/180.0)		
 #define Def_MinTurnAngle (20*M_PI/180.0)		
 #define Def_CenterThreshold 20		

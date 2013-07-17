@@ -7,7 +7,7 @@
 //E-mail   :ta180109@hotmail.com
 //Update   :2013/07/09
 //
-//Function :AStar alogrithm
+//Function :AStar Strategy
 //===============================================
 #ifndef Star_AStarH
 #define Star_AStarH

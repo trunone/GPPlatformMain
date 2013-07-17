@@ -1,13 +1,7 @@
-
-#pragma hdrstop
-//---------------------------------------------------------------------------
 #include<stdlib.h>
 #include<time.h>
 #include<math.h>
 #include"Normalrand.h"
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
-
 #define pi 3.141592654
 
 NormalRand::NormalRand()
