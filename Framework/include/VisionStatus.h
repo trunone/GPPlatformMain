@@ -30,6 +30,7 @@ namespace Robot
 	class VisionStatus
 	{
 	private:
+                unsigned char *yiqColorModel; 
 
 	public:
 	typedef enum{BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
@@ -100,13 +101,13 @@ namespace Robot
 
     		bool enable;
 
-    	typedef struct{
+	    	typedef struct{
 
-        	float Distance;
+			float Distance;
 
-        	float Pixel;
+			float Pixel;
 
-    	}tsDisPixel;
+	    	}tsDisPixel;
 
 
 
@@ -225,6 +226,32 @@ namespace Robot
 	}tsYUVData;
 
 	//--------------------------------------------------------------------------
+		//TImg(void);
+		//~TImg(void);
+		//static unsigned char ColorSegmentation(unsigned char yValue, unsigned char uValue, unsigned char vValue);
+		//static double ComputeCenterAngle(double AngleStartPoint, double AngleEndPoint);
+		//static void LoadModelFromFile(AnsiString FileString);
+		//static void SaveColorRangeFormFile(AnsiString FileString);
+		//static void LoadColorRangeFormFile(AnsiString FileString);
+
+		//static int ImageWidth, ImageHeight, ImageByte;		//影像的寬、高、大小
+		//static int ImageLevel;
+		//static double AngularToRadian, RadianToAngular;
+		//static ColorRange *hsvBlueRange, *hsvBlackRange, *hsvGreenRange, *hsvOrangeRange, *hsvYellowRange, *hsvRedRange;
+		//static unsigned char *pImage;
+		//static unsigned char *pWebCamImage;
+		//static unsigned char *pFindEdgeImage;
+
+		static tsObjectiveInfo BallInfo;
+		static tsBmpPtr Image;
+		static tsImgProSet ProcessSetting;
+		static tsImgDisModel DisModel;
+		static tsYUVData *RGBtoYUV_Table;
+
+	    	static unsigned char PixelGrayScale   (tsColor Pixel);
+	    	static bool PixelBinarization(tsColor Pixel, unsigned char Threshold );
+	    	static void ImgGrayScale   (tsBmpPtr Image);
+	    	static void ImgBinarization(tsBmpPtr Image, unsigned char Threshold);
 
 	};
 }

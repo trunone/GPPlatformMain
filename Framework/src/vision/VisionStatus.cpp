@@ -144,3 +144,32 @@ float tsImgDisModel::Pixel2Distance(int pixel)
 //--------------------------------------------------------------------
 
 //--------------------------------------------------------------------
+//TImg(void);
+//~TImg(void);
+//unsigned char ColorSegmentation(unsigned char yValue, unsigned char uValue, unsigned char vValue);
+//double ComputeCenterAngle(double AngleStartPoint, double AngleEndPoint);
+//void LoadModelFromFile(AnsiString FileString);
+//void SaveColorRangeFormFile(AnsiString FileString);
+//void LoadColorRangeFormFile(AnsiString FileString);
+
+//int ImageWidth, ImageHeight, ImageByte;		//影像的寬、高、大小
+//int ImageLevel;
+//double AngularToRadian, RadianToAngular;
+//ColorRange *hsvBlueRange, *hsvBlackRange, *hsvGreenRange, *hsvOrangeRange, *hsvYellowRange, *hsvRedRange;
+//unsigned char *pImage;
+//unsigned char *pWebCamImage;
+//unsigned char *pFindEdgeImage;
+
+tsObjectiveInfo VisionStatus::BallInfo;
+tsBmpPtr    VisionStatus::Image;
+tsImgProSet VisionStatus::ProcessSetting;
+tsImgDisModel VisionStatus::DisModel;
+tsYUVData *VisionStatus::RGBtoYUV_Table;
+
+unsigned char VisionStatus::PixelGrayScale   (tsColor Pixel);
+bool VisionStatus::PixelBinarization(tsColor Pixel, unsigned char Threshold );
+void VisionStatus::ImgGrayScale   (tsBmpPtr Image);
+void VisionStatus::ImgBinarization(tsBmpPtr Image, unsigned char Threshold);
+
+
+
