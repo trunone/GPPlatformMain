@@ -22,6 +22,8 @@ LFLAGS += -lpthread -ldl
 OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
+	../../Framework/src/location/ProbabilityEvaluation.o\
+	../../Framework/src/location/ParticleFilter.o\
         ../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\

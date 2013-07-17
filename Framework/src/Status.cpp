@@ -9,4 +9,6 @@
 
 using namespace Robot;
 
+bool Status::FlagNewFeedback;
+bool Status::enable;
 	

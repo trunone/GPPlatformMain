@@ -37,18 +37,14 @@ namespace Robot
 
 	public:
 
-
-        static float ScanLineData[24];
-
-        static bool FlagEvaluatuonEnable;		
-
-        static bool FlagCoerceEvaluatuon;
-
-        static TCoordinate Position;
-
-        static double Handle;
-
+		static float ScanLineData[24];
+		static bool FlagEvaluatuonEnable;		
+		static bool FlagCoerceEvaluatuon;
+		static TCoordinate Position;
+		static double Handle;
 	};
+
+
 }
 
 #endif
