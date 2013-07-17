@@ -19,8 +19,7 @@ CXXFLAGS += -O2 -DLINUX -Wall -shared -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall -shared $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ldl
 
-OBJS =  ../../Framework/src/Status.o\
-	../../Framework/src/location/LocationManager.o\
+OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
 	../../Framework/src/location/ProbabilityEvaluation.o\
 	../../Framework/src/location/ParticleFilter.o\
@@ -34,7 +33,7 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 	../../Framework/src/strategy/AstarTool.o\
-        ../../Framework/src/strategy/modules/Task.o\
+        ../../Framework/src/strategy/modules/Stra_Task.o\
 	../../Framework/src/strategy/modules/Stra_FindBall.o\
 	../../Framework/src/strategy/modules/Stra_Avoid.o\
 	../../Framework/src/strategy/modules/Stra_PathPlan.o\
