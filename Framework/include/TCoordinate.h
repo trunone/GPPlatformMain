@@ -1,119 +1,73 @@
+//==============================================================================
+// File Name: Type of Coordinate
+//
+// Author   : ICLAB MSL 2009 TEAM
+//            Ho ChengYao, Teng HangChih, Yu ChiaJun, Chen ChiaYang
+// E-mail   : bgho740325@hotmail.com (Ho ChengYao)
+//
+// Modifier :
+// Phone    :
+// E-mail   :
+//
+// Update   : 20090225
+// Function : This Model is a basic Coodinate type
+//
+//==============================================================================
+//---------------------------------------------------------------------------
+
 #ifndef TCoordinateH
-
 #define TCoordinateH
-<<<<<<< HEAD
-
-
-=======
-namespace Robot{
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
 class TCoordinate
-
 {
-
-
 
 private:
 
-
-
-	inline void CartesianPolar(void);				
-
-	inline void PolarCartesian(void);				
-
+	inline void CartesianPolar(void);				//ª½¨¤®y¼Ð Âà ·¥®y¼Ð
+	inline void PolarCartesian(void);				//·¥®y¼Ð Âà ª½¨¤®y¼Ð
 	
-
-	double AngleValue;						        
-
-	double LengthValue;						        
-
-
+	double AngleValue;						        //¦V¶q·¥®y¼Ð¨¤«×
+	double LengthValue;						        //¦V¶qªø«×
 
 public:
 
-
-
 	double x;
-
 	double y;
-
-//------------Â°Ã²Ã‚Å  Å Å¡Â­Ã»Å¡Ã§Å Â¡----------
-
-	//Â«Ã˜ÂºcÅ¡Ã§Å Â¡
-
+//------------°òÂ¦ ¦¨­û¨ç¦¡----------
+	//«Øºc¨ç¦¡
 	TCoordinate(double xValue,double yValue);       //(X,Y)
-
-	TCoordinate(double sita);					    
-
-	TCoordinate();							        
-
-	//Å¾Ã‘ÂºcÅ¡Ã§Å Â¡
-
-	~TCoordinate();							        
-
+	TCoordinate(double sita);					    //(¦V¶q¨¤«×)
+	TCoordinate();							        //«Øºc ¨ç¦¡
+	//¸Ñºc¨ç¦¡
+	~TCoordinate();							        //¸Ñºc ¨ç¦¡
 	
+//------------¹Bºâ¤l­«¸ü--------------
+    bool operator == (TCoordinate op2);	            //¦V¶q¬O§_¬Ûµ¥
+	TCoordinate operator + (TCoordinate op2);       //¨â¦V¶q¬Û¥[
+	TCoordinate operator - (TCoordinate op2);       //¨â¦V¶q¬Û´î
 
-//------------Â¹BÂºÃ¢â‚¬lÂ­Â«Å¾Ã¼--------------
+	TCoordinate operator << (double ds);	        //¦V¶q¥ª±Û(¨¤«×¥[)
+	TCoordinate operator >> (double ds);	        //¦V¶q¥k±Û(¨¤«×´î)
 
-    bool operator == (TCoordinate op2);	            
+//---------- -¦¨­û ¨ç¦¡--------------
+	double	Angle();						        //¦V¶qªº¨¤«×
+	double	Length();						        //¦V¶qªºªø«×
 
-	TCoordinate operator + (TCoordinate op2);       
+	TCoordinate UnitVector();					    //¦V¶qªº³æ¦ì¦V¶q
+	double  dot(TCoordinate op);				    //¦V¶q¤º¿n
+	double  cross(TCoordinate op);	                //¨â¦V¥~¿n±oZ¤è¦V¦s¶q
 
-	TCoordinate operator - (TCoordinate op2);       
-
-
-
-	TCoordinate operator << (double ds);	        
-
-	TCoordinate operator >> (double ds);	        
-
-
-
-//---------- -Å Å¡Â­Ã» Å¡Ã§Å Â¡--------------
-
-	double	Angle();						        
-
-	double	Length();						        
-
-
-
-	TCoordinate UnitVector();					    
-
-	double  dot(TCoordinate op);				    
-
-	double  cross(TCoordinate op);	                
-
-
-
-	void	AssignXY(double xValue,double yVlaue);  
-
-	void	AssignAngle(double Vlaue);				
-
-	void	AssignLength(double Vlaue);				
-
+	void	AssignXY(double xValue,double yVlaue);  //§ó§ï¥d¦¡®y¼Ð
+	void	AssignAngle(double Vlaue);				//§ó§ï·¥®y¼Ð¨¤«×
+	void	AssignLength(double Vlaue);				//§ó§ï·¥®y¼Ðªø«×
 	
-
 	//-----------------------------------------------------------------
-
-	static TCoordinate  aVector(double xValue , double yValue);	    
-
-        friend TCoordinate  operator*(TCoordinate op , double scale);	
-
-        friend TCoordinate  operator*(double scale , TCoordinate op);	
-
-
+	static TCoordinate  aVector(double xValue , double yValue);	    //²£¥Í¤@­Ó¦V¶q
+	friend TCoordinate  operator*(TCoordinate op , double scale);	//¦V¶q­¼N­¿
+	friend TCoordinate  operator*(double scale , TCoordinate op);	//¦V¶q­¼N­¿
 
 };
 
+double NormalizeAngle(double Angle);			//¥¿³W¹º¨¤«× -M_PI < Angle < M_PI
 
-
-double NormalizeAngle(double Angle);			
-
-
-<<<<<<< HEAD
-=======
-}
->>>>>>> ba17bfd9374182fd01f71c98ae014bd5bae32fe8
 //---------------------------------------------------------------------------
-
 #endif

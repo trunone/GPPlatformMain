@@ -1,382 +1,195 @@
-#include<stdio.h>
-
-
+//---------------------------------------------------------------------------
+#pragma hdrstop
 
 #include <math.h>
 
-
-
 #include "TCoordinate.h"
-
 //==============================================================================
 
-
-
-//--------------------Ã‚Ã Å½Â«Â®yÅ’ÃÅ¡t------------------------------------------------
-
+//--------------------Âà´«®y¼Ð¨t------------------------------------------------
 inline void TCoordinate::CartesianPolar(void)
-
 {
-
     if(x == 0 && y != 0){
-
         this->LengthValue = fabs( y );
-
         this->AngleValue  = ( y > 0 ) ? M_PI / 2.0 : NormalizeAngle( M_PI / 2.0 + M_PI ) ;
-
     }else if(x != 0 && y == 0){
-
         this->LengthValue = fabs( x );
-
         this->AngleValue  = ( x > 0 )? 0 : M_PI;
-
     }else if(x == 0 && y == 0){
-
         this->AngleValue  = 0;
-
         this->LengthValue = 0;
-
     }else{
-
         this->AngleValue  = atan2(this->y , this->x );
-
         this->LengthValue = sqrt(x*x + y*y) ;
-
     }
-
 }
-
-
 
 inline void TCoordinate::PolarCartesian(void)
-
 {
-
     this->x = this->LengthValue * cos(this->AngleValue);
-
     this->y = this->LengthValue * sin(this->AngleValue);
-
 }
-
 //==============================================================================
-
-
 
 //--------------------Construct Function----------------------------------------
-
 TCoordinate::TCoordinate(double xValue,double yValue)
-
 {
-
     this->x = xValue;
-
     this->y = yValue;
-
-
 
     CartesianPolar();
-
 }
-
 //------------------------------------------------------------------------------
-
 TCoordinate::TCoordinate(double sita)
-
 {
-
     this->LengthValue = 1;
-
     this->AngleValue = NormalizeAngle(sita);
 
-
-
     PolarCartesian();
-
 }
-
 //------------------------------------------------------------------------------
-
 TCoordinate::TCoordinate()
-
 {
-
     this->x = 0.0;
-
     this->y = 0.0;
-
     this->AngleValue = 0.0;
-
     this->LengthValue = 0.0;
-
 }
-
 //------------------------------------------------------------------------------
-
 TCoordinate::~TCoordinate()
-
 {
-
     //fuck Writing Code can't let me be WET
-
     //GO to DMC Go to DMC
-
     //fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!fuck!
-
 }
-
-
 
 //==============================================================================
 
-
-
-//--------------------Â¹BÂºÃ¢â‚¬lÂ­Â«Å¾Ã¼------------------------------------------------
-
-bool TCoordinate::operator == (TCoordinate op2)             //Å VÂ¶qÂ¬OÂ§_Â¬Ã›ÂµÂ¥
-
+//--------------------¹Bºâ¤l­«¸ü------------------------------------------------
+bool TCoordinate::operator == (TCoordinate op2)             //¦V¶q¬O§_¬Ûµ¥
 {
-
     return ( this->x == op2.x && this->y == op2.y );
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate TCoordinate::operator + (TCoordinate op2)       //Å¡Ã¢Å VÂ¶qÂ¬Ã›Â¥[
-
+TCoordinate TCoordinate::operator + (TCoordinate op2)       //¨â¦V¶q¬Û¥[
 {
-
     TCoordinate temp;
-
     temp.x = this->x + op2.x;
-
     temp.y = this->y + op2.y;
-
     return temp;
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate TCoordinate::operator - (TCoordinate op2)       //Å¡Ã¢Å VÂ¶qÂ¬Ã›Å½Ã®
-
+TCoordinate TCoordinate::operator - (TCoordinate op2)       //¨â¦V¶q¬Û´î
 {
-
     TCoordinate temp;
-
     temp.x = this->x - op2.x;
-
     temp.y = this->y - op2.y;
-
     return temp;
-
 }
-
 //------------------------------------------------------------------------------
 
-
-
-TCoordinate TCoordinate::operator << (double ds)	        //Å VÂ¶qÂ¥ÂªÂ±Ã›(Å¡â‚¬Â«Ã—Â¥[)
-
+TCoordinate TCoordinate::operator << (double ds)	        //¦V¶q¥ª±Û(¨¤«×¥[)
 {
-
     TCoordinate temp;
-
-    //Â®yÅ’ÃÅ¡tÂ°fÂ±Ã›
-
+    //®y¼Ð¨t°f±Û
     temp.x = this->x*cos(ds) - this->y*sin(ds);
-
     temp.y = this->x*sin(ds) + this->y*cos(ds);
-
     temp.CartesianPolar();
-
     return temp;
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate TCoordinate::operator >> (double ds)	        //Å VÂ¶qÂ¥kÂ±Ã›(Å¡â‚¬Â«Ã—Å½Ã®)
-
+TCoordinate TCoordinate::operator >> (double ds)	        //¦V¶q¥k±Û(¨¤«×´î)
 {
-
     TCoordinate temp;
-
-    //Â®yÅ’ÃÅ¡tÂ¥Â¿Â±Ã›
-
+    //®y¼Ð¨t¥¿±Û
     temp.x =  this->x*cos(ds) + this->y*sin(ds);
-
     temp.y = -this->x*sin(ds) + this->y*cos(ds);
-
     temp.CartesianPolar();
-
     return temp;
-
 }
-
 //------------------------------------------------------------------------------
-
-
 
 //==============================================================================
-
 //------------------------------------------------------------------------------
-
-double	TCoordinate::Angle()						        //Å VÂ¶qÂªÂºÅ¡â‚¬Â«Ã—
-
+double	TCoordinate::Angle()						        //¦V¶qªº¨¤«×
 {
-
     this->CartesianPolar();
-
     return this->AngleValue;
-
 }
-
 //------------------------------------------------------------------------------
-
-double	TCoordinate::Length()						        //Å VÂ¶qÂªÂºÂªÃ¸Â«Ã—
-
+double	TCoordinate::Length()						        //¦V¶qªºªø«×
 {
-
     this->CartesianPolar();
-
     return this->LengthValue;
-
 }
-
 //------------------------------------------------------------------------------
 
-
-
-TCoordinate TCoordinate::UnitVector()					    //Å VÂ¶qÂªÂºÂ³Ã¦Å Ã¬Å VÂ¶q
-
+TCoordinate TCoordinate::UnitVector()					    //¦V¶qªº³æ¦ì¦V¶q
 {
-
     TCoordinate temp = *this;
-
     temp.AssignLength(1.0);
-
     return temp;
-
 }
-
 //------------------------------------------------------------------------------
-
-double TCoordinate::dot(TCoordinate op)				        //Å VÂ¶qâ‚¬ÂºÂ¿n
-
+double TCoordinate::dot(TCoordinate op)				        //¦V¶q¤º¿n
 {
-
     return (this->x*op.x + this->y*op.y);
-
 }
-
 //------------------------------------------------------------------------------
-
-double TCoordinate::cross(TCoordinate op)	                //Å¡Ã¢Å VÂ¶qÂ±Ã›Ã‚Ã â‚¬Ã¨Å V
-
+double TCoordinate::cross(TCoordinate op)	                //¨â¦V¶q±ÛÂà¤è¦V
 {
-
     return (this->x*op.y - this->y*op.x);
-
 }
-
 //------------------------------------------------------------------------------
 
-
-
-void TCoordinate::AssignXY(double xValue,double yValue)     //Â§Ã³Â§Ã¯Â¥dÅ Â¡Â®yÅ’Ã
-
+void TCoordinate::AssignXY(double xValue,double yValue)     //§ó§ï¥d¦¡®y¼Ð
 {
-
     this->x = xValue;
-
     this->y = yValue;
-
     this->CartesianPolar();
-
 }
-
 //------------------------------------------------------------------------------
-
-void TCoordinate::AssignAngle(double Value)				    //Â§Ã³Â§Ã¯Â·Â¥Â®yÅ’ÃÅ¡â‚¬Â«Ã—
-
+void TCoordinate::AssignAngle(double Value)				    //§ó§ï·¥®y¼Ð¨¤«×
 {
-
     this->CartesianPolar();
-
     this->AngleValue = Value;
-
     this->PolarCartesian();
-
 }
-
 //------------------------------------------------------------------------------
-
-void TCoordinate::AssignLength(double Value)				//Â§Ã³Â§Ã¯Â·Â¥Â®yÅ’ÃÂªÃ¸Â«Ã—
-
+void TCoordinate::AssignLength(double Value)				//§ó§ï·¥®y¼Ðªø«×
 {
-
     this->CartesianPolar();
-
     this->LengthValue = Value;
-
     this->PolarCartesian();
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate  aVector(double xValue , double yValue)	    //Â²Â£Â¥Ãâ‚¬@Â­Ã“Å VÂ¶q
-
+TCoordinate  aVector(double xValue , double yValue)	    //²£¥Í¤@­Ó¦V¶q
 {
-
     return  TCoordinate(xValue , yValue);
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate  operator*(TCoordinate op , double scale)	//Å VÂ¶qÂ­Å’NÂ­Â¿
-
+TCoordinate  operator*(TCoordinate op , double scale)	//¦V¶q­¼N­¿
 {
-
     op.x *= scale;
-
     op.y *= scale;
-
     return op;
-
 }
-
 //------------------------------------------------------------------------------
-
-TCoordinate  operator*(double scale , TCoordinate op)	//Å VÂ¶qÂ­Å’NÂ­Â¿
-
+TCoordinate  operator*(double scale , TCoordinate op)	//¦V¶q­¼N­¿
 {
-
     op.x *= scale;
-
     op.y *= scale;
-
     return op;
-
 }
-
 //------------------------------------------------------------------------------
-
-
 
 double NormalizeAngle(double Angle)
-
 {
-
     while(Angle >   M_PI) Angle -= 2*M_PI;
-
     while(Angle <= -M_PI) Angle += 2*M_PI;
-
     return Angle ;
-
 }
-
 //------------------------------------------------------------------------------
 
+
+#pragma package(smart_init)

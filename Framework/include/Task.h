@@ -17,7 +17,6 @@
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 
-
 #define Def_AnglePrecision (5*M_PI/180.0)
 #define Def_MinTurnAngle (20*M_PI/180.0)
 using namespace std;
