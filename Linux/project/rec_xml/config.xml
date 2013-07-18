@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Status>
+	<AStar_PathFinder>
+		<MapGrid_Config length = "61" Width = "61" NodeResolution = "10"/>
+	
+	</AStar_PathFinder>
+
+	<LaserConfig>
+		<General ansDef_DeviceName = "Com6" />
+		<MDMS iDef_StartStep = "180" iDef_EndStep = "900" iDef_Cluster = "12" iDef_Scan_Interval = "3" iDef_Scan_Times = "1" bDef_InfScan = "1" />
+	</LaserConfig>
+
+	<ManualInterfaceConfig>
+		<Interface HandControl = "1" />
+		<Manual MaxSpeed = "80" CurrentSpeed = "50" />
+	</ManualInterfaceConfig>
+
+	<RoomMissionConfig>
+		<RoomMission Room1 = "7532" Room2 = "7532" Room3 = "743" Room4 = "2" Room5 = "715321" />
+	</RoomMissionConfig>
+
+	<SV-BasicConfig>
+		<RobotPos x = "26" y = "273" />
+		<RootHandle x = "0" y = "0" />
+		<StartPos x = "26" y = "275" />
+		<EndPos x = "584" y = "294" />
+		<FindBallEn FindBallEn="0001" />
+		<LivRMDoor x = "000" y = "000" />
+		<LivRMCen x = "204" y = "100" />
+		<DinRMDoor x = "234" y = "354" />
+		<DinRMCen x = "154" y = "394" />
+		<LibDoor x = "569" y = "164" />
+		<LibCen x = "454" y = "104" />
+		<BedRMDoor x = "424" y = "364" />
+		<BedRMCen x = "444" y = "364" />
+		<ChrgDoor x = "324" y = "554" />
+		<ChrgCen x = "324" y = "589" />
+	</SV-BasicConfig>
+	
+	<DirectionObject>
+	    <LivingRM_Sofa	x="005" y="463" Width="080" Height="140" Angle="0"/>
+	    <LivingRM_Table	x="115" y="487" Width="060" Height="090" Angle="0"/>
+	    <LivingRM_Cabinet	x="259" y="463" Width="040" Height="140" Angle="0"/>
+	    <DiningRM_Table	x="040" y="070" Width="080" Height="160" Angle="0"/>
+	    <DiningRM_Chair	x="130" y="127" Width="045" Height="045" Angle="0"/>  
+	    <Library_Desk	x="303" y="450" Width="060" Height="120" Angle="0"/>
+	    <Library_Chair	x="370" y="487" Width="045" Height="045" Angle="0"/>
+	    <Library_Cabinet	x="453" y="563" Width="120" Height="040" Angle="0"/>
+	    <BedRM_Bed		x="423" y="085" Width="180" Height="130" Angle="0"/>
+	    <DiningRM_door	x="000" y="000" Width="000" Height="000" Angle="0"/>
+	    <BedRM_door		x="000" y="000" Width="000" Height="000" Angle="0"/>
+	    <ChargeArea		x="000" y="000" Width="000" Height="000" Angle="0"/>
+	    <EndArea		x="000" y="000" Width="000" Height="000" Angle="0"/>
+	</DirectionObject>
+
+	<LaserConfig>
+		<LaserConfig />??
+	</LaserConfig>
+
+	<ManualDirection>
+	    <Vector x="0" y="0" />
+	    <Rotate w="0" />
+	 </ManualDirection>
+
+	<StraConfig>
+		<Stra_Astar PathErrRange = "45" AchieveErrRange = "25" />
+		<Stra_Avoid StartAngle_du = "-90" ScanLineSize = "61" ScanLineScale_du = "3" SafeRange = "70" SafeArc_D = "60" SafeArc_A = "60" AvoidConfig1 = "1.2" AvoidForce_du = "130" FixDirect = "0" />
+		<Stra_MotorCommand MaxSpeed = "63" MoveAddition = "1" RotateAddition = "1" />
+		<Stra_PathPlan DetourConst = "85" />
+		<Stra_VelocityControl dis_max = "100" dis_min = "100" spd_max = "127" spd_min = "127" sita_max = "1.047197552" sita_min = "1.047197552" w_max = "21" w_min = "9" />
+	</StraConfig>
+</Status>		
