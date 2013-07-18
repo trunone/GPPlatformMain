@@ -1,12 +1,17 @@
-/*
- *   Task.h
- *
- *   Author: ROBOTIS
- *
- */
+//=============================================
+//File name: Stra_Task
+//
+//Author   :Hsieh Ming-Hua
+//          Transplant form 2012 SKS project
+//Phone    :0921307020
+//E-mail   :ta180109@hotmail.com
+//Update   :2013/07/17
+//
+//Function :The room patrol strategy for sks
+//===============================================
 
-#ifndef _Task_H_
-#define _Task_H_
+#ifndef Stra_Task_H
+#define Stra_Task_H
 
 #include <stdio.h>
 #include <string.h>

@@ -6,6 +6,7 @@
 #include "ParticleFilter.h"
 #include <time.h>
 #include <math.h>
+#include <stdlib.h>
 
 //#pragma package(smart_init)
 //---------------------------------------------------------------------------
@@ -207,7 +208,9 @@ string TLocParticleFilter::EvaluatuonParticles()
             while(k<i){
 
                 if( this->Particles[i].Probabilty > TempParticles[k].Probabilty){
-                    TempParticles.insert(&TempParticles[k] , this->Particles[i])  ;
+                    //original: TempParticles.insert(&TempParticles[k], this->Particles[i]);
+                    vector<tsParticle>::iterator it = TempParticles.begin();
+                    TempParticles.insert(it+k , this->Particles[i]);
                     break;
                 }
                 k++;

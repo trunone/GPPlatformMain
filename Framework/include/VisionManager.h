@@ -11,7 +11,7 @@
 #include <list>
 #include <fstream>
 #include <iostream>
-#include "Status.h"
+#include "VisionStatus.h"
 #include "VisionModule.h"
 
 #include "opencv2/objdetect/objdetect.hpp"

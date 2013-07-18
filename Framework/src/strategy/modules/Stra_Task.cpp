@@ -5,8 +5,11 @@
  *
  */
 
-#include <stdio.h>
-#include "Task.h"
+#include "Stra_Task.h"
+
+// for use M_PI
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace Robot;
 
@@ -20,8 +23,8 @@ Task::Task()
 
 Task::~Task()
 {
-
 }
+
 /*
 Stra_Task::Stra_Task()
 :TCommonUnit("./Strategy/StraConfig/Stra_Task.txt", 0 )
@@ -41,23 +44,35 @@ Stra_Task::Stra_Task()
     Past_RoomCnt  = -1;
     TouchCnt      = 0;
 
+    PastScanLineData = new int[24];
 
     //Room3StartPos = aVector(195,245);
 }
 */
-
-/*string Stra_Task::ParameterReset(void)
-=======*/
-void Task::Initialize()
+/*
+string Stra_Task::ParameterReset(void)
 {
+    string str_ = this->Caption +" ParameterReset";
+    //---
+
+    //---
+    this->bNewParameter = false;
+    return str_;
+}
+*/
+//---------------------------------------------------------------------------
+void Task::Initialize(void)
+{
+   // string str_ = this->Caption +" Initial";
+
     FlagTaskFinish      = false;
     FlagSetInitialData  = false;
+
     GotoRoomStep  = 0;
     ActiveState   = etIdle;
     DoorState     = false;
     Past_RoomCnt  = -1;
     TouchCnt      = 0;
-    PastScanLineData = new int[24];
    // return str_;
 }
 //---------------------------------------------------------------------------
@@ -157,6 +172,7 @@ void Task::Process(void)
         {
         case 0: // 到房間門口
             ActiveState =  etAStar;
+           
             if( !FlagSetInitialData )
                     SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
         break;
@@ -245,7 +261,7 @@ void Task::WaitCatchball()
 {
     ActiveState = etIdle;
     if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
-    {//*/
+    { //*/
         //Info->StraInfo->Room.Cnt++;
         //GotoRoomStep = 0;
         GotoRoomStep++;
@@ -262,9 +278,9 @@ void Task::SetAStar( TCoordinate  Goal )
 {
     FlagSetInitialData = true;
     StartPos = LocationStatus::Position;
-    GoalPos = Goal;
+    GoalPos  = Goal;
 
-    StrategyStatus::AStarPath.Status = etMotion;
+    StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
 }
 //---------------------------------------------------------------------------
 bool Task::MotionToPosition( TCoordinate  Goal )
@@ -379,3 +395,120 @@ bool Task::Backward()
     }
 }
 //---------------------------------------------------------------------------
+/*bool __fastcall Stra_Task::WaitDoorOpen()
+{
+    Info->LocInfo->FlagEvaluatuonEnable = false;
+    
+    int TmpCnt = 0;
+    if( !FlagSetInitialData )
+    {
+        FlagSetInitialData = true;
+        for(int i=0; i<24 ; i++ )
+        {
+            PastScanLineData[i] = Info->LocInfo->ScanLineData[i];
+        }
+        return false;
+    }
+    else
+    {
+        for(int i=0; i< 24 ; i++ )
+        {
+            if( Info->LocInfo->ScanLineData[i] - PastScanLineData[i] > 30 )  TmpCnt++;
+            
+            PastScanLineData[i] = Info->LocInfo->ScanLineData[i];
+        }
+        return ( TmpCnt > 1 )? true: false;
+    }
+}  //*/
+//---------------------------------------------------------------------------
+/*void __fastcall Stra_Task::SpecialRoom3()
+{
+        switch( GotoRoomStep )
+        {
+        //--------------------------
+        case 0:     //到門口旁偏移的特殊位置
+            ActiveState =  etAStar;
+
+            if( !FlagSetInitialData )
+                SetAStar( Room3StartPos );
+        break;
+        //--------------------------
+        case 1:     //轉向到房間門口的方向
+            ActiveState = etTurnToAngle;
+            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door - Room3StartPos ).Angle();
+
+        break;
+        //--------------------------
+        case 2:    // 關閉修正移動到門口
+            ActiveState = etMotionToPos;
+            Info->LocInfo->FlagEvaluatuonEnable = false;
+            GoalPos = Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door;
+        break;
+        //--------------------------
+        case 3:    // 關閉修正轉向房間
+            ActiveState = etTurnToAngle;
+            Info->LocInfo->FlagEvaluatuonEnable = false;
+            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Center -
+                         Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door).Angle();
+        break;
+        //--------------------------
+        case 4:    // 等待門關起來 右打開
+            ActiveState =  etWaitDoorOpen;
+
+        break;
+        //--------------------------
+        default:
+            WaitCatchball();
+        break;
+        }
+}  //*/
+/*---------------------------------------------------------------------------
+void __fastcall Stra_Task::SpecialRoom1()
+{
+        switch( GotoRoomStep )
+        {
+        //--------------------------
+        case 0:     //到前一個房間的門口
+            ActiveState =  etAStar;
+            if( !FlagSetInitialData )
+                SetAStar( Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt-1].Door );
+        break;
+        //--------------------------
+        case 1:     //轉向目前房間的門口
+            ActiveState = etTurnToAngle;
+            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Center -
+                         Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door).Angle();
+        break;
+        //--------------------------
+        case 2:    // 使用雷射校正角度
+            ActiveState = etSpecialTurn;
+            SpecialTurn();
+
+        break;
+        //--------------------------
+        case 3:    // 使用雷射移動至門口
+            ActiveState =  etSpecialMove;
+
+            if( !FlagSetInitialData )
+            {
+                FlagSetInitialData = true;
+                DoorState    = Info->HdwInfo->LaserInfo.ScanArray[35] > 300 ? true : false;
+                Past_LaserData = Info->HdwInfo->LaserInfo.ScanArray[35];
+            }
+            SpecialDistance = ( DoorState )? 180 : 30 ;
+
+        break;
+        //--------------------------
+        case 4:    // 等待門關起來 右打開
+            ActiveState =  etWaitDoorOpen;
+
+        break;
+        //--------------------------
+        default:
+            WaitCatchball();
+        break;
+        }
+}
+//----------------------------------------------------------------------------*/
+
+

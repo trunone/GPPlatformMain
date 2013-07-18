@@ -2,10 +2,11 @@
 
 #ifndef ParticleFilterH
 #define ParticleFilterH
-#include<vector.h>
-#include "LocUnit.h"
+#include <vector>
+#include "LocationStatus.h"
+//#include "LocUnit.h"
 #include "ProbabilityEvaluation.h"
-#include "Normalrand.h"
+//#include "Normalrand.h"
 
 #define Def_ResamplingDis 0
 #define Def_ResamplingAngle 0
@@ -21,7 +22,9 @@
 #define BPKeepRate      0.3      //Bast Particle keeprate
 #define SearchRate      0.03       //5% of map size;
 
-class TLocParticleFilter : public TLocUnit
+using namespace std;
+
+class TLocParticleFilter : public LocationStatus
 {
     typedef struct{
         TCoordinate Position;
@@ -60,7 +63,7 @@ public:
 //----Main flow step--------------------------------------------
     string InitialParticles(int ParticlesNum);
     string InitialParticles(int ParticlesNum,int x ,int y , float r,float range);
-    //string  __fastcall EnvironmentInfoUpdate();
+    //string EnvironmentInfoUpdate();
     // Prediction step
     string PredictionParticles();
     string CorrectParticles();

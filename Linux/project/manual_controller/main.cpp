@@ -42,7 +42,7 @@ int main()
 
 	printf( "\n[Manual Controller for GPPlatform %s]\n", PROGRAM_VERSION);
 
-	keyHandle_ = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB2", &ErrorCode);
+	keyHandle_ = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", "USB1", &ErrorCode);
 
 	if(keyHandle_ != NULL)
 	{

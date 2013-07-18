@@ -19,8 +19,7 @@ CXXFLAGS += -O2 -DLINUX -Wall -shared -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall -shared $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ldl
 
-OBJS =  ../../Framework/src/Status.o\
-	../../Framework/src/location/LocationManager.o\
+OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
         ../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
@@ -29,16 +28,16 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/math/TCoordinate.o\
 	../../Framework/src/math/Normalrand.o\
 	../../Framework/src/vision/VisionManager.o\
-        ../../Framework/src/strategy/StrategyManager.o\
+	../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
-        ../../Framework/src/strategy/modules/Motion.o\
 	../../Framework/src/strategy/AstarTool.o\
-        ../../Framework/src/strategy/modules/Task.o\
+        ../../Framework/src/strategy/modules/Stra_Task.o\
 	../../Framework/src/strategy/modules/Stra_FindBall.o\
 	../../Framework/src/strategy/modules/Stra_Avoid.o\
 	../../Framework/src/strategy/modules/Stra_PathPlan.o\
 	../../Framework/src/strategy/modules/Stra_VelocityControl.o\
 	../../Framework/src/strategy/modules/Stra_AStar.o\
+	../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/Motors.o\
 	LinuxStrategyTimer.o\
         LinuxVisionTimer.o\

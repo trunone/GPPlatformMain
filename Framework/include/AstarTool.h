@@ -1,5 +1,14 @@
-//---------------------------------------------------------------------------
-
+//=============================================
+//File name: AstarTool
+//
+//Author   :Hsieh Ming-Hua
+//          Transplant form 2012 SKS project
+//Phone    :0921307020
+//E-mail   :ta180109@hotmail.com
+//Update   :2013/07/10
+//
+//Function :AStar alogrithm
+//===============================================
 #ifndef AstarH
 #define AstarH
 #include "StrategyModule.h"

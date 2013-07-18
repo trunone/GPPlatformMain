@@ -3,6 +3,8 @@
  *
  *   Author: Wu Chih-En
  */
+#define ENABLE_STRATEGY
+
 
 #include <stdio.h>
 #include <unistd.h>
@@ -25,11 +27,12 @@
 
 using namespace Robot;
 using namespace std;
-using namespace Robot;
 
 Motors motors;
 qrk::Urg_driver urg;
 CvCapture *VisionCapture;
+
+void change_current_dir()
 
 void change_current_dir()
 {
@@ -60,25 +63,27 @@ int main(void)
     motors.OpenDeviceAll();
     motors.SetEnableAll();
     motors.ActivateProfileVelocityModeAll();
+    VisionCapture = cvCaptureFromCAM( -1 );
 
-	VisionCapture = cvCaptureFromCAM( -1 );
-
-    ////////////////// Framework Initialize ////////////////////////////
+   ////////////////// Framework Initialize ////////////////////////////
+#ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
     {
-        printf("Fail to initialize Strategy Manager!\n");
+        printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
 
-    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
+#endif
     //-----------------------------------------------------------------------------------//
-
+#ifdef ENABLE_LOCATION
     if(LocationManager::GetInstance()->Initialize(&urg) == false)
     {
-        printf("Fail to initialize Strategy Manager!\n");
+        printf("Fail to initialize Location Manager!\n");
         return 1;
     }
 
@@ -86,71 +91,83 @@ int main(void)
 
     LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
     location_timer->Start();
-    ////-----------------------------------------------------------------------------------//
-
+#endif
+    //-----------------------------------------------------------------------------------//
+#ifdef ENABLE_STRATEGY
     if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)ReadVision::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+
+    StrategyManager::GetInstance()->SetEnable(true);
 
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
+#endif
     ///////////////////////////////////////////////////////////////////
-//    StrategyManager::GetInstance()->SetEnable(true);
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-//
-	while(1) {
 
-        TiXmlDocument doc("Status.xml");
-        doc.LoadFile();
-        TiXmlPrinter printer;
-        printer.SetStreamPrinting();
-        //TiXmlDocument doc;
-        //doc.Parse(printer.CStr());
-        TiXmlElement* root = doc.RootElement();//Status
-        TiXmlElement* element = root->FirstChildElement();//ColorModel
-        TiXmlElement* model = element->FirstChildElement();//Model
-        TiXmlAttribute* type= model->FirstAttribute();//Model type
-        const char *www="www";
-        double x[7]={0.1,0.2,0.3,0.4,0.5,0.6,0.7};
-        int i=0;
+    try
+    {
+        while(1) {
 
-        const char *fileName = "string2xml";
-        cout<<type->Value()<<endl;
-        for(;model != NULL;model=model->NextSiblingElement()){
-            TiXmlElement* modelchild=model->FirstChildElement();
-            for(;modelchild != NULL;modelchild=modelchild->NextSiblingElement()){//get node information
-                string informationType=modelchild->Value();
-                string information=modelchild->FirstAttribute()->Value();
-                modelchild->SetDoubleAttribute(www,x[i++]);
-                //modelchild->RemoveAttribute(www);
-                //doc.SaveFile(fileName);
-                doc.SaveFile();
-                cout <<	informationType << ":" << information << endl;
-            }
-        }
-        doc.Accept( &printer );
-        fscanf( stdout, "%s", printer.CStr() );
-        printf("%s", printer.CStr());
-        int port=1234;
-        string aa="a";
-        char w;
-        w=0x08;
-
-        LinuxServer new_sock;
-        LinuxServer server (port);
-
-        while(true) {
-            cout << "[Waiting..]" << endl;         
+            string xml;
+            LinuxServer new_sock;
+            LinuxServer server(10373);
+	
+            cout << "[Waiting..]" << endl;
             server.accept ( new_sock );
             cout << "[Accepted..]" << endl;	
-            new_sock << printer.CStr();
-            //printf("%s", printer.CStr());
-            cout << "[success]" << endl;		
+
+            try
+            {
+                while(true){	
+                    TiXmlDocument doc;
+                    new_sock >> xml;
+                    cout << "[success recv]" << endl;
+                    doc.Parse(xml.c_str());
+                    TiXmlElement* root = doc.FirstChildElement("Command");
+                    if(root != NULL) {
+                        TiXmlElement* element;
+                        element = root->FirstChildElement("ManualDirection");
+                        if(element != NULL) {
+                            TiXmlElement* child;
+                            child = element->FirstChildElement("Rotate");
+                            if(child != NULL){
+                                child->Attribute("w", &StrategyStatus::w);
+                            }
+                            child = element->FirstChildElement("Vector");
+                            if(child != NULL){
+                                child->Attribute("x", &StrategyStatus::x);
+                                child->Attribute("y", &StrategyStatus::y);
+                            }
+                        }
+                    }
+                    root = doc.FirstChildElement("Config");
+                    if(root != NULL) {
+                        TiXmlElement* element;
+                        element = root->FirstChildElement("Vision");
+                        if(element != NULL){
+                            cout<<"I got vision"<<endl;
+                        }
+                    }
+                    cout << StrategyStatus::x << StrategyStatus::y << StrategyStatus::w << endl;
+                    cout << StrategyStatus::Motor1Speed << StrategyStatus::Motor2Speed << StrategyStatus::Motor3Speed << endl;
+                }
+            }
+            catch ( LinuxSocketException& )
+            {
+                cout << "[Disconnected]" << endl;
+            }
         }
+    }
+    catch ( LinuxSocketException& e )
+    {
+        cout << "Exception was caught:" << e.description() << "\nExiting.\n";
+    }
     return 0;
 }

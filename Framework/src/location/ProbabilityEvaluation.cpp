@@ -1,6 +1,9 @@
 #include "ProbabilityEvaluation.h"
 #include <math.h>
-#include "ImgUnit.h"
+#include "Status.h"
+#include "LocationStatus.h"
+#include "VisionStatus.h"
+
 
 TLocProbEvaluation::TLocProbEvaluation()
 {
@@ -12,9 +15,10 @@ TLocProbEvaluation::~TLocProbEvaluation()
     delete this->VirtualLineMap;
 }
 
-void TLocProbEvaluation::AssignVirtualMap(tsBmpPtr *VirtiulMap)
+void TLocProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
 {
-    this->VirtualLineMap = new tsBmpPtr;
+    this->VirtualLineMap = new VisionStatus::tsBmpPtr;
+
     this->VirtualLineMap->Width  = VirtiulMap->Width;
     this->VirtualLineMap->Height = VirtiulMap->Height;
     this->VirtualLineMap->Dimension = 1; //
@@ -27,16 +31,16 @@ void TLocProbEvaluation::AssignVirtualMap(tsBmpPtr *VirtiulMap)
 
     for(i=0 ; i< this->VirtualLineMap->Height ;i++){
         for(j=0 ; j< this->VirtualLineMap->Width ;j++){
-            bColor = PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
+            bColor = VisionStatus::PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
             this->VirtualLineMap->SetColor(j,i,&bColor);
         }
     }
-    this->enable = true;
+    Status::enable = true;
 }
 void TLocProbEvaluation::ScanLinesInfoUpdate()
 {
     //be carefull this point point to Source Image
-    tsBmpPtr SampleImg = this->Info->ImgInfo->Image;
+    VisionStatus::tsBmpPtr SampleImg = VisionStatus::Image;
 
     float HeadAngle = 0;
     float DetectAngle=0;
@@ -45,11 +49,11 @@ void TLocProbEvaluation::ScanLinesInfoUpdate()
     TCoordinate Center,detectP;
     unsigned char Threshold ;
 
-    Center.x = this->Info->ImgInfo->ProcessSetting.CenterX;
-    Center.y = this->Info->ImgInfo->ProcessSetting.CenterY;
-    InterR   = this->Info->ImgInfo->ProcessSetting.InternalRadius;
-    ExterR   = this->Info->ImgInfo->ProcessSetting.ExternalRadius;
-    Threshold = this->Info->ImgInfo->ProcessSetting.BinaryThreshold;
+    Center.x = VisionStatus::ProcessSetting.CenterX;
+    Center.y = VisionStatus::ProcessSetting.CenterY;
+    InterR   = VisionStatus::ProcessSetting.InternalRadius;
+    ExterR   = VisionStatus::ProcessSetting.ExternalRadius;
+    Threshold = VisionStatus::ProcessSetting.BinaryThreshold;
 
     bool DetColor;
 
@@ -58,25 +62,25 @@ void TLocProbEvaluation::ScanLinesInfoUpdate()
 
         DetectAngle =  HeadAngle  +  2*M_PI/ScanLinesNun*i;
 
-        detectP = Center + InterR*aVector(cos(DetectAngle),sin(DetectAngle));
+        detectP = Center + InterR*(TCoordinate::aVector(cos(DetectAngle),sin(DetectAngle)));
 
-        DetColor = PixelBinarization( SampleImg.GetColor(detectP.x,detectP.y) ,  Threshold );
+        DetColor = VisionStatus::PixelBinarization( SampleImg.GetColor(detectP.x,detectP.y) ,  Threshold );
 
         while(DetColor == ! EdgeColor){
 
             detectP.x += cos(DetectAngle);
             detectP.y += sin(DetectAngle);
             if((detectP-Center).Length()>ExterR) break;
-            DetColor = PixelBinarization( SampleImg.GetColor(detectP.x,detectP.y) ,  Threshold );
+            DetColor = VisionStatus::PixelBinarization( SampleImg.GetColor(detectP.x,detectP.y) ,  Threshold );
            // SampleImg.SetColor(detectP.x,detectP.y,cRED);   //for test to draw Info.img
         }
 
         if((detectP-Center).Length()<=ExterR){
             this->CameraImageScanLinePixels[i] = (detectP-Center).Length();
             //-------------------------------------------------------------------
-            if(this->Info->ImgInfo->DisModel.enable){
+            if(VisionStatus::DisModel.enable){
                 this->CameraImageScanLineDistance[i] =
-                    this->Info->ImgInfo->DisModel.Pixel2Distance((int)this->CameraImageScanLinePixels[i]);
+                    VisionStatus::DisModel.Pixel2Distance((int)this->CameraImageScanLinePixels[i]);
             }
             else this->CameraImageScanLineDistance[i] = NoDet;
             //-------------------------------------------------------------------
@@ -107,7 +111,7 @@ float* TLocProbEvaluation::ScanLines(int x,int y ,float angle, float starR, floa
 
         DetectAngle =  angle + Def_ScanStarAngle +  Def_ScanScale*i;
 
-        detectP = Pos + starR*aVector(cos(DetectAngle),sin(DetectAngle));
+        detectP = Pos + starR*(TCoordinate::aVector(cos(DetectAngle),sin(DetectAngle)));
 
         if(this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
         DetColor = *this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
@@ -167,27 +171,27 @@ double TLocProbEvaluation::GetProbability(int x,int y ,float angle)
 }
 double TLocProbEvaluation::GetStandandDeviation(double ExpectationDis)
 {
-    double DisTamp = this->Info->ImgInfo->DisModel.DisPixel_Model[0].Distance;
+    double DisTamp = VisionStatus::DisModel.DisPixel_Model[0].Distance;
     int i=0;
     while(ExpectationDis > DisTamp){
         i++;
-        if(i>=this->Info->ImgInfo->DisModel.ModelNum) break;
-        DisTamp = this->Info->ImgInfo->DisModel.DisPixel_Model[i].Distance;
+        if(i>=VisionStatus::DisModel.ModelNum) break;
+        DisTamp = VisionStatus::DisModel.DisPixel_Model[i].Distance;
 
     }
     double disMax,disMin;
 
-    if( (i-PixelSigma) > 0 && (i+PixelSigma) < this->Info->ImgInfo->DisModel.ModelNum-2 ){
-        disMax = this->Info->ImgInfo->DisModel.DisPixel_Model[i+PixelSigma].Distance;
-        disMin = this->Info->ImgInfo->DisModel.DisPixel_Model[i-PixelSigma].Distance;
+    if( (i-PixelSigma) > 0 && (i+PixelSigma) < VisionStatus::DisModel.ModelNum-2 ){
+        disMax = VisionStatus::DisModel.DisPixel_Model[i+PixelSigma].Distance;
+        disMin = VisionStatus::DisModel.DisPixel_Model[i-PixelSigma].Distance;
     }
     else if( (i-PixelSigma) < 0 ){
-        disMax = this->Info->ImgInfo->DisModel.DisPixel_Model[PixelSigma-1].Distance;
-        disMin = this->Info->ImgInfo->DisModel.DisPixel_Model[0].Distance;
+        disMax = VisionStatus::DisModel.DisPixel_Model[PixelSigma-1].Distance;
+        disMin = VisionStatus::DisModel.DisPixel_Model[0].Distance;
     }
-    else if( (i+PixelSigma) > this->Info->ImgInfo->DisModel.ModelNum-2  ){
-        disMax = this->Info->ImgInfo->DisModel.DisPixel_Model[this->Info->ImgInfo->DisModel.ModelNum-2].Distance;
-        disMin = this->Info->ImgInfo->DisModel.DisPixel_Model[this->Info->ImgInfo->DisModel.ModelNum - PixelSigma].Distance;
+    else if( (i+PixelSigma) > VisionStatus::DisModel.ModelNum-2  ){
+        disMax = VisionStatus::DisModel.DisPixel_Model[VisionStatus::DisModel.ModelNum-2].Distance;
+        disMin = VisionStatus::DisModel.DisPixel_Model[VisionStatus::DisModel.ModelNum - PixelSigma].Distance;
     }
     if(  (disMax-disMin)/2 <= 30){
         return 30;
