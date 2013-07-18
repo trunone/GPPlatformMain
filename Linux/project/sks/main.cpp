@@ -5,7 +5,6 @@
  */
 #define ENABLE_STRATEGY
 
-
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
@@ -31,8 +30,6 @@ using namespace std;
 Motors motors;
 qrk::Urg_driver urg;
 CvCapture *VisionCapture;
-
-void change_current_dir()
 
 void change_current_dir()
 {
@@ -104,6 +101,22 @@ int main(void)
 
     StrategyManager::GetInstance()->SetEnable(true);
 
+    change_current_dir();
+
+    TiXmlDocument doc;
+
+    motors.OpenDeviceAll();
+    motors.SetEnableAll();
+    motors.ActivateProfileVelocityModeAll();
+    VisionCapture = cvCaptureFromCAM( -1 );
+
+   ////////////////// Framework Initialize ////////////////////////////
+#ifdef ENABLE_VISION
+    if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
+    {
+        printf("Fail to initialize Vision Manager!\n");
+        return 1;
+    }
     LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     stragey_timer->Start();
 #endif
@@ -111,9 +124,11 @@ int main(void)
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
+
     try
     {
         while(1) {
+
 
             string xml;
             LinuxServer new_sock;
@@ -171,3 +186,4 @@ int main(void)
     }
     return 0;
 }
+

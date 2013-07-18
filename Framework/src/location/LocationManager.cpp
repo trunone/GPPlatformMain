@@ -33,12 +33,14 @@ bool LocationManager::Initialize(Urg_driver *urg)
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
-
+	Position = TCoordinate::aVector(26,273);
+    	Handle   = 0.0;
+    	FlagEvaluatuonEnable = true;
+    	FlagCoerceEvaluatuon = false;
 	LocationStatus::Position = TCoordinate::aVector(26,273);
     	LocationStatus::Handle   = 0.0;
     	LocationStatus::FlagEvaluatuonEnable = true;
     	LocationStatus::FlagCoerceEvaluatuon = false;
-
 
     urg = urg;
 

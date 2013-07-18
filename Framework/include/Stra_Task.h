@@ -10,8 +10,15 @@
 //Function :The room patrol strategy for sks
 //===============================================
 
-#ifndef Stra_Task_H
-#define Stra_Task_H
+/*
+ *   Task.h
+ *
+ *   Author: ROBOTIS
+ *
+ */
+
+#ifndef _Task_H_
+#define _Task_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -49,7 +56,10 @@ namespace Robot
 
     		etBackward,
 
-    		etWaitDoorOpen
+    		etWaitDoorOpen,
+
+		etMakeSoundMove		
+		
 
 	}teAvtiveState;
 
@@ -83,11 +93,15 @@ namespace Robot
 
     		bool TouchButton();		
 
-    		bool Backward();		
+    		bool Backward();
+
+		bool MakeSoundMove();		
 
     		//=============
 
-    		void WaitCatchball();		
+    		void WaitCatchball();
+		
+		void MakeSound();		
 
     		void SpecialRoom3();
 

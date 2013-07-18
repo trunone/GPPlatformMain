@@ -33,7 +33,7 @@ namespace Robot
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
-		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etCatchFinish }teSKSState;
+		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
