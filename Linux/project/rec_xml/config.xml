@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Status>
+<Config>
+  <DirectionObject>
+    <LivingRM_Sofa x="5" y="463" Width="80" Height="140" Angle="0" />
+    <LivingRM_Table x="115" y="487" Width="60" Height="90" Angle="0" />
+    <LivingRM_Cabinet x="259" y="463" Width="40" Height="140" Angle="0" />
+    <DiningRM_Table x="40" y="70" Width="80" Height="160" Angle="0" />
+    <DiningRM_Chair x="130" y="127" Width="45" Height="45" Angle="0" />
+    <Library_Desk x="303" y="450" Width="60" Height="120" Angle="0" />
+    <Library_Chair x="370" y="487" Width="45" Height="45" Angle="0" />
+    <Library_Cabinet x="453" y="563" Width="120" Height="40" Angle="0" />
+    <BedRM_Bed x="423" y="85" Width="180" Height="130" Angle="0" />
+    <DiningRM_door x="0" y="0" Width="0" Height="0" Angle="0" />
+    <BedRM_door x="0" y="0" Width="0" Height="0" Angle="0" />
+    <ChargeArea x="0" y="0" Width="0" Height="0" Angle="0" />
+    <EndArea x="0" y="0" Width="0" Height="0" Angle="0" />
+  </DirectionObject>
+  <ColorModel>
+    <Blue HueMax="0.5" HueMin="0" SaturationMax="0.6" SaturationMin="0" BrightnessMax="1" BrightnessMin="0" />
+    <Green HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
+    <Red HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
+  </ColorModel>
+  <ParameterModel>
+    <R_Ball x="5" y="5" />
+    <G_Ball x="5" y="5" />
+    <B_Ball x="5" y="5" />
+  </ParameterModel>
+
+  <ManualDirection>
+    <Vector x="0" y="0" />
+    <Rotate w="0" />
+    <Camera ang="90" />
+    <TakeBall ballFlag="0" />
+  </ManualDirection>
+
+
 	<AStar_PathFinder>
 		<MapGrid_Config length = "61" Width = "61" NodeResolution = "10"/>
 	
@@ -37,30 +71,10 @@
 		<ChrgCen x = "324" y = "589" />
 	</SV-BasicConfig>
 	
-	<DirectionObject>
-	    <LivingRM_Sofa	x="005" y="463" Width="080" Height="140" Angle="0"/>
-	    <LivingRM_Table	x="115" y="487" Width="060" Height="090" Angle="0"/>
-	    <LivingRM_Cabinet	x="259" y="463" Width="040" Height="140" Angle="0"/>
-	    <DiningRM_Table	x="040" y="070" Width="080" Height="160" Angle="0"/>
-	    <DiningRM_Chair	x="130" y="127" Width="045" Height="045" Angle="0"/>  
-	    <Library_Desk	x="303" y="450" Width="060" Height="120" Angle="0"/>
-	    <Library_Chair	x="370" y="487" Width="045" Height="045" Angle="0"/>
-	    <Library_Cabinet	x="453" y="563" Width="120" Height="040" Angle="0"/>
-	    <BedRM_Bed		x="423" y="085" Width="180" Height="130" Angle="0"/>
-	    <DiningRM_door	x="000" y="000" Width="000" Height="000" Angle="0"/>
-	    <BedRM_door		x="000" y="000" Width="000" Height="000" Angle="0"/>
-	    <ChargeArea		x="000" y="000" Width="000" Height="000" Angle="0"/>
-	    <EndArea		x="000" y="000" Width="000" Height="000" Angle="0"/>
-	</DirectionObject>
-
 	<LaserConfig>
 		<LaserConfig />??
 	</LaserConfig>
 
-	<ManualDirection>
-	    <Vector x="0" y="0" />
-	    <Rotate w="0" />
-	 </ManualDirection>
 
 	<StraConfig>
 		<Stra_Astar PathErrRange = "45" AchieveErrRange = "25" />
@@ -69,4 +83,5 @@
 		<Stra_PathPlan DetourConst = "85" />
 		<Stra_VelocityControl dis_max = "100" dis_min = "100" spd_max = "127" spd_min = "127" sita_max = "1.047197552" sita_min = "1.047197552" w_max = "21" w_min = "9" />
 	</StraConfig>
-</Status>		
+</Config>
+		
