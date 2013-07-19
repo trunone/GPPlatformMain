@@ -55,11 +55,14 @@ int main(void)
 
     change_current_dir();
 
+   TiXmlDocument doc;
+
     motors.OpenDeviceAll();
+    motors.SetEnableAll();
+    motors.ActivateProfileVelocityModeAll();
+    VisionCapture = cvCaptureFromCAM( -1 );
 
-	VisionCapture = cvCaptureFromCAM( -1 );
-
-    ////////////////// Framework Initialize ////////////////////////////
+   ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
     {
@@ -68,6 +71,8 @@ int main(void)
     }
 
     //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+
+    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -97,17 +102,12 @@ int main(void)
 
     StrategyManager::GetInstance()->SetEnable(true);
 
-    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
-    stragey_timer->Start();
-#endif
     ///////////////////////////////////////////////////////////////////
-
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
     try
     {
         while(1) {
-
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);

@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string>
 #include "StrategyManager.h"
 
 using namespace Robot;
