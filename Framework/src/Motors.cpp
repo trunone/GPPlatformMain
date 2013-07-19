@@ -197,6 +197,16 @@ int Motors::GetIncEncoderParameter(short device_id, unsigned int* pEncoderResolu
     }
     return 0;
 }
+int Motors::GetPositionIs(short device_id,long* pPositionIs)
+{
+    mErrorCode = 0;
+    if(!VCS_GetPositionIs(mMotorHandle[device_id], NODE_ID,pPositionIs,&mErrorCode))
+    {
+        fprintf(stderr, "Get Position Is failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+}
+
 int Motors::GetVelocityIs(short device_id, long* pVelocityIsAveraged)
 {
     mErrorCode = 0;
