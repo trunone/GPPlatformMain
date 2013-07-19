@@ -1,21 +1,20 @@
 #include "ProbabilityEvaluation.h"
 #include <math.h>
-#include "Status.h"
 #include "LocationStatus.h"
 #include "VisionStatus.h"
+using namespace Robot;
 
-
-TLocProbEvaluation::TLocProbEvaluation()
+ProbEvaluation::ProbEvaluation()
 {
     this->VirtualLineMap = NULL;
 }
-TLocProbEvaluation::~TLocProbEvaluation()
+ProbEvaluation::~ProbEvaluation()
 {
     delete[] this->VirtualLineMap->ImgData;
     delete this->VirtualLineMap;
 }
 
-void TLocProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
+void ProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
 {
     this->VirtualLineMap = new VisionStatus::tsBmpPtr;
 
@@ -35,9 +34,9 @@ void TLocProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
             this->VirtualLineMap->SetColor(j,i,&bColor);
         }
     }
-    Status::enable = true;
+    LocationStatus::enable = true;
 }
-void TLocProbEvaluation::ScanLinesInfoUpdate()
+void ProbEvaluation::ScanLinesInfoUpdate()
 {
     //be carefull this point point to Source Image
     VisionStatus::tsBmpPtr SampleImg = VisionStatus::Image;
@@ -93,7 +92,7 @@ void TLocProbEvaluation::ScanLinesInfoUpdate()
     }
 }
 
-float* TLocProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float stopR)
+float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float stopR)
 {
     float* ScanLines = new float[ScanLinesNun];
 
@@ -123,7 +122,7 @@ float* TLocProbEvaluation::ScanLines(int x,int y ,float angle, float starR, floa
 
             if((detectP-Pos).Length() > stopR) break;
             if(this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
-            DetColor = *this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
+            DetColor = *VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
 
             //this->VisualLineMap.SetColor(detectP.x,detectP.y,cRED);   //for test to draw virtualMap.img
         }
@@ -138,7 +137,7 @@ float* TLocProbEvaluation::ScanLines(int x,int y ,float angle, float starR, floa
     return ScanLines;
 }
 
-double TLocProbEvaluation::GetProbability(int x,int y ,float angle)
+double ProbEvaluation::GetProbability(int x,int y ,float angle)
 {
     float * vPosScanLines; //visual position scanLines
     float stopR,startR;
@@ -169,7 +168,7 @@ double TLocProbEvaluation::GetProbability(int x,int y ,float angle)
     //}
     //else return 0;
 }
-double TLocProbEvaluation::GetStandandDeviation(double ExpectationDis)
+double ProbEvaluation::GetStandandDeviation(double ExpectationDis)
 {
     double DisTamp = VisionStatus::DisModel.DisPixel_Model[0].Distance;
     int i=0;
@@ -201,7 +200,7 @@ double TLocProbEvaluation::GetStandandDeviation(double ExpectationDis)
 
 }
 
-double TLocProbEvaluation::NormalDistribution(float sigma , float deviation)
+double ProbEvaluation::NormalDistribution(float sigma , float deviation)
 {
 
    return ( 1/sqrt(2*M_PI*sigma*sigma) ) * exp(-0.5*(deviation/sigma)*(deviation/sigma))*100;

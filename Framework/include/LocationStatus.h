@@ -42,6 +42,8 @@ namespace Robot
 		static bool FlagCoerceEvaluatuon;
 		static TCoordinate Position;
 		static double Handle;
+		static bool FlagNewFeedback;
+		static bool enable;
 	};
 
 
