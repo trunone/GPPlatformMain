@@ -20,12 +20,6 @@
     <Green HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
     <Red HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
   </ColorModel>
-  <ParameterModel>
-    <R_Ball x="5" y="5" />
-    <G_Ball x="5" y="5" />
-    <B_Ball x="5" y="5" />
-  </ParameterModel>
-
   <ManualDirection>
     <Vector x="0" y="0" />
     <Rotate w="0" />

@@ -75,13 +75,9 @@ int main(){
 					cout<<"I got DirectionObject"<<endl;
 				
 				}
-				TiXmlElement* element_ParameterModel=root->FirstChildElement("ParameterModel");
-				if(element_ParameterModel != NULL){
-					cout<<"I got ParameterModel"<<endl;
-				
-				}
 				TiXmlElement* element_ColorModel=root->FirstChildElement("ColorModel");
 				if(element_ColorModel != NULL){
+					ColorModel::GetInstance()->getxml(element_ColorModel);
 					cout<<"I got ColorModel"<<endl;
 				
 				}
@@ -90,8 +86,8 @@ int main(){
 					cout<<"I got ManualInterfaceConfig"<<endl;
 				
 				}
-				TiXmlElement* element_SV-BasicConfig= root->FirstChildElement("SV-BasicConfig");
-				if(element_SV-BasicConfig != NULL){
+				TiXmlElement* element_SV_BasicConfig= root->FirstChildElement("SV-BasicConfig");
+				if(element_SV_BasicConfig != NULL){
 					cout<<"I got SV-BasicConfig"<<endl;
 				
 				}
