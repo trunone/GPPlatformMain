@@ -87,6 +87,12 @@ int main(){
 					cout<<"I got ColorModel"<<endl;
 				
 				}
+				TiXmlElement* element_AStar_PathFinde=root->FirstChildElement("AStar_PathFinde");
+				if(element_AStar_PathFinde != NULL){
+					AstarTool::GetInstance()->loadxml(element_AStar_PathFinde);
+					cout<<"I got AStar_PathFinde"<<endl;
+				
+				}
 				TiXmlElement* element_BasicConfig= root->FirstChildElement("BasicConfig");
 				if(element_BasicConfig != NULL){
 					StrategyStatus::GetInstance()->loadxml(element_BasicConfig,2);
