@@ -29,7 +29,7 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/math/Vector.o\
 	../../Framework/src/vision/VisionStatus.o\
 	../../Framework/src/vision/modules/SegmentationFunction.o\
-	../../Framework/src/vision/modules/Colormodel.o\
+	../../Framework/src/vision/modules/ColorModel.o\
 	../../Framework/src/vision/modules/TCP.o\
         ../../Framework/src/strategy/StrategyManager.o\
 	../../Framework/src/math/TCoordinate.o\
