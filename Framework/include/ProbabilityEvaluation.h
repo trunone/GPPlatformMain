@@ -20,11 +20,12 @@ namespace Robot{
 	{
 	private:
     	double NormalDistribution(float sigma , float deviation); //sigma is  NormalDistribution's standard deviation
-
+		static ProbEvaluation* m_UniqueInstance;
 	public:
     	 ProbEvaluation();
     	~ProbEvaluation();
 
+		static ProbEvaluation* GetInstance() { return m_UniqueInstance; }
     	VisionStatus::tsBmpPtr *VirtualLineMap; //point to systen virtual map;
 
     	float CameraImageScanLinePixels[ScanLinesNun];
@@ -32,11 +33,10 @@ namespace Robot{
     	float *CameraImageScanLineDistance;
     	void AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap);
     	float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
+       	double GetProbability(int x,int y ,float angle);  // get probability of virtual position
 
-	    double GetProbability(int x,int y ,float angle);  // get probability of virtual position
-
-	    double GetStandandDeviation(double ExpectationDis) ;
-	    void ScanLinesInfoUpdate();  //for image
+		double GetStandandDeviation(double ExpectationDis) ;
+		void ScanLinesInfoUpdate();  //for image
 
 
 	    //run    ScanLinesInfoUpdate()  update image scanlines info

@@ -4,34 +4,34 @@
 #include "VisionStatus.h"
 using namespace Robot;
 
+ProbEvaluation* ProbEvaluation::m_UniqueInstance = new ProbEvaluation();
+
 ProbEvaluation::ProbEvaluation()
 {
-    this->VirtualLineMap = NULL;
+    VirtualLineMap = NULL;
 }
 ProbEvaluation::~ProbEvaluation()
 {
-    delete[] this->VirtualLineMap->ImgData;
-    delete this->VirtualLineMap;
+    delete[] VirtualLineMap->ImgData;
+    delete VirtualLineMap;
 }
 
 void ProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
 {
-    this->VirtualLineMap = new VisionStatus::tsBmpPtr;
+    VirtualLineMap = new VisionStatus::tsBmpPtr;
 
-    this->VirtualLineMap->Width  = VirtiulMap->Width;
-    this->VirtualLineMap->Height = VirtiulMap->Height;
-    this->VirtualLineMap->Dimension = 1; //
-    this->VirtualLineMap->ImgData = new unsigned char[  this->VirtualLineMap->Width*
-                                                        this->VirtualLineMap->Height*
-                                                        this->VirtualLineMap->Dimension ];
+    VirtualLineMap->Width  = VirtiulMap->Width;
+    VirtualLineMap->Height = VirtiulMap->Height;
+    VirtualLineMap->Dimension = 1; //
+    VirtualLineMap->ImgData = new unsigned char[VirtualLineMap->Width * VirtualLineMap->Height * VirtualLineMap->Dimension ];
     unsigned char bColor;
     int i,j;
     //unsigned char Threshold = this->Info->ImgInfo->ProcessSetting.BinaryThreshold ;
 
-    for(i=0 ; i< this->VirtualLineMap->Height ;i++){
-        for(j=0 ; j< this->VirtualLineMap->Width ;j++){
+    for(i=0 ; i< VirtualLineMap->Height ;i++){
+        for(j=0 ; j< VirtualLineMap->Width ;j++){
             bColor = VisionStatus::PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
-            this->VirtualLineMap->SetColor(j,i,&bColor);
+            VirtualLineMap->SetColor(j,i,&bColor);
         }
     }
     LocationStatus::enable = true;
@@ -75,19 +75,19 @@ void ProbEvaluation::ScanLinesInfoUpdate()
         }
 
         if((detectP-Center).Length()<=ExterR){
-            this->CameraImageScanLinePixels[i] = (detectP-Center).Length();
+            CameraImageScanLinePixels[i] = (detectP-Center).Length();
             //-------------------------------------------------------------------
             if(VisionStatus::DisModel.enable){
-                this->CameraImageScanLineDistance[i] =
-                    VisionStatus::DisModel.Pixel2Distance((int)this->CameraImageScanLinePixels[i]);
+                CameraImageScanLineDistance[i] =
+                    VisionStatus::DisModel.Pixel2Distance((int)CameraImageScanLinePixels[i]);
             }
-            else this->CameraImageScanLineDistance[i] = NoDet;
+            else CameraImageScanLineDistance[i] = NoDet;
             //-------------------------------------------------------------------
         }
 
         else{
-            this->CameraImageScanLinePixels[i] = NoDet;
-            this->CameraImageScanLineDistance[i] = NoDet;
+            CameraImageScanLinePixels[i] = NoDet;
+            CameraImageScanLineDistance[i] = NoDet;
         }
     }
 }
@@ -112,8 +112,8 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
 
         detectP = Pos + starR*(TCoordinate::aVector(cos(DetectAngle),sin(DetectAngle)));
 
-        if(this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
-        DetColor = *this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
+        if(VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
+        DetColor = *VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
         
         while(DetColor == !EdgeColor){
 
@@ -121,7 +121,7 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
             detectP.y += 1.5*sin(DetectAngle);
 
             if((detectP-Pos).Length() > stopR) break;
-            if(this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
+            if(VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
             DetColor = *VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);
 
             //this->VisualLineMap.SetColor(detectP.x,detectP.y,cRED);   //for test to draw virtualMap.img
@@ -151,10 +151,10 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
         float deviation;
 
         for(int i=0 ; i<ScanLinesNun ; i++ ){                 //&& vPosScanLines[i] != NoDet
-            if(this->CameraImageScanLineDistance[i] != NoDet && this->CameraImageScanLineDistance[i]< stopR ){
+            if(CameraImageScanLineDistance[i] != NoDet && CameraImageScanLineDistance[i]< stopR ){
                 if(vPosScanLines[i] != NoDet){
-                    deviation = vPosScanLines[i]- this->CameraImageScanLineDistance[i];
-                    Probability *= this->NormalDistribution(50,deviation);
+                    deviation = vPosScanLines[i] - CameraImageScanLineDistance[i];
+                    Probability *= NormalDistribution(50,deviation);
                     //Probability *= this->NormalDistribution(GetStandandDeviation(vPosScanLines[i]),deviation);    //sigma us 50cm it will become dynamic
                 }
                 else{

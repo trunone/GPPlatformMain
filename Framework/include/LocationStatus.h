@@ -30,11 +30,16 @@ using namespace std;
 
 namespace Robot
 {
+	typedef struct{
+		TCoordinate Position;
+		float Direction;
+	}FeedBack_Info;
+	
 	class LocationStatus
 	{
 
 	private:
-
+		
 	public:
 
 		static float ScanLineData[24];
@@ -43,7 +48,15 @@ namespace Robot
 		static TCoordinate Position;
 		static double Handle;
 		static bool FlagNewFeedback;
+		static bool FlagRenew;
+		static bool FlagLaserBusy;
+		static bool FlagLocInit;
 		static bool enable;
+
+		static TCoordinate SetRobotPosition;
+		static double SetRobotHandle;
+	    static TCoordinate LaserGap;	// tmp. store for partilcefilter, wait for the truly laser information get will replace	
+		static FeedBack_Info FB_Movement;
 	};
 
 

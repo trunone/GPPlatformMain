@@ -61,7 +61,7 @@ namespace Robot
 		typedef struct{ TCoordinate Position; float Angle; int Distance;
 				short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
 				short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
-				unsigned char FindBallCnt; }tsStraBallInfo;
+				unssigned char FindBallCnt; }tsStraBallInfo;
 		//TStra(void);
 
         	//~TStra(void);

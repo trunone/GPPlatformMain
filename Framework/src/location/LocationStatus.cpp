@@ -20,5 +20,5 @@ TCoordinate LocationStatus::Position;
 double LocationStatus::Handle;
 bool LocationStatus::FlagNewFeedback;
 bool LocationStatus::enable;
-
+double LocationStatus::LaserGap;
 

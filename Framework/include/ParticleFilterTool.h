@@ -1,4 +1,14 @@
-#ifndef ParticleFilterToolH
+//=============================================
+//File name: ParticleFilterTool
+//
+//Author   :Hsieh Ming-Hua
+//          Transplant form 2012 SKS project
+//Phone    :0921307020
+//E-mail   :ta180109@hotmail.com
+//Update   :2013/07/19
+//
+//Function :The tool function Particle filter will use
+//===============================================ifndef ParticleFilterToolH
 #define ParticleFilteToolrH
 #include <vector>
 #include "LocationStatus.h"
@@ -17,10 +27,11 @@
 #define SearchRate      0.03       //5% of map size;
 
 using namespace std;
+
 namespace Robot{
 	class ParticleFilterTool 
 	{
-    	typedef struct{
+		typedef struct{
 	        TCoordinate Position;
 	        float Direction;
 	
@@ -29,25 +40,25 @@ namespace Robot{
 	    }tsParticle;
 
 	private:
-
+		static ParticleFilterTool* m_UniqueInstance;
 
 	public:
 	    ParticleFilterTool();
 	    ~ParticleFilterTool();
-
+		static ParticleFilterTool* GetInstance() { return m_UniqueInstance; }
 		//-----Particles------------------------------------------------
-	    vector <tsParticle> Particles;
-	    NormalRand *RandN;
+	    static vector <tsParticle> Particles;
+	    static NormalRand *RandN;
 
 		//-----Best Partiicle information-------------------------------
-	    tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
-	    int BestParticleNum;
+	    static tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
+	    static int BestParticleNum;
 
 		//----Environment area-----------------------------------
 	    //moveing distance for divination
-	    tsParticle FeedbackMovement;
+	    static tsParticle FeedbackMovement;
 	    //For Evaluation particles
-	    TLocProbEvaluation *ProbabilityEvaluation;
+	    static ProbEvaluation *ProbabilityEvaluation;
 
 	    // it will give probability Evaluation map
 	    //this map black part is mean unable area be careful
