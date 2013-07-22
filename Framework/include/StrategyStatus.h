@@ -11,7 +11,7 @@
 #include "TCoordinate.h"
 #include "Vector.h"
 #include <vector>
-#include "Task.h"
+#include "Stra_Task.h"
 
 namespace Robot
 {
@@ -23,7 +23,9 @@ namespace Robot
 		//motion data        	
 		static long Motor1Speed, Motor2Speed, Motor3Speed;
         	static double FI;
-       		static double w;
+ 	        static double x;
+       		static double y;
+		static double w;
         	static Vector3D vector;
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
@@ -32,7 +34,7 @@ namespace Robot
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
-		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etCatchFinish }teSKSState;
+		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
@@ -129,6 +131,7 @@ namespace Robot
         	//---------- ŽM²y­«·sÅxÂI -----------------------------------------------
         	static bool FindLocResample;
         	static TCoordinate RseLocPos;        //·sªº©wŠìÂI	
+
 	};
 }
 

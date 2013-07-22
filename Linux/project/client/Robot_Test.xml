@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Command>
+   <ManualDirection>
+    	<Vector x="0.5" y="0.2"/>
+    	<Rotate w="0.7" />
+  </ManualDirection>
+</Command>

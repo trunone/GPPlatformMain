@@ -1,11 +1,7 @@
-//---------------------------------------------------------------------------
-
 #ifndef ProbabilityEvaluationH
 #define ProbabilityEvaluationH
 #include "LocationStatus.h"
 #include "VisionStatus.h"
-//#include "LocUnit.h"
-//#include "ImgUnit.h"
 
 #define Def_ScanScale 0.15707963267948966192313216916398
 #define Def_ScanStarAngle -1.5707963267948966192313216916398
@@ -18,34 +14,34 @@
 #define NoDet 0
 #define PixelSigma 20
 
-using namespace Robot;
+namespace Robot{
 
-class TLocProbEvaluation : public LocationStatus
-{
-private:
-    double NormalDistribution(float sigma , float deviation); //sigma is  NormalDistribution's standard deviation
+	class ProbEvaluation
+	{
+	private:
+    	double NormalDistribution(float sigma , float deviation); //sigma is  NormalDistribution's standard deviation
+		static ProbEvaluation* m_UniqueInstance;
+	public:
+    	 ProbEvaluation();
+    	~ProbEvaluation();
 
-public:
-    TLocProbEvaluation();
-    ~TLocProbEvaluation();
+		static ProbEvaluation* GetInstance() { return m_UniqueInstance; }
+    	VisionStatus::tsBmpPtr *VirtualLineMap; //point to systen virtual map;
 
-    VisionStatus::tsBmpPtr *VirtualLineMap; //point to systen virtual map;
+    	float CameraImageScanLinePixels[ScanLinesNun];
 
-    float CameraImageScanLinePixels[ScanLinesNun];
+    	float *CameraImageScanLineDistance;
+    	void AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap);
+    	float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
+       	double GetProbability(int x,int y ,float angle);  // get probability of virtual position
 
-    float *CameraImageScanLineDistance;
-    void AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap);
-    float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
-
-    double GetProbability(int x,int y ,float angle);  // get probability of virtual position
-
-    double GetStandandDeviation(double ExpectationDis) ;
-    void ScanLinesInfoUpdate();  //for image
+		double GetStandandDeviation(double ExpectationDis) ;
+		void ScanLinesInfoUpdate();  //for image
 
 
-    //run    ScanLinesInfoUpdate()  update image scanlines info
-    //and then run n times main()  get all particle's probability
+	    //run    ScanLinesInfoUpdate()  update image scanlines info
+	    //and then run n times main()  get all particle's probability
 
-};
-//---------------------------------------------------------------------------
+	};
+}
 #endif

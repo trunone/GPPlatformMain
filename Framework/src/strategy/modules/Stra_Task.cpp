@@ -23,43 +23,9 @@ Task::Task()
 
 Task::~Task()
 {
+
 }
 
-/*
-Stra_Task::Stra_Task()
-:TCommonUnit("./Strategy/StraConfig/Stra_Task.txt", 0 )
-{
-    this->Caption = "Stra_Task";
-
-    this->ParameterPath = "./Strategy/StraConfig/Stra_Task.txt";
-    //-----------------
-    this->ParameterReset();
-    //-----------------
-    FlagTaskFinish      = false;
-    FlagSetInitialData  = false;
-
-    GotoRoomStep  = 0;
-    ActiveState   = etIdle;
-    DoorState     = false;
-    Past_RoomCnt  = -1;
-    TouchCnt      = 0;
-
-    PastScanLineData = new int[24];
-
-    //Room3StartPos = aVector(195,245);
-}
-*/
-/*
-string Stra_Task::ParameterReset(void)
-{
-    string str_ = this->Caption +" ParameterReset";
-    //---
-
-    //---
-    this->bNewParameter = false;
-    return str_;
-}
-*/
 //---------------------------------------------------------------------------
 void Task::Initialize(void)
 {
@@ -67,12 +33,12 @@ void Task::Initialize(void)
 
     FlagTaskFinish      = false;
     FlagSetInitialData  = false;
-
     GotoRoomStep  = 0;
     ActiveState   = etIdle;
     DoorState     = false;
     Past_RoomCnt  = -1;
     TouchCnt      = 0;
+    PastScanLineData = new int[24];
    // return str_;
 }
 //---------------------------------------------------------------------------
@@ -100,7 +66,7 @@ void Task::Process(void)
 
     if( StrategyStatus::Room.Cnt == StrategyStatus::LivRM )  //客廳
     {
-        if(StrategyStatus::ThiefRoom != StrategyStatus::LivRM) StrategyStatus::Room.Cnt++;
+        //if(StrategyStatus::ThiefRoom != StrategyStatus::LivRM) StrategyStatus::Room.Cnt++;
 
         switch( GotoRoomStep )
         {
@@ -115,7 +81,9 @@ void Task::Process(void)
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
         case 2:
-            WaitCatchball();
+	    ActiveState = etMakeSoundMove;
+	    MakeSound();
+	    WaitCatchball();  
         break;
         default:
             ActiveState = etIdle;
@@ -143,16 +111,20 @@ void Task::Process(void)
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
         case 2:
-            if( StrategyStatus::Room.Cnt ==2 && StrategyStatus::ThiefRoom ==2) WaitCatchball();
-            else{
-                GotoRoomStep++;
-                StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
-                FlagSetInitialData = false;
-            }
+            //if( Info->StraInfo->Room.Cnt ==2 && Info->StraInfo->ThiefRoom ==2 ) 
+		
+		ActiveState = etMakeSoundMove;
+		MakeSound();
+	        WaitCatchball();
+            //else{
+                //GotoRoomStep++;
+                //StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+                //FlagSetInitialData = false;
+            //}
         break;
         case 3:
             ActiveState =  etAStar;
-            if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition - LocationStatus::Position).Length() < 150 )
+            if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition - 			LocationStatus::Position).Length() < 150 )
                 StrategyStatus::FlagAvoidEnable = false; //關閉避障
             if( !FlagSetInitialData )
                 SetAStar( StrategyStatus::EscapePosition );
@@ -166,13 +138,12 @@ void Task::Process(void)
         break;
         }
     }
-    else if(StrategyStatus::Room.Cnt == 4 )  //補抓小偷(會扣分)
+    else if(StrategyStatus::Room.Cnt == 4 )  //充電區
     {
         switch( GotoRoomStep )
         {
         case 0: // 到房間門口
             ActiveState =  etAStar;
-           
             if( !FlagSetInitialData )
                     SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
         break;
@@ -181,8 +152,13 @@ void Task::Process(void)
             GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
-        case 2:
-            WaitCatchball();
+        case 2: // 碰擊充電開關 by yao
+            ActiveState = etTouchButton;
+            StrategyStatus::FlagAvoidEnable = false; //關閉避障
+        break;
+        case 3:
+            ActiveState = etBackward; // 倒車動作
+            StrategyStatus::FlagAvoidEnable = false; //關閉避障
         break;
         default:
             ActiveState = etIdle;
@@ -205,7 +181,9 @@ void Task::Process(void)
     //--------------------------
     if( this->FlagTaskFinish )
     {
-        GotoRoomStep++; FlagTaskFinish = false; FlagSetInitialData = false;
+        GotoRoomStep++;
+	FlagTaskFinish = false;
+	FlagSetInitialData = false;
     }
     else
         ActiveFunction();
@@ -250,6 +228,9 @@ void Task::ActiveFunction()
     case etBackward:
         FlagTaskFinish = Backward();
     break;
+    case etMakeSoundMove:
+	FlagTaskFinish = MakeSoundMove();
+    break;
     //----------------------
     //----------------------
     default:
@@ -271,7 +252,7 @@ void Task::WaitCatchball()
     else
     {
         StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSCatchBall;
-    }  //*/
+    }
 }
 //---------------------------------------------------------------------------
 void Task::SetAStar( TCoordinate  Goal )
@@ -395,120 +376,67 @@ bool Task::Backward()
     }
 }
 //---------------------------------------------------------------------------
-/*bool __fastcall Stra_Task::WaitDoorOpen()
+bool Task::MakeSoundMove()
 {
-    Info->LocInfo->FlagEvaluatuonEnable = false;
-    
-    int TmpCnt = 0;
-    if( !FlagSetInitialData )
-    {
-        FlagSetInitialData = true;
-        for(int i=0; i<24 ; i++ )
-        {
-            PastScanLineData[i] = Info->LocInfo->ScanLineData[i];
-        }
-        return false;
-    }
-    else
-    {
-        for(int i=0; i< 24 ; i++ )
-        {
-            if( Info->LocInfo->ScanLineData[i] - PastScanLineData[i] > 30 )  TmpCnt++;
-            
-            PastScanLineData[i] = Info->LocInfo->ScanLineData[i];
-        }
-        return ( TmpCnt > 1 )? true: false;
-    }
-}  //*/
-//---------------------------------------------------------------------------
-/*void __fastcall Stra_Task::SpecialRoom3()
-{
-        switch( GotoRoomStep )
-        {
-        //--------------------------
-        case 0:     //到門口旁偏移的特殊位置
-            ActiveState =  etAStar;
-
-            if( !FlagSetInitialData )
-                SetAStar( Room3StartPos );
-        break;
-        //--------------------------
-        case 1:     //轉向到房間門口的方向
-            ActiveState = etTurnToAngle;
-            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door - Room3StartPos ).Angle();
-
-        break;
-        //--------------------------
-        case 2:    // 關閉修正移動到門口
-            ActiveState = etMotionToPos;
-            Info->LocInfo->FlagEvaluatuonEnable = false;
-            GoalPos = Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door;
-        break;
-        //--------------------------
-        case 3:    // 關閉修正轉向房間
-            ActiveState = etTurnToAngle;
-            Info->LocInfo->FlagEvaluatuonEnable = false;
-            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Center -
-                         Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door).Angle();
-        break;
-        //--------------------------
-        case 4:    // 等待門關起來 右打開
-            ActiveState =  etWaitDoorOpen;
-
-        break;
-        //--------------------------
-        default:
-            WaitCatchball();
-        break;
-        }
-}  //*/
-/*---------------------------------------------------------------------------
-void __fastcall Stra_Task::SpecialRoom1()
-{
-        switch( GotoRoomStep )
-        {
-        //--------------------------
-        case 0:     //到前一個房間的門口
-            ActiveState =  etAStar;
-            if( !FlagSetInitialData )
-                SetAStar( Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt-1].Door );
-        break;
-        //--------------------------
-        case 1:     //轉向目前房間的門口
-            ActiveState = etTurnToAngle;
-            GoalAngle = (Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Center -
-                         Info->StraInfo->Room.Info[Info->StraInfo->Room.Cnt].Door).Angle();
-        break;
-        //--------------------------
-        case 2:    // 使用雷射校正角度
-            ActiveState = etSpecialTurn;
-            SpecialTurn();
-
-        break;
-        //--------------------------
-        case 3:    // 使用雷射移動至門口
-            ActiveState =  etSpecialMove;
-
-            if( !FlagSetInitialData )
-            {
-                FlagSetInitialData = true;
-                DoorState    = Info->HdwInfo->LaserInfo.ScanArray[35] > 300 ? true : false;
-                Past_LaserData = Info->HdwInfo->LaserInfo.ScanArray[35];
-            }
-            SpecialDistance = ( DoorState )? 180 : 30 ;
-
-        break;
-        //--------------------------
-        case 4:    // 等待門關起來 右打開
-            ActiveState =  etWaitDoorOpen;
-
-        break;
-        //--------------------------
-        default:
-            WaitCatchball();
-        break;
-        }
+	StrategyStatus::FlagForward = true;
+	StrategyStatus::Goal1 =  TCoordinate::aVector(100,0);
+	StrategyStatus::FixSpeed = 25;
 }
-//----------------------------------------------------------------------------*/
+//---------------------------------------------------------------------------
+void Task::MakeSound()
+{
+	if( StrategyStatus::Room.Cnt == StrategyStatus::LivRM )
+	{
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		{
+        		GotoRoomStep++;
+        		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+        		FlagSetInitialData = false;
+    		}
+    		else
+    		{
+        		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
+    		}
+	}	
+	else if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
+	{
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		{
+        		GotoRoomStep++;
+        		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+        		FlagSetInitialData = false;
+    		}
+    		else
+    		{
+        		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
+    		}
+	}
+	else if( StrategyStatus::Room.Cnt == StrategyStatus::Lib )
+	{
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		{
+        		GotoRoomStep++;
+        		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+        		FlagSetInitialData = false;
+    		}
+    		else
+    		{
+        		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
+    		}
+	}
+	else if( StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
+	{
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		{
+        		GotoRoomStep++;
+        		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+        		FlagSetInitialData = false;
+    		}
+    		else
+    		{
+        		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
+    		}
+	}		
+}
 
 

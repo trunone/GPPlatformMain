@@ -1,3 +1,4 @@
+//#pragma package(smart_init)
 #include<stdio.h>
 
 
@@ -377,4 +378,3 @@ double NormalizeAngle(double Angle)
 }
 
 //------------------------------------------------------------------------------
-

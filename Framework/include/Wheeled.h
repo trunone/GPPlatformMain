@@ -14,12 +14,11 @@
 #include "LocationManager.h"
 #include "VisionModule.h"
 #include "VisionManager.h"
-#include "Status.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Matrix.h"
 #include "Plane.h"
-#include "Task.h"
+#include "Stra_Task.h"
 #include "Motion.h"
 
 #endif

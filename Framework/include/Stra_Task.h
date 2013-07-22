@@ -10,18 +10,23 @@
 //Function :The room patrol strategy for sks
 //===============================================
 
-#ifndef Stra_Task_H
-#define Stra_Task_H
+/*
+ *   Task.h
+ *
+ *   Author: ROBOTIS
+ *
+ */
+
+#ifndef _Task_H_
+#define _Task_H_
 
 #include <stdio.h>
 #include <string.h>
 #include <vector>
 #include "StrategyStatus.h"
 #include "LocationStatus.h"
-#include "Status.h"
 #include "StrategyModule.h"
 #include "TCoordinate.h"
-
 
 #define Def_AnglePrecision (5*M_PI/180.0)
 #define Def_MinTurnAngle (20*M_PI/180.0)
@@ -50,7 +55,10 @@ namespace Robot
 
     		etBackward,
 
-    		etWaitDoorOpen
+    		etWaitDoorOpen,
+
+		etMakeSoundMove		
+		
 
 	}teAvtiveState;
 
@@ -84,11 +92,15 @@ namespace Robot
 
     		bool TouchButton();		
 
-    		bool Backward();		
+    		bool Backward();
+
+		bool MakeSoundMove();		
 
     		//=============
 
-    		void WaitCatchball();		
+    		void WaitCatchball();
+		
+		void MakeSound();		
 
     		void SpecialRoom3();
 

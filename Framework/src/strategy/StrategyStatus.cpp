@@ -74,6 +74,6 @@ int StrategyStatus::FindBallState;
 //---------- ŽM²y­«·sÅxÂI -----------------------------------------------
 bool StrategyStatus::FindLocResample;
 TCoordinate StrategyStatus::RseLocPos;        //·sªº©wŠìÂI	
-
-
-
+	
+double StrategyStatus::x(0);
+double StrategyStatus::y(0);
