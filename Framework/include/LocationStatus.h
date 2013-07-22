@@ -36,7 +36,6 @@ namespace Robot
 	private:
 
 	public:
-
 		static float ScanLineData[24];
 		static bool FlagEvaluatuonEnable;		
 		static bool FlagCoerceEvaluatuon;
