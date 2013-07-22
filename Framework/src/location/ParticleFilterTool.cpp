@@ -1,19 +1,14 @@
-//=============================================
-//File name: ParticleFilterTool
-//
-//Author   :Hsieh Ming-Hua
-//          Transplant form 2012 SKS project
-//Phone    :0921307020
-//E-mail   :ta180109@hotmail.com
-//Update   :2013/07/19
-//
-//Function :The tool function Particle filter will use
-//===============================================
+
 #include "ParticleFilterTool.h"
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
+
 //---------------------------------------------------------------------------
+using namespace Robot;
+
+ParticleFilterTool* ParticleFilterTool::m_UniqueInstance = new ParticleFilterTool();
+
 ParticleFilterTool::ParticleFilterTool()
 {
     ProbabilityEvaluation = new ProbEvaluation;

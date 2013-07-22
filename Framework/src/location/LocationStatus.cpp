@@ -12,22 +12,22 @@
 
 
 using namespace Robot;
-
-LocationStatus::Furniture LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::LivingRM_Table = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::LivingRM_Cabinet = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::DiningRM_Table = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::DiningRM_Chair = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::Library_Desk = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::Library_Chair = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::Library_Cabinet = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::BedRM_Bed = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::DiningRM_door = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::BedRM_door = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::ChargeArea = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::EndArea = {0,0,0,0,0};
-LocationStatus::Furniture LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
-
+/*
+LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
+LocationStatus::LivingRM_Table = {0,0,0,0,0};
+LocationStatus::LivingRM_Cabinet = {0,0,0,0,0};
+LocationStatus::DiningRM_Table = {0,0,0,0,0};
+LocationStatus::DiningRM_Chair = {0,0,0,0,0};
+LocationStatus::Library_Desk = {0,0,0,0,0};
+LocationStatus::Library_Chair = {0,0,0,0,0};
+LocationStatus::Library_Cabinet = {0,0,0,0,0};
+LocationStatus::BedRM_Bed = {0,0,0,0,0};
+LocationStatus::DiningRM_door = {0,0,0,0,0};
+LocationStatus::BedRM_door = {0,0,0,0,0};
+LocationStatus::ChargeArea = {0,0,0,0,0};
+LocationStatus::EndArea = {0,0,0,0,0};
+LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
+*/
 int LocationStatus::loadxml (TiXmlElement* element){
 	if(element != NULL){	
 		TiXmlElement* modelchild;

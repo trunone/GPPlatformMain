@@ -72,7 +72,7 @@ float VisionStatus::ComputeCenterAngle(float AngleStartPoint, float AngleEndPoin
 
 	return tmpAngle;
 }
-
+/*
 tsColor colorBGR (unsigned char B,unsigned char G,unsigned char R)
 
 {
@@ -202,7 +202,7 @@ float tsImgDisModel::Pixel2Distance(int pixel)
     else  return NaN ;
 
 }
-
+*/
 //--------------------------------------------------------------------
 
 //--------------------------------------------------------------------
@@ -222,16 +222,16 @@ float tsImgDisModel::Pixel2Distance(int pixel)
 //unsigned char *pWebCamImage;
 //unsigned char *pFindEdgeImage;
 
-tsObjectiveInfo VisionStatus::BallInfo;
-tsBmpPtr    VisionStatus::Image;
-tsImgProSet VisionStatus::ProcessSetting;
-tsImgDisModel VisionStatus::DisModel;
-tsYUVData *VisionStatus::RGBtoYUV_Table;
+VisionStatus::tsObjectiveInfo BallInfo;
+VisionStatus::tsBmpPtr    Image;
+VisionStatus::tsImgProSet ProcessSetting;
+VisionStatus::tsImgDisModel DisModel;
+VisionStatus::tsYUVData *RGBtoYUV_Table;
 
-unsigned char VisionStatus::PixelGrayScale   (tsColor Pixel);
-bool VisionStatus::PixelBinarization(tsColor Pixel, unsigned char Threshold );
-void VisionStatus::ImgGrayScale   (tsBmpPtr Image);
-void VisionStatus::ImgBinarization(tsBmpPtr Image, unsigned char Threshold);
+unsigned char PixelGrayScale   (VisionStatus::tsColor Pixel);
+bool PixelBinarization(VisionStatus::tsColor Pixel, unsigned char Threshold );
+void ImgGrayScale   (VisionStatus::tsBmpPtr Image);
+void ImgBinarization(VisionStatus::tsBmpPtr Image, unsigned char Threshold);
 
 
 

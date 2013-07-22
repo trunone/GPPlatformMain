@@ -46,7 +46,6 @@ bool LocationManager::Initialize(Urg_driver *urg)
 
     if (!urg->open("/dev/ttyACM0", 115200, Urg_driver::Serial ))
         fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg->what());
-
     urg->set_scanning_parameter(urg->deg2step(-90), urg->deg2step(+90), 0);
     urg->start_measurement(Urg_driver::Distance, 0, 0);
 

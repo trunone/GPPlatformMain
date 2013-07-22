@@ -47,12 +47,12 @@ namespace Robot
 	public:
 		struct ColorRange
 		{
-			float HueMax;
-			float HueMin;
-			float SaturationMax;
-			float SaturationMin;
-			float BrightnessMax;
-			float BrightnessMin;
+			double HueMax;
+			double HueMin;
+			double SaturationMax;
+			double SaturationMin;
+			double BrightnessMax;
+			double BrightnessMin;
 		};
 
 		

@@ -27,9 +27,9 @@ int AstarTool::loadxml (TiXmlElement* element){
 		TiXmlElement* modelchild;
 		modelchild=element->FirstChildElement("MapGrid_Config");
 		if(modelchild != NULL){
-			modelchild->Attribute("length", &AstarTool::MapHeight);
-			modelchild->Attribute("Width", &AstarTool::MapWidth);
-			modelchild->Attribute("NodeResolution", &AstarTool::NodeResolution);
+			modelchild->Attribute("length",&MapHeight);
+			modelchild->Attribute("Width", &MapWidth);
+			modelchild->Attribute("NodeResolution", &NodeResolution);
 		}
 		
 	}

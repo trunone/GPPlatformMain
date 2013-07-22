@@ -29,9 +29,9 @@ void Star_AStar::ParameterReset(void)
 //-----------------------------------------------------------------
 //////////////////////////////////////////////////////xml
 int Stra_AStar::loadxml (TiXmlElement* element){
-	if(modelchild != NULL){				
-		element->Attribute("PathErrRange", &Stra_AStar::PathErrRange);
-		element->Attribute("AchieveErrRange", &Stra_AStar::AchieveErrRange);
+	if(element != NULL){				
+		element->Attribute("PathErrRange", &PathErrRange);
+		element->Attribute("AchieveErrRange", &AchieveErrRange);
 	}
 }
 ///////////////////////////////////////////

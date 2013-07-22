@@ -25,7 +25,6 @@
 #include <vector>
 #include "StrategyStatus.h"
 #include "LocationStatus.h"
-#include "Status.h"
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 

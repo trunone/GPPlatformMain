@@ -46,23 +46,23 @@ namespace Robot{
 
     		int *ScanLine;
 
-    		float ScanStartAngle;
+    		double ScanStartAngle;
 
     		int ScanLineNum;
 
-    		float ScanScale;
+    		double ScanScale;
 
     		int SafeDistance;
 
-    		float SafeArc_D;
+    		double SafeArc_D;
 
-    		float SafeArc_A;
+    		double SafeArc_A;
 
-    		float AvoidConfig1;
+    		double AvoidConfig1;
 
-    		float AvoidForce;
+    		double AvoidForce;
 
-    		short FixDirect;
+    		int FixDirect;
 
     		int Lock_Avoid;
 

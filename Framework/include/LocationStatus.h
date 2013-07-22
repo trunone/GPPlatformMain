@@ -46,7 +46,7 @@ namespace Robot
 			int Angle;			
 		};
 		int loadxml (TiXmlElement* element);
-		static Furniture LivingRM_Sofa,LivingRM_Table,LivingRM_Cabinet,DiningRM_Table,DiningRM_Chair,Library_Desk,Library_Chair,Library_Cabinet,BedRM_Bed,DiningRM_door,BedRM_door,ChargeArea,EndArea
+		static Furniture LivingRM_Sofa,LivingRM_Table,LivingRM_Cabinet,DiningRM_Table,DiningRM_Chair,Library_Desk,Library_Chair,Library_Cabinet,BedRM_Bed,DiningRM_door,BedRM_door,ChargeArea,EndArea;
 		static float ScanLineData[24];
 		static bool FlagEvaluatuonEnable;		
 		static bool FlagCoerceEvaluatuon;
