@@ -16,7 +16,7 @@
 #include "LocationStatus.h"
 #include "AstarTool.h"
 #include "TCoordinate.h"
-
+#include <tinyxml.h>
 namespace Robot{
 	class Stra_AStar  : public StrategyModule
 	{
@@ -31,6 +31,7 @@ namespace Robot{
     		void Process(void);  
 
 	private:
+		int loadxml(TiXmlElement* element);
 
 	        static Stra_AStar* m_UniqueInstance; 
 		

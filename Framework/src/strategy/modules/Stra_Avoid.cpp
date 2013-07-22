@@ -33,6 +33,22 @@ string Stra_Avoid::ParameterReset(void)
     return str_;
 }
 */
+//------------------------------------------------------------------------------xml
+int Stra_Avoid::loadxml (TiXmlElement* element){
+	if(element != NULL){
+		element->Attribute("StartAngle_du", &Stra_Avoid::ScanStartAngle);
+		element->Attribute("ScanLineSize", &Stra_Avoid::ScanLineNum);
+		element->Attribute("ScanLineScale_du", &Stra_Avoid::ScanScale);
+		element->Attribute("SafeRange", &Stra_Avoid::SafeDistance);
+		element->Attribute("SafeArc_D", &Stra_Avoid::SafeArc_D);
+		element->Attribute("SafeArc_A", &Stra_Avoid::SafeArc_A);
+		element->Attribute("AvoidConfig1", &Stra_Avoid::AvoidConfig1);
+		element->Attribute("AvoidForce_du", &Stra_Avoid::AvoidForce);
+		element->Attribute("FixDirect", &Stra_Avoid::FixDirect);						
+	}
+	return 0;
+}
+
 //---------------------------------------------------------------------------
 void Stra_Avoid::Initialize(void)
 {

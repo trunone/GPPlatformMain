@@ -17,6 +17,7 @@
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 #include "StrategyStatus.h"
+#include <tinyxml.h>
 //----------------------------------------------------------------------------
 namespace Robot
 {
@@ -32,6 +33,8 @@ namespace Robot
 		inline double GetMin(const double &dX_,const double &dY_){return (dX_>= dY_)?dY_:dX_;} 
 
 	private:
+
+		int loadxml(TiXmlElement* element);  // load xml		
 
     		Stra_PathPlan();      //«ØºcšçŠ¡
 	        static Stra_PathPlan* m_UniqueInstance; 

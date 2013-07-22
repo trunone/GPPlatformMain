@@ -2,7 +2,7 @@
 #define _ColorModel_H_
 #include "VisionStatus.h"
 #include "SegmentationFunction.h"
-
+#include <tinyxml.h>
 using namespace std;
 //----------------------------
 
@@ -26,7 +26,7 @@ namespace Robot
 		void Dilation(unsigned char *source, unsigned char *target);
 	public:
 		static ColorModel* GetInstance() { return m_UniqueInstance; }
-		int loadxml(TiXmlElement* element);
+		int loadxml(TiXmlElement* element);  //////////load xml
 		~ColorModel();
 		void Process();
 

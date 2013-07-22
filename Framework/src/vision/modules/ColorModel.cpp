@@ -2,41 +2,42 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include <tinyxml.h>
+
 using namespace Robot;
 using namespace std;
+//------------------------------------------------------------------------------------------------------xml
 int ColorModel::loadxml (TiXmlElement* element){
 	TiXmlElement* modelchild;
 	modelchild=element->FirstChildElement("Blue");
 	if(modelchild != NULL){
-		modelchild->Attribute("HueMax", VisionStatus::hsvBlueRange.HueMax);
-		modelchild->Attribute("HueMin", VisionStatus::hsvBlueRange.HueMin);
-		modelchild->Attribute("SaturationMax", VisionStatus::hsvBlueRange.SaturationMax);
-		modelchild->Attribute("SaturationMin", VisionStatus::hsvBlueRange.SaturationMin);
-		modelchild->Attribute("BrightnessMax", VisionStatus::hsvBlueRange.BrightnessMax);
-		modelchild->Attribute("BrightnessMin", VisionStatus::hsvBlueRange.BrightnessMin);
+		modelchild->Attribute("HueMax", &VisionStatus::hsvBlueRange.HueMax);
+		modelchild->Attribute("HueMin", &VisionStatus::hsvBlueRange.HueMin);
+		modelchild->Attribute("SaturationMax", &VisionStatus::hsvBlueRange.SaturationMax);
+		modelchild->Attribute("SaturationMin", &VisionStatus::hsvBlueRange.SaturationMin);
+		modelchild->Attribute("BrightnessMax", &VisionStatus::hsvBlueRange.BrightnessMax);
+		modelchild->Attribute("BrightnessMin", &VisionStatus::hsvBlueRange.BrightnessMin);
 	}
 	modelchild=element->FirstChildElement("Green");
 	if(modelchild != NULL){
-		modelchild->Attribute("HueMax", VisionStatus::hsvGreenRange.HueMax);
-		modelchild->Attribute("HueMin", VisionStatus::hsvGreenRange.HueMin);
-		modelchild->Attribute("SaturationMax", VisionStatus::hsvGreenRange.SaturationMax);
-		modelchild->Attribute("SaturationMin", VisionStatus::hsvGreenRange.SaturationMin);
-		modelchild->Attribute("BrightnessMax", VisionStatus::hsvGreenRange.BrightnessMax);
-		modelchild->Attribute("BrightnessMin", VisionStatus::hsvGreenRange.BrightnessMin);
+		modelchild->Attribute("HueMax", &VisionStatus::hsvGreenRange.HueMax);
+		modelchild->Attribute("HueMin", &VisionStatus::hsvGreenRange.HueMin);
+		modelchild->Attribute("SaturationMax", &VisionStatus::hsvGreenRange.SaturationMax);
+		modelchild->Attribute("SaturationMin", &VisionStatus::hsvGreenRange.SaturationMin);
+		modelchild->Attribute("BrightnessMax", &VisionStatus::hsvGreenRange.BrightnessMax);
+		modelchild->Attribute("BrightnessMin", &VisionStatus::hsvGreenRange.BrightnessMin);
 	}
 	modelchild=element->FirstChildElement("Red");
 	if(modelchild != NULL){
-		modelchild->Attribute("HueMax", VisionStatus::hsvRedRange.HueMax);
-		modelchild->Attribute("HueMin", VisionStatus::hsvRedRange.HueMin);
-		modelchild->Attribute("SaturationMax", VisionStatus::hsvRedRange.SaturationMax);
-		modelchild->Attribute("SaturationMin", VisionStatus::hsvRedRange.SaturationMin);
-		modelchild->Attribute("BrightnessMax", VisionStatus::hsvRedRange.BrightnessMax);
-		modelchild->Attribute("BrightnessMin", VisionStatus::hsvRedRange.BrightnessMin);
+		modelchild->Attribute("HueMax", &VisionStatus::hsvRedRange.HueMax);
+		modelchild->Attribute("HueMin", &VisionStatus::hsvRedRange.HueMin);
+		modelchild->Attribute("SaturationMax", &VisionStatus::hsvRedRange.SaturationMax);
+		modelchild->Attribute("SaturationMin", &VisionStatus::hsvRedRange.SaturationMin);
+		modelchild->Attribute("BrightnessMax", &VisionStatus::hsvRedRange.BrightnessMax);
+		modelchild->Attribute("BrightnessMin", &VisionStatus::hsvRedRange.BrightnessMin);
 	}
 	return 0;
 }
-
+//---------------------------------------------------------------------------------------------------------
 bool ColorModel::HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue){  
 	if(VisionStatus::hsvBlueRange.HueMax >= VisionStatus::hsvBlueRange.HueMin){   
 		if(VisionStatus::hsvBlueRange.HueMax >= hValue && VisionStatus::hsvBlueRange.HueMin <= hValue

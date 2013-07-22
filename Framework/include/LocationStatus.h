@@ -16,7 +16,7 @@
 #include <Normalrand.h>
 #include "TCoordinate.h"
 #include "Normalrand.h"
-
+#include <tinyxml.h>
 #ifndef _LOCATION_STATUS_H_
 #define _LOCATION_STATUS_H_
 
@@ -30,13 +30,23 @@ using namespace std;
 
 namespace Robot
 {
+
 	class LocationStatus
 	{
 
 	private:
 
 	public:
-
+		struct Furniture
+		{
+			int x;
+			int y;
+			int Width;	
+			int Height;
+			int Angle;			
+		};
+		int loadxml (TiXmlElement* element);
+		static Furniture LivingRM_Sofa,LivingRM_Table,LivingRM_Cabinet,DiningRM_Table,DiningRM_Chair,Library_Desk,Library_Chair,Library_Cabinet,BedRM_Bed,DiningRM_door,BedRM_door,ChargeArea,EndArea
 		static float ScanLineData[24];
 		static bool FlagEvaluatuonEnable;		
 		static bool FlagCoerceEvaluatuon;
@@ -44,6 +54,7 @@ namespace Robot
 		static double Handle;
 		static bool FlagNewFeedback;
 		static bool enable;
+
 	};
 
 

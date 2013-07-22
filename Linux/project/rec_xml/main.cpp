@@ -67,38 +67,51 @@ int main(){
 			TiXmlElement* root=doc.FirstChildElement("Command");
 			if(root != NULL){
 				TiXmlElement* elementforManualDirection=root->FirstChildElement("ManualDirection");
+				if(elementforManualDirection != NULL){
+					StrategyStatus::GetInstance()->loadxml(elementforManualDirection,1);
+					cout<<"I got ManualDirection"<<endl;
+				
+				}
 			}
 			root=doc.FirstChildElement("Config");
 			if(root != NULL){
 				TiXmlElement* element_DirectionObject=root->FirstChildElement("DirectionObject");
 				if(element_DirectionObject != NULL){
+					LocationStatus::GetInstance()->loadxml(element_DirectionObject);
 					cout<<"I got DirectionObject"<<endl;
 				
 				}
 				TiXmlElement* element_ColorModel=root->FirstChildElement("ColorModel");
 				if(element_ColorModel != NULL){
-					ColorModel::GetInstance()->getxml(element_ColorModel);
+					ColorModel::GetInstance()->loadxml(element_ColorModel);
 					cout<<"I got ColorModel"<<endl;
 				
 				}
-				TiXmlElement* element_ManualInterfaceConfig= root->FirstChildElement("ManualInterfaceConfig");
-				if(element_ManualInterfaceConfig != NULL){
-					cout<<"I got ManualInterfaceConfig"<<endl;
-				
-				}
-				TiXmlElement* element_SV_BasicConfig= root->FirstChildElement("SV-BasicConfig");
-				if(element_SV_BasicConfig != NULL){
-					cout<<"I got SV-BasicConfig"<<endl;
+				TiXmlElement* element_BasicConfig= root->FirstChildElement("BasicConfig");
+				if(element_BasicConfig != NULL){
+					StrategyStatus::GetInstance()->loadxml(element_BasicConfig,2);
+					cout<<"I got BasicConfig"<<endl;
 				
 				}
 				TiXmlElement* element_StraConfig= root->FirstChildElement("StraConfig");
 				if(element_StraConfig != NULL){
+					TiXmlElement* modelchild_Stra_Astar=element->FirstChildElement("Stra_Astar");
+					if(modelchild != NULL){
+						Stra_Astar::GetInstance()->loadxml(modelchild_Stra_Astar);
+					}
+					TiXmlElement* modelchild_Stra_Avoid=element->FirstChildElement("Stra_Avoid");
+					if(modelchild != NULL){
+						Stra_Avoid::GetInstance()->loadxml(modelchild_Stra_Avoid);
+					}
+					TiXmlElement* modelchild_Stra_PathPlan=element->FirstChildElement("Stra_PathPlan");
+					if(modelchild != NULL){
+						Stra_PathPlan::GetInstance()->loadxml(modelchild_Stra_PathPlan);
+					}
+					TiXmlElement* modelchild_Stra_VelocityControl=element->FirstChildElement("Stra_VelocityControl");
+					if(modelchild != NULL){
+						Stra_VelocityControl::GetInstance()->loadxml(modelchild_Stra_VelocityControl);
+					}
 					cout<<"I got StraConfig"<<endl;
-				
-				}
-				TiXmlElement* element_Vision= root->FirstChildElement("Vision");
-				if(element_Vision != NULL){
-					cout<<"I got Vision"<<endl;
 				
 				}
 			}

@@ -34,6 +34,21 @@ string Stra_VelocityControl::ParameterReset(void)
     return str_;
 }
 */
+//----------------------------------------------------------------------------xml
+int Stra_VelocityControl::loadxml (TiXmlElement* element){
+	if(element != NULL){
+		element->Attribute("dis_max", &Stra_VelocityContro::DistanceMax);
+		element->Attribute("dis_min", &Stra_VelocityContro::DistanceMin);
+		element->Attribute("spd_max", &Stra_VelocityContro::SpeedMax);
+		element->Attribute("spd_min", &Stra_VelocityContro::SpeedMin);
+		element->Attribute("sita_max", &Stra_VelocityContro::ThetaMax);
+		element->Attribute("sita_min", &Stra_VelocityContro::ThetaMin);
+		element->Attribute("w_max", &Stra_VelocityContro::OmegaMax);
+		element->Attribute("w_min", &Stra_VelocityContro::OmegaMin);
+	}
+}
+
+
 //--------------------------------------------------------------------------
 void Stra_VelocityControl::Initialize(void)
 {

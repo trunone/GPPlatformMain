@@ -15,6 +15,7 @@
 #include "StrategyModule.h"
 #include "StrategyStatus.h"
 #include <math.h>
+#include <tinyxml.h>
 namespace Robot{
 	class Stra_Avoid : public StrategyModule
 	{
@@ -33,6 +34,7 @@ namespace Robot{
     		TCoordinate CorrectV;
 
 	private:
+		int loadxml(TiXmlElement* element);  //load xml
 
 		static Stra_Avoid* m_UniqueInstance;
 	    	

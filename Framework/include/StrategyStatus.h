@@ -12,7 +12,7 @@
 #include "Vector.h"
 #include <vector>
 #include "Stra_Task.h"
-
+#include <tinyxml.h>
 namespace Robot
 {
 	class StrategyStatus
@@ -27,9 +27,13 @@ namespace Robot
        		static double y;
 		static double w;
         	static Vector3D vector;
+		//-------------------------------------------loadxml
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
 	        static TCoordinate EndPosition; 
+		static TCoordinate RobotPos,RootHandle,LivRMDoor,LivRMCen,DinRMDoor,DinRMCen,LibDoor,LibCen,BedRMDoor,BedRMCen,ChrgDoor,ChrgCen;
+		int loadxml(TiXmlElement* element,int mod);
+		//--------------------------------------------------
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		

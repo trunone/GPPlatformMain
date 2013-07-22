@@ -238,25 +238,6 @@ namespace Robot
 
 
 
-	struct ColorRange
-
-	{
-
-        	double HueMax;
-
-        	double HueMin;
-
-        	double SaturationMax;
-
-        	double SaturationMin;
-
-        	double BrightnessMax;
-
-        	double BrightnessMin;
-
-	};
-
-
 
 	struct CIRCLE
 

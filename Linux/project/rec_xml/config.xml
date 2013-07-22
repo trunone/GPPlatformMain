@@ -20,14 +20,6 @@
     <Green HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
     <Red HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />
   </ColorModel>
-  <ManualDirection>
-    <Vector x="0" y="0" />
-    <Rotate w="0" />
-    <Camera ang="90" />
-    <TakeBall ballFlag="0" />
-  </ManualDirection>
-
-
 	<AStar_PathFinder>
 		<MapGrid_Config length = "61" Width = "61" NodeResolution = "10"/>
 	
@@ -38,16 +30,11 @@
 		<MDMS iDef_StartStep = "180" iDef_EndStep = "900" iDef_Cluster = "12" iDef_Scan_Interval = "3" iDef_Scan_Times = "1" bDef_InfScan = "1" />
 	</LaserConfig>
 
-	<ManualInterfaceConfig>
-		<Interface HandControl = "1" />
-		<Manual MaxSpeed = "80" CurrentSpeed = "50" />
-	</ManualInterfaceConfig>
-
 	<RoomMissionConfig>
 		<RoomMission Room1 = "7532" Room2 = "7532" Room3 = "743" Room4 = "2" Room5 = "715321" />
 	</RoomMissionConfig>
 
-	<SV-BasicConfig>
+	<BasicConfig>
 		<RobotPos x = "26" y = "273" />
 		<RootHandle x = "0" y = "0" />
 		<StartPos x = "26" y = "275" />
@@ -63,16 +50,12 @@
 		<BedRMCen x = "444" y = "364" />
 		<ChrgDoor x = "324" y = "554" />
 		<ChrgCen x = "324" y = "589" />
-	</SV-BasicConfig>
+	</BasicConfig>
 	
-	<LaserConfig>
-		<LaserConfig />??
-	</LaserConfig>
-
 
 	<StraConfig>
 		<Stra_Astar PathErrRange = "45" AchieveErrRange = "25" />
-		<Stra_Avoid StartAngle_du = "-90" ScanLineSize = "61" ScanLineScale_du = "3" SafeRange = "70" SafeArc_D = "60" SafeArc_A = "60" AvoidConfig1 = "1.2" AvoidForce_du = "130" FixDirect = "0" />
+		<Stra_Avoid StartAngle_du = "-90" ScanLineSize = "61"ScanLineScale_du = "3" SafeRange = "70" SafeArc_D = "60" SafeArc_A = "60" AvoidConfig1 = "1.2" AvoidForce_du = "130" FixDirect = "0" />
 		<Stra_MotorCommand MaxSpeed = "63" MoveAddition = "1" RotateAddition = "1" />
 		<Stra_PathPlan DetourConst = "85" />
 		<Stra_VelocityControl dis_max = "100" dis_min = "100" spd_max = "127" spd_min = "127" sita_max = "1.047197552" sita_min = "1.047197552" w_max = "21" w_min = "9" />
