@@ -4,10 +4,12 @@
  *   Author: Wu Chih-En
  *
  */
+#include "LocationModule.h"
 #include "Motors.h"
+#include "Wheeled.h"
 namespace Robot
 {
-	class Speedometer : public Motors
+	class Speedometer : public LocationModule
 	{
 	private:
 		static Speedometer* m_UniqueInstance;
@@ -20,11 +22,8 @@ namespace Robot
 		Speedometer();
 		~Speedometer();
 
+	int GetPositionIs(short ,long*);
 	void Process();
-	double Motor1Distance,Motor2Distance,Motor3Distance;
-	double FI;
-	double Motor_x;
-	double Motor_dy;
-	double Motor_sita; 
+	void Initialize(); 
 	};
 } 

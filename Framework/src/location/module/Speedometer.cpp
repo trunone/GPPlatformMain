@@ -7,26 +7,31 @@
 
 using namespace Robot;
 
+Speedometer* Speedometer::m_UniqueInstance = new Speedometer();
+
 Speedometer::Speedometer()
 {
 }
 Speedometer::~Speedometer()
 {
 }
+void Speedometer::Initialize()
+{
+}
 
 void Speedometer::Process()
 {
-	short device_id;
 	long *pPositionIs;
 	double position_now1,position_now2,position_now3;
-	double position_last1,position_last2,position_last3;
+	double position_last1=0,position_last2=0,position_last3=0;
 	double encorder1,encorder2,encorder3;
-	double Motor1Distance,Motor2Distance,Motor3Distance;
-	double FI=0;
+	double Motor1Distance = LocationStatus::Motor1Distance;
+	double Motor2Distance = LocationStatus::Motor2Distance;
+	double Motor3Distance = LocationStatus::Motor3Distance;
+	double FI=LocationStatus::FI;
 	double angle1 = 7*(PI/6)+FI;
 	double angle2 = 5*(PI/6)+FI;
 	double angle3 = PI/2+FI;
-	double Motor_x,Motor_y,Motor_sita;
 
 ///////////////////////////////////////////////////////////////////第一顆馬達
 
@@ -53,9 +58,10 @@ void Speedometer::Process()
 	Motor3Distance = encorder3/4096*10*PI;
 
 ///////////////////////////////////////////////////////////////////計算
-	Motor_x = 2/3 * ( sin(angle1)*Motor1Distance - sin(angle2)*Motor2Distance + sin(angle3)*Motor3Distance);
-	Motor_y = (-2)/3 * ( cos(angle1)*Motor1Distance - cos(angle2)*Motor2Distance + cos(angle3)*Motor3Distance);
-	Motor_sita = (1/3)*( Motor1Distance + Motor2Distance + Motor3Distance );
+
+	LocationStatus::Motor_x = 2/3 * ( sin(angle1)*Motor1Distance - sin(angle2)*Motor2Distance + sin(angle3)*Motor3Distance);
+	LocationStatus::Motor_y = (-2)/3 * ( cos(angle1)*Motor1Distance - cos(angle2)*Motor2Distance + cos(angle3)*Motor3Distance);
+	LocationStatus::Motor_sita = (1/3)*( Motor1Distance + Motor2Distance + Motor3Distance );
 
 }
 
