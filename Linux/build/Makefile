@@ -31,6 +31,8 @@ OBJS =  ../../Framework/src/Status.o\
 	../../Framework/src/math/TCoordinate.o\
 	../../Framework/src/math/Normalrand.o\
 	../../Framework/src/vision/VisionManager.o\
+	../../Framework/src/vision/VisionStatus.o\
+	../../Framework/src/vision/FaceData.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 	../../Framework/src/strategy/AstarTool.o\
