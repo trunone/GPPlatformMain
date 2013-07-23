@@ -37,7 +37,7 @@ void Motion::Process()
 	double angle1 = (PI/6)+FI;
 	double angle2 = 5*(PI/6)+FI;
 	double angle3 = 3*(PI/2)+FI;
-	StrategyStatus::Motor1Speed=-sin(angle1)*(x)+cos(angle1)*(y)-robot_radius*w;
-	StrategyStatus::Motor2Speed=-sin(angle2)*(x)+cos(angle2)*(y)-robot_radius*w;
-	StrategyStatus::Motor3Speed=-sin(angle3)*(x)+cos(angle3)*(y)-robot_radius*w;
+	StrategyStatus::MotorSpeed[0] = -sin(angle1)*(x)+cos(angle1)*(y)-robot_radius*w;
+	StrategyStatus::MotorSpeed[1] = -sin(angle2)*(x)+cos(angle2)*(y)-robot_radius*w;
+	StrategyStatus::MotorSpeed[2] = -sin(angle3)*(x)+cos(angle3)*(y)-robot_radius*w;
 }

@@ -134,6 +134,17 @@ int Motors::SetVelocityProfile(short device_id, int ProfileAcceleration, int Pro
     return 0;
 }
 
+int Motors::SetVelocityRegulatorGain(short device_id, short P, short I)
+{
+    mErrorCode = 0;
+    if(!VCS_SetVelocityRegulatorGain(mMotorHandle[device_id], NODE_ID, P, I, &mErrorCode))
+    {
+        fprintf(stderr, "Set Velocity Regulator Gain failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+    return 0; 
+}
+
 int Motors::SetVelocity(short device_id, long TargetVelocity)
 {
 	mErrorCode = 0;
@@ -167,10 +178,21 @@ int Motors::GetIncEncoderParameter(short device_id, unsigned int* pEncoderResolu
     return 0;
 }
 
-int Motors::GetCurrentIs(short device_id, short* pCurrentIsAveraged)
+int Motors::GetCurrentIs(short device_id, short* pCurrentIs)
 {
     mErrorCode = 0;
-    if(!VCS_GetCurrentIs(mMotorHandle[device_id], NODE_ID, pCurrentIsAveraged, &mErrorCode))
+    if(!VCS_GetCurrentIs(mMotorHandle[device_id], NODE_ID, pCurrentIs, &mErrorCode))
+    {
+        fprintf(stderr, "Get Current Is Averaged failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+    return 0;
+}
+
+int Motors::GetVelocityIs(short device_id, long* pVelocityIs)
+{
+    mErrorCode = 0;
+    if(!VCS_GetVelocityIs(mMotorHandle[device_id], NODE_ID, pVelocityIs, &mErrorCode))
     {
         fprintf(stderr, "Get Current Is Averaged failed!, error code=0x%x\n", mErrorCode);
         return 1;

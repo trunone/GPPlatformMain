@@ -104,6 +104,8 @@ int main(void)
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
+    StrategyManager::GetInstance()->StartLogging();
+
     try
     {
         while(1) {
@@ -121,7 +123,6 @@ int main(void)
                 while(true){	
                     TiXmlDocument doc;
                     new_sock >> xml;
-                    cout << "[success recv]" << endl;
                     doc.Parse(xml.c_str());
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
@@ -148,8 +149,6 @@ int main(void)
                             cout<<"I got vision"<<endl;
                         }
                     }
-                    cout << StrategyStatus::x << StrategyStatus::y << StrategyStatus::w << endl;
-                    cout << StrategyStatus::Motor1Speed << StrategyStatus::Motor2Speed << StrategyStatus::Motor3Speed << endl;
                 }
             }
             catch ( LinuxSocketException& )

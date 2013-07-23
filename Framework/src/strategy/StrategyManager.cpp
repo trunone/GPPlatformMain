@@ -60,7 +60,7 @@ void StrategyManager::StartLogging()
 
     m_LogFileStream.open(szFile, std::ios::out);
     for(short id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
-        m_LogFileStream << "ID_" << id << "_CURRENT,";
+        m_LogFileStream << "ID_" << id << "_CMD,"<< "ID_" << id << "_VELOCITY,"<< "ID_" << id << "_CURRENT,";
     m_LogFileStream << std::endl;
 
     m_IsLogging = true;
@@ -88,17 +88,19 @@ void StrategyManager::Process()
     }
 
         mMotors->SetVelocityAll(
-                -StrategyStatus::Motor1Speed,
-                -StrategyStatus::Motor2Speed,
-                -StrategyStatus::Motor3Speed);
+                -StrategyStatus::MotorSpeed[0],
+                -StrategyStatus::MotorSpeed[1],
+                -StrategyStatus::MotorSpeed[2]);
 
     if(m_IsLogging)
     {
         for(int id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
         {
             short current;
+            long velocity;
             mMotors->GetCurrentIs(id-1, &current);
-            m_LogFileStream << current << ",";
+            mMotors->GetVelocityIs(id-1, &velocity);
+            m_LogFileStream << -StrategyStatus::MotorSpeed[id-1] << "," << velocity << "," << current << ",";
         }
 
         //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_GYRO_Y_L) << ",";
