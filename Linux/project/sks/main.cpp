@@ -3,7 +3,7 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
+//#define ENABLE_STRATEGY
 
 #include <stdio.h>
 #include <unistd.h>
@@ -109,7 +109,7 @@ int main(void)
     motors.SetEnableAll();
     motors.ActivateProfileVelocityModeAll();
     VisionCapture = cvCaptureFromCAM( -1 );
-
+#endif
    ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
@@ -124,7 +124,7 @@ int main(void)
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
-
+/*
     try
     {
         while(1) {
@@ -183,7 +183,7 @@ int main(void)
     catch ( LinuxSocketException& e )
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
-    }
+    }*/
     return 0;
 }
 

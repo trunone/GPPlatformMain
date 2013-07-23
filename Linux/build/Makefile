@@ -32,7 +32,8 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
 	../../Framework/src/math/Normalrand.o\
 	../../Framework/src/vision/VisionManager.o\
 	../../Framework/src/vision/VisionStatus.o\
-	../../Framework/src/vision/FaceData.o\
+	../../Framework/src/vision/ImgProcess.o\
+        ../../Framework/src/vision/module/FaceDetection.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 	../../Framework/src/strategy/AstarTool.o\

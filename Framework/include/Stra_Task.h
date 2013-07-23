@@ -11,14 +11,14 @@
 //===============================================
 
 /*
- *   Task.h
+ *   Stra_Task.h
  *
  *   Author: ROBOTIS
  *
  */
 
-#ifndef _Task_H_
-#define _Task_H_
+#ifndef _STRA_TASK_H_
+#define _STRA_TASK_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -34,7 +34,7 @@ using namespace std;
 
 namespace Robot
 {
-	class Task : public StrategyModule
+	class Stra_Task : public StrategyModule
 	{
 	typedef enum
 	{
@@ -70,10 +70,10 @@ namespace Robot
 
 		}teGeneralRoomState;
 	private:
-		static Task* m_UniqueInstance;
+		static Stra_Task* m_UniqueInstance;
 		//static Vector3D vector;
 		
-		Task();
+		Stra_Task();
 		void SetAStar( TCoordinate  Goal );
 		
 		void ActiveFunction();
@@ -131,9 +131,9 @@ namespace Robot
     		int *PastScanLineData;
 
 	public:
-		static Task* GetInstance() { return m_UniqueInstance; }
+		static Stra_Task* GetInstance() { return m_UniqueInstance; }
 		
-		~Task();
+		~Stra_Task();
 
 		void Initialize();
 		void Process();

@@ -1,5 +1,5 @@
 /*
- *   FaceData.h
+ *   ImgProcess.h
  *
  *   Author: Wu Chih-En 
  *
@@ -9,24 +9,20 @@
 #define _FACEDATA_H_
 
 #include <string.h>
-
-#include "minIni.h"
-#include "VisionModule.h"
+#include "VisionStatus.h"
 
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#define TASK_SECTION    "FaceData"
-
 namespace Robot
 {
-	class FaceData : public VisionModule
+	class ImgProcess
 	{
 	private:
-	
+
 	public:
-		void FaceData();
+		static void FaceData();
 	};
 }
 

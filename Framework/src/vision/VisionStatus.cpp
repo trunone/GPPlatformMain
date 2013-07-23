@@ -112,7 +112,7 @@ void ImgBinarization(VisionStatus::tsBmpPtr Image, unsigned char Threshold);
 
 //------ FaceData ----------------------------------------------------------
 unsigned char VisionStatus::Favg[40*40*3];
-float VisionStatus::FeatureFace[40*40*3];
+float VisionStatus::FeatureFaceW[40*40*3];
 float VisionStatus::cvGet2D_1(0);
 float VisionStatus::cvGet2D_2(0);
 float VisionStatus::cvGet2D_3(0);

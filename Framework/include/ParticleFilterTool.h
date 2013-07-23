@@ -43,38 +43,38 @@ namespace Robot{
 		static ParticleFilterTool* m_UniqueInstance;
 
 	public:
-	    ParticleFilterTool();
-	    ~ParticleFilterTool();
+		ParticleFilterTool();
+		~ParticleFilterTool();
 		static ParticleFilterTool* GetInstance() { return m_UniqueInstance; }
 		//-----Particles------------------------------------------------
-	    static vector <tsParticle> Particles;
-	    static NormalRand *RandN;
+		static vector <tsParticle> Particles;
+		static NormalRand *RandN;
 
 		//-----Best Partiicle information-------------------------------
-	    static tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
-	    static int BestParticleNum;
+		static tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
+		static int BestParticleNum;
 
 		//----Environment area-----------------------------------
-	    //moveing distance for divination
-	    static tsParticle FeedbackMovement;
-	    //For Evaluation particles
-	    static ProbEvaluation *ProbabilityEvaluation;
+		//moveing distance for divination
+		static tsParticle FeedbackMovement;
+		//For Evaluation particles
+		static ProbEvaluation *ProbabilityEvaluation;
 
-	    // it will give probability Evaluation map
-	    //this map black part is mean unable area be careful
+		// it will give probability Evaluation map
+		//this map black part is mean unable area be careful
 
 
 		//----Main flow step--------------------------------------------
-    	static string InitialParticles(int ParticlesNum);
-    	static string InitialParticles(int ParticlesNum,int x ,int y , float r,float range);
-    	//string EnvironmentInfoUpdate();
-    	// Prediction step
-    	static string PredictionParticles();
-    	static string CorrectParticles();
-    	static string CorrectParticles(int x,int y,float r,float range);
-    	// Correction step
-    	static string EvaluatuonParticles();
-    	static string ResamplingParticles();
+		static string InitialParticles(int ParticlesNum);
+		static string InitialParticles(int ParticlesNum,int x ,int y , float r,float range);
+		// string EnvironmentInfoUpdate();
+		// Prediction step
+	    	static string PredictionParticles();
+		static string CorrectParticles();
+		static string CorrectParticles(int x,int y,float r,float range);
+		// Correction step
+		static string EvaluatuonParticles();
+		static string ResamplingParticles();
 
 		//---------------------------------------------------------------
 	};

@@ -4,84 +4,85 @@
 
 #include <iostream>
 #include <stdio.h>
+#include "ImgProcess.h"
 #include "VisionStatus.h"
 
 using namespace std;
 using namespace cv;
 using namespace Robot;
 
-	string face_cascade_name = "haarcascade_frontalface_alt.xml";
-	CascadeClassifier face_cascade;
-	unsigned char Buffer1[800*600*3];
-	unsigned char Grandfas[40*40*3];
-	unsigned char Grandmas[40*40*3];
-	unsigned char Mothers[40*40*3];
-	unsigned char Fathers[40*40*3];
-	unsigned char Girls[40*40*3];
-	unsigned char Boys[40*40*3];
-	unsigned char Grandfas1[40*40*3];
-	unsigned char Grandmas1[40*40*3];
-	unsigned char Mothers1[40*40*3];
-	unsigned char Fathers1[40*40*3];
-	unsigned char Girls1[40*40*3];
-	unsigned char Boys1[40*40*3];
-	unsigned char GrandfaD[40*40*3];
-	unsigned char GrandmaD[40*40*3];
-	unsigned char MotherD[40*40*3];
-	unsigned char FatherD[40*40*3];
-	unsigned char GirlD[40*40*3];
-	unsigned char BoyD[40*40*3];
-	unsigned char Grandfa1D[40*40*3];
-	unsigned char Grandma1D[40*40*3];
-	unsigned char Mother1D[40*40*3];
-	unsigned char Father1D[40*40*3];
-	unsigned char Girl1D[40*40*3];
-	unsigned char Boy1D[40*40*3];
-	float Dall[40*40*12];
-	float FeatureFaceW  [40*40];
-	float GrandfaDW  [40*40];
-	float GrandmaDW  [40*40];
-	float MotherDW  [40*40];
-	float FatherDW  [40*40];
-	float GirlDW  [40*40];
-	float BoyDW  [40*40];
-	float Grandfa1DW  [40*40];
-	float Grandma1DW  [40*40];
-	float Mother1DW  [40*40];
-	float Father1DW  [40*40];
-	float Girl1DW  [40*40];
-	float Boy1DW  [40*40];
-	CvMat *Vector1;
-	CvMat *AvgVector;
-	CvMat *EigenValue_Row;
-	CvMat *EigenVector;
-	CvMat *FFW;
-	CvMat *GfW;
-	CvMat *GmW;
-	CvMat *MW;
-	CvMat *FW;
-	CvMat *GW;
-	CvMat *BW;
-	CvMat *Gf1W;
-	CvMat *Gm1W;
-	CvMat *M1W;
-	CvMat *F1W;
-	CvMat *G1W;
-	CvMat *B1W;
-	CvMat *SumW1;
-	CvMat *SumW2;
-	CvMat *SumW3;
-	CvMat *SumW4;
-	CvMat *SumW5;
-	CvMat *SumW6;
-	CvMat *SumW7;
-	CvMat *SumW8;
-	CvMat *SumW9;
-	CvMat *SumW10;
-	CvMat *SumW11;
-	CvMat *SumW12;
+string face_cascade_name = "../../../jpg/Data/haarcascade_frontalface_alt.xml";
+CascadeClassifier face_cascade;
+unsigned char Buffer1[800*600*3];
+unsigned char Grandfas[40*40*3];
+unsigned char Grandmas[40*40*3];
+unsigned char Mothers[40*40*3];
+unsigned char Fathers[40*40*3];
+unsigned char Girls[40*40*3];
+unsigned char Boys[40*40*3];
+unsigned char Grandfas1[40*40*3];
+unsigned char Grandmas1[40*40*3];
+unsigned char Mothers1[40*40*3];
+unsigned char Fathers1[40*40*3];
+unsigned char Girls1[40*40*3];
+unsigned char Boys1[40*40*3];
+unsigned char GrandfaD[40*40*3];
+unsigned char GrandmaD[40*40*3];
+unsigned char MotherD[40*40*3];
+unsigned char FatherD[40*40*3];
+unsigned char GirlD[40*40*3];
+unsigned char BoyD[40*40*3];
+unsigned char Grandfa1D[40*40*3];
+unsigned char Grandma1D[40*40*3];
+unsigned char Mother1D[40*40*3];
+unsigned char Father1D[40*40*3];
+unsigned char Girl1D[40*40*3];
+unsigned char Boy1D[40*40*3];
+float Dall[40*40*12];
+float FeatureFace[40*40*3];
+float GrandfaDW  [40*40];
+float GrandmaDW  [40*40];
+float MotherDW  [40*40];
+float FatherDW  [40*40];
+float GirlDW  [40*40];
+float BoyDW  [40*40];
+float Grandfa1DW  [40*40];
+float Grandma1DW  [40*40];
+float Mother1DW  [40*40];
+float Father1DW  [40*40];
+float Girl1DW  [40*40];
+float Boy1DW  [40*40];
+CvMat *Vector1;
+CvMat *AvgVector;
+CvMat *EigenValue_Row;
+CvMat *EigenVector;
+CvMat *FFW;
+CvMat *GfW;
+CvMat *GmW;
+CvMat *MW;
+CvMat *FW;
+CvMat *GW;
+CvMat *BW;
+CvMat *Gf1W;
+CvMat *Gm1W;
+CvMat *M1W;
+CvMat *F1W;
+CvMat *G1W;
+CvMat *B1W;
+CvMat *SumW1;
+CvMat *SumW2;
+CvMat *SumW3;
+CvMat *SumW4;
+CvMat *SumW5;
+CvMat *SumW6;
+CvMat *SumW7;
+CvMat *SumW8;
+CvMat *SumW9;
+CvMat *SumW10;
+CvMat *SumW11;
+CvMat *SumW12;
 
-void FaceData()
+void ImgProcess::FaceData()
 {
 	int b=0,w=0,h=0,ui=0;
 	int Dalls=0;
@@ -921,14 +922,14 @@ void FaceData()
 			+Boy1D[i*40*3+j*3]*cvGet2D(EigenVector,ui,11).val[0];
 			if (ff<0)ff=0;
 			if (ff>255)ff=255;
-			VisionStatus::FeatureFace[i*40*3+(j*3)]=ff;
-			VisionStatus::FeatureFace[i*40*3+(j*3)+1]=ff;
-			VisionStatus::FeatureFace[i*40*3+(j*3)+2]=ff;
+			FeatureFace[i*40*3+(j*3)]=ff;
+			FeatureFace[i*40*3+(j*3)+1]=ff;
+			FeatureFace[i*40*3+(j*3)+2]=ff;
 		}
 	}
 	//±N®t§OÁyÂàŠšfloat«¬ºA
 	for(int i=0;i<40*40;i++){
-		FeatureFaceW[i]=VisionStatus::FeatureFace[i*3];
+		VisionStatus::FeatureFaceW[i]=FeatureFace[i*3];
 		GrandfaDW[i]=GrandfaD[i*3];
 		GrandmaDW[i]=GrandmaD[i*3];
 		MotherDW[i]=MotherD[i*3];
@@ -944,7 +945,7 @@ void FaceData()
 	}
 	//±N¯SŒxÁyÂàŠš1*1600
 	FFW=cvCreateMat(1,40*40,CV_32FC1);
-	cvSetData(FFW,FeatureFaceW,FFW->step);
+	cvSetData(FFW,VisionStatus::FeatureFaceW,FFW->step);
 	//±N®t§OÁyÂàŠš1600*1
 	GfW=cvCreateMat(40*40,1,CV_32FC1);
 	cvSetData(GfW,GrandfaDW,GfW->step);

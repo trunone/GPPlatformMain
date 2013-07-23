@@ -4,6 +4,9 @@
  *   Author: Wu Chih-En
  *
  */
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 #ifndef _VISION_STATUS_H_
 #define _VISION_STATUS_H_
@@ -25,6 +28,8 @@
 #define Def_ImgSize     307200  //640*480
 #define Def_ImgSizeM3   921600  //640*480*3
 
+using namespace cv;
+
 namespace Robot
 {
 	
@@ -34,6 +39,8 @@ namespace Robot
                 unsigned char *yiqColorModel; 
 
 	public:
+               	static Mat VideoFrame;
+
 		typedef enum{BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
 
 		typedef enum{Y=0 , U=1 , V=2}YUVcolor;
@@ -157,7 +164,7 @@ namespace Robot
 
 	//------ FaceData ----------------------------------------------------------
 		static unsigned char Favg[40*40*3];
-		static float FeatureFace[40*40*3];
+		static float FeatureFaceW[40*40*3];
 		static float cvGet2D_1;
 		static float cvGet2D_2;
 		static float cvGet2D_3;
