@@ -22,5 +22,8 @@ Install OpenCV:
     cd build
 
     cmake -D WITH_OPENGL=ON -D WITH_TBB=ON -D BUILD_EXAMPLES=ON ..
+    
+    make
+    sudo make install
 
     sudo ldconfig
