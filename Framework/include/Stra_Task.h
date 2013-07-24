@@ -89,6 +89,8 @@ namespace Robot
     		//=============
 
     		void WaitCatchball();
+
+		void EncounterPeople();
 		
 		void MakeSound();		
 

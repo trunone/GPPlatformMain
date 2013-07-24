@@ -16,11 +16,6 @@ using namespace std;
 
 Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
 
-<<<<<<< HEAD
-=======
-Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
-
->>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
 Stra_Task::Stra_Task()
 {
 
@@ -86,9 +81,8 @@ void Stra_Task::Process(void)
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
         case 2:
-	    ActiveState = etMakeSoundMove;
-	    MakeSound();
-	    WaitCatchball();  
+	    //WaitCatchball();
+	    EncounterPeople();
         break;
         default:
             ActiveState = etIdle;
@@ -120,16 +114,19 @@ void Stra_Task::Process(void)
 		
 		ActiveState = etMakeSoundMove;
 		MakeSound();
-	        WaitCatchball();
+	        //WaitCatchball();
             //else{
                 //GotoRoomStep++;
                 //StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
                 //FlagSetInitialData = false;
             //}
         break;
-        case 3:
+	case 3:
+		EncounterPeople();
+	break;
+        case 4:
             ActiveState =  etAStar;
-            if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition - 			LocationStatus::Position).Length() < 150 )
+            if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
                 StrategyStatus::FlagAvoidEnable = false; //關閉避障
             if( !FlagSetInitialData )
                 SetAStar( StrategyStatus::EscapePosition );
@@ -391,22 +388,9 @@ bool Stra_Task::MakeSoundMove()
 //---------------------------------------------------------------------------
 void Stra_Task::MakeSound()
 {
-	if( StrategyStatus::Room.Cnt == StrategyStatus::LivRM )
+	if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
-		{
-        		GotoRoomStep++;
-        		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
-        		FlagSetInitialData = false;
-    		}
-    		else
-    		{
-        		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
-    		}
-	}	
-	else if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
-	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -419,7 +403,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::Lib )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSetSKSCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -432,7 +416,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSetSKSCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -444,5 +428,9 @@ void Stra_Task::MakeSound()
     		}
 	}		
 }
-
+//---------------------------------------------------------------------------
+void EncounterPeople()
+{
+	
+}
 

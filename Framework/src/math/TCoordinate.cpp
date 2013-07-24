@@ -5,7 +5,7 @@
 
 //==============================================================================
 
-//--------------------ÂàŽ«®yŒÐšt------------------------------------------------
+//------------------------------------------------------------------------------
 
 inline void TCoordinate::CartesianPolar(void)
 
@@ -123,7 +123,7 @@ TCoordinate::~TCoordinate()
 
 
 
-//--------------------¹Bºâ€l­«žü------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool TCoordinate::operator == (TCoordinate op2)             //ŠV¶q¬O§_¬Ûµ¥
 
@@ -319,7 +319,7 @@ void TCoordinate::AssignLength(double Value)				//§ó§ï·¥®yŒÐªø«×
 
 //------------------------------------------------------------------------------
 
-TCoordinate  aVector(double xValue , double yValue)	    //²£¥Í€@­ÓŠV¶q
+TCoordinate  aVector(double xValue , double yValue)
 
 {
 
@@ -329,7 +329,7 @@ TCoordinate  aVector(double xValue , double yValue)	    //²£¥Í€@­ÓŠV¶q
 
 //------------------------------------------------------------------------------
 
-TCoordinate  operator*(TCoordinate op , double scale)	//ŠV¶q­ŒN­¿
+TCoordinate  operator*(TCoordinate op , double scale)
 
 {
 
@@ -343,7 +343,7 @@ TCoordinate  operator*(TCoordinate op , double scale)	//ŠV¶q­ŒN­¿
 
 //------------------------------------------------------------------------------
 
-TCoordinate  operator*(double scale , TCoordinate op)	//ŠV¶q­ŒN­¿
+TCoordinate  operator*(double scale , TCoordinate op)
 
 {
 
