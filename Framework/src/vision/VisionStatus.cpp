@@ -71,6 +71,23 @@ float VisionStatus::ComputeCenterAngle(float AngleStartPoint, float AngleEndPoin
 	return tmpAngle;
 }
 
+//------ FaceDetection ----------------------------------------------------------
+Mat VisionStatus::VideoFrame;
 
+//------ ImgProcess ----------------------------------------------------------
+unsigned char VisionStatus::Favg[40*40*3];
+float VisionStatus::FeatureFaceW[40*40*3];
+float VisionStatus::cvGet2D_1(0);
+float VisionStatus::cvGet2D_2(0);
+float VisionStatus::cvGet2D_3(0);
+float VisionStatus::cvGet2D_4(0);
+float VisionStatus::cvGet2D_5(0);
+float VisionStatus::cvGet2D_6(0);
+float VisionStatus::cvGet2D_7(0);
+float VisionStatus::cvGet2D_8(0);
+float VisionStatus::cvGet2D_9(0);
+float VisionStatus::cvGet2D_10(0);
+float VisionStatus::cvGet2D_11(0);
+float VisionStatus::cvGet2D_12(0);
 
 

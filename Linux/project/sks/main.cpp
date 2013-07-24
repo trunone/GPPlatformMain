@@ -3,6 +3,7 @@
  *
  *   Author: Wu Chih-En
  */
+#define ENABLE_VISION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -56,9 +57,11 @@ int main(void)
 
     TiXmlDocument doc;
 
+#ifdef ENABLE_STRATEGY
     motors.OpenDeviceAll();
+#endif
 
-	VisionCapture = cvCaptureFromCAM( -1 );
+    VisionCapture = cvCaptureFromCAM( -1 );
 
     ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
@@ -68,7 +71,7 @@ int main(void)
         return 1;
     }
 
-    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();

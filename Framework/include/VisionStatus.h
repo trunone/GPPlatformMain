@@ -16,6 +16,7 @@
 #define M_PI       3.14159265358979323846
 
 using namespace std;
+using namespace cv;
 //---------------------------------------------------------------------------
 
 
@@ -71,7 +72,24 @@ namespace Robot
 
 		static float ComputeCenterAngle(float AngleStartPoint, float AngleEndPoint);
 		
-	
+		//------ FaceDetection ----------------------------------------------------------
+		static Mat VideoFrame;
+
+		//------ FaceData ----------------------------------------------------------
+		static unsigned char Favg[40*40*3];
+		static float FeatureFaceW[40*40*3];
+		static float cvGet2D_1;
+		static float cvGet2D_2;
+		static float cvGet2D_3;
+		static float cvGet2D_4;
+		static float cvGet2D_5;
+		static float cvGet2D_6;
+		static float cvGet2D_7;
+		static float cvGet2D_8;
+		static float cvGet2D_9;
+		static float cvGet2D_10;
+		static float cvGet2D_11;
+		static float cvGet2D_12;	
 
 	};
 }

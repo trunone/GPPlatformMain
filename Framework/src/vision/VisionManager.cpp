@@ -7,7 +7,9 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "VisionStatus.h"
 #include "VisionManager.h"
+#include "ImgProcess.h"
 
 using namespace Robot;
 using namespace cv;
@@ -30,11 +32,14 @@ bool VisionManager::Initialize(CvCapture *capture)
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
-
-    if(capture)
-	    return true;
-    else
-        return false;
+	ImgProcess::FaceData();
+	if(capture) {
+		VisionCapture = capture;
+		return true;
+	}else{
+		return false;
+	}
+	
 }
 
 bool VisionManager::Reinitialize()
@@ -79,9 +84,7 @@ void VisionManager::Process()
 
     m_IsRunning = true;
 
-
-    VisionStatus::frame = cvQueryFrame(VisionCapture);
-	
+    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);
 
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)

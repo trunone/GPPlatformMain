@@ -20,5 +20,6 @@
 #include "Plane.h"
 #include "Task.h"
 #include "Motion.h"
+#include "FaceDetection.h"
 
 #endif
