@@ -13,7 +13,6 @@
 #define Stra_FindBallH
 
 #include "StrategyModule.h"
-#include "Status.h"
 #include "StrategyStatus.h"
 #include "LocationStatus.h"
 #include <time.h>

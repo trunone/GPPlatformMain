@@ -18,5 +18,7 @@ bool LocationStatus::FlagEvaluatuonEnable;
 bool LocationStatus::FlagCoerceEvaluatuon;
 TCoordinate LocationStatus::Position;
 double LocationStatus::Handle;
-
+bool LocationStatus::FlagNewFeedback;
+bool LocationStatus::enable;
+TCoordinate LocationStatus::LaserGap;
 

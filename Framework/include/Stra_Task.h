@@ -13,7 +13,6 @@
 #include <vector>
 #include "StrategyStatus.h"
 #include "LocationStatus.h"
-#include "Status.h"
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 
@@ -60,11 +59,11 @@ namespace Robot
 		}teGeneralRoomState;
 	private:
 		static Stra_Task* m_UniqueInstance;
-		
+
 		//static Vector3D vector;
 		
 		Stra_Task();
-		
+
 		void SetAStar( TCoordinate  Goal );
 		
 		void ActiveFunction();

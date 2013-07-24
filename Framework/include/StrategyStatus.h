@@ -29,6 +29,7 @@ namespace Robot
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
 	        static TCoordinate EndPosition; 
+
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
@@ -57,12 +58,18 @@ namespace Robot
 				short BallDirection; 
 			      }tsRoom;
 		
-		typedef struct{ tsRoom Info[5]; int Cnt; teSKSState SKSRoomState; }tsRoomInfo;
+		typedef struct{ tsRoom Info[5]; 
+				int Cnt; 
+				teSKSState SKSRoomState; 
+			      }tsRoomInfo;
 		
-		typedef struct{ TCoordinate Position; float Angle; int Distance;
+		typedef struct{ TCoordinate Position; 
+				float Angle; 
+				int Distance;
 				short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
 				short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
-				unsigned char FindBallCnt; }tsStraBallInfo;
+				unsigned char FindBallCnt; 
+			      }tsStraBallInfo;
 		//TStra(void);
 
         	//~TStra(void);
@@ -74,107 +81,60 @@ namespace Robot
         	void Initial();
 
                 static	bool FlagRoomRenew;
-
         	static tsRoomInfo Room;
 		static int ThiefRoom;
         	static int RoomSort;		
-
         	static int FindBallEn;		
-
         	static int LivRM, DinRM, Lib, BedRM;
 		static tsAStarPath AStarPath;
-		 //---------- Strategy -----------------------------------
 
-
-
+        	//----------------------------------------------------------------------
+		//---------- Strategy --------------------------------------------------
         	static TCoordinate Goal1;                   // Target1 vector
-
         	static TCoordinate Goal2;                   // Target2 vector
-
         	static double Direction;                    // Target direction
-
-
-
         	static bool FlagDetour;                     //true: Ÿaªñ¥ØŒÐÂIP2 , flase: »·Â÷¥ØŒÐÂIp2
-
         	static bool FlagForward;                     
 
         	//----------------------------------------------------------------------
-
-
-
         	//----------- Path Plan ------------------------------------------------
-
         	static TCoordinate GoalVector;
 
         	//----------------------------------------------------------------------
-
-
-
         	//----------- Avoidance ------------------------------------------------
-
         	static bool FlagAvoidEnable;
-
         	static TCoordinate CorrectionVector;
 
         	//----------------------------------------------------------------------
-
-
-
         	//----------- Velocity Control -----------------------------------------
-
         	static float FixSpeed;                                 // Speed Power 1~100 %
-
         	static double MotionDistance;		//²Ÿ°Ê¶ZÂ÷
-
         	static double MotionAngle;		//²Ÿ°Êš€«×
-
-
-
         	static TCoordinate PathMotion;
-
         	static float PathRotation;
 
         	//----------------------------------------------------------------------
-
         	static bool PathR_Priority;
 
-        	//-----------------------------
-
-
-
-        	//----------- Ball Data -----------------------------------------
-
+        	//----------------------------------------------------------------------
+        	//----------- Ball Data ------------------------------------------------
         	static tsStraBallInfo RadBallInfo;
-
                 static int AX12_Angle;
-
         	//tsObjectiveInfo RedBall;
-
         	static unsigned char FindBallCnt;
-
         	static bool FlagRecognize;
 
-
-
-        	//---------- Laser Average Data-----------------
-
+        	//----------------------------------------------------------------------
+        	//---------- Laser Average Data ----------------------------------------
 		static int LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
 
-
-
-        	//---------- ŽM²yµŠ²€šBÆJ-----------------
-
+        	//----------------------------------------------------------------------
+        	//---------- ŽM²yµŠ²€šBÆJ ----------------------------------------------
         	static int FindBallState;
 
-
-
-        	//---------- ŽM²y­«·sÅxÂI-----------------
-
+        	//----------------------------------------------------------------------
+        	//---------- ŽM²y­«·sÅxÂI -----------------------------------------------
         	static bool FindLocResample;
-
-
-
         	static TCoordinate RseLocPos;        //·sªº©wŠìÂI	
 
 	};

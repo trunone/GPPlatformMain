@@ -22,15 +22,19 @@ LFLAGS += -lpthread -ldl
 OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
 	../../Framework/src/location/ProbabilityEvaluation.o\
-	../../Framework/src/location/ParticleFilter.o\
-        ../../Framework/src/math/Matrix.o\
+	../../Framework/src/location/ParticleFilterTool.o\
+        ../../Framework/src/location/module/ParticleFilter.o\
+	../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
         ../../Framework/src/math/Vector.o\
 	../../Framework/src/math/TCoordinate.o\
 	../../Framework/src/math/Normalrand.o\
 	../../Framework/src/vision/VisionManager.o\
-	../../Framework/src/strategy/StrategyManager.o\
+	../../Framework/src/vision/VisionStatus.o\
+	../../Framework/src/vision/ImgProcess.o\
+        ../../Framework/src/vision/module/FaceDetection.o\
+        ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 	../../Framework/src/strategy/AstarTool.o\
         ../../Framework/src/strategy/modules/Stra_Task.o\

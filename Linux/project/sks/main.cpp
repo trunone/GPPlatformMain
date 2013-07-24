@@ -3,7 +3,7 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
+//#define ENABLE_STRATEGY
 
 #include <stdio.h>
 #include <unistd.h>

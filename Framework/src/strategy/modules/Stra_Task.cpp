@@ -16,6 +16,11 @@ using namespace std;
 
 Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
 
+<<<<<<< HEAD
+=======
+Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
+
+>>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
 Stra_Task::Stra_Task()
 {
 
