@@ -390,7 +390,7 @@ void Stra_Task::MakeSound()
 {
 	if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSCatchFinish )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -403,7 +403,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::Lib )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSetSKSCatchFinish )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -416,7 +416,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
 	{
-		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSetSKSCatchFinish )
+		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
         		StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;

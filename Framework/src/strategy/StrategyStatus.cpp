@@ -25,12 +25,10 @@ TCoordinate StrategyStatus::EndPosition;
 
 bool StrategyStatus::FlagRoomRenew;
 
-<<<<<<< HEAD
+
 StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
-=======
-//tsRoomInfo StrategyStatus::Room;
->>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
+
 int StrategyStatus::RoomSort;		
 int StrategyStatus::FindBallEn;		
 int StrategyStatus::LivRM;
@@ -68,7 +66,6 @@ float StrategyStatus::PathRotation;
 //----------------------------------------------------------------------
 bool StrategyStatus::PathR_Priority;
 
-<<<<<<< HEAD
 //----------- Ball Data -----------------------------------------
 
 StrategyStatus::tsStraBallInfo StrategyStatus::RadBallInfo;
@@ -77,30 +74,18 @@ StrategyStatus::tsStraBallInfo StrategyStatus::RadBallInfo;
 
 int StrategyStatus::AX12_Angle;
 
-=======
-//----------- Ball Data ------------------------------------------------
-//tsStraBallInfo StrategyStatus::RadBallInfo;
-//tsObjectiveInfo RedBall;
->>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
 unsigned char StrategyStatus::FindBallCnt;
 bool StrategyStatus::FlagRecognize;
 
 //---------- Laser Average Data-----------------
 int StrategyStatus::LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
 
-<<<<<<< HEAD
 //---------- ŽM²yµŠ²€šBÆJ-----------------
 
 int StrategyStatus::FindBallState;
 
 //---------- ŽM²y­«·sÅxÂI-----------------
 
-=======
-//---------- ŽM²yµŠ²€šBÆJ ----------------------------------------------
-int StrategyStatus::FindBallState;
-
-//---------- ŽM²y­«·sÅxÂI -----------------------------------------------
->>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
 bool StrategyStatus::FindLocResample;
 TCoordinate StrategyStatus::RseLocPos;        //·sªº©wŠìÂI	
 	

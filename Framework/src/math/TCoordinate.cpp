@@ -1,5 +1,5 @@
 //#pragma package(smart_init)
-#include<stdio.h>
+#include <stdio.h>
 #include <math.h>
 #include "TCoordinate.h"
 
@@ -305,7 +305,7 @@ void TCoordinate::AssignAngle(double Value)				    //§ó§ï·¥®yŒÐš€«�
 
 //------------------------------------------------------------------------------
 
-void TCoordinate::AssignLength(double Value)				//§ó§ï·¥®yŒÐªø«×
+void TCoordinate::AssignLength(double Value)
 
 {
 

@@ -4,11 +4,9 @@
 #include "VisionStatus.h"
 using namespace Robot;
 
-<<<<<<< HEAD
 using namespace Robot;
-=======
+
 ProbEvaluation* ProbEvaluation::m_UniqueInstance = new ProbEvaluation();
->>>>>>> 2db1a3b5fcb82021d9f615b816cd29cb494acc0b
 
 ProbEvaluation::ProbEvaluation()
 {
