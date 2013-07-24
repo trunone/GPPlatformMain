@@ -24,6 +24,9 @@
 #define Def_BedRoom     3
 
 using namespace Robot;
+using namespace std;
+
+Stra_FindBall* Stra_FindBall::m_UniqueInstance = new Stra_FindBall();
 /*
 Stra_FindBall::Stra_FindBall()
 :TCommonUnit("./Strategy/StraConfig/Stra_FindBall.txt", 0 )
@@ -223,7 +226,7 @@ void Stra_FindBall::Process(void )
             {
                 FindBallState = etEatBall;
 
-                PastOdometer = TCoordinate::aVector(0,0);
+                PastOdometer = aVector(0,0);
 
                 DetermineEatDirection();
 
@@ -248,11 +251,11 @@ void Stra_FindBall::Process(void )
 
             if( NormalizeAngle(CenterVector.Angle() - LocationStatus::Handle ) > (45 * M_PI /180.0) )
 
-                StrategyStatus::Goal1 = TCoordinate::aVector(35,0) << ( 40 * M_PI /180.0 );
+                StrategyStatus::Goal1 = aVector(35,0) << ( 40 * M_PI /180.0 );
 
             else if( NormalizeAngle(CenterVector.Angle() - LocationStatus::Handle ) < (-45 * M_PI /180.0) )
 
-                StrategyStatus::Goal1 = TCoordinate::aVector(35,0) << ( -40 * M_PI /180.0 );
+                StrategyStatus::Goal1 = aVector(35,0) << ( -40 * M_PI /180.0 );
 
             else
                 StrategyStatus::Goal1 = CenterVector >> LocationStatus::Handle;
@@ -312,13 +315,13 @@ void  Stra_FindBall::Approach_Ball()
 
     if( StrategyStatus::RadBallInfo.Angle > 8 * Def_DuToPI )
 
-        StrategyStatus::Goal1 = TCoordinate::aVector(35,0) << (M_PI_4/ 3.0);
+        StrategyStatus::Goal1 = aVector(35,0) << (M_PI_4/ 3.0);
 
     else if( StrategyStatus::RadBallInfo.Angle < -8 * Def_DuToPI )
 
-        StrategyStatus::Goal1 = TCoordinate::aVector(35,0) << -(M_PI_4/ 3.0);
+        StrategyStatus::Goal1 = aVector(35,0) << -(M_PI_4/ 3.0);
     else
-        StrategyStatus::Goal1 = TCoordinate::aVector(35,0);
+        StrategyStatus::Goal1 = aVector(35,0);
 
     StrategyStatus::FixSpeed = Def_ApproachBallSpeed;
 }
@@ -328,7 +331,7 @@ void  Stra_FindBall::Approach_Ball()
 bool  Stra_FindBall::Eat_Ball()
 {
     if( Status::FlagNewFeedback ){
-       // PastOdometer = PastOdometer + TCoordinate::aVector(Share_Info->HdwInfo->NIOSFeedback.ShiftX,Share_Info->HdwInfo->NIOSFeedback.ShiftY );
+       // PastOdometer = PastOdometer + aVector(Share_Info->HdwInfo->NIOSFeedback.ShiftX,Share_Info->HdwInfo->NIOSFeedback.ShiftY );
     }
     static bool Dir_Lock = false;
 
@@ -336,7 +339,7 @@ bool  Stra_FindBall::Eat_Ball()
 
     if( PastOdometer.Length() < Def_EatBallDistance )
     {
-    	StrategyStatus::Goal1 = TCoordinate::aVector(35,0);
+    	StrategyStatus::Goal1 = aVector(35,0);
 
         StrategyStatus::FixSpeed = 100;
 
@@ -480,11 +483,11 @@ void  Stra_FindBall::RenewRoomCorner()
 
         {
 
-            Corner[3] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+            Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
             Corner[2] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-            Corner[1] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
             Corner[0] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
 
@@ -494,11 +497,11 @@ void  Stra_FindBall::RenewRoomCorner()
 
         {
 
-            Corner[1] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+            Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
             Corner[0] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-            Corner[3] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
             Corner[2] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
 
@@ -510,11 +513,11 @@ void  Stra_FindBall::RenewRoomCorner()
 
         {
 
-            Corner[2] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+            Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
             Corner[1] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-            Corner[0] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
             Corner[3] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
 
@@ -524,11 +527,11 @@ void  Stra_FindBall::RenewRoomCorner()
 
         {
 
-            Corner[0] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+            Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
             Corner[3] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-            Corner[2] = TCoordinate::aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
             Corner[1] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
         }
@@ -608,7 +611,7 @@ void  Stra_FindBall::AnalyseBall()
 
             StrategyStatus::RadBallInfo.Position = LocationStatus::Position +
 
-                                                  (TCoordinate::aVector(StrategyStatus::RadBallInfo.Distance,0)<<BallAngle);
+                                                  (aVector(StrategyStatus::RadBallInfo.Distance,0)<<BallAngle);
 
         }
 
@@ -819,7 +822,7 @@ void  Stra_FindBall::SearchBall()
     break;
 
     }
-
+    printf("FindBall done");
 }
 
 

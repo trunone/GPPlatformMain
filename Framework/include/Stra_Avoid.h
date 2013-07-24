@@ -9,11 +9,12 @@
 //
 //Function :Robot avoidance strategy
 //===============================================
-#ifndef Stra_AvoidH
-#define Stra_AvoidH
+#ifndef STRA_AVOIDH
+#define STRA_AVOIDH
 #include "TCoordinate.h"
 #include "StrategyModule.h"
 #include "StrategyStatus.h"
+#include <stdio.h>
 #include <math.h>
 namespace Robot{
 	class Stra_Avoid : public StrategyModule
@@ -22,13 +23,13 @@ namespace Robot{
 
 		static Stra_Avoid*  GetInstance() {return m_UniqueInstance;}
     		
-		~Stra_Avoid(){};   //žÑºcšçŠ¡
+		~Stra_Avoid();   
 
-   	 	//void ParameterReset(void);           //°ÑŒÆ­«žm
+   	 	//void ParameterReset(void);
 
-    		void Initialize(void);                  //ªì©l€Æ
+    		void Initialize(void);                  
 
-    	 	void Process(void);                     //°õŠæšçŒÆ
+    	 	void Process(void);                     
 
     		TCoordinate CorrectV;
 
@@ -36,7 +37,7 @@ namespace Robot{
 
 		static Stra_Avoid* m_UniqueInstance;
 	    	
-		Stra_Avoid();      //«ØºcšçŠ¡
+		Stra_Avoid();
 
     		TCoordinate ScanLineAvoidFunction( TCoordinate OrigTarget );
 

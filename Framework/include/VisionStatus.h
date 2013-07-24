@@ -33,6 +33,11 @@ namespace Robot
                 unsigned char *yiqColorModel; 
 
 	public:
+	
+
+	typedef enum{ etDinRM=0, etBedRM, etLib }teRoomOrder;
+
+
 	typedef enum{BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
 
 	typedef enum{Y=0 , U=1 , V=2}YUVcolor;

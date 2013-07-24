@@ -18,11 +18,15 @@ double StrategyStatus::FI(0);
 double StrategyStatus::w(0);
 Vector3D StrategyStatus::vector;
 
-void Initial();
+TCoordinate StrategyStatus::StartPosition;
+TCoordinate StrategyStatus::EscapePosition;
+TCoordinate StrategyStatus::EndPosition;
+
+//void Initial();
 
 bool StrategyStatus::FlagRoomRenew;
 
-//tsRoomInfo StrategyStatus::Room;
+StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
 int StrategyStatus::RoomSort;		
 
@@ -34,7 +38,7 @@ int StrategyStatus::Lib;
 int StrategyStatus::BedRM;
 
 
-//tsAStarPath StrategyStatus::AStarPath;
+StrategyStatus::tsAStarPath StrategyStatus::AStarPath;
 
 //---------- Strategy -----------------------------------
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector
@@ -78,9 +82,11 @@ bool StrategyStatus::PathR_Priority;
 
 //----------- Ball Data -----------------------------------------
 
-//tsStraBallInfo StrategyStatus::RadBallInfo;
+StrategyStatus::tsStraBallInfo StrategyStatus::RadBallInfo;
 
 //tsObjectiveInfo RedBall;
+
+int StrategyStatus::AX12_Angle;
 
 unsigned char StrategyStatus::FindBallCnt;
 
@@ -90,9 +96,8 @@ bool StrategyStatus::FlagRecognize;
 int StrategyStatus::LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
 
 //---------- ŽM²yµŠ²€šBÆJ-----------------
+
 int StrategyStatus::FindBallState;
-
-
 
 //---------- ŽM²y­«·sÅxÂI-----------------
 

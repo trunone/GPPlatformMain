@@ -17,6 +17,8 @@
 #include "StrategyModule.h"
 #include "TCoordinate.h"
 #include "StrategyStatus.h"
+#include <math.h>
+#include <stdio.h>
 //----------------------------------------------------------------------------
 namespace Robot
 {
@@ -32,9 +34,9 @@ namespace Robot
 		inline double GetMin(const double &dX_,const double &dY_){return (dX_>= dY_)?dY_:dX_;} 
 
 	private:
+    		static Stra_PathPlan* m_UniqueInstance; 
 
-    		Stra_PathPlan();      //«ØºcšçŠ¡
-	        static Stra_PathPlan* m_UniqueInstance; 
+		Stra_PathPlan();      //«ØºcšçŠ¡
 			
 	       	void PathPlan( void );
 		

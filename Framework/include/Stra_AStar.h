@@ -23,7 +23,7 @@ namespace Robot{
 	public:
 		static Stra_AStar*  GetInstance() {return m_UniqueInstance;}
 		
-		~Stra_AStar(void);
+		~Stra_AStar();
 
 		//void ParameterReset(void);
     		void Initialize(void);                 
@@ -34,7 +34,7 @@ namespace Robot{
 
 	        static Stra_AStar* m_UniqueInstance; 
 		
-		Stra_AStar(void);
+		Stra_AStar();
 
 		void Behavior_AstarPath( void );
 

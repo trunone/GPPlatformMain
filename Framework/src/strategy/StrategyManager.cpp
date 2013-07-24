@@ -33,7 +33,8 @@ bool StrategyManager::Initialize(Motors *motors)
 	m_ProcessEnable = true;
 
     mMotors->SetVelocityProfileAll(1000, 1000);
-    mMotors->ActivateProfileVelocityModeAll();
+    mMotors->ActivateProfileVelocityModeAll();
+
 
 	return true;
 }
@@ -120,7 +121,8 @@ void StrategyManager::SetEnable(bool enable)
 {
 	m_Enabled = enable;
 	if(m_Enabled == true)
-        mMotors->SetEnableAll();
+        mMotors->SetEnableAll();
+
 }
 
 void StrategyManager::AddModule(StrategyModule *module)

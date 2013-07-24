@@ -1,7 +1,19 @@
 #include "Stra_AStar.h"
 using namespace Robot;
+using namespace std;
 
 Stra_AStar* Stra_AStar::m_UniqueInstance = new Stra_AStar();
+
+Stra_AStar::Stra_AStar()
+{
+
+}
+
+Stra_AStar::~Stra_AStar()
+{
+
+}
+
 /*
 Star_AStar::Star_AStar(void)
 :TCommonUnit("./Strategy/StraConfig/Stra_AStar.txt", 2 )
@@ -31,9 +43,9 @@ void Stra_AStar::Initialize(void)
 {
 	//string str_ = this->Caption + " Initial";
 
-   	GoalPos = TCoordinate::aVector(-999, -999);
+   	GoalPos = aVector(-999, -999);
 
-    	StartPos= TCoordinate::aVector(-999, -999);
+    	StartPos= aVector(-999, -999);
 
     	CloseState = false;
 }
@@ -44,9 +56,9 @@ void Stra_AStar::Process(void)
 
  //   if( this->bNewParameter ) this->ParameterReset();
 
-	if( StrategyStatus::AStarPath.GoalPos  == TCoordinate::aVector(-999, -999) ||
+	if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
 
-        StrategyStatus::AStarPath.StartPos == TCoordinate:: aVector(-999, -999) ){ return ;}
+        StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
 
     //----- ­YŠ³·sªº¥ØŒÐÂI ©Î °_ÂI «h­«·s­pºâžô®|
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
@@ -72,6 +84,7 @@ void Stra_AStar::Process(void)
 
         	Behavior_AstarPath();
     	}
+	printf("AStar done");
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Behavior_AstarPath( void )
@@ -125,4 +138,4 @@ void Stra_AStar::Behavior_AstarPath( void )
 	StrategyStatus::AStarPath.Status =StrategyStatus::etAchieve;
     }
 }
-   // static TInfo* Info;
+   

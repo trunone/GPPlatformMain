@@ -4,8 +4,19 @@
 #include <math.h>
 
 using namespace Robot;
+using namespace std;
 
 Stra_VelocityControl* Stra_VelocityControl::m_UniqueInstance = new Stra_VelocityControl();
+
+Stra_VelocityControl::Stra_VelocityControl()
+{
+
+}
+
+Stra_VelocityControl::~Stra_VelocityControl()
+{
+
+}
 /*
 Stra_VelocityControl::Stra_VelocityControl()
 :TCommonUnit("./Strategy/StraConfig/Stra_VelocityControl.txt", 8 )
@@ -92,6 +103,8 @@ void Stra_VelocityControl::Process(void)
     //------------------------------------------------------------------------
 
     VelocityTransform( StrategyStatus::MotionDistance, StrategyStatus::MotionAngle, StrategyStatus::Direction );
+
+    printf("VelocityContril done");
 }
 
 

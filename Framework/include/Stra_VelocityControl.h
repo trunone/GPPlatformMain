@@ -15,13 +15,14 @@
 #ifndef Stra_VelocityControlH
 #define Stra_VelocityControlH
 #include "StrategyModule.h"
+#include <stdio.h>
 
 namespace Robot{
 	class Stra_VelocityControl : public StrategyModule
 	{
 
 	public:
-    		~Stra_VelocityControl(){};   //žÑºcšçŠ¡
+    		~Stra_VelocityControl();   //žÑºcšçŠ¡
 
 		static Stra_VelocityControl*  GetInstance() {return m_UniqueInstance;}
 		//static string  ParameterReset(void);           //°ÑŒÆ­«žm

@@ -6,8 +6,8 @@ AstarTool* AstarTool::m_UniqueInstance = new AstarTool();
 
 AstarTool::AstarTool()
 {
-    StartNode = TCoordinate::aVector(-1,-1);
-    GoalNode  = TCoordinate::aVector(-1,-1);
+    StartNode = aVector(-1,-1);
+    GoalNode  = aVector(-1,-1);
 
     AstarTool::NodeResolution = 10;
 
@@ -83,7 +83,7 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
             if(StartNode.x == Father.x && StartNode.y == Father.y)
                 Path.insert( Path.begin(), Start );
             else
-                Path.insert( Path.begin(), (Father*NodeResolution)+ TCoordinate::aVector(NodeResolution/2,NodeResolution/2) );
+                Path.insert( Path.begin(), (Father*NodeResolution)+ aVector(NodeResolution/2,NodeResolution/2) );
         }
     }
 }
@@ -99,7 +99,7 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
         {
             if( i==0 && j==0 ) continue;
 
-            TmpPos    = Current + TCoordinate::aVector( i, j );
+            TmpPos    = Current + aVector( i, j );
             if( TmpPos.x < 0 || TmpPos.y < 0 || TmpPos.x >= MapWidth ||TmpPos.y >= MapHeight ) continue;
 
             TmpWeight = Map[TmpPos.x][TmpPos.y].Weight;
@@ -286,7 +286,7 @@ void AstarTool::OneStepExe()
         while( StartNode.x != Father.x || StartNode.y != Father.y   )
         {
             Father = Map[ Father.x ][ Father.y ].Father;
-            Path.insert( Path.begin(), (Father*NodeResolution)+ TCoordinate::aVector(NodeResolution/2,NodeResolution/2) );
+            Path.insert( Path.begin(), (Father*NodeResolution)+ aVector(NodeResolution/2,NodeResolution/2) );
         }
     }
 }

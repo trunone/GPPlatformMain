@@ -1,7 +1,18 @@
 #include "Stra_PathPlan.h"
 using namespace Robot;
+using namespace std;
 
 Stra_PathPlan* Stra_PathPlan::m_UniqueInstance = new Stra_PathPlan();
+
+Stra_PathPlan::Stra_PathPlan()
+{
+
+}
+
+Stra_PathPlan::~Stra_PathPlan()
+{
+
+}
 
 //Need modifed to the xml system 
 /*/Stra_PathPlan::Stra_PathPlan()
@@ -79,7 +90,7 @@ void Stra_PathPlan::Process( void )
 
 		StrategyStatus::Direction = StrategyStatus::Goal1.Angle();
 
-            	StrategyStatus::Goal1 =TCoordinate::aVector(0,0);
+            	StrategyStatus::Goal1 =aVector(0,0);
 
         }
 
@@ -123,6 +134,7 @@ void Stra_PathPlan::Process( void )
 
     StrategyStatus::MotionAngle    =  StrategyStatus::GoalVector.Angle();
 
+    printf("PathPlan done");
 
 }
 

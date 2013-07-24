@@ -2,8 +2,22 @@
 #define Def_SafeRadiusStart 15
 
 using namespace Robot;
+using namespace std;
 
 Stra_Avoid* Stra_Avoid::m_UniqueInstance = new Stra_Avoid();
+
+Stra_Avoid::Stra_Avoid()
+{
+
+}
+
+Stra_Avoid::~Stra_Avoid()
+{
+
+}
+
+
+
 /*
 Stra_Avoid::Stra_Avoid()
 :TCommonUnit("./Strategy/StraConfig/Stra_Avoid.txt",9 )
@@ -57,6 +71,7 @@ void Stra_Avoid::Process(void)
         StrategyStatus::MotionAngle    = StrategyStatus::CorrectionVector.Angle();
 
     }
+    printf("Avoid done");
 }
 
 //*---------------------------------------------------------------------------
@@ -69,9 +84,9 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
 {
 
-    LeftForce  = TCoordinate::aVector(0,0);
+    LeftForce  = aVector(0,0);
 
-    RightForce = TCoordinate::aVector(0,0);
+    RightForce = aVector(0,0);
 
     
 
@@ -89,7 +104,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
     for( int i =0; i< this->ScanLineNum ;i++ )
     {
-        this->Stone[i] = TCoordinate::aVector(1,0) << (i*this->ScanScale + this->ScanStartAngle);
+        this->Stone[i] = aVector(1,0) << (i*this->ScanScale + this->ScanStartAngle);
 
         //---- ŽM§äšãŠ³ŠM¯Ù©Êªº±œŽyœu
 
@@ -136,13 +151,13 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
             {
 
              
-                this->Stone[i] = TCoordinate::aVector(0,0);
+                this->Stone[i] = aVector(0,0);
 
             }
 
         }
 
-        else{ this->Stone[i] = TCoordinate::aVector(0,0); }
+        else{ this->Stone[i] = aVector(0,0); }
 
 
 
@@ -162,7 +177,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
     if( Goal.Length() < (this->SafeDistance - StoneDistance) )   //¥ØŒÐÂIŠb»ÙÃªª««e€è
 
-        Orien = TCoordinate::aVector( 0 ,0 );
+        Orien = aVector( 0 ,0 );
 
     else
 

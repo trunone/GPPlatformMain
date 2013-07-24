@@ -1,15 +1,9 @@
 //#pragma package(smart_init)
 #include<stdio.h>
-
-
 #include <math.h>
-
-
 #include "TCoordinate.h"
 
 //==============================================================================
-
-using namespace Robot;
 
 //--------------------ÂàŽ«®yŒÐšt------------------------------------------------
 
@@ -369,11 +363,11 @@ double NormalizeAngle(double Angle)
 
 {
 
-    while(Angle >   M_PI) Angle -= 2*M_PI;
+    while(Angle >  M_PI) Angle -= 2*M_PI;
 
     while(Angle <= -M_PI) Angle += 2*M_PI;
 
-    return Angle ;
+    return Angle;
 
 }
 

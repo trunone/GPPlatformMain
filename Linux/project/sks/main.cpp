@@ -55,7 +55,7 @@ int main(void)
 
     change_current_dir();
 
-    TiXmlDocument doc;
+    //TiXmlDocument doc;
 
     motors.OpenDeviceAll();
     motors.SetEnableAll();
@@ -97,6 +97,18 @@ int main(void)
         return 1;
     }
 
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
+
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     StrategyManager::GetInstance()->SetEnable(true);
@@ -109,7 +121,7 @@ int main(void)
     motors.SetEnableAll();
     motors.ActivateProfileVelocityModeAll();
     VisionCapture = cvCaptureFromCAM( -1 );
-
+#endif
    ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
@@ -124,7 +136,7 @@ int main(void)
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
-
+/*
     try
     {
         while(1) {
@@ -183,7 +195,7 @@ int main(void)
     catch ( LinuxSocketException& e )
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
-    }
+    }*/
     return 0;
 }
 

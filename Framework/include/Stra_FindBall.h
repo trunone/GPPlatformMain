@@ -61,7 +61,7 @@ namespace Robot{
 
 		static Stra_FindBall*  GetInstance() {return m_UniqueInstance;}
     		
-    		~Stra_FindBall(){};   //žÑºcšçŠ¡
+    		~Stra_FindBall();   //žÑºcšçŠ¡
 
     		//virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
 
@@ -73,7 +73,7 @@ namespace Robot{
 
 	        static Stra_FindBall* m_UniqueInstance; 
 		
-		Stra_FindBall(){};
+		Stra_FindBall();
 
     		void  RenewRoomCorner();
 

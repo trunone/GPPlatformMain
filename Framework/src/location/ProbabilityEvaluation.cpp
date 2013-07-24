@@ -4,6 +4,7 @@
 #include "LocationStatus.h"
 #include "VisionStatus.h"
 
+using namespace Robot;
 
 TLocProbEvaluation::TLocProbEvaluation()
 {
@@ -62,7 +63,7 @@ void TLocProbEvaluation::ScanLinesInfoUpdate()
 
         DetectAngle =  HeadAngle  +  2*M_PI/ScanLinesNun*i;
 
-        detectP = Center + InterR*(TCoordinate::aVector(cos(DetectAngle),sin(DetectAngle)));
+        detectP = Center + InterR*(aVector(cos(DetectAngle),sin(DetectAngle)));
 
         DetColor = VisionStatus::PixelBinarization( SampleImg.GetColor(detectP.x,detectP.y) ,  Threshold );
 
@@ -111,7 +112,7 @@ float* TLocProbEvaluation::ScanLines(int x,int y ,float angle, float starR, floa
 
         DetectAngle =  angle + Def_ScanStarAngle +  Def_ScanScale*i;
 
-        detectP = Pos + starR*(TCoordinate::aVector(cos(DetectAngle),sin(DetectAngle)));
+        detectP = Pos + starR*(aVector(cos(DetectAngle),sin(DetectAngle)));
 
         if(this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y) == NULL) break;
         DetColor = *this->VirtualLineMap->GetPixelPtr(detectP.x,detectP.y);

@@ -1,5 +1,5 @@
 /*
- *   Task.cpp
+ *   Stra_Task.cpp
  *
  *   Author: Wu Chih-En
  *
@@ -12,22 +12,22 @@
 #include <math.h>
 
 using namespace Robot;
+using namespace std;
 
+Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
 
-Task* Task::m_UniqueInstance = new Task();
-
-Task::Task()
+Stra_Task::Stra_Task()
 {
 
 }
 
-Task::~Task()
+Stra_Task::~Stra_Task()
 {
 
 }
 
 //---------------------------------------------------------------------------
-void Task::Initialize(void)
+void Stra_Task::Initialize(void)
 {
    // string str_ = this->Caption +" Initial";
 
@@ -42,7 +42,7 @@ void Task::Initialize(void)
    // return str_;
 }
 //---------------------------------------------------------------------------
-void Task::Process(void)
+void Stra_Task::Process(void)
 {
     //if( this->bNewParameter ) this->ParameterReset();
     //---
@@ -190,9 +190,10 @@ void Task::Process(void)
 
     //---
    // return Caption;
+    printf("Task done");
 }
 //---------------------------------------------------------------------------
-void Task::ActiveFunction()
+void Stra_Task::ActiveFunction()
 {
     switch( ActiveState )
     {
@@ -238,7 +239,7 @@ void Task::ActiveFunction()
     }
 }
 //---------------------------------------------------------------------------
-void Task::WaitCatchball()
+void Stra_Task::WaitCatchball()
 {
     ActiveState = etIdle;
     if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
@@ -255,7 +256,7 @@ void Task::WaitCatchball()
     }
 }
 //---------------------------------------------------------------------------
-void Task::SetAStar( TCoordinate  Goal )
+void Stra_Task::SetAStar( TCoordinate  Goal )
 {
     FlagSetInitialData = true;
     StartPos = LocationStatus::Position;
@@ -264,7 +265,7 @@ void Task::SetAStar( TCoordinate  Goal )
     StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
 }
 //---------------------------------------------------------------------------
-bool Task::MotionToPosition( TCoordinate  Goal )
+bool Stra_Task::MotionToPosition( TCoordinate  Goal )
 {
     if( (Goal - LocationStatus::Position).Length()  > 10 )
     {
@@ -274,9 +275,9 @@ bool Task::MotionToPosition( TCoordinate  Goal )
     else{ return true; }
 }
 //---------------------------------------------------------------------------
-bool Task::TurnToAngle( float GoalAngle )
+bool Stra_Task::TurnToAngle( float GoalAngle )
 {
-    StrategyStatus::Goal1 = TCoordinate::aVector(0,0);
+    StrategyStatus::Goal1 = aVector(0,0);
     float AngleError = NormalizeAngle(GoalAngle - LocationStatus::Handle);
 
     if( fabs(AngleError) > Def_AnglePrecision )
@@ -297,7 +298,7 @@ bool Task::TurnToAngle( float GoalAngle )
     }
 }
 //---------------------------------------------------------------------------
-bool Task::SpecialMove( int Forward )
+bool Stra_Task::SpecialMove( int Forward )
 {/*
     Info->LocInfo->FlagEvaluatuonEnable = false;
     //-------CheckJun
@@ -323,7 +324,7 @@ bool Task::SpecialMove( int Forward )
 */
 }
 //---------------------------------------------------------------------------
-bool Task::SpecialTurn()
+bool Stra_Task::SpecialTurn()
 {/*
     Info->LocInfo->FlagEvaluatuonEnable = false;
     if( Info->HdwInfo->LaserInfo.ScanArray[35] <= Info->HdwInfo->LaserInfo.ScanArray[34] &&
@@ -343,11 +344,11 @@ bool Task::SpecialTurn()
 */
 }
 //---------------------------------------------------------------------------
-bool Task::TouchButton()
+bool Stra_Task::TouchButton()
 {
     if( TouchCnt < 20 )
     {
-        StrategyStatus::Goal1 = TCoordinate::aVector(100,0);
+        StrategyStatus::Goal1 = aVector(100,0);
         StrategyStatus::FixSpeed = 70;
         TouchCnt++;
         return false;
@@ -359,12 +360,12 @@ bool Task::TouchButton()
     }
 }
 //---------------------------------------------------------------------------
-bool Task::Backward()
+bool Stra_Task::Backward()
 {
     if( TouchCnt < 30 )
     {
         StrategyStatus::FlagForward = false; // 開啟後退
-        StrategyStatus::Goal1 =  TCoordinate::aVector(-100,0);
+        StrategyStatus::Goal1 =  aVector(-100,0);
         StrategyStatus::FixSpeed = 50;
         TouchCnt++;
         return false;
@@ -376,14 +377,14 @@ bool Task::Backward()
     }
 }
 //---------------------------------------------------------------------------
-bool Task::MakeSoundMove()
+bool Stra_Task::MakeSoundMove()
 {
 	StrategyStatus::FlagForward = true;
-	StrategyStatus::Goal1 =  TCoordinate::aVector(100,0);
+	StrategyStatus::Goal1 =  aVector(100,0);
 	StrategyStatus::FixSpeed = 25;
 }
 //---------------------------------------------------------------------------
-void Task::MakeSound()
+void Stra_Task::MakeSound()
 {
 	if( StrategyStatus::Room.Cnt == StrategyStatus::LivRM )
 	{

@@ -11,7 +11,6 @@
 #include "TCoordinate.h"
 #include "Vector.h"
 #include <vector>
-#include "Stra_Task.h"
 
 namespace Robot
 {
@@ -34,6 +33,8 @@ namespace Robot
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
 		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
+
+		typedef enum{ etSKSStop =0, etSKSEatBall ,etSKSThrowBall }teSKSBallState;
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
@@ -66,7 +67,9 @@ namespace Robot
 
         	//~TStra(void);
 
+		static int CurrentBallState;
 
+		static int RoomOrder;
 
         	void Initial();
 
