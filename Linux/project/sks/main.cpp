@@ -3,7 +3,7 @@
  *
  *   Author: Wu Chih-En
  */
-//#define ENABLE_STRATEGY
+#define ENABLE_STRATEGY
 
 #include <stdio.h>
 #include <unistd.h>
@@ -55,12 +55,12 @@ int main(void)
 
     change_current_dir();
 
-    //TiXmlDocument doc;
-
-    motors.OpenDeviceAll();
-    motors.SetEnableAll();
-    motors.ActivateProfileVelocityModeAll();
+#ifdef ENABLE_STRATEGY
+    //motors.OpenDeviceAll();
+#endif
+#ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
+#endif
 
    ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
@@ -91,7 +91,7 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
+    if(StrategyManager::GetInstance()->Initialize() == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
@@ -99,49 +99,30 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
+    //StrategyManager::GetInstance()->SetEnable(true);
 
-    change_current_dir();
-
-    TiXmlDocument doc;
-
-    motors.OpenDeviceAll();
-    motors.SetEnableAll();
-    motors.ActivateProfileVelocityModeAll();
-    VisionCapture = cvCaptureFromCAM( -1 );
-#endif
-   ////////////////// Framework Initialize ////////////////////////////
-#ifdef ENABLE_VISION
-    if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
-    {
-        printf("Fail to initialize Vision Manager!\n");
-        return 1;
-    }
-    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
-    stragey_timer->Start();
+	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+	strategy_timer->Start();
 #endif
     ///////////////////////////////////////////////////////////////////
 
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
-/*
     try
     {
         while(1) {
-
-
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
@@ -195,7 +176,8 @@ int main(void)
     catch ( LinuxSocketException& e )
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
-    }*/
+    }
+
     return 0;
 }
 
