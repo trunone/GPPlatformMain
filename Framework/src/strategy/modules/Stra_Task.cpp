@@ -191,7 +191,7 @@ void Stra_Task::Process(void)
         ActiveFunction();
 
     //---
-   // return Caption;
+    // return Caption;
     printf("Task done");
 }
 //---------------------------------------------------------------------------
@@ -429,7 +429,7 @@ void Stra_Task::MakeSound()
 	}		
 }
 //---------------------------------------------------------------------------
-void EncounterPeople()
+void Stra_Task::EncounterPeople()
 {
 	
 }

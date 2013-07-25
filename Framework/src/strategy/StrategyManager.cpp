@@ -39,6 +39,15 @@ bool StrategyManager::Initialize(Motors *motors)
 	return true;
 }
 
+bool StrategyManager::Initialize()
+{
+	mMotors = NULL;
+	m_Enabled = false;
+	m_ProcessEnable = true;
+
+	return true;
+}
+
 bool StrategyManager::Reinitialize()
 {
 	m_ProcessEnable = false;
@@ -88,11 +97,11 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-
-        mMotors->SetVelocityAll(
-                -StrategyStatus::Motor1Speed,
-                -StrategyStatus::Motor2Speed,
-                -StrategyStatus::Motor3Speed);
+	if(mMotors)
+		mMotors->SetVelocityAll(
+			-StrategyStatus::Motor1Speed,
+			-StrategyStatus::Motor2Speed,
+			-StrategyStatus::Motor3Speed);
 
     if(m_IsLogging)
     {
@@ -121,8 +130,8 @@ void StrategyManager::SetEnable(bool enable)
 {
 	m_Enabled = enable;
 	if(m_Enabled == true)
-        mMotors->SetEnableAll();
-
+	if(mMotors)
+		mMotors->SetEnableAll();
 }
 
 void StrategyManager::AddModule(StrategyModule *module)

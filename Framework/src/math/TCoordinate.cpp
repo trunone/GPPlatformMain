@@ -135,7 +135,7 @@ bool TCoordinate::operator == (TCoordinate op2)             //ŠV¶q¬O§_¬Ûµ
 
 //------------------------------------------------------------------------------
 
-TCoordinate TCoordinate::operator + (TCoordinate op2)       //šâŠV¶q¬Û¥[
+TCoordinate TCoordinate::operator + (TCoordinate op2)       //šâŠV¶q¬Û¥[]
 
 {
 

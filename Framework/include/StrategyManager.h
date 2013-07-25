@@ -46,6 +46,7 @@ namespace Robot
 
 		//bool Initialize();
         	bool Initialize(Motors*);
+		bool Initialize();
 		bool Reinitialize();
         	void Process();
 		void SetEnable(bool enable);
