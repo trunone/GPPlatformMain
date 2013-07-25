@@ -429,7 +429,7 @@ void Stra_Task::MakeSound()
 	}		
 }
 //---------------------------------------------------------------------------
-void EncounterPeople()
+void Stra_Task::EncounterPeople()
 {
 	
 }

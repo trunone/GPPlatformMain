@@ -27,6 +27,16 @@ using namespace Robot;
 using namespace std;
 
 Stra_FindBall* Stra_FindBall::m_UniqueInstance = new Stra_FindBall();
+
+Stra_FindBall::Stra_FindBall()
+{
+
+}
+
+Stra_FindBall::~Stra_FindBall()
+{
+
+}
 /*
 Stra_FindBall::Stra_FindBall()
 :TCommonUnit("./Strategy/StraConfig/Stra_FindBall.txt", 0 )
