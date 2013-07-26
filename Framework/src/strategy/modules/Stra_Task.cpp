@@ -6,7 +6,8 @@
  */
 
 #include "Stra_Task.h"
-
+#include "VisionStatus.h"
+#include "LinuxActionScript.h"
 // for use M_PI
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -390,6 +391,7 @@ void Stra_Task::MakeSound()
 {
 	if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
 	{
+		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Restaurant.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
@@ -403,6 +405,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::Lib )
 	{
+		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Studyroom.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
@@ -416,6 +419,7 @@ void Stra_Task::MakeSound()
 	}
 	else if( StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
 	{
+		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Badroom.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
 		{
         		GotoRoomStep++;
@@ -431,6 +435,11 @@ void Stra_Task::MakeSound()
 //---------------------------------------------------------------------------
 void Stra_Task::EncounterPeople()
 {
-	
+	if(StrategyStatus::FamilyMember == VisionStatus::etGrandPa)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Grandpa.mp3");
+	else if(StrategyStatus::FamilyMember == VisionStatus::etGrandMa)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Grandma.mp3");
+	else if(StrategyStatus::FamilyMember == VisionStatus::etFather)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Dad.mp3");
+	else if(StrategyStatus::FamilyMember == VisionStatus::etMother)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Mom.mp3");
+	else if(StrategyStatus::FamilyMember == VisionStatus::etSon)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Bro.mp3");
+	else if(StrategyStatus::FamilyMember == VisionStatus::etdaughter)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Sis.mp3");
 }
 

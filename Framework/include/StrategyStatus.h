@@ -78,6 +78,8 @@ namespace Robot
 
 		static int RoomOrder;
 
+		static int FamilyMember;
+
         	void Initial();
 
                 static	bool FlagRoomRenew;

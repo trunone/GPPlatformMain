@@ -39,6 +39,10 @@ int StrategyStatus::BedRM;
 
 StrategyStatus::tsAStarPath StrategyStatus::AStarPath;
 
+//----------Test int----------------------------------------------------
+
+int StrategyStatus::FamilyMember;
+
 //---------- Strategy --------------------------------------------------
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector
 TCoordinate StrategyStatus::Goal2;                   // Target2 vector
