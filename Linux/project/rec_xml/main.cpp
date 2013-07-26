@@ -49,10 +49,12 @@ int main(){
 ///////////////////////////////////////////////////intial
 	
 	TiXmlPrinter printer;
+	printer.SetStreamPrinting();
 	const char *fileName = "last_mode.xml";
 	const char *just_cmp = "halt";
-	
-	double x,y,w;
+	const char *Sim_x="x";
+	const char *Sim_y="y";
+	const char *Sim_sita="sita";
 //////////////////////////////////////////////////////////////////////////////////////////
 	while(true){	
 		new_sock >> xml_by_str;
@@ -66,10 +68,27 @@ int main(){
 			doc.Parse(xml_by_char);
 			TiXmlElement* root=doc.FirstChildElement("Command");
 			if(root != NULL){
-				TiXmlElement* elementforManualDirection=root->FirstChildElement("ManualDirection");
-				if(elementforManualDirection != NULL){
-					StrategyStatus::GetInstance()->loadxml(elementforManualDirection,1);
+				TiXmlElement* element_ManualDirection=root->FirstChildElement("ManualDirection");
+				if(element_ManualDirection != NULL){
+					StrategyStatus::GetInstance()->loadxml(element_ManualDirection,1);
 					cout<<"I got ManualDirection"<<endl;
+					TiXmlElement* child_ManualDirection;
+					child_ManualDirection = element_ManualDirection->FirstChildElement("Laser");
+					if(child != NULL){
+						
+					}
+					child_ManualDirection = element_ManualDirection->FirstChildElement("Sim_flag");
+					if(child != NULL){
+						TiXmlDocument doc_Sim("Simulator.xml");
+						TiXmlElement* root_Sim=doc.FirstChildElement("Simulator");
+						TiXmlElement* element_Sim=root->FirstChildElement("Sim_status");
+						TiXmlElement* child_Sim=element_Sim->FirstChildElement("Site");
+						child_Sim->SetDoubleAttribute(Sim_x,StrategyStatus::x);
+						child_Sim->SetDoubleAttribute(Sim_y,StrategyStatus::y);
+						child_Sim->SetDoubleAttribute(Sim_sita,StrategyStatus::w);
+						doc_Sim.Accept( &printer );
+						new_sock << printer.CStr();
+					}
 				
 				}
 			}
