@@ -52,9 +52,7 @@ int main(){
 	printer.SetStreamPrinting();
 	const char *fileName = "last_mode.xml";
 	const char *just_cmp = "halt";
-	const char *Sim_x="x";
-	const char *Sim_y="y";
-	const char *Sim_sita="sita";
+	
 //////////////////////////////////////////////////////////////////////////////////////////
 	while(true){	
 		new_sock >> xml_by_str;
@@ -83,9 +81,9 @@ int main(){
 						TiXmlElement* root_Sim=doc.FirstChildElement("Simulator");
 						TiXmlElement* element_Sim=root->FirstChildElement("Sim_status");
 						TiXmlElement* child_Sim=element_Sim->FirstChildElement("Site");
-						child_Sim->SetDoubleAttribute(Sim_x,StrategyStatus::x);
-						child_Sim->SetDoubleAttribute(Sim_y,StrategyStatus::y);
-						child_Sim->SetDoubleAttribute(Sim_sita,StrategyStatus::w);
+						child_Sim->SetDoubleAttribute("x",StrategyStatus::x);
+						child_Sim->SetDoubleAttribute("y",StrategyStatus::y);
+						child_Sim->SetDoubleAttribute("sita",StrategyStatus::w);
 						doc_Sim.Accept( &printer );
 						new_sock << printer.CStr();
 					}
