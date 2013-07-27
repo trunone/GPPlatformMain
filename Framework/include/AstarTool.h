@@ -17,6 +17,7 @@
 #include <vector>
 #define Def_Open 1
 #define Def_Closed 2
+#include <tinyxml.h>
 namespace Robot{
 
 	typedef struct
@@ -59,6 +60,9 @@ namespace Robot{
     		vector<TCoordinate> SmoothPath;
 
 	private:
+
+		int loadxml (TiXmlElement* element);   // load xml
+
 		static AstarTool* m_UniqueInstance;
     		
 		void SearchNeighbor( TCoordinate Current );

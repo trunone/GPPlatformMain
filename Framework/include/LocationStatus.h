@@ -16,7 +16,7 @@
 #include <Normalrand.h>
 #include "TCoordinate.h"
 #include "Normalrand.h"
-
+#include <tinyxml.h>
 #ifndef _LOCATION_STATUS_H_
 #define _LOCATION_STATUS_H_
 
@@ -34,13 +34,38 @@ namespace Robot
 		TCoordinate Position;
 		float Direction;
 	}FeedBack_Info;
-	
+
 	class LocationStatus
 	{
 
 	private:
 		
 	public:
+
+		struct Furniture
+		{
+			int x;
+			int y;
+			int Width;	
+			int Height;
+			int Angle;			
+		};
+		int loadxml (TiXmlElement* element);
+		
+		static Furniture LivingRM_Sofa;
+		static Furniture LivingRM_Table;
+		static Furniture LivingRM_Cabinet;
+		static Furniture DiningRM_Table;
+		static Furniture DiningRM_Chair;
+		static Furniture Library_Desk;
+		static Furniture Library_Chair;
+		static Furniture Library_Cabinet;
+		static Furniture BedRM_Bed;
+		static Furniture DiningRM_door;
+		static Furniture BedRM_door;
+		static Furniture ChargeArea;
+		static Furniture EndArea;
+
 		static float ScanLineData[24];
 		static bool FlagEvaluatuonEnable;		
 		static bool FlagCoerceEvaluatuon;
@@ -51,11 +76,11 @@ namespace Robot
 		static bool FlagLaserBusy;
 		static bool FlagLocInit;
 		static bool enable;
-
 		static TCoordinate SetRobotPosition;
 		static double SetRobotHandle;
 	    	static TCoordinate LaserGap;	// tmp. store for partilcefilter, wait for the truly laser information get will replace	
 		static FeedBack_Info FB_Movement;
+
 	};
 
 

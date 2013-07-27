@@ -21,14 +21,27 @@ void AstarTool::CleanList( void )
     ClosedList.clear();
     while( (OpenList.minnum()).x != -1 && (OpenList.minnum()).y != -1 ){ OpenList.extract_min(); }
 }
+//---------------------------------------------------------------------------xml
+int AstarTool::loadxml (TiXmlElement* element){
+	if(element != NULL){	
+		TiXmlElement* modelchild;
+		modelchild=element->FirstChildElement("MapGrid_Config");
+		if(modelchild != NULL){
+			modelchild->Attribute("length",&MapHeight);
+			modelchild->Attribute("Width", &MapWidth);
+			modelchild->Attribute("NodeResolution", &NodeResolution);
+		}
+		
+	}
+}
 //---------------------------------------------------------------------------
 void AstarTool::AssignMap( vector< vector<tsNode> > &Map,
                            int W, int H, int Resolution )
 {
     Map = Map;
-    MapWidth = W;
-    MapHeight= H;
-    NodeResolution= Resolution;
+    //MapWidth = W;
+    //MapHeight= H;
+    //NodeResolution= Resolution;
 }
 //---------------------------------------------------------------------------
 void AstarTool::Main( TCoordinate Start , TCoordinate Goal )

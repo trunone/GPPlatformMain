@@ -11,6 +11,8 @@
 #include "TCoordinate.h"
 #include "Vector.h"
 #include <vector>
+#include "Stra_Task.h"
+#include <tinyxml.h>
 
 namespace Robot
 {
@@ -26,10 +28,26 @@ namespace Robot
        		static double y;
 		static double w;
         	static Vector3D vector;
+		//-------------------------------------------loadxml
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
 	        static TCoordinate EndPosition; 
 
+		static TCoordinate RobotPos;
+		static TCoordinate RootHandle;
+		static TCoordinate LivRMDoor;
+		static TCoordinate LivRMCen; 
+		static TCoordinate DinRMDoor; 
+		static TCoordinate DinRMCen;
+		static TCoordinate LibDoor;
+		static TCoordinate LibCen;
+		static TCoordinate BedRMDoor;
+		static TCoordinate BedRMCen;
+		static TCoordinate ChrgDoor;
+		static TCoordinate ChrgCen;
+
+		static int loadxml(TiXmlElement* element,int mod);
+		//--------------------------------------------------
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
@@ -82,7 +100,7 @@ namespace Robot
 
         	void Initial();
 
-                static	bool FlagRoomRenew;
+                static bool FlagRoomRenew;
         	static tsRoomInfo Room;
 		static int ThiefRoom;
         	static int RoomSort;		

@@ -28,6 +28,11 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
         ../../Framework/src/math/Vector.o\
+	../../Framework/src/vision/VisionStatus.o\
+	../../Framework/src/vision/modules/SegmentationFunction.o\
+	../../Framework/src/vision/modules/ColorModel.o\
+	../../Framework/src/vision/modules/TCP.o\
+        ../../Framework/src/strategy/StrategyManager.o\
 	../../Framework/src/math/TCoordinate.o\
 	../../Framework/src/math/Normalrand.o\
 	../../Framework/src/vision/VisionManager.o\

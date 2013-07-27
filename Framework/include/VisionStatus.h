@@ -10,6 +10,17 @@
 
 #ifndef _VISION_STATUS_H_
 #define _VISION_STATUS_H_
+#include <vector>
+#include <string>
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+#define M_PI       3.14159265358979323846
+
+using namespace std;
+//---------------------------------------------------------------------------
+
 #define cBLACK      colorBGR(0,0,0)
 #define cWHITE      colorBGR(255,255,255)
 #define cRED        colorBGR(0,0,255)
@@ -35,59 +46,101 @@ namespace Robot
 	
 	class VisionStatus
 	{
+
 	private:
                 unsigned char *yiqColorModel; 
 
 	public:
+		struct ColorRange
+		{
+			double HueMax;
+			double HueMin;
+			double SaturationMax;
+			double SaturationMin;
+			double BrightnessMax;
+			double BrightnessMin;
+		};
 
-	static Mat VideoFrame;
+		
+
+		//---seg
+		
+		/*static int Xmax, Xmin, Ymax, Ymin;
+		static int PointCnt;
+		static void SegmentationInit(int Xvalue, int Yvalue);
+		static void SegmentationInsert(int Xvalue, int Yvalue);
+		static vector <SegmentLocation> LocationList;*/
 	
-	typedef enum{ etDinRM=0, etBedRM, etLib }teRoomOrder;
+		//--- Global
+		static const int ImageWidth = 640, ImageHeight = 480;
 
-	typedef enum{ etGrandPa=0, etGrandMa, etFather, etMother, etSon, etdaughter }teMember;
+		static cv::Mat frame;
+		static cv::Mat send_frame;
+		
+		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+				     Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+				     Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+		static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
 
-	typedef enum{ BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
+		//--- ModelUnit
+		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;
 
-	typedef enum{ Y=0 , U=1 , V=2}YUVcolor;
+		static int ColorDeep;
 
+		static int xImageCenter, yImageCenter;
+		static int GlobalScanMagnEnd;
 
-
-	typedef struct{
-
-    		unsigned char ColorEle[3];
-
-	}tsColor;
-
-	typedef struct{
-	    	int CenterX;
-	  	int CenterY;
-	    	int InternalRadius;
-	    	int ExternalRadius;
-	    	void LoadSetting();
-	    	void WriteSetting();
-	    	unsigned char BinaryThreshold;
-	}tsImgProSet;
+		static float AngularToRadian,RadianToAngular;
 
 
+		static float ComputeCenterAngle(float AngleStartPoint, float AngleEndPoint);
 
-	typedef struct{
+		static Mat VideoFrame;
+	
+		typedef enum{ etDinRM=0, etBedRM, etLib }teRoomOrder;
 
-    		unsigned char* ImgData;
+		typedef enum{ etGrandPa=0, etGrandMa, etFather, etMother, etSon, etdaughter }teMember;
 
-    		int Width;
+		typedef enum{ BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
 
-    		int Height;
+		typedef enum{ Y=0 , U=1 , V=2}YUVcolor;
+	
+		typedef struct{
 
-    		int Dimension;
+    			unsigned char ColorEle[3];
 
-    		tsColor         GetColor(int x,int y);
+		}tsColor;
 
-    		unsigned char*  GetPixelPtr(int x,int y);
+		typedef struct{
+		    	int CenterX;
+		  	int CenterY;
+		    	int InternalRadius;
+		    	int ExternalRadius;
+		    	void LoadSetting();
+		    	void WriteSetting();
+		    	unsigned char BinaryThreshold;
+		}tsImgProSet;
 
-    		void    SetColor(int x,int y ,tsColor cBGR);
 
-    		void    SetColor(int x,int y ,unsigned char* Color);
-	}tsBmpPtr;
+
+		typedef struct{
+
+	    		unsigned char* ImgData;
+
+	    		int Width;
+
+	    		int Height;
+
+	    		int Dimension;
+
+	    		tsColor         GetColor(int x,int y);
+
+	    		unsigned char*  GetPixelPtr(int x,int y);
+
+	    		void    SetColor(int x,int y ,tsColor cBGR);
+
+	    		void    SetColor(int x,int y ,unsigned char* Color);
+		}tsBmpPtr;
 
 		typedef struct{
 	    		bool enable;
@@ -95,11 +148,16 @@ namespace Robot
 				float Distance;
 				float Pixel;
 		    	}tsDisPixel;
-			tsDisPixel *DisPixel_Model ;
-	    		int ModelNum;
-	    		float Pixel2Distance(int pixel);
-	    		void  LoadModel();
-	    		void  WriteModel();
+		tsDisPixel *DisPixel_Model ;
+	    	
+		int ModelNum;
+
+	    	float Pixel2Distance(int pixel);
+
+	    	void  LoadModel();
+
+	    	void  WriteModel();
+
 		}tsImgDisModel;
 
 		tsColor colorBGR (unsigned char B ,unsigned char G , unsigned char R);
@@ -117,40 +175,47 @@ namespace Robot
 			short int PixelDistance;
 			double Angle;
 	    	}tsObjectiveInfo;
+	//----------------------------------------
 
-	    	typedef struct{
-			tsCoordinate LeftUp;
-			tsCoordinate RightDown;
-			unsigned int countcolor;
-	    	}tsRecord_Blockinfo;
+    	typedef struct{
 
-		//---------------------------------------------------------------------------
-		enum{OrangeLabel = 0x01, YellowLabel = 0x02, BlueLabel = 0x04
-			, GreenLabel = 0x08, BlackLabel = 0x10, RedLabel = 0x20
-			, OthersLabel = 0x80};
+        	tsCoordinate LeftUp;
 
-		struct ColorRange
-		{
-			double HueMax;
-			double HueMin;
-			double SaturationMax;
-			double SaturationMin;
-			double BrightnessMax;
-			double BrightnessMin;
-		};
+        	tsCoordinate RightDown;
 
-		struct CIRCLE
-		{
-	   		short int CCX;
-	    		short int CCY;
-	    		short int Rr;
-		};
+        	unsigned int countcolor;
 
-		typedef struct{
-	    		unsigned char Y;
-	    		unsigned char U;
-	    		unsigned char V;
-		}tsYUVData;
+    	}tsRecord_Blockinfo;
+
+	//---------------------------------------------------------------------------
+
+
+
+	enum{OrangeLabel = 0x01, YellowLabel = 0x02, BlueLabel = 0x04
+
+        	, GreenLabel = 0x08, BlackLabel = 0x10, RedLabel = 0x20
+
+        	, OthersLabel = 0x80};
+
+
+
+
+	struct CIRCLE
+
+	{
+
+    		short int CCX;
+
+    		short int CCY;
+
+    		short int Rr;
+
+	};
+	typedef struct{
+		unsigned char Y;
+	    	unsigned char U;
+	    	unsigned char V;
+	}tsYUVData;
 
 	//--------------------------------------------------------------------------
 		//TImg(void);

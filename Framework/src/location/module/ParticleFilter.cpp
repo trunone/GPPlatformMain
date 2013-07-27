@@ -3,6 +3,7 @@
 using namespace Robot;
 using namespace std;
 
+
 ParticleFilter* ParticleFilter::m_UniqueInstance = new ParticleFilter();
 
 
@@ -65,7 +66,9 @@ void ParticleFilter::Process( void )
 	}
 }
 void ParticleFilter::SetParticleFilter(int W, int H, unsigned char *Mapdata){
+
 	LocationStatus::LaserGap =aVector(Def_LaserGap,0);
+
     //-------set virtual map---------------------------------------
     tsBmpVirtualMap.Width  = W;
     tsBmpVirtualMap.Height = H;

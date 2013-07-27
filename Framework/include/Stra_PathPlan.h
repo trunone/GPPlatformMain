@@ -19,6 +19,7 @@
 #include "StrategyStatus.h"
 #include <math.h>
 #include <stdio.h>
+#include <tinyxml.h>
 //----------------------------------------------------------------------------
 namespace Robot
 {
@@ -37,6 +38,8 @@ namespace Robot
     		static Stra_PathPlan* m_UniqueInstance; 
 
 		Stra_PathPlan();      //«ØºcšçŠ¡
+
+		int loadxml(TiXmlElement* element);  // load xml		
 			
 	       	void PathPlan( void );
 		

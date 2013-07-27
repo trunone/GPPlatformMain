@@ -341,7 +341,9 @@ void  Stra_FindBall::Approach_Ball()
 
 bool  Stra_FindBall::Eat_Ball()
 {
-       if( LocationStatus::FlagNewFeedback ){
+
+    if( LocationStatus::FlagNewFeedback ){
+
        // PastOdometer = PastOdometer + TCoordinate::aVector(Share_Info->HdwInfo->NIOSFeedback.ShiftX,Share_Info->HdwInfo->NIOSFeedback.ShiftY );
     }
     static bool Dir_Lock = false;

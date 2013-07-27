@@ -16,7 +16,7 @@
 #define Stra_VelocityControlH
 #include "StrategyModule.h"
 #include <stdio.h>
-
+#include <tinyxml.h>
 namespace Robot{
 	class Stra_VelocityControl : public StrategyModule
 	{
@@ -32,6 +32,9 @@ namespace Robot{
     		void Process(void);                     //°õŠæšçŒÆ
 
 	private:
+
+		int loadxml(TiXmlElement* element);  //loadxml
+
 		static Stra_VelocityControl* m_UniqueInstance; 
 
 		Stra_VelocityControl();      //«ØºcšçŠ¡

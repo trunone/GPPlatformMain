@@ -16,6 +16,7 @@
 #include "StrategyStatus.h"
 #include <stdio.h>
 #include <math.h>
+#include <tinyxml.h>
 namespace Robot{
 	class Stra_Avoid : public StrategyModule
 	{
@@ -34,6 +35,7 @@ namespace Robot{
     		TCoordinate CorrectV;
 
 	private:
+		int loadxml(TiXmlElement* element);  //load xml
 
 		static Stra_Avoid* m_UniqueInstance;
 	    	
@@ -45,23 +47,23 @@ namespace Robot{
 
     		int *ScanLine;
 
-    		float ScanStartAngle;
+    		double ScanStartAngle;
 
     		int ScanLineNum;
 
-    		float ScanScale;
+    		double ScanScale;
 
     		int SafeDistance;
 
-    		float SafeArc_D;
+    		double SafeArc_D;
 
-    		float SafeArc_A;
+    		double SafeArc_A;
 
-    		float AvoidConfig1;
+    		double AvoidConfig1;
 
-    		float AvoidForce;
+    		double AvoidForce;
 
-    		short FixDirect;
+    		int FixDirect;
 
     		int Lock_Avoid;
 

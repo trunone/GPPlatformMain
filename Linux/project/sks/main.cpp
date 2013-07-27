@@ -70,8 +70,9 @@ int main(void)
         return 1;
     }
 
-    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
 
+    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -117,7 +118,6 @@ int main(void)
 	strategy_timer->Start();
 #endif
     ///////////////////////////////////////////////////////////////////
-
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
     try
@@ -180,4 +180,3 @@ int main(void)
 
     return 0;
 }
-

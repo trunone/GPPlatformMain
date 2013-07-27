@@ -39,6 +39,14 @@ void Star_AStar::ParameterReset(void)
 }
 */
 //-----------------------------------------------------------------
+//////////////////////////////////////////////////////xml
+int Stra_AStar::loadxml (TiXmlElement* element){
+	if(element != NULL){				
+		element->Attribute("PathErrRange", &PathErrRange);
+		element->Attribute("AchieveErrRange", &AchieveErrRange);
+	}
+}
+///////////////////////////////////////////
 void Stra_AStar::Initialize(void)
 {
 	//string str_ = this->Caption + " Initial";

@@ -49,8 +49,14 @@ string Stra_PathPlan::ParameterReset(void)
 
 }
 */
-//----------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------xml
+int Stra_PathPlan::loadxml (TiXmlElement* element){
+	if(element != NULL){
+		element->Attribute("DetourConst", &DetourConst);						
+	}
+	return 0;
+}
+//------------------------------------------------------------------------------
 void Stra_PathPlan::Initialize(void)
 {
 //    string str_ = this->Caption +" Initial";

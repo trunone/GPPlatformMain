@@ -83,7 +83,11 @@ void VisionManager::Process()
 
     m_IsRunning = true;
 
-    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);
+    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);//1
+
+    VisionStatus::frame = cvQueryFrame(VisionCapture);//2
+	
+
 
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
