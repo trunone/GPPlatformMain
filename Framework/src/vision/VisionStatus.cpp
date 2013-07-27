@@ -175,6 +175,10 @@ void ImgBinarization(VisionStatus::tsBmpPtr Image, unsigned char Threshold);
 
 
 //------ FaceData ----------------------------------------------------------
+//------ FaceDetection ----------------------------------------------------------
+Mat VisionStatus::VideoFrame;
+
+//------ ImgProcess ----------------------------------------------------------
 unsigned char VisionStatus::Favg[40*40*3];
 float VisionStatus::FeatureFaceW[40*40*3];
 float VisionStatus::cvGet2D_1(0);
@@ -189,6 +193,4 @@ float VisionStatus::cvGet2D_9(0);
 float VisionStatus::cvGet2D_10(0);
 float VisionStatus::cvGet2D_11(0);
 float VisionStatus::cvGet2D_12(0);
-
-
 

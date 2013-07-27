@@ -218,17 +218,6 @@ int Motors::GetPositionIs(short device_id,long* pPositionIs)
     }
 }
 
-int Motors::GetVelocityIs(short device_id, long* pVelocityIsAveraged)
-{
-    mErrorCode = 0;
-    if(!VCS_GetVelocityIs(mMotorHandle[device_id], NODE_ID, pVelocityIsAveraged, &mErrorCode))
-    {
-	fprintf(stderr, "Get Velocity Is Averaged failed!, error code=0x%x\n", mErrorCode);
-        return 1;
-    }
-    return 0;
-}
-
 int Motors::GetCurrentIs(short device_id, short* pCurrentIs)
 {
     mErrorCode = 0;

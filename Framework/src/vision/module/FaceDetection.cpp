@@ -23,8 +23,6 @@ using namespace cv;
 
 FaceDetection* FaceDetection::m_UniqueInstance = new FaceDetection();
 
-
-
 FaceDetection::FaceDetection()
 {
 }
@@ -60,8 +58,8 @@ void FaceDetection::Process()
    	equalizeHist( frame_gray, frame_gray );
    	face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(40,40));
    	for( size_t i = 0; i < faces.size(); i++ )
-    	{
-      		b=0;
+    {
+        b=0;
 		w=faces[i].width;
 		h=faces[i].height;
 		for(int a=faces[i].y;a<faces[i].y + faces[i].height;a++){
@@ -70,39 +68,39 @@ void FaceDetection::Process()
 				Buffer1[b+1] = img1.imageData[a*img1.widthStep+j*3+1];
 				Buffer1[b+2] = img1.imageData[a*img1.widthStep+j*3+2];
 				b=b+3;
-			}
-		}
-        	for(int a=0;a<40;a++){
-			for(int j=0;j<40;j++){
-				Buffer2[a*40*3+j*3]=Buffer1[(a*h/40)*w*3+(j*w/40)*3];
-				Buffer2[a*40*3+j*3+1]=Buffer1[(a*h/40)*w*3+(j*w/40)*3+1];
-				Buffer2[a*40*3+j*3+2]=Buffer1[(a*h/40)*w*3+(j*w/40)*3+2];
-			}
-		}
-		Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-		for(int a=0;a<40;a++){
-			for(int j=0;j<40;j++){
-				Igray =  0.114*Buffer2[a*40*3+j*3]
+        }
+    }
+    for(int a=0;a<40;a++){
+        for(int j=0;j<40;j++){
+            Buffer2[a*40*3+j*3]=Buffer1[(a*h/40)*w*3+(j*w/40)*3];
+            Buffer2[a*40*3+j*3+1]=Buffer1[(a*h/40)*w*3+(j*w/40)*3+1];
+            Buffer2[a*40*3+j*3+2]=Buffer1[(a*h/40)*w*3+(j*w/40)*3+2];
+        }
+    }
+    Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
+    for(int a=0;a<40;a++){
+        for(int j=0;j<40;j++){
+            Igray =  0.114*Buffer2[a*40*3+j*3]
 				       + 0.587*Buffer2[a*40*3+j*3+1]
 				       + 0.299*Buffer2[a*40*3+j*3+2];
-				Iall = Iall+Igray;
-			}
-		}
-		Iavg = Iall/(40*40);
-		I=128-Iavg;
-		for(int a=0;a<40;a++){
-			for(int j=0;j<40;j++){
-				Igray =  0.114*Buffer2[a*40*3+j*3]
+            Iall = Iall+Igray;
+        }
+    }
+    Iavg = Iall/(40*40);
+    I=128-Iavg;
+    for(int a=0;a<40;a++){
+        for(int j=0;j<40;j++){
+            Igray =  0.114*Buffer2[a*40*3+j*3]
 				       + 0.587*Buffer2[a*40*3+j*3+1]
 				       + 0.299*Buffer2[a*40*3+j*3+2];
-				Ih=I+Igray;
-				if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-				Buffer2[a*40*3+j*3]=Ih;
-				Buffer2[a*40*3+j*3+1]=Ih;
-				Buffer2[a*40*3+j*3+2]=Ih;
-			}
-		}
-		for(int a=0;a<40*40*3;a++)People[a] = Buffer2[a];
+            Ih=I+Igray;
+            if(Ih>255)Ih=255;if(Ih<0)Ih=0;
+            Buffer2[a*40*3+j*3]=Ih;
+            Buffer2[a*40*3+j*3+1]=Ih;
+            Buffer2[a*40*3+j*3+2]=Ih;
+        }
+    }
+    for(int a=0;a<40*40*3;a++)People[a] = Buffer2[a];
 		for(int a=0;a<40;a++){
 			for(int j=0;j<40;j++){
 				fd=People[a*40*3+j*3]-VisionStatus::Favg[a*40*3+j*3];
@@ -112,27 +110,27 @@ void FaceDetection::Process()
 				PeopleD[a*40*3+j*3+2]=fd;
 			}
 		}
-		for(int a=0;a<40*40;a++)PeopleDW[a]=PeopleD[a*3];
-		FFW=cvCreateMat(1,40*40,CV_32FC1);
-		cvSetData(FFW,VisionStatus::FeatureFaceW,FFW->step);
-		PW=cvCreateMat(40*40,1,CV_32FC1);
-		cvSetData(PW,PeopleDW,PW->step);
-		SumWP=cvCreateMat(1,1,CV_32FC1);
-		cvMatMul(FFW,PW,SumWP);
-		//printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
+	for(int a=0;a<40*40;a++)PeopleDW[a]=PeopleD[a*3];
+	FFW=cvCreateMat(1,40*40,CV_32FC1);
+	cvSetData(FFW,VisionStatus::FeatureFaceW,FFW->step);
+	PW=cvCreateMat(40*40,1,CV_32FC1);
+	cvSetData(PW,PeopleDW,PW->step);
+	SumWP=cvCreateMat(1,1,CV_32FC1);
+	cvMatMul(FFW,PW,SumWP);
+	//printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
 
-		d1 = fabs(VisionStatus::cvGet2D_1 - cvGet2D(SumWP,0,0).val[0]);
-		d2 = fabs(VisionStatus::cvGet2D_2 - cvGet2D(SumWP,0,0).val[0]);
-		d3 = fabs(VisionStatus::cvGet2D_3 - cvGet2D(SumWP,0,0).val[0]);
-		d4 = fabs(VisionStatus::cvGet2D_4 - cvGet2D(SumWP,0,0).val[0]);
-		d5 = fabs(VisionStatus::cvGet2D_5 - cvGet2D(SumWP,0,0).val[0]);
-		d6 = fabs(VisionStatus::cvGet2D_6 - cvGet2D(SumWP,0,0).val[0]);
-		d7 = fabs(VisionStatus::cvGet2D_7 - cvGet2D(SumWP,0,0).val[0]);
-		d8 = fabs(VisionStatus::cvGet2D_8 - cvGet2D(SumWP,0,0).val[0]);
-		d9 = fabs(VisionStatus::cvGet2D_9 - cvGet2D(SumWP,0,0).val[0]);
-		d10 = fabs(VisionStatus::cvGet2D_10 - cvGet2D(SumWP,0,0).val[0]);
-		d11 = fabs(VisionStatus::cvGet2D_11 - cvGet2D(SumWP,0,0).val[0]);
-		d12 = fabs(VisionStatus::cvGet2D_12 - cvGet2D(SumWP,0,0).val[0]);
+	d1 = fabs(VisionStatus::cvGet2D_1 - cvGet2D(SumWP,0,0).val[0]);
+	d2 = fabs(VisionStatus::cvGet2D_2 - cvGet2D(SumWP,0,0).val[0]);
+	d3 = fabs(VisionStatus::cvGet2D_3 - cvGet2D(SumWP,0,0).val[0]);
+	d4 = fabs(VisionStatus::cvGet2D_4 - cvGet2D(SumWP,0,0).val[0]);
+	d5 = fabs(VisionStatus::cvGet2D_5 - cvGet2D(SumWP,0,0).val[0]);
+	d6 = fabs(VisionStatus::cvGet2D_6 - cvGet2D(SumWP,0,0).val[0]);
+	d7 = fabs(VisionStatus::cvGet2D_7 - cvGet2D(SumWP,0,0).val[0]);
+	d8 = fabs(VisionStatus::cvGet2D_8 - cvGet2D(SumWP,0,0).val[0]);
+	d9 = fabs(VisionStatus::cvGet2D_9 - cvGet2D(SumWP,0,0).val[0]);
+	d10 = fabs(VisionStatus::cvGet2D_10 - cvGet2D(SumWP,0,0).val[0]);
+	d11 = fabs(VisionStatus::cvGet2D_11 - cvGet2D(SumWP,0,0).val[0]);
+	d12 = fabs(VisionStatus::cvGet2D_12 - cvGet2D(SumWP,0,0).val[0]);
 
 		//if((d1<d2)&&(d1<d3)&&(d1<d4)&&(d1<d5)&&(d1<d6)&&(d1<d7)&&(d1<d8)&&(d1<d9)&&(d1<d10)&&(d1<d11)&&(d1<d12))printf("Grandfa\n");
 		//if((d7<d2)&&(d7<d3)&&(d7<d4)&&(d7<d5)&&(d7<d6)&&(d7<d1)&&(d7<d8)&&(d7<d9)&&(d7<d10)&&(d7<d11)&&(d7<d12))printf("Grandfa\n");

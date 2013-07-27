@@ -25,6 +25,6 @@
 #include "Stra_PathPlan.h"
 #include "Stra_Avoid.h"
 #include "Stra_VelocityControl.h"
-
+#include "FaceDetection.h"
 
 #endif

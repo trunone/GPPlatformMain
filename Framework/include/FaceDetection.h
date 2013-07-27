@@ -11,7 +11,6 @@
 #include <string.h>
 
 #include "VisionModule.h"
-#include "Wheeled.h"
 
 namespace Robot
 {

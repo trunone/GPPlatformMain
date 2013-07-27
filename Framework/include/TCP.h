@@ -12,6 +12,7 @@
 #include<iostream>
 #include "VisionModule.h"
 #define port 13140
+#define IP 127.0.0.1
 using namespace std;
 //----------------------------
 

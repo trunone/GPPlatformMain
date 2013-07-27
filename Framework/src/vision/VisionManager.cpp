@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "VisionStatus.h"
 #include "VisionManager.h"
 #include "ImgProcess.h"
 
@@ -83,11 +84,7 @@ void VisionManager::Process()
 
     m_IsRunning = true;
 
-    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);//1
-
-    VisionStatus::frame = cvQueryFrame(VisionCapture);//2
-	
-
+    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);
 
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)

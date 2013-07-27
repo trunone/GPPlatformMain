@@ -4,6 +4,7 @@
  *   Author: Wu Chih-En
  */
 #define ENABLE_STRATEGY
+#define ENABLE_VISION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -70,9 +71,7 @@ int main(void)
         return 1;
     }
 
-    //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
-
-    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -125,6 +124,7 @@ int main(void)
     try
     {
         while(1) {
+
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
@@ -176,6 +176,5 @@ int main(void)
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
-
     return 0;
 }

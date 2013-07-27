@@ -4,10 +4,6 @@
  *   Author: Wu Chih-En
  *
  */
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-
 #ifndef _VISION_STATUS_H_
 #define _VISION_STATUS_H_
 #include <vector>
@@ -19,6 +15,7 @@
 #define M_PI       3.14159265358979323846
 
 using namespace std;
+using namespace cv;
 //---------------------------------------------------------------------------
 
 #define cBLACK      colorBGR(0,0,0)
@@ -261,7 +258,6 @@ namespace Robot
 		static float cvGet2D_10;
 		static float cvGet2D_11;
 		static float cvGet2D_12;
-
 
 	};
 }
