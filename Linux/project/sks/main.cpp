@@ -92,7 +92,7 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
