@@ -1,5 +1,5 @@
 Install:
-    sudo apt-get install libjpeg62-dev madplay libncurses5-dev alsa-base
+    sudo apt-get install madplay libncurses5-dev alsa-base libtinyxml-dev
 
 Download:
     UTM_30LX Library:
@@ -16,6 +16,7 @@ Install OpenCV:
     # Intel TBB Parallel Libraries
     sudo apt-get install libtbb-dev
 
+    wget http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.5/opencv-2.4.5.tar.gz
     tar -xvf OpenCV-2.x.x.tar.gz
     cd OpenCV-2.x.x/
     mkdir build
