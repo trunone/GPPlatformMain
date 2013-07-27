@@ -33,8 +33,8 @@ void Motion::Process()
 	double FI = StrategyStatus::FI;
 	double w = StrategyStatus::w*240;
 	double robot_radius = 1;
-    double x = StrategyStatus::x;
-    double y = StrategyStatus::y;
+    	double x = StrategyStatus::x;
+    	double y = StrategyStatus::y;
 	double angle1 = (PI/6)+FI;
 	double angle2 = 5*(PI/6)+FI;
 	double angle3 = 3*(PI/2)+FI;

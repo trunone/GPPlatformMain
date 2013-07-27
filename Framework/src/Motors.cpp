@@ -111,7 +111,7 @@ int Motors::SetDisable(short device_id)
     }
     return 0;
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::ActivateProfileVelocityMode(short device_id)
 {
   	mErrorCode = 0;
@@ -155,7 +155,38 @@ int Motors::SetVelocity(short device_id, long TargetVelocity)
     }
     return 0;
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
+int Motors::ActivateCurrentMode(short device_id)
+{
+	mErrorCode = 0;
+	if(!VCS_ActivateCurrentMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
+	{
+		fprintf(stderr, "Activate Current Mode failed!, error code=0x%x\n", mErrorCode);
+		return 1;
+	}
+	return 0;
+}
+int Motors::SetEcMotorParameter(short device_id,short NominalCurrent,short MaxOutputCurrent,short ThermalTimeConstant,char NbOfPolePairs)
+{
+    mErrorCode = 0;
+    if(!VCS_SetEcMotorParameter(mMotorHandle[device_id], NODE_ID,NominalCurrent,MaxOutputCurrent,ThermalTimeConstant,NbOfPolePairs,&mErrorCode))
+    {
+		fprintf(stderr, "Set EcMotor Parameter failed!, error code=0x%x\n", mErrorCode);
+		return 1;
+    }
+    return 0;
+}
+int Motors::SetCurrentMust(short device_id,short CurrentMust)
+{
+    mErrorCode = 0;
+    if(!VCS_SetCurrentMust(mMotorHandle[device_id],NODE_ID,CurrentMust,&mErrorCode))
+    {
+            	fprintf(stderr, "Set Current Must failed!, error code=0x%x\n", mErrorCode);
+		return 1;
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::HaltVelocityMovement(short device_id)
 {
 	mErrorCode = 0;
@@ -173,6 +204,26 @@ int Motors::GetIncEncoderParameter(short device_id, unsigned int* pEncoderResolu
     if(!VCS_GetIncEncoderParameter(mMotorHandle[device_id], NODE_ID, pEncoderResolution, pInvertedPolarity, &mErrorCode))
     {
         fprintf(stderr, "Get Increment Encoder Parameter failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+    return 0;
+}
+int Motors::GetPositionIs(short device_id,long* pPositionIs)
+{
+    mErrorCode = 0;
+    if(!VCS_GetPositionIs(mMotorHandle[device_id], NODE_ID,pPositionIs,&mErrorCode))
+    {
+        fprintf(stderr, "Get Position Is failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+}
+
+int Motors::GetVelocityIs(short device_id, long* pVelocityIsAveraged)
+{
+    mErrorCode = 0;
+    if(!VCS_GetVelocityIs(mMotorHandle[device_id], NODE_ID, pVelocityIsAveraged, &mErrorCode))
+    {
+	fprintf(stderr, "Get Velocity Is Averaged failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
     return 0;
