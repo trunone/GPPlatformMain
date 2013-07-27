@@ -55,11 +55,14 @@ int main(void)
 
     change_current_dir();
 
-    motors.OpenDeviceAll();
+#ifdef ENABLE_STRATEGY
+    //motors.OpenDeviceAll();
+#endif
+#ifdef ENABLE_VISION
+    VisionCapture = cvCaptureFromCAM( -1 );
+#endif
 
-	VisionCapture = cvCaptureFromCAM( -1 );
-
-    ////////////////// Framework Initialize ////////////////////////////
+   ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
     {
@@ -68,6 +71,8 @@ int main(void)
     }
 
     //VisionManager::GetInstance()->AddModule((VisionModule*)VisionCapture::GetInstance());
+
+    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -87,21 +92,32 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
+    if(StrategyManager::GetInstance()->Initialize() == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
-    LinuxStrategyTimer *stragey_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
-    stragey_timer->Start();
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+
+    //StrategyManager::GetInstance()->SetEnable(true);
+
+	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+	strategy_timer->Start();
 #endif
     ///////////////////////////////////////////////////////////////////
-
 //    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
 
     StrategyManager::GetInstance()->StartLogging();
@@ -109,7 +125,6 @@ int main(void)
     try
     {
         while(1) {
-
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
@@ -161,5 +176,6 @@ int main(void)
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
+
     return 0;
 }

@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string>
 #include "StrategyManager.h"
 
 using namespace Robot;
@@ -121,7 +122,8 @@ void StrategyManager::SetEnable(bool enable)
 {
 	m_Enabled = enable;
 	if(m_Enabled == true)
-        mMotors->SetEnableAll();
+	if(mMotors)
+		mMotors->SetEnableAll();
 }
 
 void StrategyManager::AddModule(StrategyModule *module)

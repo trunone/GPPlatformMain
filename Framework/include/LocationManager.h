@@ -25,11 +25,13 @@ namespace Robot
 		std::list<LocationModule*> m_Modules;
 		bool m_ProcessEnable;
 		bool m_Enabled;
-
 		bool m_IsRunning;
 		bool m_IsThreadRunning;
 		bool m_IsLogging;
-
+		bool FlagEvaluatuonEnable;		
+        	bool FlagCoerceEvaluatuon;
+        	TCoordinate Position;
+       		double Handle;
 		std::ofstream m_LogFileStream;
 
         qrk::Urg_driver *urg;

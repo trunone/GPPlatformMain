@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "VisionManager.h"
+#include "ImgProcess.h"
 
 using namespace Robot;
 using namespace cv;
@@ -28,13 +29,16 @@ VisionManager::~VisionManager()
 
 bool VisionManager::Initialize(CvCapture *capture)
 {
-	m_Enabled = false;
-	m_ProcessEnable = true;
+    m_Enabled = false;
+    m_ProcessEnable = true;
 
-    if(capture)
-	    return true;
-    else
+    if(capture) {
+        VisionCapture = capture;
+        return true;
+    }else{
         return false;
+    }
+    ImgProcess::FaceData();
 }
 
 bool VisionManager::Reinitialize()
@@ -79,9 +83,11 @@ void VisionManager::Process()
 
     m_IsRunning = true;
 
-	Mat frame;
-	frame = cvQueryFrame(VisionCapture);
-	IplImage img1 = IplImage (frame);
+    VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);//1
+
+    VisionStatus::frame = cvQueryFrame(VisionCapture);//2
+	
+
 
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
