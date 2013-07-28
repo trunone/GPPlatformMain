@@ -42,41 +42,42 @@ namespace Robot{
 		    		
 		AstarTool();
 
-    		void  Main( TCoordinate Start , TCoordinate Goal );
-    		void  AdjustPath( void );
-    		void  CleanList( void );
+    	void  Main( TCoordinate Start , TCoordinate Goal );
+    	void  AdjustPath( void );
+    	void  CleanList( void );
 
-    		void  AssignMap( vector< vector<tsNode> > &Map,
-            	int W, int H, int Resolution );
+    	void  AssignMap( vector< vector<tsNode> > &Map,
+            int W, int H, int Resolution );
 
-    		void OneStepInitial( TCoordinate Start , TCoordinate Goal );
-    		void OneStepExe();
-    		unsigned char CurrentStatus;
-    		unsigned char ObstacleThreshold;
+    	void OneStepInitial( TCoordinate Start , TCoordinate Goal );
+    	void OneStepExe();
+    	unsigned char CurrentStatus;
+    	unsigned char ObstacleThreshold;
 
-    		vector< vector<tsNode> > Map;
-    		vector<TCoordinate> Path;
+    	vector< vector<tsNode> > Map;
+    	vector<TCoordinate> Path;
 
-    		vector<TCoordinate> SmoothPath;
+    	vector<TCoordinate> SmoothPath;
+
+		int LoadXMLSettings (TiXmlElement* element);   // load xml
 
 	private:
 
-		int loadxml (TiXmlElement* element);   // load xml
 
 		static AstarTool* m_UniqueInstance;
     		
 		void SearchNeighbor( TCoordinate Current );
-    		void SearchNeighbor_8Connect( TCoordinate Current );
-    		unsigned int CheckPath_Same( unsigned int PathNum );
-    		unsigned int CheckPath_Diff( unsigned int PathNum );
+    	void SearchNeighbor_8Connect( TCoordinate Current );
+    	unsigned int CheckPath_Same( unsigned int PathNum );
+    	unsigned int CheckPath_Diff( unsigned int PathNum );
 
-    		Heap::BinaryHeap<int> OpenList;
-    		vector<TCoordinate> ClosedList;
+    	Heap::BinaryHeap<int> OpenList;
+    	vector<TCoordinate> ClosedList;
 
-    		TCoordinate StartNode,GoalNode;
+    	TCoordinate StartNode,GoalNode;
 
-    		int NodeResolution;
-    		int MapWidth, MapHeight;
+    	int NodeResolution;
+    	int MapWidth, MapHeight;
 
 	};
 }

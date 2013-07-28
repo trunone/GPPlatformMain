@@ -43,7 +43,7 @@ LocationStatus::Furniture LocationStatus::BedRM_door;
 LocationStatus::Furniture LocationStatus::ChargeArea;
 LocationStatus::Furniture LocationStatus::EndArea;
 
-
+/*
 int LocationStatus::loadxml (TiXmlElement* element){
 	if(element != NULL){	
 		TiXmlElement* modelchild;
@@ -154,6 +154,7 @@ int LocationStatus::loadxml (TiXmlElement* element){
 	}
 	return 0;
 }
+*/
 
 float LocationStatus::ScanLineData[24];
 bool LocationStatus::FlagEvaluatuonEnable;

@@ -27,23 +27,23 @@ namespace Robot
 	typedef enum
 	{
 
-    		etIdle  =0,
+    	etIdle = 0,
 
-    		etAStar,
+    	etAStar,
 
-    		etTurnToAngle,		
+    	etTurnToAngle,		
 
-    		etMotionToPos,
+    	etMotionToPos,
 
-    		etSpecialMove,
+    	etSpecialMove,
 
-    		etSpecialTurn,
+    	etSpecialTurn,
 
-    		etTouchButton,
+    	etTouchButton,
 
-    		etBackward,
+    	etBackward,
 
-    		etWaitDoorOpen,
+    	etWaitDoorOpen,
 
 		etMakeSoundMove		
 		
@@ -52,11 +52,12 @@ namespace Robot
 
 	typedef enum{
 
-    		etGRAStar = 0,
+    	etGRAStar = 0,
 
-    		etGRFaceDoor
+    	etGRFaceDoor
 
-		}teGeneralRoomState;
+    }teGeneralRoomState;
+
 	private:
 		static Stra_Task* m_UniqueInstance;
 
@@ -70,57 +71,57 @@ namespace Robot
 		
 		//============= Active Function ==================
 
-    		bool MotionToPosition( TCoordinate  Goal );
+    	bool MotionToPosition( TCoordinate  Goal );
 
-    		bool TurnToAngle( float GoalAngle );
+    	bool TurnToAngle( float GoalAngle );
 		
 		bool SpecialMove( int Forward );
 
-    		bool SpecialTurn();
+        bool SpecialTurn();
 
-    		bool WaitDoorOpen();
+        bool WaitDoorOpen();
 
-    		bool TouchButton();		
+        bool TouchButton();		
 
-    		bool Backward();
+        bool Backward();
 
 		bool MakeSoundMove();		
 
     		//=============
 
-    		void WaitCatchball();
+        void WaitCatchball();
 
 		void EncounterPeople();
 		
 		void MakeSound();		
 
-    		void SpecialRoom3();
+    	void SpecialRoom3();
 
-    		//TCoordinate Room3StartPos;
+    	//TCoordinate Room3StartPos;
 
-    		int Past_RoomCnt;
+    	int Past_RoomCnt;
 
-    		bool FlagSetInitialData;		
+    	bool FlagSetInitialData;		
 
-    		bool FlagTaskFinish;		
+    	bool FlagTaskFinish;		
 
-    		int ActiveState;
+    	int ActiveState;
 
-    		int GotoRoomStep;
+    	int GotoRoomStep;
 
-    		float GoalAngle;		
+    	float GoalAngle;		
 
-    		TCoordinate StartPos,GoalPos;		
+    	TCoordinate StartPos,GoalPos;		
 
 		float SpecialDistance;
 
-    		int Past_LaserData;
+    	int Past_LaserData;
 
-    		bool DoorState;     //true: open, false: close
+    	bool DoorState;     //true: open, false: close
 
-    		int TouchCnt;		
+    	int TouchCnt;		
 
-    		int *PastScanLineData;
+    	int *PastScanLineData;
 
 	public:
 		static Stra_Task* GetInstance() { return m_UniqueInstance; }
@@ -128,7 +129,9 @@ namespace Robot
 		~Stra_Task();
 
 		void Initialize();
+
 		void Process();
+
 		static TCoordinate vector;
 		    
 		};

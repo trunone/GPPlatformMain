@@ -41,11 +41,11 @@ namespace Robot
 	private:
 		
 	public:
-	static double Motor1Distance,Motor2Distance,Motor3Distance;
-	static double FI;
-	static double Motor_x;
-	static double Motor_y;
-	static double Motor_sita;
+        static double Motor1Distance,Motor2Distance,Motor3Distance;
+        static double FI;
+        static double Motor_x;
+        static double Motor_y;
+        static double Motor_sita;
 
 		struct Furniture
 		{
@@ -55,7 +55,6 @@ namespace Robot
 			int Height;
 			int Angle;			
 		};
-		int loadxml (TiXmlElement* element);
 		
 		static Furniture LivingRM_Sofa;
 		static Furniture LivingRM_Table;

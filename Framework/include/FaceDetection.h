@@ -6,7 +6,7 @@
  */
 
 #ifndef _FACEDETECTION_H_
-#define _MOTION_H_
+#define _FACEDETECTION_H_
 
 #include <string.h>
 
@@ -18,10 +18,10 @@ namespace Robot
 	{
 	private:
 		static FaceDetection* m_UniqueInstance;
+		FaceDetection();
 
 	public:
 		static FaceDetection* GetInstance() { return m_UniqueInstance; }	
-		FaceDetection();
 		~FaceDetection();
 		void Initialize();
 		void Process();

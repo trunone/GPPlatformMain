@@ -60,81 +60,81 @@ namespace Robot{
 
 		static Stra_FindBall*  GetInstance() {return m_UniqueInstance;}
     		
-    		~Stra_FindBall();   //žÑºcšçŠ¡
+    	~Stra_FindBall();   //žÑºcšçŠ¡
 
-    		//virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
+    	//virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
 
-    		void Initialize(void);                  //ªì©l€Æ
+    	void Initialize(void);                  //ªì©l€Æ
 
-    		void Process(void);                     //°õŠæšçŒÆ
+    	void Process(void);                     //°õŠæšçŒÆ
 
 	private:
 
-	        static Stra_FindBall* m_UniqueInstance; 
+        static Stra_FindBall* m_UniqueInstance; 
 		
 		Stra_FindBall();
 
-    		void  RenewRoomCorner();
+        void  RenewRoomCorner();
 
    		int  MiddleValue(int *Array, int Num);
 
-    		void  AnalyseBall();
+    	void  AnalyseBall();
 
-    		int  DisTransfer(int AX12_CMD);
+    	int  DisTransfer(int AX12_CMD);
 
-    		void  AX12_TakeBall();
+    	void  AX12_TakeBall();
 
-    		void  SearchBall_Initial();
+    	void  SearchBall_Initial();
 
-    		void  SearchBall();
+    	void  SearchBall();
 
-    		void  TurnToBall();
+    	void  TurnToBall();
 
-    		void  Approach_Ball();
+    	void  Approach_Ball();
 
-    		bool  Eat_Ball();
+    	bool  Eat_Ball();
 
-    		void  DetermineEatDirection();
+    	void  DetermineEatDirection();
 
-    		teFindBallState FindBallState;
+    	teFindBallState FindBallState;
 
-    		teSearchStep SearchStep;
+    	teSearchStep SearchStep;
 
-    		int CenterThreshold;
+    	int CenterThreshold;
 
-    		short BallDirection;
+    	short BallDirection;
 
-    		short EatBallDirection;
+    	short EatBallDirection;
 
-    		TCoordinate PastOdometer;
+    	TCoordinate PastOdometer;
 
-    		int RoomCnt;
+    	int RoomCnt;
 
-    		TCoordinate RoomVector;
+    	TCoordinate RoomVector;
 
-    		TCoordinate CenterVector;
+    	TCoordinate CenterVector;
 
-    		TCoordinate Corner[4];
+    	TCoordinate Corner[4];
 
-    		int CornerID;
+    	int CornerID;
 
-    		bool FlagEatBall;
+    	bool FlagEatBall;
 
-    		bool FlagRecognize;
+    	bool FlagRecognize;
 
-    		short LeftRightSearch;     // ¥ª : 1, ¥k :-1 , €€¶¡:0
+    	short LeftRightSearch;     // ¥ª : 1, ¥k :-1 , €€¶¡:0
 
-    		float LoseBallAngle;
+    	float LoseBallAngle;
 
-    		int LoseBallCnt;
+    	int LoseBallCnt;
 
-    		int SearchTrunStep;
+    	int SearchTrunStep;
 
-    		bool Lock;
+    	bool Lock;
 
-    		int SearchTimes;
+    	int SearchTimes;
 
-    		int *PastScanLineData;
+    	int *PastScanLineData;
 
 		int Room2Step;
 

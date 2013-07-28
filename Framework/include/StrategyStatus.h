@@ -27,7 +27,7 @@ namespace Robot
         static double x;
         static double y;
 		static double w;
-        	static Vector3D vector;
+        static Vector3D vector;
 		//-------------------------------------------loadxml
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
@@ -46,7 +46,6 @@ namespace Robot
 		static TCoordinate ChrgDoor;
 		static TCoordinate ChrgCen;
 
-		static int loadxml(TiXmlElement* element,int mod);
 		//--------------------------------------------------
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;

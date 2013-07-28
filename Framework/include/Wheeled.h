@@ -26,5 +26,6 @@
 #include "Stra_Avoid.h"
 #include "Stra_VelocityControl.h"
 #include "FaceDetection.h"
+#include "ColorModel.h"
 
 #endif

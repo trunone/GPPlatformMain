@@ -32,13 +32,9 @@ TCoordinate StrategyStatus::BedRMCen;
 TCoordinate StrategyStatus::ChrgDoor;
 TCoordinate StrategyStatus::ChrgCen;
 
-//void Initial();
-
 bool StrategyStatus::FlagRoomRenew;
 
-
 StrategyStatus::tsRoomInfo StrategyStatus::Room;
-
 
 int StrategyStatus::RoomSort;		
 int StrategyStatus::FindBallEn;		
@@ -49,6 +45,7 @@ int StrategyStatus::BedRM;
 
 StrategyStatus::tsAStarPath StrategyStatus::AStarPath;
 //--------------------------------------------------------------------------------------xml
+/*
 int StrategyStatus::loadxml (TiXmlElement* element,int mod){
 	if(mod==1){
 		if(element != NULL) {
@@ -139,6 +136,7 @@ int StrategyStatus::loadxml (TiXmlElement* element,int mod){
 	}
 	return 0;
 }
+*/
 //----------------------------------------------------------------------------------------------
 
 //----------Test int----------------------------------------------------

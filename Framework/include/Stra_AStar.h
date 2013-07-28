@@ -17,7 +17,8 @@
 #include "AstarTool.h"
 #include "TCoordinate.h"
 #include <tinyxml.h>
-namespace Robot{
+namespace Robot
+{
 	class Stra_AStar  : public StrategyModule
 	{
 	public:
@@ -26,14 +27,15 @@ namespace Robot{
 		~Stra_AStar();
 
 		//void ParameterReset(void);
-    		void Initialize(void);                 
+        void Initialize(void);                 
 
-    		void Process(void);  
+        void Process(void);  
+
+		int LoadXMLSettings(TiXmlElement* element);
 
 	private:
-		int loadxml(TiXmlElement* element);
 
-	        static Stra_AStar* m_UniqueInstance; 
+        static Stra_AStar* m_UniqueInstance; 
 		
 		Stra_AStar();
 
@@ -41,17 +43,17 @@ namespace Robot{
 
 		//AstarTool *AStar;
 
-    		TCoordinate StartPos, GoalPos;
+        TCoordinate StartPos, GoalPos;
 
-    		bool CloseState;
+        bool CloseState;
 
-    		int PathErrRange;
+        int PathErrRange;
 
 		int AchieveErrRange;
 
-        	TCoordinate TargetVector,NextVector;
+        TCoordinate TargetVector,NextVector;
 
-    		TCoordinate VirtualPos;
+        TCoordinate VirtualPos;
 
 	};
 }

@@ -23,22 +23,22 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
 		../../Framework/src/location/ProbabilityEvaluation.o\
 		../../Framework/src/location/ParticleFilterTool.o\
-        ../../Framework/src/location/module/ParticleFilter.o\
+        ../../Framework/src/location/modules/ParticleFilter.o\
+		../../Framework/src/location/modules/Speedometer.o\
 		../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
         ../../Framework/src/math/Vector.o\
-		../../Framework/src/vision/VisionStatus.o\
-		../../Framework/src/vision/modules/SegmentationFunction.o\
-		../../Framework/src/vision/modules/ColorModel.o\
-		../../Framework/src/vision/modules/TCP.o\
-        ../../Framework/src/strategy/StrategyManager.o\
 		../../Framework/src/math/TCoordinate.o\
 		../../Framework/src/math/Normalrand.o\
+		../../Framework/src/vision/VisionStatus.o\
+		../../Framework/src/vision/modules/SegmentationFunction.o\
+        ../../Framework/src/vision/modules/FaceDetection.o\
+		../../Framework/src/vision/modules/SendImage.o\
+		../../Framework/src/vision/modules/ColorModel.o\
 		../../Framework/src/vision/VisionManager.o\
 		../../Framework/src/vision/VisionStatus.o\
 		../../Framework/src/vision/ImgProcess.o\
-        ../../Framework/src/vision/module/FaceDetection.o\
         ../../Framework/src/strategy/StrategyManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 		../../Framework/src/strategy/AstarTool.o\
@@ -50,7 +50,6 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
 		../../Framework/src/strategy/modules/Stra_AStar.o\
 		../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/Motors.o\
-		../../Framework/src/location/module/Speedometer.o\
         LinuxStrategyTimer.o\
         LinuxVisionTimer.o\
         LinuxLocationTimer.o\

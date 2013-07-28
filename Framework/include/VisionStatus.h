@@ -45,7 +45,6 @@ namespace Robot
 	{
 
 	private:
-                unsigned char *yiqColorModel; 
 
 	public:
 		struct ColorRange
@@ -58,7 +57,7 @@ namespace Robot
 			double BrightnessMin;
 		};
 
-		
+        unsigned char *yiqColorModel; 
 
 		//---seg
 		
@@ -71,8 +70,8 @@ namespace Robot
 		//--- Global
 		static const int ImageWidth = 640, ImageHeight = 480;
 
-		static cv::Mat frame;
-		static cv::Mat send_frame;
+		static Mat frame;
+		static Mat send_frame;
 		
 		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
 				     Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
@@ -104,50 +103,52 @@ namespace Robot
 	
 		typedef struct{
 
-    			unsigned char ColorEle[3];
+            unsigned char ColorEle[3];
 
 		}tsColor;
 
 		typedef struct{
-		    	int CenterX;
+            int CenterX;
 		  	int CenterY;
-		    	int InternalRadius;
-		    	int ExternalRadius;
-		    	void LoadSetting();
-		    	void WriteSetting();
-		    	unsigned char BinaryThreshold;
+            int InternalRadius;
+            int ExternalRadius;
+            void LoadSetting();
+            void WriteSetting();
+            unsigned char BinaryThreshold;
 		}tsImgProSet;
 
 
 
 		typedef struct{
 
-	    		unsigned char* ImgData;
+	    	unsigned char* ImgData;
 
-	    		int Width;
+	    	int Width;
 
-	    		int Height;
+	    	int Height;
 
-	    		int Dimension;
+	    	int Dimension;
 
-	    		tsColor         GetColor(int x,int y);
+	    	tsColor         GetColor(int x,int y);
 
-	    		unsigned char*  GetPixelPtr(int x,int y);
+	    	unsigned char*  GetPixelPtr(int x,int y);
 
-	    		void    SetColor(int x,int y ,tsColor cBGR);
+	    	void    SetColor(int x,int y ,tsColor cBGR);
 
-	    		void    SetColor(int x,int y ,unsigned char* Color);
+	    	void    SetColor(int x,int y ,unsigned char* Color);
 		}tsBmpPtr;
 
 		typedef struct{
-	    		bool enable;
-		    	typedef struct{
-				float Distance;
-				float Pixel;
-		    	}tsDisPixel;
-		tsDisPixel *DisPixel_Model ;
+	    	bool enable;
+
+		    typedef struct{
+                float Distance;
+                float Pixel;
+            }tsDisPixel;
+
+            tsDisPixel *DisPixel_Model ;
 	    	
-		int ModelNum;
+            int ModelNum;
 
 	    	float Pixel2Distance(int pixel);
 
@@ -160,18 +161,18 @@ namespace Robot
 		tsColor colorBGR (unsigned char B ,unsigned char G , unsigned char R);
 
 		//---------------------------------------------------------------------------
-	    	typedef struct{
+        typedef struct{
 			int X;
 			int Y;
-	    	}tsCoordinate;
+        }tsCoordinate;
 
-	    	typedef struct{
+        typedef struct{
 			short int Cx;
 			short int Cy;
 			short int Cr;
 			short int PixelDistance;
 			double Angle;
-	    	}tsObjectiveInfo;
+        }tsObjectiveInfo;
 	//----------------------------------------
 
     	typedef struct{
@@ -198,20 +199,15 @@ namespace Robot
 
 
 	struct CIRCLE
-
 	{
-
-    		short int CCX;
-
-    		short int CCY;
-
-    		short int Rr;
-
+        short int CCX;
+        short int CCY;
+        short int Rr;
 	};
 	typedef struct{
 		unsigned char Y;
-	    	unsigned char U;
-	    	unsigned char V;
+        unsigned char U;
+        unsigned char V;
 	}tsYUVData;
 
 	//--------------------------------------------------------------------------
@@ -237,10 +233,10 @@ namespace Robot
 		static tsImgDisModel DisModel;
 		static tsYUVData *RGBtoYUV_Table;
 
-	    	static unsigned char PixelGrayScale(tsColor Pixel);
-	    	static bool PixelBinarization(tsColor Pixel, unsigned char Threshold );
-	    	static void ImgGrayScale   (tsBmpPtr Image);
-	    	static void ImgBinarization(tsBmpPtr Image, unsigned char Threshold);
+        static unsigned char PixelGrayScale(tsColor Pixel);
+        static bool PixelBinarization(tsColor Pixel, unsigned char Threshold );
+        static void ImgGrayScale   (tsBmpPtr Image);
+        static void ImgBinarization(tsBmpPtr Image, unsigned char Threshold);
 
 
 	//------ FaceData ----------------------------------------------------------

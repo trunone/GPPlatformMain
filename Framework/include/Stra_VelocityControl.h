@@ -27,13 +27,13 @@ namespace Robot{
 		static Stra_VelocityControl*  GetInstance() {return m_UniqueInstance;}
 		//static string  ParameterReset(void);           //°ÑŒÆ­«žm
 
-    		void Initialize(void);                  //ªì©l€Æ
+        void Initialize(void);                  //ªì©l€Æ
 
-    		void Process(void);                     //°õŠæšçŒÆ
+        void Process(void);                     //°õŠæšçŒÆ
+
+		int LoadXMLSettings(TiXmlElement* element);  //LoadXMLSettings
 
 	private:
-
-		int loadxml(TiXmlElement* element);  //loadxml
 
 		static Stra_VelocityControl* m_UniqueInstance; 
 
@@ -57,17 +57,17 @@ namespace Robot{
 
    		double SpeedMax;
 
-    		double SpeedMin;
+        double SpeedMin;
 
 		double ThetaMax;
 
    		double ThetaMin;
 
-    		double OmegaMax;
+        double OmegaMax;
 
-    		double OmegaMin;
+        double OmegaMin;
 
-	    	double SpeedCmd;
+        double SpeedCmd;
 
    	 	double SpeedTmp;
 

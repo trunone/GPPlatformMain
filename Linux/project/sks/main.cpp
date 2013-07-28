@@ -157,11 +157,48 @@ int main(void)
                         }
                     }
                     root = doc.FirstChildElement("Config");
-                    if(root != NULL) {
-                        TiXmlElement* element;
-                        element = root->FirstChildElement("Vision");
+                    if(root != NULL){
+                        TiXmlElement* element = root->FirstChildElement("DirectionObject");
                         if(element != NULL){
-                            cout<<"I got vision"<<endl;
+                            //LocationStatus::GetInstance()->LoadXMLSettings(element);
+                        }
+                        delete element;
+                        element = root->FirstChildElement("ColorModel");
+                        if(element != NULL){
+                            ColorModel::GetInstance()->LoadXMLSettings(element);
+                        }
+                        delete element;
+                        element = root->FirstChildElement("AStar_PathFinde");
+                        if(element != NULL){
+                            AstarTool::GetInstance()->LoadXMLSettings(element);
+                        }
+                        delete element;
+                        element = root->FirstChildElement("BasicConfig");
+                        if(element != NULL){
+                            //StrategyStatus::GetInstance()->LoadXMLSettings(element);
+                        }
+                        delete element;
+                        element = root->FirstChildElement("StraConfig");
+                        if(element != NULL){
+                            TiXmlElement* child = element->FirstChildElement("Stra_Astar");
+                            if(child != NULL){
+                                Stra_AStar::GetInstance()->LoadXMLSettings(child);
+                            }
+                            delete child;
+                            child = element->FirstChildElement("Stra_Avoid");
+                            if(child != NULL){
+                                Stra_Avoid::GetInstance()->LoadXMLSettings(child);
+                            }
+                            delete child;
+                            child = element->FirstChildElement("Stra_PathPlan");
+                            if(child != NULL){
+                                Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
+                            }
+                            delete child;
+                            child = element->FirstChildElement("Stra_VelocityControl");
+                            if(child != NULL){
+                                Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
+                            }
                         }
                     }
                 }

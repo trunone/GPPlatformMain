@@ -28,14 +28,15 @@ namespace Robot{
 
    	 	//void ParameterReset(void);
 
-    		void Initialize(void);                  
+        void Initialize(void);                  
 
-    	 	void Process(void);                     
+        void Process(void);                     
 
-    		TCoordinate CorrectV;
+        TCoordinate CorrectV;
+
+		int LoadXMLSettings(TiXmlElement* element);  //load xml
 
 	private:
-		int loadxml(TiXmlElement* element);  //load xml
 
 		static Stra_Avoid* m_UniqueInstance;
 	    	

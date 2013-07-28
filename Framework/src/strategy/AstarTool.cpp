@@ -22,7 +22,7 @@ void AstarTool::CleanList( void )
     while( (OpenList.minnum()).x != -1 && (OpenList.minnum()).y != -1 ){ OpenList.extract_min(); }
 }
 //---------------------------------------------------------------------------xml
-int AstarTool::loadxml (TiXmlElement* element){
+int AstarTool::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){	
 		TiXmlElement* modelchild;
 		modelchild=element->FirstChildElement("MapGrid_Config");

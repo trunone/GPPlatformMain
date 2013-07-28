@@ -40,7 +40,7 @@ void Star_AStar::ParameterReset(void)
 */
 //-----------------------------------------------------------------
 //////////////////////////////////////////////////////xml
-int Stra_AStar::loadxml (TiXmlElement* element){
+int Stra_AStar::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){				
 		element->Attribute("PathErrRange", &PathErrRange);
 		element->Attribute("AchieveErrRange", &AchieveErrRange);

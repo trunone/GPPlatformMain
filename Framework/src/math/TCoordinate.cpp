@@ -1,11 +1,6 @@
-//#pragma package(smart_init)
 #include <stdio.h>
 #include <math.h>
 #include "TCoordinate.h"
-
-//==============================================================================
-
-//------------------------------------------------------------------------------
 
 inline void TCoordinate::CartesianPolar(void)
 

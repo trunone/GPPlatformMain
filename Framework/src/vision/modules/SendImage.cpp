@@ -1,7 +1,10 @@
-#include "TCP.h"
+#include "SendImage.h"
 using namespace Robot;
 using namespace std;
-void TCP::Process(){
+
+SendImage* SendImage::m_UniqueInstance = new SendImage();
+
+void SendImage::Process(){
 	struct hostent *h;
 	printf("client start ...\n");
 	FILE *file_fd=fopen("a.jpg","r+");

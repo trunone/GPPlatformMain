@@ -30,18 +30,18 @@ namespace Robot
 
 		static Stra_PathPlan*  GetInstance() {return m_UniqueInstance;}
 //    		virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
-	        void  Initialize(void);                  //ªì©l€Æ
-	        void  Process(void);                     //°õŠæšçŒÆ
+	    void  Initialize(void);                  //ªì©l€Æ
+	    void  Process(void);                     //°õŠæšçŒÆ
 		inline double GetMin(const double &dX_,const double &dY_){return (dX_>= dY_)?dY_:dX_;} 
 
+		int LoadXMLSettings(TiXmlElement* element);  // load xml		
+
 	private:
-    		static Stra_PathPlan* m_UniqueInstance; 
+        static Stra_PathPlan* m_UniqueInstance; 
 
 		Stra_PathPlan();      //«ØºcšçŠ¡
-
-		int loadxml(TiXmlElement* element);  // load xml		
 			
-	       	void PathPlan( void );
+        void PathPlan( void );
 		
 		double Trajectory( void );
 

@@ -50,7 +50,7 @@ string Stra_PathPlan::ParameterReset(void)
 }
 */
 //------------------------------------------------------------------------------xml
-int Stra_PathPlan::loadxml (TiXmlElement* element){
+int Stra_PathPlan::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){
 		element->Attribute("DetourConst", &DetourConst);						
 	}

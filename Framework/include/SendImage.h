@@ -1,5 +1,5 @@
-#ifndef _TCP_H_
-#define _TCP_H_
+#ifndef _SendImage_H_
+#define _SendImage_H_
 #include<sys/socket.h>
 #include<sys/types.h>
 #include<stdlib.h>
@@ -18,18 +18,19 @@ using namespace std;
 
 namespace Robot
 {
-	class TCP : public VisionModule
+	class SendImage : public VisionModule
 	{
 	
 
 	private:
-		static TCP* m_UniqueInstance;
-		
-		TCP();
+		static SendImage* m_UniqueInstance;
+		SendImage();
 	public:
-		static TCP* GetInstance() { return m_UniqueInstance; }
 		
-		~TCP();
+		static SendImage* GetInstance() { return m_UniqueInstance; }
+		
+		~SendImage();
+        void Initialize();
 		void Process();
 	};
 }

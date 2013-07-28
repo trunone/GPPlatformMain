@@ -10,19 +10,16 @@
 #include <math.h>
 #include <stdio.h>
 #include "VisionStatus.h"
-#include <stdio.h>
 #include <stdlib.h>
 
-
-
 using namespace Robot;
-/*
-VisionStatus::tsColor colorBGR (unsigned char B,unsigned char G,unsigned char R)
+
+VisionStatus::tsColor colorBGR (unsigned char B,unsigned char G,unsigned char R);
 
 //unsigned char *VisionStatus::pImage = new unsigned char[3 * VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 //-----cvimage
-cv::Mat VisionStatus::frame;
-cv::Mat VisionStatus::send_frame;
+Mat VisionStatus::frame;
+Mat VisionStatus::send_frame;
 
 //-----ObjCut
 unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];

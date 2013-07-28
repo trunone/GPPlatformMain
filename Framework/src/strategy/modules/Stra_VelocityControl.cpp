@@ -46,7 +46,7 @@ string Stra_VelocityControl::ParameterReset(void)
 }
 */
 //----------------------------------------------------------------------------xml
-int Stra_VelocityControl::loadxml (TiXmlElement* element){
+int Stra_VelocityControl::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){
 		element->Attribute("dis_max", &DistanceMax);
 		element->Attribute("dis_min", &DistanceMin);

@@ -48,7 +48,7 @@ string Stra_Avoid::ParameterReset(void)
 }
 */
 //------------------------------------------------------------------------------xml
-int Stra_Avoid::loadxml (TiXmlElement* element){
+int Stra_Avoid::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){
 		element->Attribute("StartAngle_du", &ScanStartAngle);
 		element->Attribute("ScanLineSize", &ScanLineNum);

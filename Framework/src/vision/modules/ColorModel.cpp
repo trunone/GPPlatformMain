@@ -1,12 +1,25 @@
 #include "ColorModel.h"
+
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
+#include "VisionStatus.h"
+#include "SegmentationFunction.h"
+
 using namespace Robot;
 using namespace std;
-//------------------------------------------------------------------------------------------------------xml
-int ColorModel::loadxml (TiXmlElement* element){
+
+ColorModel* ColorModel::m_UniqueInstance = new ColorModel();
+
+ColorModel::ColorModel() {
+}
+ColorModel::~ColorModel() {
+}
+void ColorModel::Initialize() {
+}
+//-------------------------------xml
+int ColorModel::LoadXMLSettings(TiXmlElement* element){
 	TiXmlElement* modelchild;
 	modelchild=element->FirstChildElement("Blue");
 	if(modelchild != NULL){
@@ -37,7 +50,7 @@ int ColorModel::loadxml (TiXmlElement* element){
 	}
 	return 0;
 }
-//---------------------------------------------------------------------------------------------------------
+//----------------------------------
 bool ColorModel::HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue){  
 	if(VisionStatus::hsvBlueRange.HueMax >= VisionStatus::hsvBlueRange.HueMin){   
 		if(VisionStatus::hsvBlueRange.HueMax >= hValue && VisionStatus::hsvBlueRange.HueMin <= hValue
@@ -156,7 +169,5 @@ void ColorModel::Process(){
 	Erosion(VisionStatus::Green_Ball,temp);
 	Dilation(temp,VisionStatus::Green_Ball);
 	//SegmentationFunction::SegmentationFunction(TMPWebcamBoolBuffer,VisionStatus::frame.data);
-	
-	
 }
 
