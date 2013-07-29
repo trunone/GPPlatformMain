@@ -26,7 +26,6 @@ namespace Robot{
 		VisionStatus::tsBmpPtr tsBmpVirtualMap;
 		void SetParticleFilter(int W, int H, unsigned char *Mapdata);
 		void InitialParticleFilter();	
-
 	};
 }
 #endif

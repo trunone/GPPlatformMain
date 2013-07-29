@@ -70,24 +70,23 @@ namespace Robot
 		static Furniture ChargeArea;
 		static Furniture EndArea;
 
-		static float ScanLineData[24];
 		static bool FlagEvaluatuonEnable;		
 		static bool FlagCoerceEvaluatuon;
 		static TCoordinate Position;
 		static double Handle;
-		static bool FlagNewFeedback;
 		static bool FlagRenew;
 		static bool FlagLaserBusy;
 		static bool FlagLocInit;
 		static bool enable;
 		static TCoordinate SetRobotPosition;
 		static double SetRobotHandle;
-	    	static TCoordinate LaserGap;	// tmp. store for partilcefilter, wait for the truly laser information get will replace	
+        static TCoordinate LaserGap;
+        // tmp. store for partilcefilter, wait for the truly laser information get will replace	
 		static FeedBack_Info FB_Movement;
 
+        static vector<long> data;
+        static long time_stamp;
 	};
-
-
 }
 
 #endif

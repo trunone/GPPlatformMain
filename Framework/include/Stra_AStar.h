@@ -26,7 +26,6 @@ namespace Robot
 		
 		~Stra_AStar();
 
-		//void ParameterReset(void);
         void Initialize(void);                 
 
         void Process(void);  
@@ -40,8 +39,6 @@ namespace Robot
 		Stra_AStar();
 
 		void Behavior_AstarPath( void );
-
-		//AstarTool *AStar;
 
         TCoordinate StartPos, GoalPos;
 

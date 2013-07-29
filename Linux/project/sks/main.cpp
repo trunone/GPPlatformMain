@@ -62,6 +62,10 @@ int main(void)
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
 #endif
+#ifdef ENABLE_LOCATION
+    if (!urg->open("/dev/ttyACM0", 115200, Urg_driver::Serial ))
+        fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg->what());
+#endif
 
    ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION

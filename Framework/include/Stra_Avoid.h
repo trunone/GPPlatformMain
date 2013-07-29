@@ -26,8 +26,6 @@ namespace Robot{
     		
 		~Stra_Avoid();   
 
-   	 	//void ParameterReset(void);
-
         void Initialize(void);                  
 
         void Process(void);                     
