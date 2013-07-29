@@ -14,7 +14,7 @@
 #include <tinyxml.h>
 #include <omp.h>
 
-#include "mjpg_streamer.h"
+
 #include "LinuxWheeled.h"
 #include "urg_cpp/Urg_driver.h"
 #include "urg_cpp/math_utilities.h"
@@ -26,7 +26,50 @@
 using namespace qrk;
 using namespace std;
 using namespace Robot;
-
+TiXmlDocument RequestXml(int DetermineNumber)
+{
+	TiXmlDocument xmlDoc;
+	 
+	
+	TiXmlElement* root = new TiXmlElement("Status");
+	
+	if((DetermineNumber%2)==0){
+		DetermineNumber=DetermineNumber/2;
+		TiXmlElement* element=new TiXmlElement("Laser");
+		for(int i=1;i<=10;i++){
+			TiXmlElement* child=new TiXmlElement("Value");
+			child->SetDoubleAttribute("angle",5);
+			child->SetDoubleAttribute("distance",5);
+			element->InsertEndChild(*(child->Clone()));
+		}
+		root->InsertEndChild(*(element->Clone()));
+	}	
+	if((DetermineNumber%3)==0){
+		DetermineNumber=DetermineNumber/3; 
+		TiXmlElement* element=new TiXmlElement("Position");
+		element->SetDoubleAttribute("x",69);
+		element->SetDoubleAttribute("y",89);
+		element->SetDoubleAttribute("sita",89);
+		root->InsertEndChild(*(element->Clone()));
+	}
+	if((DetermineNumber%5)==0){
+		DetermineNumber=DetermineNumber/5; 
+		TiXmlElement* element=new TiXmlElement("Camera_Angle");
+		element->SetDoubleAttribute("ang",69);
+		root->InsertEndChild(*(element->Clone()));
+	}
+	if((DetermineNumber%7)==0){
+		DetermineNumber=DetermineNumber/7; 
+		TiXmlElement* element=new TiXmlElement("Movement");
+		element->SetDoubleAttribute("x",6988);
+		element->SetDoubleAttribute("y",8988);
+		element->SetDoubleAttribute("sita",8988);
+		root->InsertEndChild(*(element->Clone()));
+	}
+	xmlDoc.InsertEndChild(*(root->Clone()));
+	 
+	return xmlDoc;
+}
 int main(){
 	
 	
@@ -38,23 +81,27 @@ int main(){
 	//doc_2.Accept( &printer );
 	//fscanf( stdout, "%s", printer.CStr() );
 	//printf("%s", printer.CStr());
-	int port=1234;
-	string xml_by_str;
-	LinuxServer new_sock;
-        LinuxServer server (port);
 	
-        cout << "[Waiting..]" << endl;
+  /*      cout << "[Waiting..]" << endl;
         server.accept ( new_sock );
-        cout << "[Accepted..]" << endl;	
+        cout << "[Accepted..]" << endl;	*/
 ///////////////////////////////////////////////////intial
-	
+	/*
 	TiXmlPrinter printer;
 	printer.SetStreamPrinting();
 	const char *fileName = "last_mode.xml";
 	const char *just_cmp = "halt";
-	
+	*/
+
 //////////////////////////////////////////////////////////////////////////////////////////
-	while(true){	
+
+TiXmlDocument xmlDoc=RequestXml(3*5*7*2);
+xmlDoc.SaveFile("Status.xml");
+
+
+
+
+/*	while(true){	
 		new_sock >> xml_by_str;
 		cout << "[success recv]" << endl;
 		char *xml_by_char=new char[xml_by_str.length()+1];
@@ -151,6 +198,6 @@ int main(){
 
 		delete[]xml_by_char;
 	}	
-	
+*/	
 return 0;
 }

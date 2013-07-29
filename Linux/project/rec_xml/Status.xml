@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <Status>
-    <ColorModel>
-        <Model Color="blue">
-            <HueMax www="0.1" />
-            <HueMin www="0.2" />
-            <SaturationMax www="0.3" />
-            <SaturationMin www="0.4" />
-            <BrightnessMax www="0.5" />
-            <BrightnessMin www="0.6" />
-        </Model>
-    </ColorModel>
-    <ParameterModel>
-        <Model information="Ball">
-            <x>5</x>
-            <y>5</y>
-        </Model>
-    </ParameterModel>
+    <Laser>
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+        <Value angle="5" distance="5" />
+    </Laser>
+    <Position x="69" y="89" sita="89" />
+    <Camera_Angle ang="69" />
+    <Movement x="6988" y="8988" sita="8988" />
 </Status>
