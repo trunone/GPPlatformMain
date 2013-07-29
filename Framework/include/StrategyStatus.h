@@ -27,11 +27,10 @@ namespace Robot
         static double x;
         static double y;
 		static double w;
-        static Vector3D vector;
-		//-------------------------------------------loadxml
+
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
-	        static TCoordinate EndPosition; 
+        static TCoordinate EndPosition; 
 
 		static TCoordinate RobotPos;
 		static TCoordinate RootHandle;
@@ -56,48 +55,44 @@ namespace Robot
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
-	        typedef struct{ int Status;
-				TCoordinate StartPos;
-				TCoordinate GoalPos;
-				int PCnt; 
-			      }tsAStarPath;
+        typedef struct{ int Status;
+			TCoordinate StartPos;
+			TCoordinate GoalPos;
+			int PCnt; 
+        }tsAStarPath;
 			
 		typedef struct{ TCoordinate Origin;
-				float Scale;
-				int Width,Height;
-			      }tsMapInfo;
+			float Scale;
+			int Width,Height;
+        }tsMapInfo;
 		
 		typedef struct{ bool Enable; 
-			        TCoordinate Door; 
-				TCoordinate Center;
-			        TCoordinate LeftBottom;
-				TCoordinate RightTop; 
-				short BallDirection; 
-			      }tsRoom;
+            TCoordinate Door; 
+            TCoordinate Center;
+            TCoordinate LeftBottom;
+			TCoordinate RightTop; 
+            short BallDirection; 
+        }tsRoom;
 		
 		typedef struct{ tsRoom Info[5]; 
-				int Cnt; 
-				teSKSState SKSRoomState; 
-			      }tsRoomInfo;
+			int Cnt; 
+			teSKSState SKSRoomState; 
+        }tsRoomInfo;
 		
 		typedef struct{ TCoordinate Position; 
-				float Angle; 
-				int Distance;
-				short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
-				short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
-				unsigned char FindBallCnt; 
-			      }tsStraBallInfo;
-		//TStra(void);
+			float Angle; 
+			int Distance;
+			short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
+			short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
+			unsigned char FindBallCnt; 
+        }tsStraBallInfo;
 
-        	//~TStra(void);
 
 		static int CurrentBallState;
 
 		static int RoomOrder;
 
 		static int FamilyMember;
-
-        void Initial();
 
         static bool FlagRoomRenew;
         static tsRoomInfo Room;

@@ -15,6 +15,7 @@
 #include "LocationModule.h"
 #include "urg_cpp/Urg_driver.h"
 #include "urg_cpp/math_utilities.h"
+#include "Motors.h"
 
 namespace Robot
 {
@@ -29,12 +30,14 @@ namespace Robot
 		bool m_IsThreadRunning;
 		bool m_IsLogging;
 		bool FlagEvaluatuonEnable;		
-        	bool FlagCoerceEvaluatuon;
-        	TCoordinate Position;
-       		double Handle;
+        bool FlagCoerceEvaluatuon;
+        TCoordinate Position;
+        double Handle;
+
 		std::ofstream m_LogFileStream;
 
-        qrk::Urg_driver *urg;
+        qrk::Urg_driver *mUrg;
+        Motors *mMotors;
 
         LocationManager();
 
@@ -47,7 +50,7 @@ namespace Robot
 
 		static LocationManager* GetInstance() { return m_UniqueInstance; }
 
-		bool Initialize(qrk::Urg_driver*);
+		bool Initialize(qrk::Urg_driver*, Motors*);
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);
@@ -57,6 +60,8 @@ namespace Robot
 
 		void StartLogging();
 		void StopLogging();
+
+        int LoadXMLSettings(TiXmlElement*);
 	};
 }
 

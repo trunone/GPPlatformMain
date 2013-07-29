@@ -204,16 +204,7 @@ double ProbEvaluation::GetStandandDeviation(double ExpectationDis)
 
 double ProbEvaluation::NormalDistribution(float sigma , float deviation)
 {
-
    return ( 1/sqrt(2*M_PI*sigma*sigma) ) * exp(-0.5*(deviation/sigma)*(deviation/sigma))*100;
 }
 //---------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 

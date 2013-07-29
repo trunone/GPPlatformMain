@@ -22,8 +22,8 @@ namespace Robot
 		Speedometer();
 		~Speedometer();
 
-	int GetPositionIs(short ,long*);
-	void Process();
-	void Initialize(); 
+        int GetPositionIs(short ,long*);
+        void Process();
+        void Initialize(); 
 	};
 } 

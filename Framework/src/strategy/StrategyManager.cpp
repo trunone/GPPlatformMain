@@ -136,3 +136,79 @@ void StrategyManager::RemoveModule(StrategyModule *module)
 {
 	m_Modules.remove(module);
 }
+
+int StrategyManager::LoadXMLSettings(TiXmlElement* element){
+    if(element != NULL){	
+		TiXmlElement* modelchild;
+		modelchild=element->FirstChildElement("RootHandle");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::RootHandle.x);
+			modelchild->Attribute("y", &StrategyStatus::RootHandle.y);	
+		}
+		modelchild=element->FirstChildElement("StartPos");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::StartPosition.x);
+			modelchild->Attribute("y", &StrategyStatus::StartPosition.y);						
+		}
+		modelchild=element->FirstChildElement("EndPos");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::EndPosition.x);
+			modelchild->Attribute("y", &StrategyStatus::EndPosition.y);						
+		}
+		modelchild=element->FirstChildElement("FindBallEn");
+		if(modelchild != NULL){
+			modelchild->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
+		}
+		modelchild=element->FirstChildElement("LivRMDoor");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::LivRMDoor.x);
+			modelchild->Attribute("y", &StrategyStatus::LivRMDoor.y);						
+		}
+		modelchild=element->FirstChildElement("LivRMCen");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::LivRMCen.x);
+			modelchild->Attribute("y", &StrategyStatus::LivRMCen.y);						
+		}
+		modelchild=element->FirstChildElement("DinRMDoor");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::DinRMDoor.x);
+			modelchild->Attribute("y", &StrategyStatus::DinRMDoor.y);						
+		}
+		modelchild=element->FirstChildElement("DinRMCen");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::DinRMCen.x);
+			modelchild->Attribute("y", &StrategyStatus::DinRMCen.y);						
+		}
+		modelchild=element->FirstChildElement("LibDoor");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::LibDoor.x);
+			modelchild->Attribute("y", &StrategyStatus::LibDoor.y);						
+		}
+		modelchild=element->FirstChildElement("LibCen");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::LibCen.x);
+			modelchild->Attribute("y", &StrategyStatus::LibCen.y);						
+		}
+		modelchild=element->FirstChildElement("BedRMDoor");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::BedRMDoor.x);
+			modelchild->Attribute("y", &StrategyStatus::BedRMDoor.y);						
+		}
+		modelchild=element->FirstChildElement("BedRMCen");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::BedRMCen.x);
+			modelchild->Attribute("y", &StrategyStatus::BedRMCen.y);						
+		}
+		modelchild=element->FirstChildElement("ChrgDoor");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::ChrgDoor.x);
+			modelchild->Attribute("y", &StrategyStatus::ChrgDoor.y);						
+		}
+		modelchild=element->FirstChildElement("ChrgCen");
+		if(modelchild != NULL){
+			modelchild->Attribute("x", &StrategyStatus::ChrgCen.x);
+			modelchild->Attribute("y", &StrategyStatus::ChrgCen.y);						
+        }
+    }
+	return 0;
+}

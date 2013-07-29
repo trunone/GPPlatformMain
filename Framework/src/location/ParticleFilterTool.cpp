@@ -11,15 +11,12 @@ ParticleFilterTool* ParticleFilterTool::m_UniqueInstance = new ParticleFilterToo
 
 ParticleFilterTool::ParticleFilterTool()
 {
-    ProbabilityEvaluation = new ProbEvaluation;
     RandN = new NormalRand(1,0.001);
-
 }
 //------------------------------------------------------------------------------
 
 ParticleFilterTool::~ParticleFilterTool()
 {
-    delete ProbabilityEvaluation;
     Particles.clear();
 }
 //------------------------------------------------------------------------------
@@ -99,27 +96,27 @@ string ParticleFilterTool::PredictionParticles()
     TCoordinate prdMotion;
     double prdRotation1, prdRotation2;
     for(i=0 ; i< i_size; i++){
-            //----------------------
-            /*prdMotion = FeedbackMovement.Position * ( 1 + MoveErrorRate * RandN->randn());
-            double tmpNoise;
-            tmpNoise = Ro2MoveErrorRate * RandN->randn();
-            prdMotion.x += cos(FeedbackMovement.Direction) * tmpNoise;
-            prdMotion.y += sin(FeedbackMovement.Direction) * tmpNoise;
+        //----------------------
+        /*prdMotion = FeedbackMovement.Position * ( 1 + MoveErrorRate * RandN->randn());
+        double tmpNoise;
+        tmpNoise = Ro2MoveErrorRate * RandN->randn();
+        prdMotion.x += cos(FeedbackMovement.Direction) * tmpNoise;
+        prdMotion.y += sin(FeedbackMovement.Direction) * tmpNoise;
 
-            TCoordinate tmpPos;
-            tmpPos = FeedbackMovement.Position << Particles[i].Direction;
-            prdRotation1 = tmpPos.Angle() * ( 1 + RotateErrorRate * RandN->randn() )
-                           + ( FeedbackMovement.Position.Length() * Mo2RotateErrorRate * RandN->randn() );
-            prdRotation2 = FeedbackMovement.Direction * ( 1 + RotateErrorRate * RandN->randn() )
-                           + ( FeedbackMovement.Position.Length() * Mo2RotateErrorRate * RandN->randn() ); //*/
+        TCoordinate tmpPos;
+        tmpPos = FeedbackMovement.Position << Particles[i].Direction;
+        prdRotation1 = tmpPos.Angle() * ( 1 + RotateErrorRate * RandN->randn() )
+                       + ( FeedbackMovement.Position.Length() * Mo2RotateErrorRate * RandN->randn() );
+        prdRotation2 = FeedbackMovement.Direction * ( 1 + RotateErrorRate * RandN->randn() )
+                       + ( FeedbackMovement.Position.Length() * Mo2RotateErrorRate * RandN->randn() ); //*/
 
-            // 移動量預測
-            //Particles[i].Position = Particles[i].Position + ( prdMotion << prdRotation1 );
-            Particles[i].Position   = Particles[i].Position +
-                                            ( FeedbackMovement.Position << Particles[i].Direction ) *( 1 + MoveErrorRate * RandN->randn() );
-            // 轉動量預測
-            //Particles[i].Direction += prdRotation2;
-            Particles[i].Direction += FeedbackMovement.Direction * ( 1 + RotateErrorRate * RandN->randn() );
+        // 移動量預測
+        //Particles[i].Position = Particles[i].Position + ( prdMotion << prdRotation1 );
+        Particles[i].Position   = Particles[i].Position +
+                                        ( FeedbackMovement.Position << Particles[i].Direction ) *( 1 + MoveErrorRate * RandN->randn() );
+        // 轉動量預測
+        //Particles[i].Direction += prdRotation2;
+        Particles[i].Direction += FeedbackMovement.Direction * ( 1 + RotateErrorRate * RandN->randn() );
     }
     //--------------------
     return "ParticleFilter Divination Successful" ;

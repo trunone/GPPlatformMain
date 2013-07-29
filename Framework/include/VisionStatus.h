@@ -102,9 +102,7 @@ namespace Robot
 		typedef enum{ Y=0 , U=1 , V=2}YUVcolor;
 	
 		typedef struct{
-
             unsigned char ColorEle[3];
-
 		}tsColor;
 
 		typedef struct{
@@ -117,25 +115,15 @@ namespace Robot
             unsigned char BinaryThreshold;
 		}tsImgProSet;
 
-
-
 		typedef struct{
-
 	    	unsigned char* ImgData;
-
 	    	int Width;
-
 	    	int Height;
-
 	    	int Dimension;
-
-	    	tsColor         GetColor(int x,int y);
-
+	    	tsColor GetColor(int x,int y);
 	    	unsigned char*  GetPixelPtr(int x,int y);
-
-	    	void    SetColor(int x,int y ,tsColor cBGR);
-
-	    	void    SetColor(int x,int y ,unsigned char* Color);
+	    	void SetColor(int x,int y ,tsColor cBGR);
+	    	void SetColor(int x,int y ,unsigned char* Color);
 		}tsBmpPtr;
 
 		typedef struct{
@@ -189,26 +177,22 @@ namespace Robot
 
 
 
-	enum{OrangeLabel = 0x01, YellowLabel = 0x02, BlueLabel = 0x04
+        enum{OrangeLabel = 0x01, YellowLabel = 0x02, BlueLabel = 0x04
+            , GreenLabel = 0x08, BlackLabel = 0x10, RedLabel = 0x20
+            , OthersLabel = 0x80};
 
-        	, GreenLabel = 0x08, BlackLabel = 0x10, RedLabel = 0x20
+        struct CIRCLE
+        {
+            short int CCX;
+            short int CCY;
+            short int Rr;
+        };
 
-        	, OthersLabel = 0x80};
-
-
-
-
-	struct CIRCLE
-	{
-        short int CCX;
-        short int CCY;
-        short int Rr;
-	};
-	typedef struct{
-		unsigned char Y;
-        unsigned char U;
-        unsigned char V;
-	}tsYUVData;
+        typedef struct{
+            unsigned char Y;
+            unsigned char U;
+            unsigned char V;
+        }tsYUVData;
 
 	//--------------------------------------------------------------------------
 		//TImg(void);

@@ -43,8 +43,6 @@ namespace Robot
 		~StrategyManager();
 
 		static StrategyManager* GetInstance() { return m_UniqueInstance; }
-
-		//bool Initialize();
         bool Initialize(Motors*);
 		bool Initialize();
 		bool Reinitialize();
@@ -56,6 +54,8 @@ namespace Robot
 
 		void StartLogging();
 		void StopLogging();
+
+        int LoadXMLSettings(TiXmlElement*);
 	};
 }
 
