@@ -88,10 +88,10 @@ void StrategyManager::Process()
         }
     }
 
-        mMotors->SetVelocityAll(
-                -StrategyStatus::MotorSpeed[0],
-                -StrategyStatus::MotorSpeed[1],
-                -StrategyStatus::MotorSpeed[2]);
+    mMotors->SetVelocityAll(
+            -StrategyStatus::MotorSpeed[0],
+            -StrategyStatus::MotorSpeed[1],
+            -StrategyStatus::MotorSpeed[2]);
 
     if(m_IsLogging)
     {
@@ -139,76 +139,91 @@ void StrategyManager::RemoveModule(StrategyModule *module)
 
 int StrategyManager::LoadXMLSettings(TiXmlElement* element){
     if(element != NULL){	
-		TiXmlElement* modelchild;
-		modelchild=element->FirstChildElement("RootHandle");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::RootHandle.x);
-			modelchild->Attribute("y", &StrategyStatus::RootHandle.y);	
+		TiXmlElement* child;
+		child=element->FirstChildElement("RootHandle");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::RootHandle.x);
+			child->Attribute("y", &StrategyStatus::RootHandle.y);	
 		}
-		modelchild=element->FirstChildElement("StartPos");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::StartPosition.x);
-			modelchild->Attribute("y", &StrategyStatus::StartPosition.y);						
+        delete child;
+		child=element->FirstChildElement("StartPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::StartPosition.x);
+			child->Attribute("y", &StrategyStatus::StartPosition.y);						
 		}
-		modelchild=element->FirstChildElement("EndPos");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::EndPosition.x);
-			modelchild->Attribute("y", &StrategyStatus::EndPosition.y);						
+        delete child;
+		child=element->FirstChildElement("EndPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::EndPosition.x);
+			child->Attribute("y", &StrategyStatus::EndPosition.y);						
 		}
-		modelchild=element->FirstChildElement("FindBallEn");
-		if(modelchild != NULL){
-			modelchild->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
+        delete child;
+		child=element->FirstChildElement("FindBallEn");
+		if(child != NULL){
+			child->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
 		}
-		modelchild=element->FirstChildElement("LivRMDoor");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::LivRMDoor.x);
-			modelchild->Attribute("y", &StrategyStatus::LivRMDoor.y);						
+        delete child;
+		child=element->FirstChildElement("LivRMDoor");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LivRMDoor.x);
+			child->Attribute("y", &StrategyStatus::LivRMDoor.y);						
 		}
-		modelchild=element->FirstChildElement("LivRMCen");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::LivRMCen.x);
-			modelchild->Attribute("y", &StrategyStatus::LivRMCen.y);						
+        delete child;
+		child=element->FirstChildElement("LivRMCen");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LivRMCen.x);
+			child->Attribute("y", &StrategyStatus::LivRMCen.y);						
 		}
-		modelchild=element->FirstChildElement("DinRMDoor");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::DinRMDoor.x);
-			modelchild->Attribute("y", &StrategyStatus::DinRMDoor.y);						
+        delete child;
+		child=element->FirstChildElement("DinRMDoor");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::DinRMDoor.x);
+			child->Attribute("y", &StrategyStatus::DinRMDoor.y);						
 		}
-		modelchild=element->FirstChildElement("DinRMCen");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::DinRMCen.x);
-			modelchild->Attribute("y", &StrategyStatus::DinRMCen.y);						
+        delete child;
+		child=element->FirstChildElement("DinRMCen");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::DinRMCen.x);
+			child->Attribute("y", &StrategyStatus::DinRMCen.y);						
 		}
-		modelchild=element->FirstChildElement("LibDoor");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::LibDoor.x);
-			modelchild->Attribute("y", &StrategyStatus::LibDoor.y);						
+        delete child;
+		child=element->FirstChildElement("LibDoor");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LibDoor.x);
+			child->Attribute("y", &StrategyStatus::LibDoor.y);						
 		}
-		modelchild=element->FirstChildElement("LibCen");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::LibCen.x);
-			modelchild->Attribute("y", &StrategyStatus::LibCen.y);						
+        delete child;
+		child=element->FirstChildElement("LibCen");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LibCen.x);
+			child->Attribute("y", &StrategyStatus::LibCen.y);						
 		}
-		modelchild=element->FirstChildElement("BedRMDoor");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::BedRMDoor.x);
-			modelchild->Attribute("y", &StrategyStatus::BedRMDoor.y);						
+        delete child;
+		child=element->FirstChildElement("BedRMDoor");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::BedRMDoor.x);
+			child->Attribute("y", &StrategyStatus::BedRMDoor.y);						
 		}
-		modelchild=element->FirstChildElement("BedRMCen");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::BedRMCen.x);
-			modelchild->Attribute("y", &StrategyStatus::BedRMCen.y);						
+        delete child;
+		child=element->FirstChildElement("BedRMCen");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::BedRMCen.x);
+			child->Attribute("y", &StrategyStatus::BedRMCen.y);						
 		}
-		modelchild=element->FirstChildElement("ChrgDoor");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::ChrgDoor.x);
-			modelchild->Attribute("y", &StrategyStatus::ChrgDoor.y);						
+        delete child;
+		child=element->FirstChildElement("ChrgDoor");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::ChrgDoor.x);
+			child->Attribute("y", &StrategyStatus::ChrgDoor.y);						
 		}
-		modelchild=element->FirstChildElement("ChrgCen");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &StrategyStatus::ChrgCen.x);
-			modelchild->Attribute("y", &StrategyStatus::ChrgCen.y);						
+        delete child;
+		child=element->FirstChildElement("ChrgCen");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::ChrgCen.x);
+			child->Attribute("y", &StrategyStatus::ChrgCen.y);						
         }
     }
+    else
+        return 1;
 	return 0;
 }

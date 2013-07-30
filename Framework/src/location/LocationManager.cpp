@@ -45,7 +45,7 @@ bool LocationManager::Initialize(Urg_driver *urg, Motors *motors)
     mUrg = urg;
     mMotors = motors;
 
-    mUrg->set_scanning_parameter(mUrg->deg2step(-90), mUrg->deg2step(+90), 0);
+    mUrg->set_scanning_parameter(mUrg->deg2step(-90), mUrg->deg2step(+90), 10);
     mUrg->start_measurement(Urg_driver::Distance, 0, 0);
 
 	return true;
@@ -93,8 +93,12 @@ void LocationManager::Process()
 
     m_IsRunning = true;
 
-    if (!mUrg->get_distance(LocationStatus::data, &LocationStatus::time_stamp))
+    if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
         fprintf(stderr,  "mUrg_driver:: get_distance(): %s\n", mUrg->what());
+
+    mMotors->GetPositionIs(0, &LocationStatus::MotorPulse[0]);
+    mMotors->GetPositionIs(1, &LocationStatus::MotorPulse[1]);
+    mMotors->GetPositionIs(2, &LocationStatus::MotorPulse[2]);
 
     if(m_Modules.size() != 0)
     {
@@ -143,111 +147,125 @@ void LocationManager::RemoveModule(LocationModule *module)
 
 int LocationManager::LoadXMLSettings(TiXmlElement* element){
 	if(element != NULL){	
-		TiXmlElement* modelchild;
-		modelchild=element->FirstChildElement("LivingRM_Sofa");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::LivingRM_Sofa.x);
-			modelchild->Attribute("y", &LocationStatus::LivingRM_Sofa.y);	
-			modelchild->Attribute("Width", &LocationStatus::LivingRM_Sofa.Width);
-			modelchild->Attribute("Height", &LocationStatus::LivingRM_Sofa.Height);
-			modelchild->Attribute("Angle", &LocationStatus::LivingRM_Sofa.Angle);						
+		TiXmlElement* child;
+		child=element->FirstChildElement("LivingRM_Sofa");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::LivingRM_Sofa.x);
+			child->Attribute("y", &LocationStatus::LivingRM_Sofa.y);	
+			child->Attribute("Width", &LocationStatus::LivingRM_Sofa.Width);
+			child->Attribute("Height", &LocationStatus::LivingRM_Sofa.Height);
+			child->Attribute("Angle", &LocationStatus::LivingRM_Sofa.Angle);						
 		}
-		modelchild=element->FirstChildElement("LivingRM_Table");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::LivingRM_Table.x);
-			modelchild->Attribute("y", &LocationStatus::LivingRM_Table.y);	
-			modelchild->Attribute("Width", &LocationStatus::LivingRM_Table.Width);
-			modelchild->Attribute("Height", &LocationStatus::LivingRM_Table.Height);
-			modelchild->Attribute("Angle", &LocationStatus::LivingRM_Table.Angle);						
+        delete child;
+		child=element->FirstChildElement("LivingRM_Table");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::LivingRM_Table.x);
+			child->Attribute("y", &LocationStatus::LivingRM_Table.y);	
+			child->Attribute("Width", &LocationStatus::LivingRM_Table.Width);
+			child->Attribute("Height", &LocationStatus::LivingRM_Table.Height);
+			child->Attribute("Angle", &LocationStatus::LivingRM_Table.Angle);						
 		}
-		modelchild=element->FirstChildElement("LivingRM_Cabinet");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::LivingRM_Cabinet.x);
-			modelchild->Attribute("y", &LocationStatus::LivingRM_Cabinet.y);	
-			modelchild->Attribute("Width", &LocationStatus::LivingRM_Cabinet.Width);
-			modelchild->Attribute("Height", &LocationStatus::LivingRM_Cabinet.Height);
-			modelchild->Attribute("Angle", &LocationStatus::LivingRM_Cabinet.Angle);						
+        delete child;
+		child=element->FirstChildElement("LivingRM_Cabinet");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::LivingRM_Cabinet.x);
+			child->Attribute("y", &LocationStatus::LivingRM_Cabinet.y);	
+			child->Attribute("Width", &LocationStatus::LivingRM_Cabinet.Width);
+			child->Attribute("Height", &LocationStatus::LivingRM_Cabinet.Height);
+			child->Attribute("Angle", &LocationStatus::LivingRM_Cabinet.Angle);						
 		}
-		modelchild=element->FirstChildElement("DiningRM_Table");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::DiningRM_Table.x);
-			modelchild->Attribute("y", &LocationStatus::DiningRM_Table.y);	
-			modelchild->Attribute("Width", &LocationStatus::DiningRM_Table.Width);
-			modelchild->Attribute("Height", &LocationStatus::DiningRM_Table.Height);
-			modelchild->Attribute("Angle", &LocationStatus::DiningRM_Table.Angle);						
+        delete child;
+		child=element->FirstChildElement("DiningRM_Table");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::DiningRM_Table.x);
+			child->Attribute("y", &LocationStatus::DiningRM_Table.y);	
+			child->Attribute("Width", &LocationStatus::DiningRM_Table.Width);
+			child->Attribute("Height", &LocationStatus::DiningRM_Table.Height);
+			child->Attribute("Angle", &LocationStatus::DiningRM_Table.Angle);						
 		}
-		modelchild=element->FirstChildElement("DiningRM_Chair");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::DiningRM_Chair.x);
-			modelchild->Attribute("y", &LocationStatus::DiningRM_Chair.y);	
-			modelchild->Attribute("Width", &LocationStatus::DiningRM_Chair.Width);
-			modelchild->Attribute("Height", &LocationStatus::DiningRM_Chair.Height);
-			modelchild->Attribute("Angle", &LocationStatus::DiningRM_Chair.Angle);						
+        delete child;
+		child=element->FirstChildElement("DiningRM_Chair");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::DiningRM_Chair.x);
+			child->Attribute("y", &LocationStatus::DiningRM_Chair.y);	
+			child->Attribute("Width", &LocationStatus::DiningRM_Chair.Width);
+			child->Attribute("Height", &LocationStatus::DiningRM_Chair.Height);
+			child->Attribute("Angle", &LocationStatus::DiningRM_Chair.Angle);						
 		}
-		modelchild=element->FirstChildElement("Library_Desk");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::Library_Desk.x);
-			modelchild->Attribute("y", &LocationStatus::Library_Desk.y);	
-			modelchild->Attribute("Width", &LocationStatus::Library_Desk.Width);
-			modelchild->Attribute("Height", &LocationStatus::Library_Desk.Height);
-			modelchild->Attribute("Angle", &LocationStatus::Library_Desk.Angle);						
+        delete child;
+		child=element->FirstChildElement("Library_Desk");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::Library_Desk.x);
+			child->Attribute("y", &LocationStatus::Library_Desk.y);	
+			child->Attribute("Width", &LocationStatus::Library_Desk.Width);
+			child->Attribute("Height", &LocationStatus::Library_Desk.Height);
+			child->Attribute("Angle", &LocationStatus::Library_Desk.Angle);						
 		}
-		modelchild=element->FirstChildElement("Library_Chair");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::Library_Chair.x);
-			modelchild->Attribute("y", &LocationStatus::Library_Chair.y);	
-			modelchild->Attribute("Width", &LocationStatus::Library_Chair.Width);
-			modelchild->Attribute("Height", &LocationStatus::Library_Chair.Height);
-			modelchild->Attribute("Angle", &LocationStatus::Library_Chair.Angle);						
+        delete child;
+		child=element->FirstChildElement("Library_Chair");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::Library_Chair.x);
+			child->Attribute("y", &LocationStatus::Library_Chair.y);	
+			child->Attribute("Width", &LocationStatus::Library_Chair.Width);
+			child->Attribute("Height", &LocationStatus::Library_Chair.Height);
+			child->Attribute("Angle", &LocationStatus::Library_Chair.Angle);						
 		}
-		modelchild=element->FirstChildElement("Library_Cabinet");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::Library_Cabinet.x);
-			modelchild->Attribute("y", &LocationStatus::Library_Cabinet.y);	
-			modelchild->Attribute("Width", &LocationStatus::Library_Cabinet.Width);
-			modelchild->Attribute("Height", &LocationStatus::Library_Cabinet.Height);
-			modelchild->Attribute("Angle", &LocationStatus::Library_Cabinet.Angle);						
+        delete child;
+		child=element->FirstChildElement("Library_Cabinet");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::Library_Cabinet.x);
+			child->Attribute("y", &LocationStatus::Library_Cabinet.y);	
+			child->Attribute("Width", &LocationStatus::Library_Cabinet.Width);
+			child->Attribute("Height", &LocationStatus::Library_Cabinet.Height);
+			child->Attribute("Angle", &LocationStatus::Library_Cabinet.Angle);						
 		}
-		modelchild=element->FirstChildElement("BedRM_Bed");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::BedRM_Bed.x);
-			modelchild->Attribute("y", &LocationStatus::BedRM_Bed.y);	
-			modelchild->Attribute("Width", &LocationStatus::BedRM_Bed.Width);
-			modelchild->Attribute("Height", &LocationStatus::BedRM_Bed.Height);
-			modelchild->Attribute("Angle", &LocationStatus::BedRM_Bed.Angle);						
+        delete child;
+		child=element->FirstChildElement("BedRM_Bed");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::BedRM_Bed.x);
+			child->Attribute("y", &LocationStatus::BedRM_Bed.y);	
+			child->Attribute("Width", &LocationStatus::BedRM_Bed.Width);
+			child->Attribute("Height", &LocationStatus::BedRM_Bed.Height);
+			child->Attribute("Angle", &LocationStatus::BedRM_Bed.Angle);						
 		}
-		modelchild=element->FirstChildElement("DiningRM_door");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::DiningRM_door.x);
-			modelchild->Attribute("y", &LocationStatus::DiningRM_door.y);	
-			modelchild->Attribute("Width", &LocationStatus::DiningRM_door.Width);
-			modelchild->Attribute("Height", &LocationStatus::DiningRM_door.Height);
-			modelchild->Attribute("Angle", &LocationStatus::DiningRM_door.Angle);						
+        delete child;
+		child=element->FirstChildElement("DiningRM_door");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::DiningRM_door.x);
+			child->Attribute("y", &LocationStatus::DiningRM_door.y);	
+			child->Attribute("Width", &LocationStatus::DiningRM_door.Width);
+			child->Attribute("Height", &LocationStatus::DiningRM_door.Height);
+			child->Attribute("Angle", &LocationStatus::DiningRM_door.Angle);						
 		}
-		modelchild=element->FirstChildElement("BedRM_door");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::BedRM_door.x);
-			modelchild->Attribute("y", &LocationStatus::BedRM_door.y);	
-			modelchild->Attribute("Width", &LocationStatus::BedRM_door.Width);
-			modelchild->Attribute("Height", &LocationStatus::BedRM_door.Height);
-			modelchild->Attribute("Angle", &LocationStatus::BedRM_door.Angle);						
+        delete child;
+		child=element->FirstChildElement("BedRM_door");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::BedRM_door.x);
+			child->Attribute("y", &LocationStatus::BedRM_door.y);	
+			child->Attribute("Width", &LocationStatus::BedRM_door.Width);
+			child->Attribute("Height", &LocationStatus::BedRM_door.Height);
+			child->Attribute("Angle", &LocationStatus::BedRM_door.Angle);						
 		}
-		modelchild=element->FirstChildElement("ChargeArea");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::ChargeArea.x);
-			modelchild->Attribute("y", &LocationStatus::ChargeArea.y);	
-			modelchild->Attribute("Width", &LocationStatus::ChargeArea.Width);
-			modelchild->Attribute("Height", &LocationStatus::ChargeArea.Height);
-			modelchild->Attribute("Angle", &LocationStatus::ChargeArea.Angle);						
+        delete child;
+		child=element->FirstChildElement("ChargeArea");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::ChargeArea.x);
+			child->Attribute("y", &LocationStatus::ChargeArea.y);	
+			child->Attribute("Width", &LocationStatus::ChargeArea.Width);
+			child->Attribute("Height", &LocationStatus::ChargeArea.Height);
+			child->Attribute("Angle", &LocationStatus::ChargeArea.Angle);						
 		}
-		modelchild=element->FirstChildElement("EndArea");
-		if(modelchild != NULL){
-			modelchild->Attribute("x", &LocationStatus::EndArea.x);
-			modelchild->Attribute("y", &LocationStatus::EndArea.y);	
-			modelchild->Attribute("Width", &LocationStatus::EndArea.Width);
-			modelchild->Attribute("Height", &LocationStatus::EndArea.Height);
-			modelchild->Attribute("Angle", &LocationStatus::EndArea.Angle);						
+        delete child;
+		child=element->FirstChildElement("EndArea");
+		if(child != NULL){
+			child->Attribute("x", &LocationStatus::EndArea.x);
+			child->Attribute("y", &LocationStatus::EndArea.y);	
+			child->Attribute("Width", &LocationStatus::EndArea.Width);
+			child->Attribute("Height", &LocationStatus::EndArea.Height);
+			child->Attribute("Angle", &LocationStatus::EndArea.Angle);						
 			}
 	}
+    else
+        return 1;
 	return 0;
 }

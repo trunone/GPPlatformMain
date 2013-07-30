@@ -3,8 +3,8 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
-#define ENABLE_VISION
+//#define ENABLE_STRATEGY
+//#define ENABLE_VISION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -57,7 +57,7 @@ int main(void)
     change_current_dir();
 
 #ifdef ENABLE_STRATEGY
-    //motors.OpenDeviceAll();
+    motors.OpenDeviceAll();
 #endif
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );

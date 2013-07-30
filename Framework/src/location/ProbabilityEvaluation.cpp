@@ -20,23 +20,23 @@ ProbEvaluation::~ProbEvaluation()
 
 void ProbEvaluation::AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap)
 {
-    VirtualLineMap = new VisionStatus::tsBmpPtr;
+    //VirtualLineMap = new VisionStatus::tsBmpPtr;
 
-    VirtualLineMap->Width  = VirtiulMap->Width;
-    VirtualLineMap->Height = VirtiulMap->Height;
-    VirtualLineMap->Dimension = 1; //
-    VirtualLineMap->ImgData = new unsigned char[VirtualLineMap->Width * VirtualLineMap->Height * VirtualLineMap->Dimension ];
-    unsigned char bColor;
-    int i,j;
-    //unsigned char Threshold = this->Info->ImgInfo->ProcessSetting.BinaryThreshold ;
+    //VirtualLineMap->Width  = VirtiulMap->Width;
+    //VirtualLineMap->Height = VirtiulMap->Height;
+    //VirtualLineMap->Dimension = 1; //
+    //VirtualLineMap->ImgData = new unsigned char[VirtualLineMap->Width * VirtualLineMap->Height * VirtualLineMap->Dimension ];
+    //unsigned char bColor;
+    //int i,j;
+    ////unsigned char Threshold = this->Info->ImgInfo->ProcessSetting.BinaryThreshold ;
 
-    for(i=0 ; i< VirtualLineMap->Height ;i++){
-        for(j=0 ; j< VirtualLineMap->Width ;j++){
-            bColor = VisionStatus::PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
-            VirtualLineMap->SetColor(j,i,&bColor);
-        }
-    }
-    LocationStatus::enable = true;
+    //for(i=0 ; i< VirtualLineMap->Height ;i++){
+    //    for(j=0 ; j< VirtualLineMap->Width ;j++){
+    //        bColor = VisionStatus::PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
+    //        VirtualLineMap->SetColor(j,i,&bColor);
+    //    }
+    //}
+    //LocationStatus::enable = true;
 }
 void ProbEvaluation::ScanLinesInfoUpdate()
 {

@@ -115,7 +115,7 @@ void ColorModel::Process(){
 	unsigned char temp [VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 	
 	cv::Mat hsv;
-	cv::cvtColor(VisionStatus::frame, hsv, CV_BGR2HSV);
+	cv::cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
 	for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
 		for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++){
 						

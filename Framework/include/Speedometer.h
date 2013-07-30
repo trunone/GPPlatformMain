@@ -13,16 +13,14 @@ namespace Robot
 	{
 	private:
 		static Speedometer* m_UniqueInstance;
+		Speedometer();
 
-		
-
+        long mPastMotorPulse[3];
 
 	public:
 		static Speedometer* GetInstance() { return m_UniqueInstance; }
-		Speedometer();
 		~Speedometer();
 
-        int GetPositionIs(short ,long*);
         void Process();
         void Initialize(); 
 	};

@@ -30,22 +30,22 @@ using namespace std;
 
 namespace Robot
 {
-	typedef struct{
-		TCoordinate Position;
-		float Direction;
-	}FeedBack_Info;
-
+	
 	class LocationStatus
 	{
 
 	private:
-		
+        typedef struct{
+            TCoordinate Position;
+            float Direction;
+        }FeedBack_Info;
+	
 	public:
-        static double Motor1Distance,Motor2Distance,Motor3Distance;
+        static long MotorPulse[3];
         static double FI;
-        static double Motor_x;
-        static double Motor_y;
-        static double Motor_sita;
+        static double Movement_x;
+        static double Movement_y;
+        static double Movement_sita;
 
 		struct Furniture
 		{
@@ -55,7 +55,7 @@ namespace Robot
 			int Height;
 			int Angle;			
 		};
-		
+
 		static Furniture LivingRM_Sofa;
 		static Furniture LivingRM_Table;
 		static Furniture LivingRM_Cabinet;
@@ -74,8 +74,6 @@ namespace Robot
 		static bool FlagCoerceEvaluatuon;
 		static TCoordinate Position;
 		static double Handle;
-		static bool FlagRenew;
-		static bool FlagLaserBusy;
 		static bool FlagLocInit;
 		static bool enable;
 		static TCoordinate SetRobotPosition;
@@ -84,8 +82,8 @@ namespace Robot
         // tmp. store for partilcefilter, wait for the truly laser information get will replace	
 		static FeedBack_Info FB_Movement;
 
-        static vector<long> data;
-        static long time_stamp;
+        static vector<long> LaserData;
+        static long TimeStamp;
 	};
 }
 

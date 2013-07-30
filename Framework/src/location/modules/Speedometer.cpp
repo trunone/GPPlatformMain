@@ -3,7 +3,9 @@
 #include <math.h>
 #include "Speedometer.h"
 
-#define PI 3.1415926
+#define WHEEL_RADIUS 5
+#define ROBOT_RADIUS 17
+#define PULSE_PER_TURN 4096
 
 using namespace Robot;
 
@@ -17,51 +19,50 @@ Speedometer::~Speedometer()
 }
 void Speedometer::Initialize()
 {
+    mPastMotorPulse[0] = 0;
+    mPastMotorPulse[1] = 0;
+    mPastMotorPulse[2] = 0;
 }
 
 void Speedometer::Process()
 {
-	long *pPositionIs;
-	double position_now1,position_now2,position_now3;
-	double position_last1=0,position_last2=0,position_last3=0;
-	double encorder1,encorder2,encorder3;
-	double Motor1Distance = LocationStatus::Motor1Distance;
-	double Motor2Distance = LocationStatus::Motor2Distance;
-	double Motor3Distance = LocationStatus::Motor3Distance;
+	long pulse_diff[3];
+    double motor_dist[3];
 	double FI=LocationStatus::FI;
-	double angle1 = 7*(PI/6)+FI;
-	double angle2 = 5*(PI/6)+FI;
-	double angle3 = PI/2+FI;
+	double angle1 = 7*(M_PI/6)+FI;
+	double angle2 = 5*(M_PI/6)+FI;
+	double angle3 = M_PI/2+FI;
 
 ///////////////////////////////////////////////////////////////////第一顆馬達
 
-	position_now1 = GetPositionIs( 0, pPositionIs);
-	encorder1 = position_now1 - position_last1;
-	position_last1 = position_now1;
-	
-	Motor1Distance = encorder1/4096*10*PI;
+    if(mPastMotorPulse[0] == 0) mPastMotorPulse[0] = LocationStatus::MotorPulse[0];
+	pulse_diff[0] = LocationStatus::MotorPulse[0] - mPastMotorPulse[0];
+	mPastMotorPulse[0] = LocationStatus::MotorPulse[0];
+	motor_dist[0] = (pulse_diff[0]/PULSE_PER_TURN)*2*WHEEL_RADIUS*M_PI;
 
 ///////////////////////////////////////////////////////////////////第二顆馬達
 
-	position_now2 = GetPositionIs( 1, pPositionIs);
-	encorder2 = position_now2 - position_last2;
-	position_last2 = position_now2;
-	
-	Motor2Distance = encorder2/4096*10*PI;
+    if(mPastMotorPulse[1] == 0) mPastMotorPulse[1] = LocationStatus::MotorPulse[1];
+	pulse_diff[1] = LocationStatus::MotorPulse[1] - mPastMotorPulse[1];
+	mPastMotorPulse[1] = LocationStatus::MotorPulse[1];
+	motor_dist[1] = (pulse_diff[1]/PULSE_PER_TURN)*2*WHEEL_RADIUS*M_PI;
 
 ///////////////////////////////////////////////////////////////////第三顆馬達
 
-	position_now3 = GetPositionIs( 2, pPositionIs);
-	encorder3 = position_now3 - position_last3;
-	position_last3 = position_now3;
-	
-	Motor3Distance = encorder3/4096*10*PI;
+    if(mPastMotorPulse[2] == 0) mPastMotorPulse[2] = LocationStatus::MotorPulse[2];
+	pulse_diff[2] = LocationStatus::MotorPulse[2] - mPastMotorPulse[2];
+	mPastMotorPulse[2] = LocationStatus::MotorPulse[2];
+	motor_dist[2] = (pulse_diff[2]/PULSE_PER_TURN)*2*WHEEL_RADIUS*M_PI;
 
 ///////////////////////////////////////////////////////////////////計算
 
-	LocationStatus::Motor_x = 2/3 * ( sin(angle1)*Motor1Distance - sin(angle2)*Motor2Distance + sin(angle3)*Motor3Distance);
-	LocationStatus::Motor_y = (-2)/3 * ( cos(angle1)*Motor1Distance - cos(angle2)*Motor2Distance + cos(angle3)*Motor3Distance);
-	LocationStatus::Motor_sita = (1/3)*( Motor1Distance + Motor2Distance + Motor3Distance );
-
+	LocationStatus::FB_Movement.Position.x =
+        (2/3)*( sin(angle1)*motor_dist[0] - sin(angle2)*motor_dist[1] + sin(angle3)*motor_dist[2]);
+	LocationStatus::FB_Movement.Position.y =
+        ((-2)/3)*( cos(angle1)*motor_dist[0] - cos(angle2)*motor_dist[1] + cos(angle3)*motor_dist[2]);
+	LocationStatus::FB_Movement.Direction =
+        (1/3)*( motor_dist[0] + motor_dist[1] + motor_dist[2] );
+    
+    LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
 }
 

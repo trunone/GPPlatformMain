@@ -48,5 +48,5 @@ double LocationStatus::Handle;
 bool LocationStatus::enable;
 TCoordinate LocationStatus::LaserGap;
 
-vector<long> LocationStatus::data;
-long LocationStatus::time_stamp(0);
+//vector<long> LocationStatus::data;
+//long LocationStatus::time_stamp(0);
