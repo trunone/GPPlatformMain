@@ -58,13 +58,8 @@ void ParticleFilter::SetParticleFilter(int W, int H, unsigned char *Mapdata){
 
 	LocationStatus::LaserGap = aVector(Def_LaserGap,0);
 
-    //-------set virtual map---------------------------------------
-    tsBmpVirtualMap.Width  = W;
-    tsBmpVirtualMap.Height = H;
-    tsBmpVirtualMap.ImgData= Mapdata;
     //-------Localization setting------------------------
-    ProbEvaluation::GetInstance()->AssignVirtualMap(&tsBmpVirtualMap);
-    //ProbEvaluation::GetInstance()->CameraImageScanLineDistance = LocationStatus::ScanLineData;
+    ProbEvaluation::GetInstance()->AssignVirtualMap();
     //------------------------------------------------------------------------------
     InitialParticleFilter();
 

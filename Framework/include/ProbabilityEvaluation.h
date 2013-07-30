@@ -2,6 +2,10 @@
 #define ProbabilityEvaluationH
 #include "LocationStatus.h"
 #include "VisionStatus.h"
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
 
 #define Def_ScanScale 0.15707963267948966192313216916398
 #define Def_ScanStarAngle -1.5707963267948966192313216916398
@@ -10,7 +14,7 @@
 #define Def_ScanStarRadius 5
 #define Def_ScanStopRadius 600
 
-#define ScanLinesNun 24
+#define ScanLinesNum 24
 #define NoDet 0
 #define PixelSigma 20
 
@@ -26,12 +30,10 @@ namespace Robot{
     	~ProbEvaluation();
 
 		static ProbEvaluation* GetInstance() { return m_UniqueInstance; }
-    	VisionStatus::tsBmpPtr *VirtualLineMap; //point to systen virtual map;
+        Mat OriginalMap;
+		Mat VirtualLineMap; //point to systen virtual map;
 
-    	float CameraImageScanLinePixels[ScanLinesNun];
-
-    	float *CameraImageScanLineDistance;
-    	void AssignVirtualMap(VisionStatus::tsBmpPtr *VirtiulMap);
+    	void AssignVirtualMap();
     	float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
        	double GetProbability(int x,int y ,float angle);  // get probability of virtual position
 
