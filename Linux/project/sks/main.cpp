@@ -158,7 +158,79 @@ int main(void)
                                 child->Attribute("x", &StrategyStatus::x);
                                 child->Attribute("y", &StrategyStatus::y);
                             }
+                            child = element->FirstChildElement("Camera");
+                            if(child != NULL){
+                                //child->Attribute("ang", ????);
+                            }
+                            child = element->FirstChildElement("TakeBall");
+                            if(child != NULL){
+                                //child->Attribute("ballFlag", ????);
+                            }
+                            child = element->FirstChildElement("Sim_flag");
+                            if(child != NULL){
+                               
+                            }
                         }
+                    }
+                    root = doc.FirstChildElement("Simulator");
+                    if(root != NULL) {
+                        TiXmlElement* element;
+                        element = root->FirstChildElement("Sim_status");
+                        if(element != NULL) {
+                            TiXmlElement* child;
+                            child = element->FirstChildElement("Site");
+                            if(child != NULL){
+                                child->Attribute("x", &StrategyStatus::x);
+                                child->Attribute("y", &StrategyStatus::y);
+                                child->Attribute("sita", &StrategyStatus::w);
+                            }
+                        }
+                    }
+                    root = doc.FirstChildElement("Request");
+                    if(root != NULL) {
+                        TiXmlElement* element;
+//-----------------------------------------------------------------------------initial for send xml
+			TiXmlElement* root = new TiXmlElement("Status");
+//-----------------------------------------------------------------------------
+                        element = root->FirstChildElement("Laser");
+                        if(element != NULL) {
+				TiXmlElement* element=new TiXmlElement("Laser");
+				for(int i=1;i<=1000;i++){
+					TiXmlElement* child=new TiXmlElement("Value");
+					//child->SetDoubleAttribute("angle",???);
+					//child->SetDoubleAttribute("distance",???);
+					element->InsertEndChild(*(child->Clone()));
+				}
+				root->InsertEndChild(*(element->Clone()));
+                        }
+                        element = root->FirstChildElement("Position");
+                        if(element != NULL) {
+				TiXmlElement* element=new TiXmlElement("Position");
+				//element->SetDoubleAttribute("x",???);
+				//element->SetDoubleAttribute("y",???);
+				//element->SetDoubleAttribute("sita",???);
+				root->InsertEndChild(*(element->Clone()));
+                        }
+                        element = root->FirstChildElement("Camera_Angle");
+                        if(element != NULL) {
+				TiXmlElement* element=new TiXmlElement("Camera_Angle");
+				//element->SetDoubleAttribute("ang",???);
+				root->InsertEndChild(*(element->Clone()));
+                        }
+                        element = root->FirstChildElement("Movement");
+                        if(element != NULL) {
+				TiXmlElement* element=new TiXmlElement("Movement");
+				//element->SetDoubleAttribute("x",???);
+				//element->SetDoubleAttribute("y",???);
+				//element->SetDoubleAttribute("sita",???);
+				root->InsertEndChild(*(element->Clone()));	
+                        }
+			TiXmlDocument RequestDoc;
+			RequestDoc.InsertEndChild(*(root->Clone()));
+			TiXmlPrinter send;
+			RequestDoc.Accept( &send );
+			new_sock << send.CStr();
+			
                     }
                     root = doc.FirstChildElement("Config");
                     if(root != NULL){
