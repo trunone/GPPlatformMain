@@ -1,4 +1,3 @@
-
 #include "ParticleFilterTool.h"
 #include <time.h>
 #include <math.h>
