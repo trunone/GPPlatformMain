@@ -30,7 +30,8 @@ namespace Robot{
     	~ProbEvaluation();
 
 		static ProbEvaluation* GetInstance() { return m_UniqueInstance; }
-        Mat VirtualLineMap; //point to systen virtual map;
+        Mat OriginalMap;
+		Mat VirtualLineMap; //point to systen virtual map;
 
     	void AssignVirtualMap();
     	float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map

@@ -33,10 +33,9 @@ void ProbEvaluation::AssignVirtualMap()
         }
     }
 */	
-
-	VirtualLineMap = cvLoadImage("/GPPlatformMain/Data/jpg/2013sksmap.bmp",0);//load visual map(gray) in bmp format
+	OriginalMap = cvLoadImage("/GPPlatformMain/Data/jpg/2013sksmap.bmp",0);//load visual map(gray) in bmp format
 	
-	threshold(VirtualLineMap, VirtualLineMap , 128, 255, CV_THRESH_BINARY);
+	threshold(OriginalMap, VirtualLineMap, 128, 255, CV_THRESH_BINARY);
 
 	LocationStatus::enable = true;
 }

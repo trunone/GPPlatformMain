@@ -23,7 +23,7 @@ ParticleFilterTool::~ParticleFilterTool()
 string ParticleFilterTool::InitialParticles(int ParticlesNum)
 {
 
-    if(ProbabilityEvaluation->VirtualLineMap == NULL)
+    if(&ProbabilityEvaluation->VirtualLineMap == NULL)
         return "ParticleFilter Intial Failed" ;
     else{
         srand(time(NULL)+rand());           //selection rand model
@@ -32,8 +32,8 @@ string ParticleFilterTool::InitialParticles(int ParticlesNum)
         tsParticle tempParticle;
         BestParticle.Probabilty = 0;
         for(int i=0 ; i<ParticlesNum ; i++ ){
-            tempParticle.Position.x = (ProbabilityEvaluation->VirtualLineMap->Width)/2 * ((float)rand()/(float)RAND_MAX) ;
-            tempParticle.Position.y = (ProbabilityEvaluation->VirtualLineMap->Height)* ((float)rand()/(float)RAND_MAX) ;
+            tempParticle.Position.x = (ProbabilityEvaluation->VirtualLineMap.cols)/2 * ((float)rand()/(float)RAND_MAX) ;
+            tempParticle.Position.y = (ProbabilityEvaluation->VirtualLineMap.rows)* ((float)rand()/(float)RAND_MAX) ;
             tempParticle.Direction  = 2.0*M_PI * ((float)rand()/(float)RAND_MAX);
             tempParticle.Probabilty = ProbabilityEvaluation->GetProbability(  tempParticle.Position.x,
                                                                                     tempParticle.Position.y,
@@ -52,7 +52,7 @@ string ParticleFilterTool::InitialParticles(int ParticlesNum)
 //------------------------------------------------------------------------------
 string ParticleFilterTool::InitialParticles(int ParticlesNum,int x ,int y , float r,float range)
 {
-    if(ProbabilityEvaluation->VirtualLineMap == NULL)
+    if(&ProbabilityEvaluation->VirtualLineMap == NULL)
         return "ParticleFilter Intial Failed" ;
     else{
         srand(time(NULL)+rand());           //selection rand model
@@ -129,12 +129,12 @@ string ParticleFilterTool::CorrectParticles()
     for(i=0 ; i< i_size; i++){
 
         if(   Particles[i].Position.x < 0 || Particles[i].Position.y < 0
-            ||Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap->Width
-            ||Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap->Height)
+            ||Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap.cols
+            ||Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap.rows)
         {
 
-            Particles[i].Position.x = (ProbabilityEvaluation->VirtualLineMap->Width) * ((float)rand()/(float)RAND_MAX) ;
-            Particles[i].Position.y = (ProbabilityEvaluation->VirtualLineMap->Height)* ((float)rand()/(float)RAND_MAX) ;
+            Particles[i].Position.x = (ProbabilityEvaluation->VirtualLineMap.cols) * ((float)rand()/(float)RAND_MAX) ;
+            Particles[i].Position.y = (ProbabilityEvaluation->VirtualLineMap.rows)* ((float)rand()/(float)RAND_MAX) ;
             Particles[i].Direction  = 2*M_PI * ((float)rand()/(float)RAND_MAX);
 
         }
@@ -151,8 +151,8 @@ string ParticleFilterTool::CorrectParticles( int x,int y,float r,float range )
 	for(i=0 ; i< i_size; i++){
 
 		if(   Particles[i].Position.x < 0 || Particles[i].Position.y < 0
-			||Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap->Width
-			||Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap->Height)
+			||Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap.cols
+			||Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap.rows)
 		{
 
 			Particles[i].Position.x =  x+range * RandN->randn();
@@ -160,10 +160,10 @@ string ParticleFilterTool::CorrectParticles( int x,int y,float r,float range )
 			{
 				Particles[i].Position.x  = fabs(Particles[i].Position.x );
 			}
-			else if(Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap->Width )
+			else if(Particles[i].Position.x > ProbabilityEvaluation->VirtualLineMap.cols )
 			{
-				Particles[i].Position.x = ProbabilityEvaluation->VirtualLineMap->Width - 
-                                                                        (Particles[i].Position.x - ProbabilityEvaluation->VirtualLineMap->Width);
+				Particles[i].Position.x = ProbabilityEvaluation->VirtualLineMap.cols - 
+                                                                       (Particles[i].Position.x - ProbabilityEvaluation->VirtualLineMap.cols);
 			}
 
 			Particles[i].Position.y = y+range * RandN->randn();
@@ -171,10 +171,10 @@ string ParticleFilterTool::CorrectParticles( int x,int y,float r,float range )
 			{
 				Particles[i].Position.y  = fabs(Particles[i].Position.y );
 			}
-			else if(Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap->Height )
+			else if(Particles[i].Position.y > ProbabilityEvaluation->VirtualLineMap.rows )
 			{
-				Particles[i].Position.y = ProbabilityEvaluation->VirtualLineMap->Height - 
-					(Particles[i].Position.y - ProbabilityEvaluation->VirtualLineMap->Height);
+				Particles[i].Position.y = ProbabilityEvaluation->VirtualLineMap.rows - 
+					(Particles[i].Position.y - ProbabilityEvaluation->VirtualLineMap.rows);
 			}
 
 			Particles[i].Direction  = r+M_PI/18 * RandN->randn();
@@ -249,7 +249,7 @@ string ParticleFilterTool::ResamplingParticles()
                 if (k>start_i) break;
             }
 
-            Rdis   = SearchRate*RandN->randn()*ProbabilityEvaluation->VirtualLineMap->Width;;
+            Rdis   = SearchRate*RandN->randn()*ProbabilityEvaluation->VirtualLineMap.cols;
             Rangle = 2*M_PI*((float)rand()/(float)RAND_MAX );
             Particles[i].Position.x = ParticleTemp.Position.x + Rdis*cos(Rangle);
             Particles[i].Position.y = ParticleTemp.Position.y + Rdis*sin(Rangle);
