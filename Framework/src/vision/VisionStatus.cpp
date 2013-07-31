@@ -56,3 +56,13 @@ float VisionStatus::cvGet2D_10(0);
 float VisionStatus::cvGet2D_11(0);
 float VisionStatus::cvGet2D_12(0);
 
+//------ ImgProcess ----------------------------------------------------------
+int VisionStatus::counter1(0);
+int VisionStatus::counter2(0);
+int VisionStatus::counter3(0);
+int VisionStatus::counter4(0);
+int VisionStatus::counter5(0);
+int VisionStatus::counter6(0);
+int VisionStatus::counter7(0);
+
+

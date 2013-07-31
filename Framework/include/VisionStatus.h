@@ -157,6 +157,15 @@ namespace Robot
 		static float cvGet2D_11;
 		static float cvGet2D_12;
 
+	//------ ImgProcess ----------------------------------------------------------
+		static int counter1;
+		static int counter2;
+		static int counter3;
+		static int counter4;
+		static int counter5;
+		static int counter6;
+		static int counter7;
+
 	};
 }
 

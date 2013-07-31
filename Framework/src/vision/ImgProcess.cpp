@@ -11,8 +11,6 @@ using namespace std;
 using namespace cv;
 using namespace Robot;
 
-string face_cascade_name = "../../../jpg/Data/haarcascade_frontalface_alt.xml";
-CascadeClassifier face_cascade;
 unsigned char Buffer1[800*600*3];
 unsigned char Grandfas[40*40*3];
 unsigned char Grandmas[40*40*3];
@@ -82,12 +80,56 @@ CvMat *SumW10;
 CvMat *SumW11;
 CvMat *SumW12;
 
+void Image_Unify(unsigned char *Before , unsigned char *After)
+{
+	float Iall=0,Igray=0,Iavg=0,I=0,Ih=0;
+	//Gray
+	for(int i=0;i<40;i++){
+		for(int j=0;j<40;j++){
+			Igray = 0.114*Before[i*40*3+j*3]
+			+ 0.587*Before[i*40*3+j*3+1]
+			+ 0.299*Before[i*40*3+j*3+2];
+			Iall = Iall+Igray;
+		}
+	}
+	//Average gray
+	Iavg = Iall/(40*40);
+	I=128-Iavg;
+	//Unify brightness(128-Iavg)+Igary
+	for(int i=0;i<40;i++){
+		for(int j=0;j<40;j++){
+			Igray = 0.114*Before[i*40*3+j*3]
+			+ 0.587*Before[i*40*3+j*3+1]
+			+ 0.299*Before[i*40*3+j*3+2];
+			Ih=I+Igray;
+			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
+			After[i*40*3+j*3]=Ih;
+			After[i*40*3+j*3+1]=Ih;
+			After[i*40*3+j*3+2]=Ih;
+		}
+	}
+}
+
+void Differences_In_Face(unsigned char *Before , unsigned char *After , unsigned char *Favg)
+{
+	float fd = 0;
+	//The Grandfa's Differences In Face
+	for(int i=0;i<40;i++){
+		for(int j=0;j<40;j++){
+			fd = Before[i*40*3+j*3] - Favg[i*40*3+j*3];
+			if(fd<0)fd=0;
+			After[i*40*3+j*3]=fd;
+			After[i*40*3+j*3+1]=fd;
+			After[i*40*3+j*3+2]=fd;
+		}
+	}
+}
+
 void ImgProcess::FaceData()
 {
 	int b=0,w=0,h=0,ui=0;
 	int Dalls=0;
-	float Iall=0,Igray=0,Iavg=0,I=0,Ih=0,favg=0,fd=0,cp0=0,cp1=0,ff=0;
-	if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading\n");};
+	float favg=0,cp0=0,cp1=0,ff=0;
 	IplImage Grandfa=*cvLoadImage("../../../Data/jpg/Grandfa.jpg", CV_LOAD_IMAGE_COLOR);
 	IplImage Grandma=*cvLoadImage("../../../Data/jpg/Grandma.jpg", CV_LOAD_IMAGE_COLOR);
 	IplImage Mother=*cvLoadImage("../../../Data/jpg/Mother.jpg", CV_LOAD_IMAGE_COLOR);
@@ -100,775 +142,274 @@ void ImgProcess::FaceData()
 	IplImage Father1=*cvLoadImage("../../../Data/jpg/Father1.jpg", CV_LOAD_IMAGE_COLOR);
 	IplImage Girl1=*cvLoadImage("../../../Data/jpg/Girl1.jpg", CV_LOAD_IMAGE_COLOR);
 	IplImage Boy1=*cvLoadImage("../../../Data/jpg/Boy1.jpg", CV_LOAD_IMAGE_COLOR);
-	Mat frame1(&Grandfa, 0);
-	Mat frame2(&Grandma, 0);
-	Mat frame3(&Mother, 0);
-	Mat frame4(&Father, 0);
-	Mat frame5(&Girl, 0);
-	Mat frame6(&Boy, 0);
-	Mat frame7(&Grandfa1, 0);
-	Mat frame8(&Grandma1, 0);
-	Mat frame9(&Mother1, 0);
-	Mat frame10(&Father1, 0);
-	Mat frame11(&Girl1, 0);
-	Mat frame12(&Boy1, 0);
-	Mat frame_gray;
-	Mat frame_gray1;
-	Mat frame_gray2;
-	Mat frame_gray3;
-	Mat frame_gray4;
-	Mat frame_gray5;
-	Mat frame_gray6;
-	Mat frame_gray7;
-	Mat frame_gray8;
-	Mat frame_gray9;
-	Mat frame_gray10;
-	Mat frame_gray11;
-	Mat frame_gray12;
-	std::vector<Rect> faces;
-	cvtColor( frame1, frame_gray1, CV_BGR2GRAY );
-	cvtColor( frame2, frame_gray2, CV_BGR2GRAY );
-	cvtColor( frame3, frame_gray3, CV_BGR2GRAY );
-	cvtColor( frame4, frame_gray4, CV_BGR2GRAY );
-	cvtColor( frame5, frame_gray5, CV_BGR2GRAY );
-	cvtColor( frame6, frame_gray6, CV_BGR2GRAY );
-	cvtColor( frame7, frame_gray7, CV_BGR2GRAY );
-	cvtColor( frame8, frame_gray8, CV_BGR2GRAY );
-	cvtColor( frame9, frame_gray9, CV_BGR2GRAY );
-	cvtColor( frame10, frame_gray10, CV_BGR2GRAY );
-	cvtColor( frame11, frame_gray11, CV_BGR2GRAY );
-	cvtColor( frame12, frame_gray12, CV_BGR2GRAY );
-	equalizeHist( frame_gray1, frame_gray1 );
-	equalizeHist( frame_gray2, frame_gray2 );
-	equalizeHist( frame_gray3, frame_gray3 );
-	equalizeHist( frame_gray4, frame_gray4 );
-	equalizeHist( frame_gray5, frame_gray5 );
-	equalizeHist( frame_gray6, frame_gray6 );
-	equalizeHist( frame_gray7, frame_gray7 );
-	equalizeHist( frame_gray8, frame_gray8 );
-	equalizeHist( frame_gray9, frame_gray9 );
-	equalizeHist( frame_gray10, frame_gray10 );
-	equalizeHist( frame_gray11, frame_gray11 );
-	equalizeHist( frame_gray12, frame_gray12 );
-	/////////////////////////////////////////GrandfaŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray1, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	/////////////////////////////////////////Grandfa face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+ 	//Cut out the face
+	for(int a=265;a<265 + 49;a++){
+		for(int j=474;j<474 + 49;j++){
 			Buffer1[b] = Grandfa.imageData[a*Grandfa.widthStep+j*3];
 			Buffer1[b+1] = Grandfa.imageData[a*Grandfa.widthStep+j*3+1];
 			Buffer1[b+2] = Grandfa.imageData[a*Grandfa.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Grandfas[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Grandfas[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Grandfas[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Grandfas[i*40*3+j*3]=Buffer1[(i*49/40)*49*3+(j*49/40)*3];
+			Grandfas[i*40*3+j*3+1]=Buffer1[(i*49/40)*49*3+(j*49/40)*3+1];
+			Grandfas[i*40*3+j*3+2]=Buffer1[(i*49/40)*49*3+(j*49/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandfas[i*40*3+j*3]
-			+ 0.587*Grandfas[i*40*3+j*3+1]
-			+ 0.299*Grandfas[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandfas[i*40*3+j*3]
-			+ 0.587*Grandfas[i*40*3+j*3+1]
-			+ 0.299*Grandfas[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Grandfas[i*40*3+j*3]=Ih;
-			Grandfas[i*40*3+j*3+1]=Ih;
-			Grandfas[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////GrandmaŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray2, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40,40) );
+	Image_Unify(Grandfas,Grandfas);
+	/////////////////////////////////////////Grandma face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=196;a<196 + 92;a++){
+		for(int j=445;j<445 + 92;j++){
 			Buffer1[b] = Grandma.imageData[a*Grandma.widthStep+j*3];
 			Buffer1[b+1] = Grandma.imageData[a*Grandma.widthStep+j*3+1];
 			Buffer1[b+2] = Grandma.imageData[a*Grandma.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Grandmas[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Grandmas[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Grandmas[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Grandmas[i*40*3+j*3]=Buffer1[(i*92/40)*92*3+(j*92/40)*3];
+			Grandmas[i*40*3+j*3+1]=Buffer1[(i*92/40)*92*3+(j*92/40)*3+1];
+			Grandmas[i*40*3+j*3+2]=Buffer1[(i*92/40)*92*3+(j*92/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandmas[i*40*3+j*3]
-			+ 0.587*Grandmas[i*40*3+j*3+1]
-			+ 0.299*Grandmas[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandmas[i*40*3+j*3]
-			+ 0.587*Grandmas[i*40*3+j*3+1]
-			+ 0.299*Grandmas[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Grandmas[i*40*3+j*3]=Ih;
-			Grandmas[i*40*3+j*3+1]=Ih;
-			Grandmas[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////MotherŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				 
-	face_cascade.detectMultiScale( frame_gray3, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Grandmas,Grandmas);
+	//////////////////////////////////Mother face//////////////////////////////////////////////////////////////////				 
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=257;a<257 + 70;a++){
+		for(int j=434;j<434 + 70;j++){
 			Buffer1[b] = Mother.imageData[a*Mother.widthStep+j*3];
 			Buffer1[b+1] = Mother.imageData[a*Mother.widthStep+j*3+1];
 			Buffer1[b+2] = Mother.imageData[a*Mother.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Mothers[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Mothers[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Mothers[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Mothers[i*40*3+j*3]=Buffer1[(i*70/40)*70*3+(j*70/40)*3];
+			Mothers[i*40*3+j*3+1]=Buffer1[(i*70/40)*70*3+(j*70/40)*3+1];
+			Mothers[i*40*3+j*3+2]=Buffer1[(i*70/40)*70*3+(j*70/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Mothers[i*40*3+j*3]
-			+ 0.587*Mothers[i*40*3+j*3+1]
-			+ 0.299*Mothers[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Mothers[i*40*3+j*3]
-			+ 0.587*Mothers[i*40*3+j*3+1]
-			+ 0.299*Mothers[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Mothers[i*40*3+j*3]=Ih;
-			Mothers[i*40*3+j*3+1]=Ih;
-			Mothers[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////FatherŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray4, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Mothers,Mothers);
+	//////////////////////////////////////////Father face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=265;a<265 + 53;a++){
+		for(int j=455;j<455 + 53;j++){
 			Buffer1[b] = Father.imageData[a*Father.widthStep+j*3];
 			Buffer1[b+1] = Father.imageData[a*Father.widthStep+j*3+1];
 			Buffer1[b+2] = Father.imageData[a*Father.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Fathers[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Fathers[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Fathers[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Fathers[i*40*3+j*3]=Buffer1[(i*53/40)*53*3+(j*53/40)*3];
+			Fathers[i*40*3+j*3+1]=Buffer1[(i*53/40)*53*3+(j*53/40)*3+1];
+			Fathers[i*40*3+j*3+2]=Buffer1[(i*53/40)*53*3+(j*53/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Fathers[i*40*3+j*3]
-			+ 0.587*Fathers[i*40*3+j*3+1]
-			+ 0.299*Fathers[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Fathers[i*40*3+j*3]
-			+ 0.587*Fathers[i*40*3+j*3+1]
-			+ 0.299*Fathers[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Fathers[i*40*3+j*3]=Ih;
-			Fathers[i*40*3+j*3+1]=Ih;
-			Fathers[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////GirlŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				
-	face_cascade.detectMultiScale( frame_gray5, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Fathers,Fathers);
+	/////////////////////////////////////////Girl face//////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=269;a<269 + 69;a++){
+		for(int j=472;j<472 + 69;j++){
 			Buffer1[b] = Girl.imageData[a*Girl.widthStep+j*3];
 			Buffer1[b+1] = Girl.imageData[a*Girl.widthStep+j*3+1];
 			Buffer1[b+2] = Girl.imageData[a*Girl.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Girls[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Girls[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Girls[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Girls[i*40*3+j*3]=Buffer1[(i*69/40)*69*3+(j*69/40)*3];
+			Girls[i*40*3+j*3+1]=Buffer1[(i*69/40)*69*3+(j*69/40)*3+1];
+			Girls[i*40*3+j*3+2]=Buffer1[(i*69/40)*69*3+(j*69/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Girls[i*40*3+j*3]
-			+ 0.587*Girls[i*40*3+j*3+1]
-			+ 0.299*Girls[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Girls[i*40*3+j*3]
-			+ 0.587*Girls[i*40*3+j*3+1]
-			+ 0.299*Girls[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Girls[i*40*3+j*3]=Ih;
-			Girls[i*40*3+j*3+1]=Ih;
-			Girls[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////BoyŒv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				 
-	face_cascade.detectMultiScale( frame_gray6, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Girls,Girls);
+	/////////////////////////////////////////Boy face///////////////////////////////////////////////////////////////////// 
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=265;a<265 + 65;a++){
+		for(int j=429;j<429 + 65;j++){
 			Buffer1[b] = Boy.imageData[a*Boy.widthStep+j*3];
 			Buffer1[b+1] = Boy.imageData[a*Boy.widthStep+j*3+1];
 			Buffer1[b+2] = Boy.imageData[a*Boy.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Boys[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Boys[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Boys[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Boys[i*40*3+j*3]=Buffer1[(i*65/40)*65*3+(j*65/40)*3];
+			Boys[i*40*3+j*3+1]=Buffer1[(i*65/40)*65*3+(j*65/40)*3+1];
+			Boys[i*40*3+j*3+2]=Buffer1[(i*65/40)*65*3+(j*65/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Boys[i*40*3+j*3]
-			+ 0.587*Boys[i*40*3+j*3+1]
-			+ 0.299*Boys[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Boys[i*40*3+j*3]
-			+ 0.587*Boys[i*40*3+j*3+1]
-			+ 0.299*Boys[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Boys[i*40*3+j*3]=Ih;
-			Boys[i*40*3+j*3+1]=Ih;
-			Boys[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Grandfa1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray7, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Boys,Boys);
+	/////////////////////////////////////////Grandfa1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=344;a<344 + 52;a++){
+		for(int j=385;j<385 + 52;j++){
 			Buffer1[b] = Grandfa1.imageData[a*Grandfa1.widthStep+j*3];
 			Buffer1[b+1] = Grandfa1.imageData[a*Grandfa1.widthStep+j*3+1];
 			Buffer1[b+2] = Grandfa1.imageData[a*Grandfa1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Grandfas1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Grandfas1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Grandfas1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Grandfas1[i*40*3+j*3]=Buffer1[(i*52/40)*52*3+(j*52/40)*3];
+			Grandfas1[i*40*3+j*3+1]=Buffer1[(i*52/40)*52*3+(j*52/40)*3+1];
+			Grandfas1[i*40*3+j*3+2]=Buffer1[(i*52/40)*52*3+(j*52/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandfas1[i*40*3+j*3]
-			+ 0.587*Grandfas1[i*40*3+j*3+1]
-			+ 0.299*Grandfas1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandfas1[i*40*3+j*3]
-			+ 0.587*Grandfas1[i*40*3+j*3+1]
-			+ 0.299*Grandfas1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Grandfas1[i*40*3+j*3]=Ih;
-			Grandfas1[i*40*3+j*3+1]=Ih;
-			Grandfas1[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Grandma1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray8, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40,40) );
+	Image_Unify(Grandfas1,Grandfas1);
+	/////////////////////////////////////////Grandma1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=419;a<419 + 64;a++){
+		for(int j=364;j<364 + 64;j++){
 			Buffer1[b] = Grandma1.imageData[a*Grandma1.widthStep+j*3];
 			Buffer1[b+1] = Grandma1.imageData[a*Grandma1.widthStep+j*3+1];
 			Buffer1[b+2] = Grandma1.imageData[a*Grandma1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Grandmas1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Grandmas1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Grandmas1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Grandmas1[i*40*3+j*3]=Buffer1[(i*64/40)*64*3+(j*64/40)*3];
+			Grandmas1[i*40*3+j*3+1]=Buffer1[(i*64/40)*64*3+(j*64/40)*3+1];
+			Grandmas1[i*40*3+j*3+2]=Buffer1[(i*64/40)*64*3+(j*64/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandmas1[i*40*3+j*3]
-			+ 0.587*Grandmas1[i*40*3+j*3+1]
-			+ 0.299*Grandmas1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Grandmas1[i*40*3+j*3]
-			+ 0.587*Grandmas1[i*40*3+j*3+1]
-			+ 0.299*Grandmas1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Grandmas1[i*40*3+j*3]=Ih;
-			Grandmas1[i*40*3+j*3+1]=Ih;
-			Grandmas1[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Mother1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				 
-	face_cascade.detectMultiScale( frame_gray9, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Grandmas1,Grandmas1);
+	/////////////////////////////////////////Mother1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=355;a<355 + 76;a++){
+		for(int j=362;j<362 + 76;j++){
 			Buffer1[b] = Mother1.imageData[a*Mother1.widthStep+j*3];
 			Buffer1[b+1] = Mother1.imageData[a*Mother1.widthStep+j*3+1];
 			Buffer1[b+2] = Mother1.imageData[a*Mother1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Mothers1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Mothers1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Mothers1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Mothers1[i*40*3+j*3]=Buffer1[(i*76/40)*76*3+(j*76/40)*3];
+			Mothers1[i*40*3+j*3+1]=Buffer1[(i*76/40)*76*3+(j*76/40)*3+1];
+			Mothers1[i*40*3+j*3+2]=Buffer1[(i*76/40)*76*3+(j*76/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Mothers1[i*40*3+j*3]
-			+ 0.587*Mothers1[i*40*3+j*3+1]
-			+ 0.299*Mothers1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Mothers1[i*40*3+j*3]
-			+ 0.587*Mothers1[i*40*3+j*3+1]
-			+ 0.299*Mothers1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Mothers1[i*40*3+j*3]=Ih;
-			Mothers1[i*40*3+j*3+1]=Ih;
-			Mothers1[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Father1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////
-	face_cascade.detectMultiScale( frame_gray10, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40,40) );
+	Image_Unify(Mothers1,Mothers1);
+	/////////////////////////////////////////Father1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=407;a<407 + 57;a++){
+		for(int j=362;j<362 + 57;j++){
 			Buffer1[b] = Father1.imageData[a*Father1.widthStep+j*3];
 			Buffer1[b+1] = Father1.imageData[a*Father1.widthStep+j*3+1];
 			Buffer1[b+2] = Father1.imageData[a*Father1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Fathers1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Fathers1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Fathers1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Fathers1[i*40*3+j*3]=Buffer1[(i*57/40)*57*3+(j*57/40)*3];
+			Fathers1[i*40*3+j*3+1]=Buffer1[(i*57/40)*57*3+(j*57/40)*3+1];
+			Fathers1[i*40*3+j*3+2]=Buffer1[(i*57/40)*57*3+(j*57/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Fathers1[i*40*3+j*3]
-			+ 0.587*Fathers1[i*40*3+j*3+1]
-			+ 0.299*Fathers1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Fathers1[i*40*3+j*3]
-			+ 0.587*Fathers1[i*40*3+j*3+1]
-			+ 0.299*Fathers1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Fathers1[i*40*3+j*3]=Ih;
-			Fathers1[i*40*3+j*3+1]=Ih;
-			Fathers1[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Girl1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				
-	face_cascade.detectMultiScale( frame_gray11, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Fathers1,Fathers1);
+	/////////////////////////////////////////Girl1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=408;a<408 + 82;a++){
+		for(int j=388;j<388 + 82;j++){
 			Buffer1[b] = Girl1.imageData[a*Girl1.widthStep+j*3];
 			Buffer1[b+1] = Girl1.imageData[a*Girl1.widthStep+j*3+1];
 			Buffer1[b+2] = Girl1.imageData[a*Girl1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Girls1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Girls1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Girls1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Girls1[i*40*3+j*3]=Buffer1[(i*82/40)*82*3+(j*82/40)*3];
+			Girls1[i*40*3+j*3+1]=Buffer1[(i*82/40)*82*3+(j*82/40)*3+1];
+			Girls1[i*40*3+j*3+2]=Buffer1[(i*82/40)*82*3+(j*82/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Girls1[i*40*3+j*3]
-			+ 0.587*Girls1[i*40*3+j*3+1]
-			+ 0.299*Girls1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Girls1[i*40*3+j*3]
-			+ 0.587*Girls1[i*40*3+j*3+1]
-			+ 0.299*Girls1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Girls1[i*40*3+j*3]=Ih;
-			Girls1[i*40*3+j*3+1]=Ih;
-			Girls1[i*40*3+j*3+2]=Ih;
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////Boy1Œv¹³Â^šú¥¿³W€Æ////////////////////////////////////////////////////////////////				 
-	face_cascade.detectMultiScale( frame_gray12, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size2i(40, 40) );
+	Image_Unify(Girls1,Girls1);
+	/////////////////////////////////////////Boy1 face////////////////////////////////////////////////////////////////
 	b=0;
-	w=faces[0].width;
-	h=faces[0].height;
-	//Â^šú€HÁy
-	for(int a=faces[0].y;a<faces[0].y + faces[0].height;a++){
-		for(int j=faces[0].x;j<faces[0].x + faces[0].width;j++){
+	//Cut out the face
+	for(int a=412;a<412 + 77;a++){
+		for(int j=330;j<330 + 77;j++){
 			Buffer1[b] = Boy1.imageData[a*Boy1.widthStep+j*3];
 			Buffer1[b+1] = Boy1.imageData[a*Boy1.widthStep+j*3+1];
 			Buffer1[b+2] = Boy1.imageData[a*Boy1.widthStep+j*3+2];
 			b=b+3;
 		}
 	}
-	//±N€HÁyÁY€pŠÜ40*40
+	//Minify40*40
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			Boys1[i*40*3+j*3]=Buffer1[(i*h/40)*w*3+(j*w/40)*3];
-			Boys1[i*40*3+j*3+1]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+1];
-			Boys1[i*40*3+j*3+2]=Buffer1[(i*h/40)*w*3+(j*w/40)*3+2];
+			Boys1[i*40*3+j*3]=Buffer1[(i*77/40)*77*3+(j*77/40)*3];
+			Boys1[i*40*3+j*3+1]=Buffer1[(i*77/40)*77*3+(j*77/40)*3+1];
+			Boys1[i*40*3+j*3+2]=Buffer1[(i*77/40)*77*3+(j*77/40)*3+2];
 		}
 	}
-	Igray=0;Iall=0,Iavg=0,I=0,Ih=0;
-	//°ªŠÇ¶¥Á`©M
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Boys1[i*40*3+j*3]
-			+ 0.587*Boys1[i*40*3+j*3+1]
-			+ 0.299*Boys1[i*40*3+j*3+2];
-			Iall = Iall+Igray;
-		}
-	}
-	//°ªŠÇ¶¥¥­§¡
-	Iavg = Iall/(40*40);
-	I=128-Iavg;
-	//«G«×²Î€@(128-Iavg)+Igary
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			Igray = 0.114*Boys1[i*40*3+j*3]
-			+ 0.587*Boys1[i*40*3+j*3+1]
-			+ 0.299*Boys1[i*40*3+j*3+2];
-			Ih=I+Igray;
-			if(Ih>255)Ih=255;if(Ih<0)Ih=0;
-			Boys1[i*40*3+j*3]=Ih;
-			Boys1[i*40*3+j*3+1]=Ih;
-			Boys1[i*40*3+j*3+2]=Ih;
-		}
-	}
+	Image_Unify(Boys1,Boys1);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//¥­§¡Áy
+	//The Average Face
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
-			favg = (Grandfas[i*40*3+j*3]+Grandmas[i*40*3+j*3]+Mothers[i*40*3+j*3]+Fathers[i*40*3+j*3]+Girls[i*40*3+j*3]+Boys[i*40*3+j*3]
-			+Grandfas1[i*40*3+j*3]+Grandmas1[i*40*3+j*3]+Mothers1[i*40*3+j*3]+Fathers1[i*40*3+j*3]+Girls1[i*40*3+j*3]+Boys1[i*40*3+j*3])/12;
+			favg = ( Grandfas[i*40*3+j*3] + Grandmas[i*40*3+j*3]
+			       + Mothers[i*40*3+j*3] + Fathers[i*40*3+j*3]
+		               + Girls[i*40*3+j*3] + Boys[i*40*3+j*3]
+			       + Grandfas1[i*40*3+j*3] + Grandmas1[i*40*3+j*3]
+			       + Mothers1[i*40*3+j*3] + Fathers1[i*40*3+j*3]
+			       + Girls1[i*40*3+j*3] + Boys1[i*40*3+j*3] ) / 12;
 			VisionStatus::Favg[i*40*3+j*3]=favg;
 			VisionStatus::Favg[i*40*3+j*3+1]=favg;
 			VisionStatus::Favg[i*40*3+j*3+2]=favg;
 		}
 	}
-	//Grandfa®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Grandfas[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			GrandfaD[i*40*3+j*3]=fd;
-			GrandfaD[i*40*3+j*3+1]=fd;
-			GrandfaD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Grandma®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Grandmas[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			GrandmaD[i*40*3+j*3]=fd;
-			GrandmaD[i*40*3+j*3+1]=fd;
-			GrandmaD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Mother®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Mothers[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			MotherD[i*40*3+j*3]=fd;
-			MotherD[i*40*3+j*3+1]=fd;
-			MotherD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Father®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Fathers[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			FatherD[i*40*3+j*3]=fd;
-			FatherD[i*40*3+j*3+1]=fd;
-			FatherD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Girl®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Girls[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			GirlD[i*40*3+j*3]=fd;
-			GirlD[i*40*3+j*3+1]=fd;
-			GirlD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Boy®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Boys[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			BoyD[i*40*3+j*3]=fd;
-			BoyD[i*40*3+j*3+1]=fd;
-			BoyD[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Grandfa1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Grandfas1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Grandfa1D[i*40*3+j*3]=fd;
-			Grandfa1D[i*40*3+j*3+1]=fd;
-			Grandfa1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Grandma1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Grandmas1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Grandma1D[i*40*3+j*3]=fd;
-			Grandma1D[i*40*3+j*3+1]=fd;
-			Grandma1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Mother1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Mothers1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Mother1D[i*40*3+j*3]=fd;
-			Mother1D[i*40*3+j*3+1]=fd;
-			Mother1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Father1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Fathers1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Father1D[i*40*3+j*3]=fd;
-			Father1D[i*40*3+j*3+1]=fd;
-			Father1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Girl1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Girls1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Girl1D[i*40*3+j*3]=fd;
-			Girl1D[i*40*3+j*3+1]=fd;
-			Girl1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//Boy1®t§OÁy
-	for(int i=0;i<40;i++){
-		for(int j=0;j<40;j++){
-			fd=Boys1[i*40*3+j*3]-VisionStatus::Favg[i*40*3+j*3];
-			if(fd<0)fd=0;
-			Boy1D[i*40*3+j*3]=fd;
-			Boy1D[i*40*3+j*3+1]=fd;
-			Boy1D[i*40*3+j*3+2]=fd;
-		}
-	}
-	//±N5±i®t§OÁy³£©ñ¶iDallžÌ
+	Differences_In_Face(Grandfas , GrandfaD , VisionStatus::Favg);
+	Differences_In_Face(Grandmas , GrandmaD , VisionStatus::Favg);
+	Differences_In_Face(Mothers , MotherD , VisionStatus::Favg);
+	Differences_In_Face(Fathers , FatherD , VisionStatus::Favg);
+	Differences_In_Face(Girls , GirlD , VisionStatus::Favg);
+	Differences_In_Face(Boys , BoyD , VisionStatus::Favg);
+	Differences_In_Face(Grandfas1 , Grandfa1D , VisionStatus::Favg);
+	Differences_In_Face(Grandmas1 , Grandma1D , VisionStatus::Favg);
+	Differences_In_Face(Mothers1 , Mother1D , VisionStatus::Favg);
+	Differences_In_Face(Fathers1 , Father1D , VisionStatus::Favg);
+	Differences_In_Face(Girls1 , Girl1D , VisionStatus::Favg);
+	Differences_In_Face(Boys1 , Boy1D , VisionStatus::Favg);
+	//All Different Face Put In The Dall's Array
 	for (int i=0;i<40*40;i++){
 		Dalls=i*12;
 		Dall[Dalls]=GrandfaD[i*3];
@@ -884,18 +425,18 @@ void ImgProcess::FaceData()
 		Dall[Dalls+10]=Girl1D[i*3];
 		Dall[Dalls+11]=Boy1D[i*3];
 	}
-	//±NdallÅÜŠš1600*5ªº«¬ºA
+	//The Dall's Array turn into One-Dimensional Array
 	Vector1=cvCreateMat(40*40,12,CV_32FC1);
 	cvSetData(Vector1,Dall,Vector1->step);
-	//¥­§¡­È«Å§i
+	//AvgVector
 	AvgVector=cvCreateMat(1,12,CV_32FC1);
-	//¯SŒx­È«Å§i
+	//EigenValue
 	EigenValue_Row=cvCreateMat(12,1,CV_32FC1);
-	//¯SŒxŠV¶q«Å§i
+	//EigenVector
 	EigenVector=cvCreateMat(12,12,CV_32FC1);
-	//pca¹Bºâ
+	//PCA(Principal Comonents Analysis)Calculate
 	cvCalcPCA(Vector1,AvgVector,EigenValue_Row,EigenVector,CV_PCA_DATA_AS_ROW);
-	//§ä³Ì€j¯SŒx­È
+	//Search For Maximum  EigenValue
 	cp0=cvGet2D(EigenValue_Row,0,0).val[0];
 	ui=0;
 	for(int i=1;i<12;i++){
@@ -905,7 +446,7 @@ void ImgProcess::FaceData()
 			ui=i;
 		}
 	}
-	//¯SŒxÁy¹Bºâ
+	//The Eigenface
 	for(int i=0;i<40;i++){
 		for(int j=0;j<40;j++){
 			ff=GrandfaD[i*40*3+j*3]*cvGet2D(EigenVector,ui,0).val[0]
@@ -927,7 +468,7 @@ void ImgProcess::FaceData()
 			FeatureFace[i*40*3+(j*3)+2]=ff;
 		}
 	}
-	//±N®t§OÁyÂàŠšfloat«¬ºA
+	//Differences In Face Turn Into Float Type 
 	for(int i=0;i<40*40;i++){
 		VisionStatus::FeatureFaceW[i]=FeatureFace[i*3];
 		GrandfaDW[i]=GrandfaD[i*3];
@@ -943,10 +484,10 @@ void ImgProcess::FaceData()
 		Girl1DW[i]=Girl1D[i*3];
 		Boy1DW[i]=Boy1D[i*3];
 	}
-	//±N¯SŒxÁyÂàŠš1*1600
+	//The Eigenface turn into One-Dimensional Array
 	FFW=cvCreateMat(1,40*40,CV_32FC1);
 	cvSetData(FFW,VisionStatus::FeatureFaceW,FFW->step);
-	//±N®t§OÁyÂàŠš1600*1
+	//Differences In Face Turn Into One-Dimensional Array
 	GfW=cvCreateMat(40*40,1,CV_32FC1);
 	cvSetData(GfW,GrandfaDW,GfW->step);
 	GmW=cvCreateMat(40*40,1,CV_32FC1);
@@ -983,7 +524,7 @@ void ImgProcess::FaceData()
 	SumW10=cvCreateMat(1,1,CV_32FC1);
 	SumW11=cvCreateMat(1,1,CV_32FC1);
 	SumW12=cvCreateMat(1,1,CV_32FC1);
-	//­pºâÅvŠV
+	//­Differences In Face Project to The Eigenface
 	cvMatMul(FFW,GfW,SumW1);
 	cvMatMul(FFW,GmW,SumW2);
 	cvMatMul(FFW,MW,SumW3);
@@ -996,18 +537,18 @@ void ImgProcess::FaceData()
 	cvMatMul(FFW,F1W,SumW10);
 	cvMatMul(FFW,G1W,SumW11);
 	cvMatMul(FFW,B1W,SumW12);
-	VisionStatus::cvGet2D_1 = cvGet2D(SumW1,0,0).val[0];
-	VisionStatus::cvGet2D_2 = cvGet2D(SumW2,0,0).val[0];
-	VisionStatus::cvGet2D_3 = cvGet2D(SumW3,0,0).val[0];
-	VisionStatus::cvGet2D_4 = cvGet2D(SumW4,0,0).val[0];
-	VisionStatus::cvGet2D_5 = cvGet2D(SumW5,0,0).val[0];
-	VisionStatus::cvGet2D_6 = cvGet2D(SumW6,0,0).val[0];
-	VisionStatus::cvGet2D_7 = cvGet2D(SumW7,0,0).val[0];
-	VisionStatus::cvGet2D_8 = cvGet2D(SumW8,0,0).val[0];
-	VisionStatus::cvGet2D_9 = cvGet2D(SumW9,0,0).val[0];
-	VisionStatus::cvGet2D_10 = cvGet2D(SumW10,0,0).val[0];
-	VisionStatus::cvGet2D_11 = cvGet2D(SumW11,0,0).val[0];
-	VisionStatus::cvGet2D_12 = cvGet2D(SumW12,0,0).val[0];
+	printf("%f\n",cvGet2D(SumW1,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW2,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW3,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW4,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW5,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW6,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW7,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW8,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW9,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW10,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW11,0,0).val[0]);
+	printf("%f\n",cvGet2D(SumW12,0,0).val[0]); 
 }
 
 
