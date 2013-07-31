@@ -27,5 +27,7 @@
 #include "Stra_VelocityControl.h"
 #include "FaceDetection.h"
 #include "ColorModel.h"
+#include "Speedometer.h"
+#include "ParticleFilter.h"
 
 #endif

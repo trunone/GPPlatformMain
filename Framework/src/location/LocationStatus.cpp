@@ -47,6 +47,12 @@ TCoordinate LocationStatus::Position;
 double LocationStatus::Handle;
 bool LocationStatus::enable;
 TCoordinate LocationStatus::LaserGap;
+bool LocationStatus::FlagLocInit;
+TCoordinate LocationStatus::SetRobotPosition;
+double LocationStatus::SetRobotHandle;
 
-//vector<long> LocationStatus::data;
-//long LocationStatus::time_stamp(0);
+long LocationStatus::MotorPulse[3];
+LocationStatus::FeedBack_Info LocationStatus::FB_Movement;
+
+vector<long> LocationStatus::LaserData;
+long LocationStatus::TimeStamp(0);

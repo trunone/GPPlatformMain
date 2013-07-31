@@ -6,7 +6,7 @@
  */
 #include "LocationModule.h"
 #include "Motors.h"
-#include "Wheeled.h"
+
 namespace Robot
 {
 	class Speedometer : public LocationModule

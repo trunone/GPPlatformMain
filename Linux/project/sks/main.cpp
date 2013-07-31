@@ -5,6 +5,7 @@
  */
 //#define ENABLE_STRATEGY
 //#define ENABLE_VISION
+#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -56,15 +57,13 @@ int main(void)
 
     change_current_dir();
 
-#ifdef ENABLE_STRATEGY
     motors.OpenDeviceAll();
-#endif
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
 #endif
 #ifdef ENABLE_LOCATION
-    if (!urg->open("/dev/ttyACM0", 115200, Urg_driver::Serial ))
-        fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg->what());
+    if (!urg.open("/dev/ttyACM0", 115200, qrk::Urg_driver::Serial ))
+        fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
 #endif
 
    ////////////////// Framework Initialize ////////////////////////////
@@ -82,16 +81,18 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_LOCATION
-    if(LocationManager::GetInstance()->Initialize(&urg) == false)
+    if(LocationManager::GetInstance()->Initialize(&urg, &motors) == false)
     {
         printf("Fail to initialize Location Manager!\n");
         return 1;
     }
 
-    //LocationManager::GetInstance()->AddModule((LocationModule*)LaserCapture::GetInstance());
+    LocationManager::GetInstance()->AddModule((LocationModule*)Speedometer::GetInstance());
+    LocationManager::GetInstance()->AddModule((LocationModule*)ParticleFilter::GetInstance());
 
     LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
     location_timer->Start();
+    LocationManager::GetInstance()->StartLogging();
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
@@ -119,11 +120,9 @@ int main(void)
 
 	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
 	strategy_timer->Start();
-#endif
-    ///////////////////////////////////////////////////////////////////
-//    LinuxActionScript::PlayMP3("../../../Data/mp3/Demonstration ready mode.mp3");
-
     StrategyManager::GetInstance()->StartLogging();
+#endif
+
 
     try
     {
@@ -190,47 +189,46 @@ int main(void)
                     if(root != NULL) {
                         TiXmlElement* element;
 //-----------------------------------------------------------------------------initial for send xml
-			TiXmlElement* root = new TiXmlElement("Status");
+                        TiXmlElement* root = new TiXmlElement("Status");
 //-----------------------------------------------------------------------------
                         element = root->FirstChildElement("Laser");
                         if(element != NULL) {
-				TiXmlElement* element=new TiXmlElement("Laser");
-				for(int i=1;i<=1000;i++){
-					TiXmlElement* child=new TiXmlElement("Value");
-					//child->SetDoubleAttribute("angle",???);
-					//child->SetDoubleAttribute("distance",???);
-					element->InsertEndChild(*(child->Clone()));
-				}
-				root->InsertEndChild(*(element->Clone()));
+                            TiXmlElement* element=new TiXmlElement("Laser");
+                            for(int i=1;i<=1000;i++){
+                                TiXmlElement* child=new TiXmlElement("Value");
+                                //child->SetDoubleAttribute("angle",???);
+                                //child->SetDoubleAttribute("distance",???);
+                                element->InsertEndChild(*(child->Clone()));
+                            }
+                            root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Position");
                         if(element != NULL) {
-				TiXmlElement* element=new TiXmlElement("Position");
-				//element->SetDoubleAttribute("x",???);
-				//element->SetDoubleAttribute("y",???);
-				//element->SetDoubleAttribute("sita",???);
-				root->InsertEndChild(*(element->Clone()));
+                            TiXmlElement* element=new TiXmlElement("Position");
+                            //element->SetDoubleAttribute("x",???);
+                            //element->SetDoubleAttribute("y",???);
+                            //element->SetDoubleAttribute("sita",???);
+                            root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Camera_Angle");
                         if(element != NULL) {
-				TiXmlElement* element=new TiXmlElement("Camera_Angle");
-				//element->SetDoubleAttribute("ang",???);
-				root->InsertEndChild(*(element->Clone()));
+                            TiXmlElement* element=new TiXmlElement("Camera_Angle");
+                            //element->SetDoubleAttribute("ang",???);
+                            root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Movement");
                         if(element != NULL) {
-				TiXmlElement* element=new TiXmlElement("Movement");
-				//element->SetDoubleAttribute("x",???);
-				//element->SetDoubleAttribute("y",???);
-				//element->SetDoubleAttribute("sita",???);
-				root->InsertEndChild(*(element->Clone()));	
+                            TiXmlElement* element=new TiXmlElement("Movement");
+                            //element->SetDoubleAttribute("x",???);
+                            //element->SetDoubleAttribute("y",???);
+                            //element->SetDoubleAttribute("sita",???);
+                            root->InsertEndChild(*(element->Clone()));	
                         }
-			TiXmlDocument RequestDoc;
-			RequestDoc.InsertEndChild(*(root->Clone()));
-			TiXmlPrinter send;
-			RequestDoc.Accept( &send );
-			new_sock << send.CStr();
-			
+                        TiXmlDocument RequestDoc;
+                        RequestDoc.InsertEndChild(*(root->Clone()));
+                        TiXmlPrinter send;
+                        RequestDoc.Accept( &send );
+                        new_sock << send.CStr();
                     }
                     root = doc.FirstChildElement("Config");
                     if(root != NULL){

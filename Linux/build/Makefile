@@ -21,6 +21,8 @@ LFLAGS += -lpthread -ldl
 
 OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
+		../../Framework/src/location/ProbabilityEvaluation.o\
+        ../../Framework/src/location/modules/ParticleFilter.o\
 		../../Framework/src/location/modules/Speedometer.o\
 		../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
@@ -63,7 +65,4 @@ $(TARGET): $(OBJS)
 clean:
 	rm -f $(OBJS) ../lib/$(TARGET)
 
-		#../../Framework/src/location/ProbabilityEvaluation.o\
-		#../../Framework/src/location/ParticleFilterTool.o\
-        #../../Framework/src/location/modules/ParticleFilter.o\
 

@@ -39,15 +39,8 @@ namespace Robot
             TCoordinate Position;
             float Direction;
         }FeedBack_Info;
-	
-	public:
-        static long MotorPulse[3];
-        static double FI;
-        static double Movement_x;
-        static double Movement_y;
-        static double Movement_sita;
 
-		struct Furniture
+        struct Furniture
 		{
 			int x;
 			int y;
@@ -55,6 +48,8 @@ namespace Robot
 			int Height;
 			int Angle;			
 		};
+	public:
+        static long MotorPulse[3];
 
 		static Furniture LivingRM_Sofa;
 		static Furniture LivingRM_Table;

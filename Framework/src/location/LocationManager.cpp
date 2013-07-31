@@ -99,7 +99,7 @@ void LocationManager::Process()
     mMotors->GetPositionIs(0, &LocationStatus::MotorPulse[0]);
     mMotors->GetPositionIs(1, &LocationStatus::MotorPulse[1]);
     mMotors->GetPositionIs(2, &LocationStatus::MotorPulse[2]);
-
+    
     if(m_Modules.size() != 0)
     {
         for(std::list<LocationModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
@@ -108,20 +108,17 @@ void LocationManager::Process()
         }
     }
 
+    printf("%f, %f, %f\n", LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle);
+
     if(m_IsLogging)
     {
-        //for(int id = 1; id < JointData::NUMBER_OF_JOINTS; id++)
-        //    m_LogFileStream << Status::m_CurrentJoints.GetValue(id) << "," << m_CM730->m_BulkReadData[id].ReadWord(MX28::P_PRESENT_POSITION_L) << ",";
-
-        //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_GYRO_Y_L) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_GYRO_X_L) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_ACCEL_Y_L) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[CM730::ID_CM].ReadWord(CM730::P_ACCEL_X_L) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_L_FSR].ReadByte(FSR::P_FSR_X) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_L_FSR].ReadByte(FSR::P_FSR_Y) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_R_FSR].ReadByte(FSR::P_FSR_X) << ",";
-        //m_LogFileStream << m_CM730->m_BulkReadData[FSR::ID_R_FSR].ReadByte(FSR::P_FSR_Y) << ",";
-        //m_LogFileStream << std::endl;
+        //m_LogFileStream << "Encoder" << "," << std::endl;
+        //m_LogFileStream << LocationStatus::MotorPulse[0] << ","<< LocationStatus::MotorPulse[1] << ","<< LocationStatus::MotorPulse[2] << "," << std::endl;
+        //m_LogFileStream << LocationStatus::FB_Movement.Position.x << ","<< LocationStatus::FB_Movement.Position.y << ","<< LocationStatus::FB_Movement.Direction << "," << std::endl;
+        m_LogFileStream << "Laser" << "," << std::endl;
+        for(int i = 0; i < LocationStatus::LaserData.size(); i++)
+            m_LogFileStream << LocationStatus::LaserData[i] << ",";
+        m_LogFileStream << std::endl;
     }
 
     m_IsRunning = false;

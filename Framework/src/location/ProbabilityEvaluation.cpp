@@ -33,7 +33,7 @@ void ProbEvaluation::AssignVirtualMap()
         }
     }
 */	
-	OriginalMap = cvLoadImage("/GPPlatformMain/Data/jpg/2013sksmap.bmp",0);//load visual map(gray) in bmp format
+	OriginalMap = cvLoadImage("../../../Data/2013sksmap.bmp",0);//load visual map(gray) in bmp format
 	
 	threshold(OriginalMap, VirtualLineMap, 128, 255, CV_THRESH_BINARY);
 
@@ -45,9 +45,8 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
 
     float DetectAngle=0;
 
-    TCoordinate Pos,detectP;
-    Pos.x = x;
-    Pos.y = y;
+    TCoordinate Pos((double)x, (double)y);
+    TCoordinate detectP;
 	int i;
     unsigned char DetColor;
     for(i=0; i<ScanLinesNum ; i++){
@@ -56,10 +55,7 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
 
         detectP = Pos + starR*(aVector(cos(DetectAngle),sin(DetectAngle)));
 
-        if(cvGet2D(&VirtualLineMap,detectP.y,detectP.x).val[0] == NULL) break;
-        DetColor = cvGet2D(&VirtualLineMap,detectP.y, detectP.x).val[0];
-		
-		if(cvGetErrStatus() < 0) break;
+        DetColor = VirtualLineMap.at<cv::Vec3b>((int)detectP.y, (int)detectP.x)[0];
         
 		while(DetColor == !EdgeColor){
 
@@ -67,9 +63,7 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
             detectP.y += 1.5*sin(DetectAngle);
 
             if((detectP-Pos).Length() > stopR) break;
-          	if(cvGet2D(&VirtualLineMap, detectP.y, detectP.x).val[0] == NULL) break;
- 			DetColor = cvGet2D(&VirtualLineMap,detectP.y, detectP.x).val[0];
-			if(cvGetErrStatus() < 0) break;
+            DetColor = VirtualLineMap.at<cv::Vec3b>((int)detectP.y, (int)detectP.x)[0];
 		}
 
         if((detectP-Pos).Length()<= stopR){
@@ -94,10 +88,10 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
     float deviation;
 
     for(int i=0 ; i<ScanLinesNum ; i++ ){                 //&& vPosScanLines[i] != NoDet
-			if(LocationStatus::data[i]< stopR && LocationStatus::data[i] != 0){
+			if(LocationStatus::LaserData[i]/10.0 < stopR && LocationStatus::LaserData[i]/10.0 != 0){
 				if(vPosScanLines[i] != NoDet){
-					deviation = vPosScanLines[i] - LocationStatus::data[i];
-					Probability *= NormalDistribution(50,deviation);
+					deviation = vPosScanLines[i] - LocationStatus::LaserData[i]/10.0;
+					//Probability *= NormalDistribution(50,deviation);
 				}
 				else{
 					Probability = 0;
