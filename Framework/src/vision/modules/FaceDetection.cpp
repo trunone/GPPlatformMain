@@ -10,6 +10,7 @@
 #include <math.h>
 #include "FaceDetection.h"
 #include "VisionStatus.h"
+#include "StrategyStatus.h"
 
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -135,31 +136,37 @@ void FaceDetection::Process()
 			VisionStatus::counter1=0;VisionStatus::counter7=0;VisionStatus::counter3=0;VisionStatus::counter4=0;VisionStatus::counter5=0;VisionStatus::counter6++;
 		}
 		else{
-			VisionStatus::counter1=0;VisionStatus::counter7++;VisionStatus::counter3=0;VisionStatus::counter4=0;VisionStatus::counter5=0;VisionStatus::counter6=0;
+			//VisionStatus::counter1=0;VisionStatus::counter7++;VisionStatus::counter3=0;VisionStatus::counter4=0;VisionStatus::counter5=0;VisionStatus::counter6=0;
 		}
-		if(VisionStatus::counter1==5){
+		if(VisionStatus::counter1==3){
+			StrategyStatus::FamilyMember=0;
 			VisionStatus::counter1=0;
-			printf("Grandfa\n"); 
+			//printf("Grandfa\n"); 
 		}
-		if(VisionStatus::counter7==5){
+		/*if(VisionStatus::counter7==3){
+			StrategyStatus::FamilyMember=6;
 			VisionStatus::counter7=0;
 			printf("Badman\n");
-		}
-		if(VisionStatus::counter3==5){
+		}*/
+		if(VisionStatus::counter3==3){
+			StrategyStatus::FamilyMember=2;
 			VisionStatus::counter3=0;
-			printf("Mother\n");
+			//printf("Mother\n");
 		}
-		if(VisionStatus::counter4==5){
+		if(VisionStatus::counter4==3){
+			StrategyStatus::FamilyMember=3;
 			VisionStatus::counter4=0;
-			printf("Father\n");
+			//printf("Father\n");
 		}
-		if(VisionStatus::counter5==5){
+		if(VisionStatus::counter5==3){
+			StrategyStatus::FamilyMember=4;
 			VisionStatus::counter5=0;
-			printf("Girl\n");
+			//printf("Girl\n");
 		}
-		if(VisionStatus::counter6==5){
+		if(VisionStatus::counter6==3){
+			StrategyStatus::FamilyMember=5;
 			VisionStatus::counter6=0;
-			printf("Boy\n");
+			//printf("Boy\n");
 		}
 	}
 }

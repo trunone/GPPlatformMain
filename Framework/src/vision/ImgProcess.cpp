@@ -537,18 +537,18 @@ void ImgProcess::FaceData()
 	cvMatMul(FFW,F1W,SumW10);
 	cvMatMul(FFW,G1W,SumW11);
 	cvMatMul(FFW,B1W,SumW12);
-	printf("%f\n",cvGet2D(SumW1,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW2,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW3,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW4,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW5,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW6,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW7,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW8,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW9,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW10,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW11,0,0).val[0]);
-	printf("%f\n",cvGet2D(SumW12,0,0).val[0]); 
+	//printf("%f\n",cvGet2D(SumW1,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW2,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW3,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW4,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW5,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW6,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW7,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW8,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW9,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW10,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW11,0,0).val[0]);
+	//printf("%f\n",cvGet2D(SumW12,0,0).val[0]); 
 }
 
 
