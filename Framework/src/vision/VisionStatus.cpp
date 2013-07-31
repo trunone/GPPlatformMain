@@ -22,6 +22,9 @@ unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::I
 unsigned char VisionStatus::Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 
+//-----door number status
+int door_status(0);
+
 //-----ball posistion
 int VisionStatus::Red_X(0);
 int VisionStatus::Red_Y(0);
