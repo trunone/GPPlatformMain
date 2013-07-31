@@ -2,69 +2,35 @@
 #include<time.h>
 #include<math.h>
 #include"Normalrand.h"
-#define pi 3.141592654
 
 NormalRand::NormalRand()
 {
-    RandTable=NULL;
-    RandTable_size=0;
-}
-NormalRand::NormalRand(float sigma,float unit)
-{
-    srand(time(NULL)+rand());
-    RandTable=NULL;
-    RandTable_size=0;
 
-    float treble_sigma=3*sigma;
-    float i,temp;
-    float total_value=0;
-    for(i=-treble_sigma;i<treble_sigma;i+=unit){
-        total_value=total_value+Gaussians(sigma,0,i);
-    }
-
-    temp=total_value/(float)RAND_MAX;
-
-    for(i=-treble_sigma;i<treble_sigma;i+=unit){
-        this->RandTable_size=this->RandTable_size+Gaussians(sigma,0,i)/temp;
-    }
-
-    this->RandTable=new float[this->RandTable_size];
-
-    int shift=0,j,jtime;
-
-    for(i=-treble_sigma;i<treble_sigma;i+=unit){
-        jtime=Gaussians(sigma,0,i)/temp;
-        for(j=0;j<jtime;j++){
-            this->RandTable[shift]=i;
-            shift++;
-        }
-    }
-    for(j=0;j<this->RandTable_size;j++){
-        shift=rand()%(this->RandTable_size-j);
-        temp=RandTable[j];
-        RandTable[j]=RandTable[shift+j];
-        RandTable[shift+j]=temp;
-    }
 }
 NormalRand::~NormalRand()
 {
-    delete[] RandTable;
+
 }
-float NormalRand::randn(void)
+
+float NormalRand::randn(float sigma)
 {
-    short Seed = rand();
-    if( Seed > this->RandTable_size -1 )
-    {
-        Seed = (this->RandTable_size -1 )*( rand() / (float)RAND_MAX );
-    }
-    return this->RandTable[Seed];
+	float ans = 0.0;
+	float rand_val =0.0;
+	for(int i =0; i<12; i++){
+		
+    	rand_val =((float)rand()/(float)RAND_MAX) * 2 * sigma;   //random in 0 ~ 2sigma
+		rand_val = rand_val - sigma; //random in -sigma ~ +sigma
+		ans = ans + rand_val;
+	}
+
+	return 0.5*ans;
 }
 
 float NormalRand::Gaussians(float sigma,float mu,float x)
 {
     float ans;
 
-    ans=( 1 / (sqrt(2*pi)*sigma) )*exp( -0.5*( pow((x-mu),2)/pow(sigma,2) ) );
+    ans=( 1 / (sqrt(2*M_PI)*sigma) )*exp( -0.5*( pow((x-mu),2)/pow(sigma,2) ) );
 
     return ans;
 
