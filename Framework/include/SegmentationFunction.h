@@ -21,8 +21,7 @@ namespace Robot
 		
 		SegmentationFunction();
 
-		static int Xmax, Xmin, Ymax, Ymin;
-		static int PointCnt;
+		
 	public:
 		struct SegmentLocation
 		{
@@ -32,7 +31,8 @@ namespace Robot
 		
 		~SegmentationFunction();
 		static int Xcenter,Ycenter;
-		
+		static int Xmax, Xmin, Ymax, Ymin;
+		static int PointCnt;
 		void SegmentationInit(int Xvalue, int Yvalue);
 		void SegmentationInsert(int Xvalue, int Yvalue);
 		vector <SegmentLocation> LocationList;
