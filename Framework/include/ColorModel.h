@@ -17,17 +17,18 @@ namespace Robot
 		static ColorModel* m_UniqueInstance;
 		
 		Colormodel();
-		bool HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue);
-
-		bool HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue);
-
-		bool HSV_hsvCheckRange_Green(float hValue, float sValue, float vValue);
+		
 		void Erosion(unsigned char *source, unsigned char *target);
 		void Dilation(unsigned char *source, unsigned char *target);
 	public:
 		static ColorModel* GetInstance() { return m_UniqueInstance; }
 		
 		~ColorModel();
+		bool HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue);
+
+		bool HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue);
+
+		bool HSV_hsvCheckRange_Green(float hValue, float sValue, float vValue);
 		void Process();
 
 		
