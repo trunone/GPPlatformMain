@@ -3,6 +3,9 @@
 #include<math.h>
 #include"Normalrand.h"
 
+NormalRand* NormalRand::m_UniqueInstance = new NormalRand();
+
+
 NormalRand::NormalRand()
 {
 
@@ -12,7 +15,7 @@ NormalRand::~NormalRand()
 
 }
 
-float NormalRand::randn(float sigma)
+float NormalRand::randn(float mean, float sigma)
 {
 	float ans = 0.0;
 	float rand_val =0.0;
@@ -23,7 +26,7 @@ float NormalRand::randn(float sigma)
 		ans = ans + rand_val;
 	}
 
-	return 0.5*ans;
+	return mean + 0.5*ans;
 }
 
 float NormalRand::Gaussians(float sigma,float mu,float x)
