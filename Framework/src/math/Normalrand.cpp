@@ -3,6 +3,8 @@
 #include<math.h>
 #include"Normalrand.h"
 
+NormalRand *NormalRand::m_UniqueInstance = new NormalRand();
+
 NormalRand::NormalRand()
 {
 

@@ -3,9 +3,9 @@
  *
  *   Author: Wu Chih-En
  */
-//#define ENABLE_STRATEGY
+#define ENABLE_STRATEGY
 //#define ENABLE_VISION
-#define ENABLE_LOCATION
+//#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -102,7 +102,7 @@ int main(void)
         return 1;
     }
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
@@ -114,7 +114,7 @@ int main(void)
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     //StrategyManager::GetInstance()->SetEnable(true);
 
