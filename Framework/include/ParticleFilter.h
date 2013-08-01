@@ -6,7 +6,7 @@
 #include "LocationStatus.h"
 #include "TCoordinate.h"
 #include "ProbabilityEvaluation.h"
-
+#include "Normalrand.h"
 #define Def_ResamplingDis 0
 #define Def_ResamplingAngle 0
 #define Def_ParticlesNum 200
