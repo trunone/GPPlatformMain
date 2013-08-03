@@ -3,8 +3,9 @@
 #include "VisionModule.h"
 #include "VisionStatus.h"
 #include "SegmentationFunction.h"
-#include "ColorModel.h"
- using namespace std;
+#include "ColorCheck.h"
+	
+using namespace std;
 //----------------------------
 
 namespace Robot

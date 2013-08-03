@@ -21,17 +21,20 @@ LFLAGS += -lpthread -ldl
 
 OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/location/LocationStatus.o\
-		../../Framework/src/location/ProbabilityEvaluation.o\
+	../../Framework/src/location/ProbabilityEvaluation.o\
         ../../Framework/src/location/modules/ParticleFilter.o\
-		../../Framework/src/location/modules/Speedometer.o\
-		../../Framework/src/math/Matrix.o\
+	../../Framework/src/location/modules/Speedometer.o\
+	../../Framework/src/math/Matrix.o\
         ../../Framework/src/math/Plane.o\
         ../../Framework/src/math/Point.o\
-        ../../Framework/src/math/Vector.o\
-		../../Framework/src/math/TCoordinate.o\
+	../../Framework/src/math/Vector.o\
+	../../Framework/src/math/TCoordinate.o\
 		../../Framework/src/math/Normalrand.o\
 		../../Framework/src/vision/VisionStatus.o\
-		../../Framework/src/vision/modules/SegmentationFunction.o\
+		../../Framework/src/vision/SegmentFunction.o\
+		../../Framework/src/vision/ColorCheck.o\
+		../../Framework/src/vision/modules/Segmentation.o\
+		../../Framework/src/vision/modules/Doornumber_detect.o\
         ../../Framework/src/vision/modules/FaceDetection.o\
 		../../Framework/src/vision/modules/SendImage.o\
 		../../Framework/src/vision/modules/ColorModel.o\
