@@ -250,7 +250,7 @@ int main(void)
                             ColorModel::GetInstance()->LoadXMLSettings(element);
                         }
                         delete element;
-                        element = root->FirstChildElement("AStar_PathFinde");
+                        element = root->FirstChildElement("AStar_PathFinder");
                         if(element != NULL){
                             AstarTool::GetInstance()->LoadXMLSettings(element);
                         }
@@ -258,6 +258,11 @@ int main(void)
                         element = root->FirstChildElement("BasicConfig");
                         if(element != NULL){
                             //StrategyStatus::GetInstance()->LoadXMLSettings(element);
+                        }
+                        delete element;
+                        element = root->FirstChildElement("GridMap");
+                        if(element != NULL){
+                            AstarTool::GetInstance()->LoadXMLSettings_GridMap(element);
                         }
                         delete element;
                         element = root->FirstChildElement("StraConfig");

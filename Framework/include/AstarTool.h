@@ -60,6 +60,7 @@ namespace Robot{
     	vector<TCoordinate> SmoothPath;
 
 		int LoadXMLSettings (TiXmlElement* element);   // load xml
+		int LoadXMLSettings_GridMap (TiXmlElement* element);
 
 	private:
 
