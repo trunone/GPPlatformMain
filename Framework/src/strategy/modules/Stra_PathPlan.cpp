@@ -78,7 +78,7 @@ void Stra_PathPlan::Initialize(void)
 
 void Stra_PathPlan::Process( void )
 {
-//    if( this->bNewParameter ) this->ParameterReset();
+    //if( this->bNewParameter ) this->ParameterReset();
 
     //-----------------------------------------------------------------------
 

@@ -33,6 +33,14 @@ TCoordinate StrategyStatus::ChrgDoor;
 TCoordinate StrategyStatus::ChrgCen;
 
 bool StrategyStatus::FlagRoomRenew;
+bool StrategyStatus::FlagMember;
+bool StrategyStatus::FlagGrandPa;
+bool StrategyStatus::FlagGrandMa;
+bool StrategyStatus::FlagFather;
+bool StrategyStatus::FlagMother;
+bool StrategyStatus::FlagSon;
+bool StrategyStatus::Flagdaughter;
+int StrategyStatus::CurrentBallState;
 
 StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
@@ -42,7 +50,8 @@ int StrategyStatus::LivRM;
 int StrategyStatus::DinRM; 
 int StrategyStatus::Lib;
 int StrategyStatus::BedRM;
-
+//----------SIM_FLAG---------------------------------------------------
+bool StrategyStatus::SimulatorFlag;
 //----------Test int----------------------------------------------------
 
 int StrategyStatus::FamilyMember;

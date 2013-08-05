@@ -107,7 +107,7 @@ namespace Robot
 
 		typedef struct{
             int CenterX;
-		  	int CenterY;
+	    int CenterY;
             int InternalRadius;
             int ExternalRadius;
             void LoadSetting();

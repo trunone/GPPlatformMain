@@ -54,10 +54,14 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
     StartNode.y = (int)Start.y/NodeResolution;
     GoalNode.x  = (int)Goal.x /NodeResolution;
     GoalNode.y  = (int)Goal.y /NodeResolution;
+printf("%d",Map[StartNode.x][StartNode.y].Father.x);
+printf("enter astar1\n");
 
     //---- initial the list information
     Map[StartNode.x][StartNode.y].Father = StartNode;
+printf("enter astar2\n");
     Map[StartNode.x][StartNode.y].G = 0;
+
     Map[StartNode.x][StartNode.y].H = NodeResolution*(( GoalNode - StartNode ).Length());
     Map[StartNode.x][StartNode.y].F = Map[StartNode.x][StartNode.y].G + Map[StartNode.x][StartNode.y].H;
 

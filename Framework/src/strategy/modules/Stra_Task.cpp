@@ -30,9 +30,15 @@ Stra_Task::~Stra_Task()
 //---------------------------------------------------------------------------
 void Stra_Task::Initialize(void)
 {
-   // string str_ = this->Caption +" Initial";
-
+    //string str_ = this->Caption +" Initial";
     FlagTaskFinish      = false;
+    StrategyStatus::FlagMember	= false;
+    StrategyStatus::FlagGrandPa	= false;
+    StrategyStatus::FlagGrandMa	= false;
+    StrategyStatus::FlagFather	= false;
+    StrategyStatus::FlagMother	= false;
+    StrategyStatus::FlagSon	= false;
+    StrategyStatus::Flagdaughter	= false;
     FlagSetInitialData  = false;
     GotoRoomStep  = 0;
     ActiveState   = etIdle;
@@ -83,7 +89,8 @@ void Stra_Task::Process(void)
         break;
         case 2:
 	    //WaitCatchball();
-	    EncounterPeople();
+	    if(StrategyStatus::FlagMember = true)
+	        EncounterPeople();
         break;
         default:
             ActiveState = etIdle;
@@ -123,6 +130,7 @@ void Stra_Task::Process(void)
             //}
         break;
 	case 3:
+	    if(StrategyStatus::FlagMember = true)
 		EncounterPeople();
 	break;
         case 4:

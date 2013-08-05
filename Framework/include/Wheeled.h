@@ -20,6 +20,7 @@
 #include "Plane.h"
 #include "Motion.h"
 #include "Stra_Task.h"
+#include "Stra_Test.h"
 #include "Stra_FindBall.h"
 #include "Stra_AStar.h"
 #include "Stra_PathPlan.h"

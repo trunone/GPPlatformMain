@@ -37,10 +37,20 @@ bool StrategyManager::Initialize(Motors *motors)
 
     mMotors->SetEnableAll();
     mMotors->SetVelocityProfileAll(1000, 500);
-    mMotors->ActivateProfileVelocityModeAll();
+    mMotors->ActivateProfileVelocityModeAll();
+
 
 	return true;
 }
+
+bool StrategyManager::Initialize()
+{
+    mMotors = NULL;
+    m_Enabled = false;
+    m_ProcessEnable = true;
+    return true;
+}
+
 
 bool StrategyManager::Reinitialize()
 {
@@ -91,11 +101,12 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-
-    mMotors->SetVelocityAll(
-            -StrategyStatus::MotorSpeed[0],
-            -StrategyStatus::MotorSpeed[1],
-            -StrategyStatus::MotorSpeed[2]);
+	if(mMotors != NULL){
+    		mMotors->SetVelocityAll(
+        	-StrategyStatus::MotorSpeed[0],
+        	-StrategyStatus::MotorSpeed[1],
+        	-StrategyStatus::MotorSpeed[2]);
+	}
 
     if(m_IsLogging)
     {

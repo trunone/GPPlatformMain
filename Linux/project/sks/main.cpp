@@ -57,10 +57,12 @@ int main(void)
 
     change_current_dir();
 
-    motors.OpenDeviceAll();
+    //motors.OpenDeviceAll();
+
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
 #endif
+
 #ifdef ENABLE_LOCATION
     if (!urg.open("/dev/ttyACM0", 115200, qrk::Urg_driver::Serial ))
         fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
@@ -94,19 +96,21 @@ int main(void)
     location_timer->Start();
     LocationManager::GetInstance()->StartLogging();
 #endif
+
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
+    if(StrategyManager::GetInstance()->Initialize() == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
-
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Test::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
@@ -114,16 +118,14 @@ int main(void)
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     //StrategyManager::GetInstance()->SetEnable(true);
 
-	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
-	strategy_timer->Start();
-    StrategyManager::GetInstance()->StartLogging();
+    LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
+    strategy_timer->Start();
+    //StrategyManager::GetInstance()->StartLogging();
 #endif
-
-
     try
     {
         while(1) {
@@ -159,37 +161,41 @@ int main(void)
                             }
                             child = element->FirstChildElement("Camera");
                             if(child != NULL){
-                                //child->Attribute("ang", ????);
+                                //child->Attribute("ang", &StrategyStatus::CmeraAngle);
                             }
                             child = element->FirstChildElement("TakeBall");
                             if(child != NULL){
-                                //child->Attribute("ballFlag", ????);
+                                child->Attribute("ballFlag", &StrategyStatus::CurrentBallState);
                             }
                             child = element->FirstChildElement("Sim_flag");
                             if(child != NULL){
-                               
-                            }
+                             	StrategyStatus::SimulatorFlag=true;
+                            }else{
+				StrategyStatus::SimulatorFlag=false;
+			    }
                         }
                     }
-                    root = doc.FirstChildElement("Simulator");
-                    if(root != NULL) {
-                        TiXmlElement* element;
-                        element = root->FirstChildElement("Sim_status");
-                        if(element != NULL) {
-                            TiXmlElement* child;
-                            child = element->FirstChildElement("Site");
-                            if(child != NULL){
-                                child->Attribute("x", &StrategyStatus::x);
-                                child->Attribute("y", &StrategyStatus::y);
-                                child->Attribute("sita", &StrategyStatus::w);
-                            }
-                        }
-                    }
+		    if(StrategyStatus::SimulatorFlag){
+		            root = doc.FirstChildElement("Simulator");
+		            if(root != NULL) {
+		                TiXmlElement* element;
+		                element = root->FirstChildElement("Sim_status");
+		                if(element != NULL) {
+		                    TiXmlElement* child;
+		                    child = element->FirstChildElement("Site");
+		                    if(child != NULL){
+		                        child->Attribute("x", &LocationStatus::Position.x);
+		                        child->Attribute("y", &LocationStatus::Position.y);
+		                        child->Attribute("sita", &LocationStatus::Handle);
+		                    }
+		                }
+		            }
+		    }
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
                         TiXmlElement* element;
 //-----------------------------------------------------------------------------initial for send xml
-                        TiXmlElement* root = new TiXmlElement("Status");
+                        TiXmlElement* roott = new TiXmlElement("Status");
 //-----------------------------------------------------------------------------
                         element = root->FirstChildElement("Laser");
                         if(element != NULL) {
@@ -200,34 +206,36 @@ int main(void)
                                 //child->SetDoubleAttribute("distance",???);
                                 element->InsertEndChild(*(child->Clone()));
                             }
-                            root->InsertEndChild(*(element->Clone()));
+                            roott->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Position");
                         if(element != NULL) {
                             TiXmlElement* element=new TiXmlElement("Position");
-                            //element->SetDoubleAttribute("x",???);
-                            //element->SetDoubleAttribute("y",???);
+                            //element->SetDoubleAttribute("x",LocationStatus::Position.x);
+                            //element->SetDoubleAttribute("y",LocationStatus::Position.y);
                             //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            roott->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Camera_Angle");
                         if(element != NULL) {
                             TiXmlElement* element=new TiXmlElement("Camera_Angle");
-                            //element->SetDoubleAttribute("ang",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            //element->SetDoubleAttribute("ang",StrategyStatus::CameraAngle);
+                            roott->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Movement");
                         if(element != NULL) {
                             TiXmlElement* element=new TiXmlElement("Movement");
-                            //element->SetDoubleAttribute("x",???);
-                            //element->SetDoubleAttribute("y",???);
-                            //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));	
+                            element->SetDoubleAttribute("x",StrategyStatus::x);
+                            element->SetDoubleAttribute("y",StrategyStatus::y);
+                            element->SetDoubleAttribute("sita",StrategyStatus::w);
+                            roott->InsertEndChild(*(element->Clone()));	
                         }
                         TiXmlDocument RequestDoc;
-                        RequestDoc.InsertEndChild(*(root->Clone()));
+                        RequestDoc.InsertEndChild(*(roott->Clone()));
+			RequestDoc.SaveFile("Status.xml");
                         TiXmlPrinter send;
                         RequestDoc.Accept( &send );
+			printf("%s",send.CStr());
                         new_sock << send.CStr();
                     }
                     root = doc.FirstChildElement("Config");
