@@ -33,19 +33,21 @@ int AstarTool::LoadXMLSettings (TiXmlElement* element){
 		}
 		
 	}
+	return 0;
 }
 //--------------------------------------------------------------------------xmlGridMap
-int AstarTool::LoadXMLSettings (TiXmlElement* element){
-	if(element != NULL){	
-		TiXmlElement* modelchild;
-		modelchild=element->FirstChildElement("MapGrid_Config");
-		if(modelchild != NULL){
-			modelchild->Attribute("length",&MapHeight);
-			modelchild->Attribute("Width", &MapWidth);
-			modelchild->Attribute("NodeResolution", &NodeResolution);
+int AstarTool::LoadXMLSettings_GridMap (TiXmlElement* element){
+	if(element != NULL){
+		TiXmlElement* type=element->FirstAttribute();
+		for(int y=0;y<MapY;y++){
+			for(int x=0;x<MapX;x++){
+				GridMapVector[y][x]=type->Value();
+				type=type->Next();
+			}
 		}
 		
 	}
+	return 0;
 }
 //---------------------------------------------------------------------------
 void AstarTool::AssignMap( vector< vector<tsNode> > &Map,

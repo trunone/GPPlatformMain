@@ -61,7 +61,8 @@ namespace Robot{
 
 		int LoadXMLSettings (TiXmlElement* element);   // load xml
 		int LoadXMLSettings_GridMap (TiXmlElement* element);
-
+		static MapX=61,MapY=61;
+		static vector< vector<int> > GridMapVector(MapY,< vector<int>(MapX));
 	private:
 
 
