@@ -18,7 +18,7 @@ namespace Robot
 
 	public:
 
-		static const int TIME_UNIT = 100; //msec 
+		static const int TIME_UNIT = 1000; //msec 
 
 		virtual void Initialize() = 0;
 		virtual void Process() = 0;

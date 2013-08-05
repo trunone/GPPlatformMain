@@ -7,14 +7,14 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 
-#define Def_ScanScale 0.15707963267948966192313216916398
+#define Def_ScanScale 0.044247784
 #define Def_ScanStarAngle -1.5707963267948966192313216916398
 //#define SsanRange 3.6651914291880921115397506138261   //210
 
 #define Def_ScanStarRadius 5
 #define Def_ScanStopRadius 600
 
-#define ScanLinesNum 24
+#define ScanLinesNum 72
 #define NoDet 0
 #define PixelSigma 20
 

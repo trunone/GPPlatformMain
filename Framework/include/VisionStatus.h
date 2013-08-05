@@ -28,7 +28,6 @@ using namespace cv;
 #define cCYAN       colorBGR(255,0,255)
 #define GrayPixel(Scale)    colorBGR(Scale,Scale,Scale)
 #define BinaryPixel(White)  (White)?cWHITE:cBLACK
-#define EdgeColor 1
 #define NaN 0
 #define Def_ImgWidth    640
 #define Def_ImgHeight   480

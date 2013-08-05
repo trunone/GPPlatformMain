@@ -112,13 +112,13 @@ void LocationManager::Process()
 
     if(m_IsLogging)
     {
-        //m_LogFileStream << "Encoder" << "," << std::endl;
+        m_LogFileStream << "Encoder" << "," << std::endl;
         //m_LogFileStream << LocationStatus::MotorPulse[0] << ","<< LocationStatus::MotorPulse[1] << ","<< LocationStatus::MotorPulse[2] << "," << std::endl;
-        //m_LogFileStream << LocationStatus::FB_Movement.Position.x << ","<< LocationStatus::FB_Movement.Position.y << ","<< LocationStatus::FB_Movement.Direction << "," << std::endl;
-        m_LogFileStream << "Laser" << "," << std::endl;
-        for(int i = 0; i < LocationStatus::LaserData.size(); i++)
-            m_LogFileStream << LocationStatus::LaserData[i] << ",";
-        m_LogFileStream << std::endl;
+        m_LogFileStream << LocationStatus::FB_Movement.Position.x << ","<< LocationStatus::FB_Movement.Position.y << ","<< LocationStatus::FB_Movement.Direction << "," << std::endl;
+        //m_LogFileStream << "Laser" << "," << std::endl;
+        //for(int i = 0; i < LocationStatus::LaserData.size(); i++)
+        //    m_LogFileStream << LocationStatus::LaserData[i] << ",";
+        //m_LogFileStream << std::endl;
     }
 
     m_IsRunning = false;

@@ -23,8 +23,7 @@
 #define Def_InitValue -9999
 #define Def_DuToPI 0.0174533
 #define Def_PIToDu 57.29578
-#define Def_RobotRadius 25
-#define Def_LaserGap 10
+#define Def_RobotRadius 17.5
 
 using namespace std;
 

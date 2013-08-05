@@ -3,9 +3,9 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
+//#define ENABLE_STRATEGY
 //#define ENABLE_VISION
-//#define ENABLE_LOCATION
+#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -120,7 +120,7 @@ int main(void)
 
 	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
 	strategy_timer->Start();
-    StrategyManager::GetInstance()->StartLogging();
+    //StrategyManager::GetInstance()->StartLogging();
 #endif
 
 
