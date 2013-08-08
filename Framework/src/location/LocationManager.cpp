@@ -33,11 +33,7 @@ bool LocationManager::Initialize(Urg_driver *urg, Motors *motors)
 {
 	m_Enabled = false;
 	m_ProcessEnable = true;
-	Position = aVector(26,273);
-    Handle   = 0.0;
-    FlagEvaluatuonEnable = true;
-    FlagCoerceEvaluatuon = false;
-	LocationStatus::Position = aVector(26,273);
+	LocationStatus::Position = aVector(50, 250);
     LocationStatus::Handle   = 0.0;
     LocationStatus::FlagEvaluatuonEnable = true;
     LocationStatus::FlagCoerceEvaluatuon = false;
@@ -47,6 +43,8 @@ bool LocationManager::Initialize(Urg_driver *urg, Motors *motors)
 
     mUrg->set_scanning_parameter(mUrg->deg2step(-90), mUrg->deg2step(+90), 10);
     mUrg->start_measurement(Urg_driver::Distance, 0, 0);
+    if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
+        fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
 
 	return true;
 }
@@ -94,7 +92,7 @@ void LocationManager::Process()
     m_IsRunning = true;
 
     if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
-        fprintf(stderr,  "mUrg_driver:: get_distance(): %s\n", mUrg->what());
+        fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
 
     mMotors->GetPositionIs(0, &LocationStatus::MotorPulse[0]);
     mMotors->GetPositionIs(1, &LocationStatus::MotorPulse[1]);

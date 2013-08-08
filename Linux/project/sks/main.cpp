@@ -92,7 +92,7 @@ int main(void)
 
     LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
     location_timer->Start();
-    LocationManager::GetInstance()->StartLogging();
+    //LocationManager::GetInstance()->StartLogging();
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
@@ -189,18 +189,22 @@ int main(void)
                     if(root != NULL) {
                         TiXmlElement* element;
 //-----------------------------------------------------------------------------initial for send xml
-                        TiXmlElement* root = new TiXmlElement("Status");
+                        TiXmlElement* return_root = new TiXmlElement("Status");
 //-----------------------------------------------------------------------------
                         element = root->FirstChildElement("Laser");
                         if(element != NULL) {
                             TiXmlElement* element=new TiXmlElement("Laser");
-                            for(int i=1;i<=1000;i++){
+                            vector<long>::iterator it = LocationStatus::LaserData.begin();
+                            double angle = 90;
+                            while(it != LocationStatus::LaserData.end()){
                                 TiXmlElement* child=new TiXmlElement("Value");
-                                //child->SetDoubleAttribute("angle",???);
-                                //child->SetDoubleAttribute("distance",???);
+                                child->SetDoubleAttribute("angle", angle);
+                                child->SetAttribute("distance", *it);
                                 element->InsertEndChild(*(child->Clone()));
+                                angle -= 2.5;
+                                it++;
                             }
-                            root->InsertEndChild(*(element->Clone()));
+                            return_root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Position");
                         if(element != NULL) {
@@ -208,13 +212,13 @@ int main(void)
                             //element->SetDoubleAttribute("x",???);
                             //element->SetDoubleAttribute("y",???);
                             //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            return_root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Camera_Angle");
                         if(element != NULL) {
                             TiXmlElement* element=new TiXmlElement("Camera_Angle");
                             //element->SetDoubleAttribute("ang",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            return_root->InsertEndChild(*(element->Clone()));
                         }
                         element = root->FirstChildElement("Movement");
                         if(element != NULL) {
@@ -222,14 +226,15 @@ int main(void)
                             //element->SetDoubleAttribute("x",???);
                             //element->SetDoubleAttribute("y",???);
                             //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));	
+                            return_root->InsertEndChild(*(element->Clone()));	
                         }
                         TiXmlDocument RequestDoc;
-                        RequestDoc.InsertEndChild(*(root->Clone()));
+                        RequestDoc.InsertEndChild(*(return_root->Clone()));
                         TiXmlPrinter send;
                         RequestDoc.Accept( &send );
                         new_sock << send.CStr();
                     }
+                    /*
                     root = doc.FirstChildElement("Config");
                     if(root != NULL){
                         TiXmlElement* element = root->FirstChildElement("DirectionObject");
@@ -275,6 +280,7 @@ int main(void)
                             }
                         }
                     }
+                    */
                 }
             }
             catch ( LinuxSocketException& )

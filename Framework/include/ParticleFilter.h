@@ -7,16 +7,16 @@
 #include "TCoordinate.h"
 #include "ProbabilityEvaluation.h"
 #include "Normalrand.h"
-#define Def_ResamplingDis 0
-#define Def_ResamplingAngle 0
-#define Def_ParticlesNum 10
+#define Def_ResamplingDis 10 
+#define Def_ResamplingAngle 0.03
+#define Def_ParticlesNum 100
 
-#define MoveErrorRate   0.5       //+-50% error
-#define RotateErrorRate 0.6
+#define MoveErrorRate   0.01       //+-50% error
+#define RotateErrorRate 0.05
 #define Ro2MoveErrorRate 0.2
 #define Mo2RotateErrorRate 0.1
 
-#define BPKeepRate      0.3      //Bast Particle keeprate
+#define BPKeepRate      0.15     //Bast Particle keeprate
 #define SearchRate      0.03       //5% of map size;
 
 namespace Robot{

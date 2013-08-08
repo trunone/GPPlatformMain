@@ -3,7 +3,9 @@
 #include "LocationStatus.h"
 #include "VisionStatus.h"
 
+//#define DRAW_PARTICLE_SCANLINE
 #define EdgeColor 255
+#define ScanLinesNum 19 
 
 using namespace Robot;
 using namespace cv;
@@ -20,22 +22,7 @@ ProbEvaluation::~ProbEvaluation()
 }
 void ProbEvaluation::AssignVirtualMap()
 {
-/*    VirtualLineMap = new VisionStatus::tsBmpPtr;
-
-    VirtualLineMap->Width  = VirtiulMap->Width;
-    VirtualLineMap->Height = VirtiulMap->Height;
-    VirtualLineMap->Dimension = 1; //
-    VirtualLineMap->ImgData = new unsigned char[VirtualLineMap->Width * VirtualLineMap->Height * VirtualLineMap->Dimension ];
-    unsigned char bColor;
-    int i,j;
-    for(i=0 ; i< VirtualLineMap->Height ;i++){
-        for(j=0 ; j< VirtualLineMap->Width ;j++){
-            bColor = VisionStatus::PixelBinarization( VirtiulMap->GetColor(j,i) ,  128 );
-            VirtualLineMap->SetColor(j,i,&bColor);
-        }
-    }
-*/	
-	OriginalMap = cvLoadImage("../../../Data/2013sksmap.bmp",0);//load visual map(gray) in bmp format
+	OriginalMap = cvLoadImage("../../../Data/2013sksmap.bmp", 0);//load visual map(gray) in bmp format
 	
 	threshold(OriginalMap, VirtualLineMap, 254, 255, CV_THRESH_BINARY);
 
@@ -60,7 +47,7 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
     for(i=0; i<ScanLinesNum ; i++){
 
         DetectAngle =  angle + Def_ScanStarAngle +  Def_ScanScale*i;
-        detectP = Pos + starR*(aVector(cos(DetectAngle),-sin(DetectAngle)));
+        detectP = Pos + starR*(aVector(cos(DetectAngle), -sin(DetectAngle)));
 
         if(detectP.y < 0 || detectP.y > VirtualLineMap.rows || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
             continue;
@@ -72,11 +59,11 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
 
             if((detectP-Pos).Length() > stopR) break;
 
-            if(detectP.y < 0 || detectP.y > VirtualLineMap.rows || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
+            if(detectP.y < 0 || detectP.y > VirtualLineMap.rows
+                || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
                 break;
             DetColor = VirtualLineMap.at<uchar>((int)detectP.y, (int)detectP.x);
         }
-        printf("%d, %f, %f\n", DetColor, detectP.x, detectP.y);
 
         if((detectP-Pos).Length()<= stopR){
             ScanLines[i] = (detectP-Pos).Length();
@@ -93,8 +80,8 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
     char tmp_ch[100] = {0,};
     sprintf(tmp_ch, "./image/Image.%d.%d.%f.jpg", x, y, angle);
     imwrite(tmp_ch, OriginalMap);
+    //imwrite("Image.jpg", OriginalMap);
 #endif
-
     return ScanLines;
 }
 
@@ -109,22 +96,33 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
     double Probability = 1;
     float deviation;
 
-    for(int i=0 ; i<ScanLinesNum ; i++ ) {
-        double ScanLine = LocationStatus::LaserData[i]/10.0;
-			if( ScanLine < stopR && ScanLine != 0){
-				if(vPosScanLines[i] != NoDet){
-					deviation = vPosScanLines[i] - ScanLine;
-                    printf("%f, ", vPosScanLines[i]);
-					Probability *= NormalDistribution(50,deviation);
-				}
-				else{
-					Probability = 0;
-					break;
-				}
+#ifdef DRAW_PARTICLE_SCANLINE
+    //Mat tmpMat = cvLoadImage("Image.jpg", 0);
+#endif
+
+    vector<long>::iterator it = LocationStatus::LaserData.end()-1;
+    for(int i=0; i<ScanLinesNum ; i++) {
+        double ScanLine = *it/10.0;
+		if( ScanLine < stopR && ScanLine != 0){
+			if(vPosScanLines[i] != NoDet){
+				deviation = vPosScanLines[i] - ScanLine;
+                //printf("%f\n", deviation);
+				Probability *= NormalDistribution(60, deviation);
+                //printf("%f\n", Probability);
 			}
+			else{
+				Probability = 0;
+				break;
+			}
+            //printf("%d, %f,   %f\n", i, vPosScanLines[i], ScanLine);
+		}
+        if(i == ScanLinesNum-1)
+            it--;
+        else
+            it -= 4;
 	}
-    printf("\n\n");
-    delete[] vPosScanLines;
+    //printf("\n");
+    delete [] vPosScanLines;
     return Probability;
 }
 

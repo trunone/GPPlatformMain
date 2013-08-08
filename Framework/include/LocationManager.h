@@ -29,10 +29,6 @@ namespace Robot
 		bool m_IsRunning;
 		bool m_IsThreadRunning;
 		bool m_IsLogging;
-		bool FlagEvaluatuonEnable;		
-        bool FlagCoerceEvaluatuon;
-        TCoordinate Position;
-        double Handle;
 
 		std::ofstream m_LogFileStream;
 

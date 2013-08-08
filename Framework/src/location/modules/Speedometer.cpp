@@ -58,16 +58,14 @@ void Speedometer::Process()
 ///////////////////////////////////////////////////////////////////計算
 
 	LocationStatus::FB_Movement.Position.y =
-        (2.0/3.0)*( sin(angle1)*wheel_dist[0] - sin(angle2)*wheel_dist[1] + sin(angle3)*wheel_dist[2]);
+        (-2.0/3.0)*( sin(angle1)*wheel_dist[0] - sin(angle2)*wheel_dist[1] + sin(angle3)*wheel_dist[2]);
 	LocationStatus::FB_Movement.Position.x =
-        ((-2.0)/3.0)*( cos(angle1)*wheel_dist[0] - cos(angle2)*wheel_dist[1] + cos(angle3)*wheel_dist[2]);
+        (-2.0/3.0)*( cos(angle1)*wheel_dist[0] - cos(angle2)*wheel_dist[1] + cos(angle3)*wheel_dist[2]);
 	LocationStatus::FB_Movement.Direction =
-        (1.0/3.0)*( wheel_dist[0] + wheel_dist[1] + wheel_dist[2] );
+        (-1.0/3.0)*( wheel_dist[0] + wheel_dist[1] + wheel_dist[2] );
     
     LocationStatus::FB_Movement.Position.y = -LocationStatus::FB_Movement.Position.y;
     LocationStatus::FB_Movement.Position.x = -LocationStatus::FB_Movement.Position.x;
     LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
-
-    //printf("%f, %f, %f\n", LocationStatus::FB_Movement.Position.x, LocationStatus::FB_Movement.Position.y, LocationStatus::FB_Movement.Direction);
 }
 
