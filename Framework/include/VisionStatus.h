@@ -142,8 +142,8 @@ namespace Robot
     	}tsRecord_Blockinfo;
 
 	//------ FaceData ----------------------------------------------------------
-		static unsigned char Favg[40*40*3];
-		static float FeatureFaceW[40*40*3];
+		static Mat Favg_Face;
+		static float FeatureFaceW[40*40];
 		static float cvGet2D_1;
 		static float cvGet2D_2;
 		static float cvGet2D_3;

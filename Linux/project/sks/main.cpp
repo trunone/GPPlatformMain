@@ -5,6 +5,7 @@
  */
 //#define ENABLE_STRATEGY
 #define ENABLE_VISION
+#define ENABLE_VISION_FACEDETECTION
 //#define ENABLE_LOCATION
 
 #include <stdio.h>
@@ -73,9 +74,9 @@ int main(void)
         printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
-
-    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
-
+    #ifdef ENABLE_VISION_FACEDETECTION
+    	VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+    #endif
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
 #endif
