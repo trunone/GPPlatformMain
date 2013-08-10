@@ -3,9 +3,9 @@
  *
  *   Author: Wu Chih-En
  */
-//#define ENABLE_STRATEGY
+#define ENABLE_STRATEGY
 //#define ENABLE_VISION
-#define ENABLE_LOCATION
+//#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -120,7 +120,7 @@ int main(void)
 
 	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
 	strategy_timer->Start();
-    //StrategyManager::GetInstance()->StartLogging();
+    StrategyManager::GetInstance()->StartLogging();
 #endif
 
 
@@ -189,47 +189,44 @@ int main(void)
                     if(root != NULL) {
                         TiXmlElement* element;
 //-----------------------------------------------------------------------------initial for send xml
-                        TiXmlElement* return_root = new TiXmlElement("Status");
+                        TiXmlElement return_root("Status");
 //-----------------------------------------------------------------------------
                         element = root->FirstChildElement("Laser");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Laser");
+                            TiXmlElement element("Laser");
                             vector<long>::iterator it = LocationStatus::LaserData.begin();
-                            double angle = 90;
                             while(it != LocationStatus::LaserData.end()){
-                                TiXmlElement* child=new TiXmlElement("Value");
-                                child->SetDoubleAttribute("angle", angle);
-                                child->SetAttribute("distance", *it);
-                                element->InsertEndChild(*(child->Clone()));
-                                angle -= 2.5;
+                                TiXmlElement child("Value");
+                                child.SetAttribute("d", *it);
+                                element.InsertEndChild(*child.Clone());
                                 it++;
                             }
-                            return_root->InsertEndChild(*(element->Clone()));
+                            return_root.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Position");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Position");
-                            //element->SetDoubleAttribute("x",???);
-                            //element->SetDoubleAttribute("y",???);
-                            //element->SetDoubleAttribute("sita",???);
-                            return_root->InsertEndChild(*(element->Clone()));
+                            TiXmlElement element("Position");
+                            element.SetDoubleAttribute("x", LocationStatus::Position.x);
+                            element.SetDoubleAttribute("y", LocationStatus::Position.y);
+                            element.SetDoubleAttribute("sita", LocationStatus::Handle);
+                            return_root.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Camera_Angle");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Camera_Angle");
+                            TiXmlElement element("Camera_Angle");
                             //element->SetDoubleAttribute("ang",???);
-                            return_root->InsertEndChild(*(element->Clone()));
+                            return_root.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Movement");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Movement");
+                            TiXmlElement element("Movement");
                             //element->SetDoubleAttribute("x",???);
                             //element->SetDoubleAttribute("y",???);
                             //element->SetDoubleAttribute("sita",???);
-                            return_root->InsertEndChild(*(element->Clone()));	
+                            return_root.InsertEndChild(*element.Clone());	
                         }
                         TiXmlDocument RequestDoc;
-                        RequestDoc.InsertEndChild(*(return_root->Clone()));
+                        RequestDoc.InsertEndChild(*return_root.Clone());
                         TiXmlPrinter send;
                         RequestDoc.Accept( &send );
                         new_sock << send.CStr();

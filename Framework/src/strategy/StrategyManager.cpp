@@ -93,9 +93,9 @@ void StrategyManager::Process()
     }
 
     mMotors->SetVelocityAll(
-            -StrategyStatus::MotorSpeed[0],
-            -StrategyStatus::MotorSpeed[1],
-            -StrategyStatus::MotorSpeed[2]);
+           StrategyStatus::MotorSpeed[0],
+           StrategyStatus::MotorSpeed[1],
+           StrategyStatus::MotorSpeed[2]);
 
     if(m_IsLogging)
     {

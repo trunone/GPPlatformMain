@@ -106,7 +106,7 @@ void LocationManager::Process()
         }
     }
 
-    printf("%f, %f, %f\n", LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle);
+    //printf("%f, %f, %f\n", LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle);
 
     if(m_IsLogging)
     {

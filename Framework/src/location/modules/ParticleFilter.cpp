@@ -239,7 +239,7 @@ string ParticleFilter::EvaluatuonParticles()
     Particles = TempParticles;
     TempParticles.clear();
 
-    printf("Best: %f\n", Particles[0].Probabilty);
+    //printf("Best: %f\n", Particles[0].Probabilty);
 
     return " ";
 }
