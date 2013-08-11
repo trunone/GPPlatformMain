@@ -45,25 +45,21 @@ void Stra_Task::Initialize(void)
     Past_RoomCnt  = -1;
     TouchCnt      = 0;
     PastScanLineData = new int[24];
-	StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == true;
-	//printf("%s\n",(StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable)?"true":"false");
+	StrategyStatus::Room.Info[0].Enable = true;
 	GotoRoomStep = 0;
 	StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
 }
 //---------------------------------------------------------------------------
 void Stra_Task::Process(void)
 {
-	printf("%s\n",(StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable)?"true":"false");
-	printf("%d\n",StrategyStatus::Room.Cnt);
-	//while( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == false && StrategyStatus::Room.Cnt < 5 ){
-	while(1){     
-	   StrategyStatus::Room.Cnt++;	
+	printf("enter process\n");
+	while( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == false && StrategyStatus::Room.Cnt < 5 ){
+		StrategyStatus::Room.Cnt++;	
+		printf(" room_cnt++ %d\n", StrategyStatus::Room.Cnt);
 	}
-    printf("%d\n",StrategyStatus::Room.Cnt);
-	//printf("enter process\n");
-	
+
 	if( StrategyStatus::FlagRoomRenew == true )
-    {
+    { 
         ActiveState  = etIdle;
         GotoRoomStep = 0;
         StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
@@ -74,10 +70,9 @@ void Stra_Task::Process(void)
 
     //---------------- by yao 2012/08/28-----------------------------------------------
     
-	//printf("%d\n", StrategyStatus::Room.Cnt);	
+	printf("room cnt%d\n", StrategyStatus::Room.Cnt);
 	if( StrategyStatus::Room.Cnt == StrategyStatus::etLivRM)  //客廳
     {
-		printf("111");
         switch( GotoRoomStep )
         {
         case 0://到房間門口
@@ -192,14 +187,14 @@ void Stra_Task::Process(void)
     }*/
     //-----------------------------------------------------------------------
     
-	/*if( this -> FlagTaskFinish )
+	if( this -> FlagTaskFinish )
     {
         GotoRoomStep++;
 		FlagTaskFinish = false;
 		FlagSetInitialData = false;
     }
     else
-        ActiveFunction();*/
+        ActiveFunction();
 
 }
 //---------------------------------------------------------------------------
@@ -209,11 +204,15 @@ void Stra_Task::ActiveFunction()
     {
     //----------------------
     case etAStar :
+			//printf("enter etAstar\n");
             if( StrategyStatus::AStarPath.Status != StrategyStatus::etAchieve )
             {
-                StrategyStatus::AStarPath.StartPos = StartPos;
+            	printf("enter etAStar\n");
+			    StrategyStatus::AStarPath.StartPos = StartPos;
                 StrategyStatus::AStarPath.GoalPos  = GoalPos;
-            }
+           		printf("%f %f\n",StrategyStatus::AStarPath.StartPos.x,StrategyStatus::AStarPath.StartPos.y);
+           		printf("%f %f\n",StrategyStatus::AStarPath.GoalPos.x,StrategyStatus::AStarPath.GoalPos.y);
+			 }
             else{ FlagTaskFinish = true; }
     break;
     //----------------------
@@ -248,6 +247,7 @@ void Stra_Task::ActiveFunction()
     break;
     }
 }
+
 //---------------------------------------------------------------------------
 void Stra_Task::WaitCatchball()
 {
@@ -268,6 +268,7 @@ void Stra_Task::WaitCatchball()
 //---------------------------------------------------------------------------
 void Stra_Task::SetAStar( TCoordinate  Goal )
 {
+	printf("enter SetAstar\n");
     FlagSetInitialData = true;
     StartPos = LocationStatus::Position;
     GoalPos  = Goal;

@@ -179,29 +179,15 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
     } */
 	Speed = 1;
 	
-	x1 = StrategyStatus::MotionDistance * Speed * Vector.x;
+	StrategyStatus::x = StrategyStatus::MotionDistance * Speed * Vector.x;
 
-	StrategyStatus::x = x1;
+	StrategyStatus::y = StrategyStatus::MotionDistance * Speed * Vector.y;
 
-	//printf("%f\n",StrategyStatus::x);
+	StrategyStatus::w = StrategyStatus::Direction;
 
-	y1 = StrategyStatus::MotionDistance * Speed * Vector.y;
-
-	StrategyStatus::y = y1;
-
-	//printf("%f\n",StrategyStatus::y);
-
-	w1 = StrategyStatus::Direction;
-
-	StrategyStatus::w = w1;
-
-	//printf("%f\n",StrategyStatus::w);
-
-	StrategyStatus::PathMotion = StrategyStatus::x * StrategyStatus::y * StrategyStatus::w;
-
-	//printf("%f\n",StrategyStatus::PathMotion.x);
-
-	//printf("%f\n",StrategyStatus::PathMotion.y);
+	printf("%f\n",StrategyStatus::x);
+	printf("%f\n",StrategyStatus::y);
+	printf("%f\n",StrategyStatus::w);
 
     //StrategyStatus::PathMotion = Speed * Vector;
 

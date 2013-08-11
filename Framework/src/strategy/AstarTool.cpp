@@ -78,13 +78,21 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
     StartNode.y = (int)Start.y/NodeResolution;
     GoalNode.x  = (int)Goal.x /NodeResolution;
     GoalNode.y  = (int)Goal.y /NodeResolution;
-    //---- initial the list information
+	
+	//printf("%f %f \n",StartNode.x, StartNode.y);
+	//printf("%f %f \n",GoalNode.x, GoalNode.y);
+    
+	//---- initial the list information
     Map[StartNode.x][StartNode.y].Father = StartNode;
     Map[StartNode.x][StartNode.y].G = 0;
     Map[StartNode.x][StartNode.y].H = NodeResolution*(( GoalNode - StartNode ).Length());
     Map[StartNode.x][StartNode.y].F = Map[StartNode.x][StartNode.y].G + Map[StartNode.x][StartNode.y].H;
 
-    OpenList.insert( Map[StartNode.x][StartNode.y].F ,StartNode.x, StartNode.y );
+	//printf("%d\n",Map[StartNode.x][StartNode.y].G);
+	//printf("%d\n",Map[StartNode.x][StartNode.y].H);
+	//printf("%d\n",Map[StartNode.x][StartNode.y].F);
+    
+	OpenList.insert( Map[StartNode.x][StartNode.y].F ,StartNode.x, StartNode.y );
 
     //---- execute the A Star
     Front.x = OpenList.minnum().x;
