@@ -96,7 +96,6 @@ int main(void)
     location_timer->Start();
     LocationManager::GetInstance()->StartLogging();
 #endif
-
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
     if(StrategyManager::GetInstance()->Initialize() == false)
@@ -104,21 +103,22 @@ int main(void)
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+    
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Test::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+    
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
-
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     //StrategyManager::GetInstance()->SetEnable(true);
 
@@ -232,10 +232,10 @@ int main(void)
                         }
                         TiXmlDocument RequestDoc;
                         RequestDoc.InsertEndChild(*(roott->Clone()));
-			RequestDoc.SaveFile("Status.xml");
+						RequestDoc.SaveFile("Status.xml");
                         TiXmlPrinter send;
                         RequestDoc.Accept( &send );
-			printf("%s",send.CStr());
+						printf("%s",send.CStr());
                         new_sock << send.CStr();
                     }
                     root = doc.FirstChildElement("Config");

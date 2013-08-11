@@ -2,6 +2,8 @@
 #include "AstarTool.h"
 using namespace Robot;
 
+
+
 AstarTool* AstarTool::m_UniqueInstance = new AstarTool();
 
 AstarTool::AstarTool()
@@ -13,6 +15,15 @@ AstarTool::AstarTool()
 
     CurrentStatus = 0;
     ObstacleThreshold = 200;
+
+	for(int i = 0; i<64; i++) {
+		vector<tsNode> vecTmp;
+		for(int j = 0; j<64; j++) {
+			tsNode tmp;
+			vecTmp.push_back(tmp);
+		}
+		Map.push_back(vecTmp);
+	}
 }
 //---------------------------------------------------------------------------
 void AstarTool::CleanList( void )
@@ -36,27 +47,25 @@ int AstarTool::LoadXMLSettings (TiXmlElement* element){
 	return 0;
 }
 //--------------------------------------------------------------------------xmlGridMap
-int AstarTool::LoadXMLSettings_GridMap (TiXmlElement* element){
+int AstarTool::LoadXMLSettings_GridMap(TiXmlElement* element){
+	Map.clear();
 	if(element != NULL){
-		TiXmlElement* type=element->FirstAttribute();
-		for(int y=0;y<MapY;y++){
-			for(int x=0;x<MapX;x++){
-				GridMapVector[y][x]=type->Value();
+		TiXmlElement* child=element->FirstChildElement();
+		while(child!=NULL){
+			vector<tsNode> vecTmp;
+			TiXmlAttribute* type=child->FirstAttribute();
+			while(type!=NULL){
+				tsNode tsNodeTmp;
+				tsNodeTmp.Weight = atoi(type->Value());
+				vecTmp.push_back(tsNodeTmp);
 				type=type->Next();
 			}
+			Map.push_back(vecTmp);
+			child=child->NextSiblingElement();
 		}
 		
 	}
 	return 0;
-}
-//---------------------------------------------------------------------------
-void AstarTool::AssignMap( vector< vector<tsNode> > &Map,
-                           int W, int H, int Resolution )
-{
-    Map = Map;
-    //MapWidth = W;
-    //MapHeight= H;
-    //NodeResolution= Resolution;
 }
 //---------------------------------------------------------------------------
 void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
@@ -69,11 +78,9 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
     StartNode.y = (int)Start.y/NodeResolution;
     GoalNode.x  = (int)Goal.x /NodeResolution;
     GoalNode.y  = (int)Goal.y /NodeResolution;
-
     //---- initial the list information
     Map[StartNode.x][StartNode.y].Father = StartNode;
     Map[StartNode.x][StartNode.y].G = 0;
-
     Map[StartNode.x][StartNode.y].H = NodeResolution*(( GoalNode - StartNode ).Length());
     Map[StartNode.x][StartNode.y].F = Map[StartNode.x][StartNode.y].G + Map[StartNode.x][StartNode.y].H;
 

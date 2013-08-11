@@ -15,6 +15,8 @@ double StrategyStatus::y(0);
 double StrategyStatus::FI(0);
 double StrategyStatus::w(0);
 
+TCoordinate StrategyStatus::Door1 = aVector(220,334);
+
 TCoordinate StrategyStatus::StartPosition;
 TCoordinate StrategyStatus::EscapePosition;
 TCoordinate StrategyStatus::EndPosition;
@@ -60,7 +62,7 @@ int StrategyStatus::FamilyMember;
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector
 TCoordinate StrategyStatus::Goal2;                   // Target2 vector
 double StrategyStatus::Direction;                    // Target direction
-bool StrategyStatus::FlagDetour;                     // true: Ÿaªñ¥ØŒÐÂIP2 , flase: »·Â÷¥ØŒÐÂIp2
+bool StrategyStatus::FlagDetour;                     
 bool StrategyStatus::FlagForward;                     
 StrategyStatus::tsAStarPath StrategyStatus::AStarPath;
 
@@ -76,8 +78,8 @@ TCoordinate StrategyStatus::CorrectionVector;
 //----------------------------------------------------------------------
 //----------- Velocity Control -----------------------------------------
 float StrategyStatus::FixSpeed;                                 // Speed Power 1~100 %
-double StrategyStatus::MotionDistance;		//²Ÿ°Ê¶ZÂ÷
-double StrategyStatus::MotionAngle;		//²Ÿ°Êš€«×
+double StrategyStatus::MotionDistance;
+double StrategyStatus::MotionAngle;
 TCoordinate StrategyStatus::PathMotion;
 float StrategyStatus::PathRotation;
 
@@ -96,7 +98,7 @@ unsigned char StrategyStatus::FindBallCnt;
 bool StrategyStatus::FlagRecognize;
 
 //---------- Laser Average Data-----------------
-int StrategyStatus::LaserAverageData[3];       //¹p®g¥ª ¥k «e ¥­§¡Data
+int StrategyStatus::LaserAverageData[3];
 
 //---------- ŽM²yµŠ²€šBÆJ-----------------
 
@@ -105,6 +107,6 @@ int StrategyStatus::FindBallState;
 //---------- ŽM²y­«·sÅxÂI-----------------
 
 bool StrategyStatus::FindLocResample;
-TCoordinate StrategyStatus::RseLocPos;        //·sªº©wŠìÂI	
+TCoordinate StrategyStatus::RseLocPos;
 	
 

@@ -26,12 +26,12 @@ namespace Robot
 	class Stra_PathPlan : public StrategyModule
 	{
 	public:
-    		~Stra_PathPlan();   //žÑºcšçŠ¡
+    	~Stra_PathPlan();
 
 		static Stra_PathPlan*  GetInstance() {return m_UniqueInstance;}
-//    		virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
-	    void  Initialize(void);                  //ªì©l€Æ
-	    void  Process(void);                     //°õŠæšçŒÆ
+		//virtual string  ParameterReset(void);
+	    void  Initialize(void);
+	    void  Process(void);
 		inline double GetMin(const double &dX_,const double &dY_){return (dX_>= dY_)?dY_:dX_;} 
 
 		int LoadXMLSettings(TiXmlElement* element);  // load xml		
@@ -39,7 +39,7 @@ namespace Robot
 	private:
         static Stra_PathPlan* m_UniqueInstance; 
 
-		Stra_PathPlan();      //«ØºcšçŠ¡
+		Stra_PathPlan();
 			
         void PathPlan( void );
 		
@@ -47,13 +47,13 @@ namespace Robot
 
 		int DetourConst;
 
-		double P1_Dis;          //¥ØŒÐ¶ZÂ÷
+		double P1_Dis;          
 
-		double P1_CutAng;       //¥ØŒÐš€«×
+		double P1_CutAng;       
 	
-		double P2_Dis;          //¥ØŒÐ2¶ZÂ÷(ÂùÂIžô®|³W¹º¥Î)
+		double P2_Dis;          
 
-		double P2_CutAng;       //¥ØŒÐ2š€«×(ÂùÂIžô®|³W¹º¥Î)
+		double P2_CutAng;       
 
 	};
 }

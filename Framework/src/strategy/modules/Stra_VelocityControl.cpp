@@ -6,6 +6,10 @@
 using namespace Robot;
 using namespace std;
 
+double Stra_VelocityControl::w1;
+double Stra_VelocityControl::x1;
+double Stra_VelocityControl::y1;
+
 Stra_VelocityControl* Stra_VelocityControl::m_UniqueInstance = new Stra_VelocityControl();
 
 Stra_VelocityControl::Stra_VelocityControl()
@@ -58,8 +62,6 @@ int Stra_VelocityControl::LoadXMLSettings (TiXmlElement* element){
 		element->Attribute("w_min", &OmegaMin);
 	}
 }
-
-
 //--------------------------------------------------------------------------
 void Stra_VelocityControl::Initialize(void)
 {
@@ -73,19 +75,24 @@ void Stra_VelocityControl::Process(void)
     //if( this->bNewParameter ) this->ParameterReset();
 
     #ifndef Def_OMNIDIRECTION_SYSTEM
+
+	//printf("%f\n",StrategyStatus::MotionDistance);
     if( StrategyStatus::MotionDistance != 0 )
     {
-        if( StrategyStatus::FlagForward )
-        {//=== ¥u¯à¥H¥¿­±²Ÿ°Ê
+		//printf("%f\n",StrategyStatus::MotionAngle);
+        //if( StrategyStatus::FlagForward )
+        //{
 
 		StrategyStatus::Direction = StrategyStatus::MotionAngle;
-        }
 
-        else
+		//printf("%f\n",StrategyStatus::MotionAngle);
+        
+		//}
+        //else
 
-        {//=== ¯à«e«á²Ÿ°Ê
+        //{
 
-            if( StrategyStatus::MotionAngle > M_PI_2)       //-- ²Ÿ°Ê§šš€€j©ó 90«×(¥ªÂà) ,šÏ¥Î«á°h šÃ§ï¬°(¥kÂà)
+            if( StrategyStatus::MotionAngle > M_PI_2)
 
             {
 
@@ -93,7 +100,7 @@ void Stra_VelocityControl::Process(void)
 
             }
 
-            else if( StrategyStatus::MotionAngle < -M_PI_2) //-- ²Ÿ°Ê§šš€€p©ó-90«×(¥kÂà) ,šÏ¥Î«á°h šÃ§ï¬°(¥ªÂà)
+            else if( StrategyStatus::MotionAngle < -M_PI_2) 
 
             {
 
@@ -108,8 +115,8 @@ void Stra_VelocityControl::Process(void)
                 StrategyStatus::Direction = StrategyStatus::MotionAngle;
 
             }
-
-        }
+			//printf("%f\n",StrategyStatus::MotionAngle);
+        //}
 
     }
 
@@ -117,23 +124,25 @@ void Stra_VelocityControl::Process(void)
 
     //------------------------------------------------------------------------
 
+	//printf("%f\n",StrategyStatus::MotionDistance);
+	//printf("%f\n",StrategyStatus::MotionAngle);
+	//printf("%f\n",StrategyStatus::Direction);
+	
     VelocityTransform( StrategyStatus::MotionDistance, StrategyStatus::MotionAngle, StrategyStatus::Direction );
-
-    printf("VelocityContril done");
 }
 
 
-//---------- [€ušã] ³t«×»Pš€³t«×³W¹º
+//------------------------------------------
 
 void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetCutAng, double Theta )
 {
 
     TCoordinate Vector( dTargetCutAng );
 
+	//printf("%f\n",Vector.x);
+	//printf("%f\n",Vector.y);
+
     double Speed = 0;
-
-
-    //³t²v(¯Â¶q)³W¹º
 
     if( dTargetDis == 0)
 
@@ -168,14 +177,35 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
         SpeedCmd = Speed;
 
     } */
+	Speed = 1;
+	
+	x1 = StrategyStatus::MotionDistance * Speed * Vector.x;
 
+	StrategyStatus::x = x1;
 
+	//printf("%f\n",StrategyStatus::x);
 
-    StrategyStatus::PathMotion = Speed * Vector;
+	y1 = StrategyStatus::MotionDistance * Speed * Vector.y;
+
+	StrategyStatus::y = y1;
+
+	//printf("%f\n",StrategyStatus::y);
+
+	w1 = StrategyStatus::Direction;
+
+	StrategyStatus::w = w1;
+
+	//printf("%f\n",StrategyStatus::w);
+
+	StrategyStatus::PathMotion = StrategyStatus::x * StrategyStatus::y * StrategyStatus::w;
+
+	//printf("%f\n",StrategyStatus::PathMotion.x);
+
+	//printf("%f\n",StrategyStatus::PathMotion.y);
+
+    //StrategyStatus::PathMotion = Speed * Vector;
 
     //---------------------------------------------------
-
-    //š€³t«×³W¹º
 
     double Omega;
 
@@ -199,7 +229,7 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
 
 
-    //³t«×€èŠV§PÂ_
+    
 
     StrategyStatus::PathRotation = (Theta < 0) ? -Omega : Omega;
 
@@ -208,7 +238,7 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
 //---------------------------------------------------------------------------
 
-//---------- [€ušã] S-Function
+//---------- [tools] S-Function
 
 //---------------------------------------------------------------------------
 
@@ -226,7 +256,7 @@ double Stra_VelocityControl::S_Function(const double &TargetMax, const double &T
 
 //---------------------------------------------------------------------------
 
-//---------- [€ušã] Raise-Function
+//---------- [tools] Raise-Function
 
 //---------------------------------------------------------------------------
 
@@ -237,4 +267,3 @@ double Stra_VelocityControl::Raise_Function( double V, double Cmd )
     return V * (1-exp((-1*(10/V))*((V+10/V)-Cmd)));
 
 }
-   // static TInfo* Info;

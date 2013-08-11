@@ -305,6 +305,7 @@ void Stra_FindBall::Process(void )
     //TestFindBall2->Label4->Caption =( Info->LocInfo->FlagEvaluatuonEnable == false) ? "No Evaluatuon": "Have";
 
     StrategyStatus::FlagRecognize = FlagRecognize;
+	//printf("FindBall done");
 }
 
 //----------------------------------------------------------------------------
@@ -833,7 +834,7 @@ void  Stra_FindBall::SearchBall()
     break;
 
     }
-    printf("FindBall done");
+    
 }
 
 

@@ -74,7 +74,7 @@ namespace Robot
 		static TCoordinate SetRobotPosition;
 		static double SetRobotHandle;
         static TCoordinate LaserGap;
-        // tmp. store for partilcefilter, wait for the truly laser information get will replace	
+        //tmp. store for partilcefilter, wait for the truly laser information get will replace	
 		static FeedBack_Info FB_Movement;
 
         static vector<long> LaserData;

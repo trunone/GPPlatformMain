@@ -21,18 +21,16 @@ namespace Robot
 	private:
 
 	public:
-		//motion data        	
-        	static long MotorSpeed[3];
-        	static double FI;
-        	static double x;
-        	static double y;
+		//motion data 
+		static double x;       	
+		static double y;
 		static double w;
+		static double FI;
 		static double CmeraAngle;
 		static bool SimulatorFlag;
 		static TCoordinate StartPosition;
 		static TCoordinate EscapePosition;
-        	static TCoordinate EndPosition; 
-
+        static TCoordinate EndPosition;
 		static TCoordinate RobotPos;
 		static TCoordinate RootHandle;
 		static TCoordinate LivRMDoor;
@@ -45,6 +43,7 @@ namespace Robot
 		static TCoordinate BedRMCen;
 		static TCoordinate ChrgDoor;
 		static TCoordinate ChrgCen;
+		static TCoordinate Door1;
 
 		//--------------------------------------------------
 		// task information
@@ -56,23 +55,25 @@ namespace Robot
 		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
 
-        	typedef struct{ int Status;
-			TCoordinate StartPos;
-			TCoordinate GoalPos;
-			int PCnt; 
-        	}tsAStarPath;
+		typedef enum{ etLivRM =0, etDinRM, etLib, etBedRM }teRoom;
+
+        typedef struct{ int Status;
+				TCoordinate StartPos;
+				TCoordinate GoalPos;
+				int PCnt; 
+        }tsAStarPath;
 			
 		typedef struct{ TCoordinate Origin;
 			float Scale;
 			int Width,Height;
-        	}tsMapInfo;
+        }tsMapInfo;
 		
 		typedef struct{ bool Enable; 
-            		TCoordinate Door; 
-            		TCoordinate Center;
-            		TCoordinate LeftBottom;
-			TCoordinate RightTop; 
-            		short BallDirection; 
+            	TCoordinate Door; 
+            	TCoordinate Center;
+            	TCoordinate LeftBottom;
+				TCoordinate RightTop; 
+            	short BallDirection; 
         	}tsRoom;
 		
 		typedef struct{ tsRoom Info[5]; 
@@ -86,8 +87,8 @@ namespace Robot
 			short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
 			short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
 			unsigned char FindBallCnt; 
-        	}tsStraBallInfo;
-
+        }tsStraBallInfo;
+		static long MotorSpeed[3];
 
 		static int CurrentBallState;
 
@@ -117,7 +118,7 @@ namespace Robot
 		static int LivRM, DinRM, Lib, BedRM;
 		static tsAStarPath AStarPath;
 
-        	//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 		//---------- Strategy --------------------------------------------------
 		static TCoordinate Goal1;                   // Target1 vector
 		static TCoordinate Goal2;                   // Target2 vector
@@ -164,8 +165,7 @@ namespace Robot
 		//----------------------------------------------------------------------
 		//----------------------------------------------------------------------
 		static bool FindLocResample;
-		static TCoordinate RseLocPos;	
-
+		static TCoordinate RseLocPos;
 	};
 }
 

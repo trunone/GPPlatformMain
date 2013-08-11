@@ -30,7 +30,6 @@ Stra_Task::~Stra_Task()
 //---------------------------------------------------------------------------
 void Stra_Task::Initialize(void)
 {
-    //string str_ = this->Caption +" Initial";
     FlagTaskFinish      = false;
     StrategyStatus::FlagMember	= false;
     StrategyStatus::FlagGrandPa	= false;
@@ -46,19 +45,24 @@ void Stra_Task::Initialize(void)
     Past_RoomCnt  = -1;
     TouchCnt      = 0;
     PastScanLineData = new int[24];
-   // return str_;
+	StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == true;
+	//printf("%s\n",(StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable)?"true":"false");
+	GotoRoomStep = 0;
+	StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
 }
 //---------------------------------------------------------------------------
 void Stra_Task::Process(void)
 {
-    //if( this->bNewParameter ) this->ParameterReset();
-    //---
-
-
-    while( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == false && StrategyStatus::Room.Cnt < 5 )
-        StrategyStatus::Room.Cnt++;
-
-    if( StrategyStatus::FlagRoomRenew == true)
+	printf("%s\n",(StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable)?"true":"false");
+	printf("%d\n",StrategyStatus::Room.Cnt);
+	//while( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == false && StrategyStatus::Room.Cnt < 5 ){
+	while(1){     
+	   StrategyStatus::Room.Cnt++;	
+	}
+    printf("%d\n",StrategyStatus::Room.Cnt);
+	//printf("enter process\n");
+	
+	if( StrategyStatus::FlagRoomRenew == true )
     {
         ActiveState  = etIdle;
         GotoRoomStep = 0;
@@ -68,25 +72,24 @@ void Stra_Task::Process(void)
         StrategyStatus::FlagRoomRenew = false;
     }
 
-    //---------------- by yao 2012/08/28
-    //int FB_EN = (Info->StraInfo->FindBallEn % (int)pow(10, Info->StraInfo->Room.Cnt+1))/ (int)pow(10, Info->StraInfo->Room.Cnt);
-
-    if( StrategyStatus::Room.Cnt == StrategyStatus::LivRM )  //客廳
+    //---------------- by yao 2012/08/28-----------------------------------------------
+    
+	//printf("%d\n", StrategyStatus::Room.Cnt);	
+	if( StrategyStatus::Room.Cnt == StrategyStatus::etLivRM)  //客廳
     {
-        //if(StrategyStatus::ThiefRoom != StrategyStatus::LivRM) StrategyStatus::Room.Cnt++;
-
+		printf("111");
         switch( GotoRoomStep )
         {
-        case 0: // 到房間門口
-            ActiveState =  etAStar;
+        case 0://到房間門口
+            ActiveState = etAStar;
             if( !FlagSetInitialData )
-               SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
+            	SetAStar( StrategyStatus::Door1 );
         break;
-        case 1: // 車頭面向房間
+        case 1://車頭面向房間
             ActiveState =  etTurnToAngle;
             GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
-        break;
+        break;/*
         case 2:
 	    //WaitCatchball();
 	    if(StrategyStatus::FlagMember = true)
@@ -98,7 +101,7 @@ void Stra_Task::Process(void)
             GotoRoomStep = 0;
             StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
             FlagSetInitialData = false;
-        break;
+        break;*/
         }
     }
     else if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM ||
@@ -117,11 +120,10 @@ void Stra_Task::Process(void)
             GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
-        case 2:
+        /*case 2:
             //if( Info->StraInfo->Room.Cnt ==2 && Info->StraInfo->ThiefRoom ==2 ) 
-		
-		ActiveState = etMakeSoundMove;
-		MakeSound();
+			ActiveState = etMakeSoundMove;
+			MakeSound();
 	        //WaitCatchball();
             //else{
                 //GotoRoomStep++;
@@ -146,7 +148,7 @@ void Stra_Task::Process(void)
             GotoRoomStep = 0;
             StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
             FlagSetInitialData = false;
-        break;
+        break;*/
         }
     }
     else if(StrategyStatus::Room.Cnt == 4 )  //充電區
@@ -154,7 +156,7 @@ void Stra_Task::Process(void)
         switch( GotoRoomStep )
         {
         case 0: // 到房間門口
-            ActiveState =  etAStar;
+			ActiveState =  etAStar;
             if( !FlagSetInitialData )
                     SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
         break;
@@ -163,7 +165,7 @@ void Stra_Task::Process(void)
             GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
                          StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
         break;
-        case 2: // 碰擊充電開關 by yao
+        /*case 2: // 碰擊充電開關 by yao
             ActiveState = etTouchButton;
             StrategyStatus::FlagAvoidEnable = false; //關閉避障
         break;
@@ -177,40 +179,37 @@ void Stra_Task::Process(void)
             GotoRoomStep = 0;
             StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
             FlagSetInitialData = false;
-        break;
+        break;*/
         }
     }
-    else  //待機區
+    /*else  //待機區
     {
         ActiveState =  etAStar;
         if( !FlagSetInitialData ) SetAStar( StrategyStatus::EndPosition );
         if( (StrategyStatus::EndPosition - LocationStatus::Position).Length() < 50 )
             StrategyStatus::FlagAvoidEnable = false; //關閉避障
         this->FlagTaskFinish = false;
-    }
-
-    //--------------------------
-    if( this->FlagTaskFinish )
+    }*/
+    //-----------------------------------------------------------------------
+    
+	/*if( this -> FlagTaskFinish )
     {
         GotoRoomStep++;
-	FlagTaskFinish = false;
-	FlagSetInitialData = false;
+		FlagTaskFinish = false;
+		FlagSetInitialData = false;
     }
     else
-        ActiveFunction();
+        ActiveFunction();*/
 
-    //---
-    // return Caption;
-    printf("Task done");
 }
 //---------------------------------------------------------------------------
 void Stra_Task::ActiveFunction()
 {
-    switch( ActiveState )
+	switch( ActiveState )
     {
     //----------------------
     case etAStar :
-            if(StrategyStatus::AStarPath.Status != StrategyStatus::etAchieve )
+            if( StrategyStatus::AStarPath.Status != StrategyStatus::etAchieve )
             {
                 StrategyStatus::AStarPath.StartPos = StartPos;
                 StrategyStatus::AStarPath.GoalPos  = GoalPos;

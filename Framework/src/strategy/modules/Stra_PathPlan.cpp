@@ -25,13 +25,13 @@ Stra_PathPlan::~Stra_PathPlan()
 
     this->ParameterReset();
 
-    this->P1_Dis = 0;         //¥ØŒÐ¶ZÂ÷
+    this->P1_Dis = 0;
 
-    this->P1_CutAng = 0;      //¥ØŒÐš€«×
+    this->P1_CutAng = 0;
 
     this->P2_Dis = 0;
 
-    this->P2_CutAng = 0;      //¥ØŒÐ2š€«×  š®ÀYš€«×
+    this->P2_CutAng = 0;
 
 }//*/
 
@@ -61,13 +61,13 @@ void Stra_PathPlan::Initialize(void)
 {
 //    string str_ = this->Caption +" Initial";
 
-    P1_Dis = 0;         //¥ØŒÐ¶ZÂ÷
+    P1_Dis = 0;         
 
-    P1_CutAng = 0;      //¥ØŒÐš€«×
+    P1_CutAng = 0;      
 
     P2_Dis = 0;
 
-    P2_CutAng = 0;      //¥ØŒÐ2š€«×  š®ÀYš€«×
+    P2_CutAng = 0;
 
 
 //    return str_;
@@ -80,7 +80,16 @@ void Stra_PathPlan::Process( void )
 {
     //if( this->bNewParameter ) this->ParameterReset();
 
-    //-----------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    //TCoordinate StartPos = StrategyStatus::AStarPath.StartPos;
+   	//TCoordinate GoalPos  = StrategyStatus::AStarPath.GoalPos;
+	//printf("%f\n",StrategyStatus::Goal1.x);
+	//printf("%f\n",StrategyStatus::Goal1.y);
+	//printf("%f\n",StartPos.x);
+	//printf("%f\n",StartPos.y);
+	//printf("%f\n",GoalPos.x);
+	//printf("%f\n",GoalPos.y);
+
 
     #ifndef Def_OMNIDIRECTION_SYSTEM
 
@@ -94,9 +103,10 @@ void Stra_PathPlan::Process( void )
 
         {
 
-		StrategyStatus::Direction = StrategyStatus::Goal1.Angle();
+			StrategyStatus::Direction = StrategyStatus::Goal1.Angle();
 
-            	StrategyStatus::Goal1 =aVector(0,0);
+            StrategyStatus::Goal1 =aVector(0,0);
+			
 
         }
 
@@ -104,7 +114,7 @@ void Stra_PathPlan::Process( void )
 
     #endif
     //------------------------------------------------------------------------
-    if( StrategyStatus::Goal1.Length() != 0 && StrategyStatus::Goal2.Length() != 0 )
+    if( StrategyStatus::Goal1.Length() != 0 && StrategyStatus::Goal2.Length() != 0 ) //two points
 
     {
 
@@ -133,28 +143,25 @@ void Stra_PathPlan::Process( void )
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
     }
-
-
-
     StrategyStatus::MotionDistance =  StrategyStatus::GoalVector.Length();
 
     StrategyStatus::MotionAngle    =  StrategyStatus::GoalVector.Angle();
 
-    printf("PathPlan done");
+	//printf("%f\n",StrategyStatus::MotionDistance);
+	//printf("%f\n",StrategyStatus::MotionAngle);
+
 
 }
 
 //----------------------------------------------------------------------------
-
 double Stra_PathPlan::Trajectory( void )
 {
 
     double dAlpha = NormalizeAngle( P1_CutAng - P2_CutAng);
 
-    //-----­YP2šìP1ªºš€«×¬°¥¿¡A«hš®ÀYšìP1ªºš€«×¶·ŠV¥¿€èŠV­×¥¿¡A€Ï€§
 
     short Sgn_Alpha = (dAlpha >= 0) ? 1 : -1;
-    //---------Â¶Šæ­yžñ¬°±µªñP2
+
 
     if( StrategyStatus::FlagDetour ){
 
@@ -162,7 +169,6 @@ double Stra_PathPlan::Trajectory( void )
 
         return P1_CutAng + Sgn_Alpha * GetMin( dAlpha ,atan2( DetourConst , P1_Dis) );
 
-    //---------Â¶Šæ­yžñ¬°»·Â÷P2
 
     }else{
 
@@ -172,17 +178,14 @@ double Stra_PathPlan::Trajectory( void )
     }
 
 }
-
 //----------------------------------------------------------------------------
-
 void Stra_PathPlan::PathPlan( void )
 {
     double TmpAngle = Trajectory();
 
-    P1_Dis = P1_Dis*((fabs(sin( TmpAngle - P1_CutAng))+1)/fabs(cos( TmpAngle - P1_CutAng )));//·s¥ØŒÐ¶ZÂ÷
+    P1_Dis = P1_Dis*((fabs(sin( TmpAngle - P1_CutAng))+1)/fabs(cos( TmpAngle - P1_CutAng )));
 
     P1_CutAng = TmpAngle;
 
 }
-
-    //static TInfo* Info;
+//-----------------------------------------------------------------------------

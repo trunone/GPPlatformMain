@@ -22,14 +22,19 @@ namespace Robot{
 	{
 
 	public:
-    		~Stra_VelocityControl();   //žÑºcšçŠ¡
+
+		static double x1;       	
+		static double y1;
+		static double w1;
+		
+    	~Stra_VelocityControl();
 
 		static Stra_VelocityControl*  GetInstance() {return m_UniqueInstance;}
-		//static string  ParameterReset(void);           //°ÑŒÆ­«žm
+		//static string  ParameterReset(void);
 
-        void Initialize(void);                  //ªì©l€Æ
+        void Initialize(void);
 
-        void Process(void);                     //°õŠæšçŒÆ
+        void Process(void);
 
 		int LoadXMLSettings(TiXmlElement* element);  //LoadXMLSettings
 
@@ -37,9 +42,9 @@ namespace Robot{
 
 		static Stra_VelocityControl* m_UniqueInstance; 
 
-		Stra_VelocityControl();      //«ØºcšçŠ¡
+		Stra_VelocityControl();
 
-		void VelocityTransform( double, double, double );   //¶]³æÂI­y¹D³W¹º
+		void VelocityTransform( double, double, double );
 
    		double S_Function( const double& , const double& , const double& , const double&, double );
 

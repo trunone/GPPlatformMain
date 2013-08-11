@@ -22,7 +22,7 @@ int Stra_AStar::LoadXMLSettings(TiXmlElement* element){
 		element->Attribute("AchieveErrRange", &AchieveErrRange);
 	}
 }
-///////////////////////////////////////////
+//////////////////////////////////////////////////////
 void Stra_AStar::Initialize(void)
 {
 
@@ -35,7 +35,7 @@ void Stra_AStar::Initialize(void)
 
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
-{	
+{
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
         StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
@@ -46,23 +46,24 @@ void Stra_AStar::Process(void)
 
         	AstarTool::GetInstance()->CleanList();
 
+        	AstarTool::GetInstance()->Main( StartPos , GoalPos );
+
+        	AstarTool::GetInstance()->AdjustPath();
+
+			StrategyStatus::AStarPath.PCnt = 0;
+
+        	Behavior_AstarPath();
+			
+    	}else{
+			
+        	Behavior_AstarPath();
+
+    	}
 		
-        	AstarTool::GetInstance()->Main( StartPos , GoalPos );printf("done5\n");
-
-        	AstarTool::GetInstance()->AdjustPath();printf("done\n");
-
-		StrategyStatus::AStarPath.PCnt = 0;printf("done\n");
-
-        	Behavior_AstarPath();
-
-    	}/*else{
-
-        	Behavior_AstarPath();
-    	}*/
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Behavior_AstarPath( void )
-{/*
+{
 	int Length = 0;
 	int Size = AstarTool::GetInstance()->SmoothPath.size();
 
@@ -103,6 +104,6 @@ void Stra_AStar::Behavior_AstarPath( void )
 		StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
     } else {
         StrategyStatus::AStarPath.Status = StrategyStatus::etAchieve;
-    }*/
+    }
 }
    

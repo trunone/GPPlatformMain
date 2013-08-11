@@ -76,9 +76,14 @@ void Stra_Avoid::Process(void)
 {
     //if( this->bNewParameter ) this->ParameterReset();
 
-    if( StrategyStatus::FlagAvoidEnable )
-    {
+    //if( StrategyStatus::FlagAvoidEnable )
+    //{
         this->ScanLine = NULL ;//Info->HdwInfo->LaserInfo.ScanArray;
+		
+		//printf("%f\n",StrategyStatus::MotionDistance);
+		//printf("%f\n",StrategyStatus::MotionAngle);
+
+		StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
         StrategyStatus::CorrectionVector = this->ScanLineAvoidFunction( StrategyStatus::GoalVector );
 
@@ -86,15 +91,18 @@ void Stra_Avoid::Process(void)
 
         StrategyStatus::MotionAngle    = StrategyStatus::CorrectionVector.Angle();
 
-    }
-    printf("Avoid done");
+		//printf("%f\n",StrategyStatus::MotionDistance);
+
+		//printf("%f\n",StrategyStatus::MotionAngle);
+    //}
+    //printf("Avoid done");
 }
 
 //*---------------------------------------------------------------------------
 
-//---------- [€ušã] Á×»ÙšçŒÆ
+//---------- []
 
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
@@ -122,15 +130,9 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
     {
         this->Stone[i] = aVector(1,0) << (i*this->ScanScale + this->ScanStartAngle);
 
-        //---- ŽM§äšãŠ³ŠM¯Ù©Êªº±œŽyœu
-
-        //---- §PÂ_¶ZÂ÷
-
         if( (  this->ScanLine[i] < this->SafeDistance )&& ( this->ScanLine[i] > 0 ) )
 
         {
-
-            //---- §PÂ_»P¥ØŒÐ€èŠV§šš€ªº©·ªø
 
             TmpCutAngle = NormalizeAngle( this->Stone[i].Angle() - Goal.Angle() );
 
@@ -179,19 +181,13 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
         Orien = Orien + this->Stone[i];
 
-        //--------- ¬ö¿ý³Ì€j«Â¯Ù¶ZÂ÷
-
         StoneDistance = ( ( this->Stone[i].Length() > StoneDistance ) ? this->Stone[i].Length(): StoneDistance );
-
-
-
-
 
     }
 
 
 
-    if( Goal.Length() < (this->SafeDistance - StoneDistance) )   //¥ØŒÐÂIŠb»ÙÃªª««e€è
+    if( Goal.Length() < (this->SafeDistance - StoneDistance) )
 
         Orien = aVector( 0 ,0 );
 
@@ -224,7 +220,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
 
 
-    TCoordinate break_vel =  Goal.UnitVector() ;   //break_vel:¥ØŒÐÂIªº³æŠìŠV¶q
+    TCoordinate break_vel =  Goal.UnitVector() ;
 
 
 
@@ -242,13 +238,13 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
     {
 
-        float value_cross1 = ( break_vel >> M_PI_2 ).cross( Orien );      //¥~¿n
+        float value_cross1 = ( break_vel >> M_PI_2 ).cross( Orien );
 
         float avoid_value   = 0; /*Config * value_cross1*( Goal.Length()/this->SafeDistance )*/ // need to get the laser information 07/09  ming-hua 
 
 
 
-        float value_cross2 =   break_vel.cross( Orien );                   //§PÂ_¥ž€OŠb¥ªÃäÁÙ¬O¥kÃä (¥ªÃä¬°¥¿¡B¥kÃä¬°­t)
+        float value_cross2 =   break_vel.cross( Orien );
 
 
 
@@ -256,7 +252,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
         {
 
-            break_vel = ( Goal.UnitVector() >> AvoidForce ) * avoid_value;  // ¥k°{
+            break_vel = ( Goal.UnitVector() >> AvoidForce ) * avoid_value;
 
             Lock_Avoid  = -1;
 
@@ -266,7 +262,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
         {
 
-            break_vel = ( Goal.UnitVector() << AvoidForce ) * avoid_value;  // ¥ª°{
+            break_vel = ( Goal.UnitVector() << AvoidForce ) * avoid_value;
 
             Lock_Avoid  = 1;
 
@@ -277,7 +273,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
     }
 
 
-    return (Goal + break_vel);      // °{Á×€èŠV
+    return (Goal + break_vel);
 
 }
 
