@@ -76,7 +76,11 @@ namespace Robot
 		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
 				     Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
 				     Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+		static int Xmax,Xmin,Ymax,Ymin;
+		static int PointCnt;
 		static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
+		//-----door number status
+		static int door_status;
 
 		//--- ModelUnit
 		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;

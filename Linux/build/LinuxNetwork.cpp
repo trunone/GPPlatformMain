@@ -105,7 +105,8 @@ bool LinuxSocket::send ( const std::string s ) const
 
 bool LinuxSocket::send ( void* data, int length ) const
 {
-    int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+    //int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+int status = ::send ( m_sock, data, length, 0 );
     if ( status == -1 )
     {
         return false;

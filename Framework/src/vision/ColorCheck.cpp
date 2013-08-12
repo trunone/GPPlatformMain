@@ -1,6 +1,6 @@
 #include "ColorCheck.h"
 #include "VisionStatus.h"
-
+#include <iostream>
 using namespace Robot;
 using namespace std;
 
@@ -16,14 +16,17 @@ bool ColorCheck::HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue
 	if(VisionStatus::hsvBlueRange.HueMax >= VisionStatus::hsvBlueRange.HueMin){   
 		if(VisionStatus::hsvBlueRange.HueMax >= hValue && VisionStatus::hsvBlueRange.HueMin <= hValue
 	   	&& VisionStatus::hsvBlueRange.SaturationMax >= sValue && VisionStatus::hsvBlueRange.SaturationMin <= sValue
-	   	&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
+	   	&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)		
 		return true;
 	}else{
 		if( (VisionStatus::hsvBlueRange.HueMax >= hValue || VisionStatus::hsvBlueRange.HueMin <= hValue)
 		&& VisionStatus::hsvBlueRange.SaturationMax >= sValue && VisionStatus::hsvBlueRange.SaturationMin <= sValue
-		&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue)
+		&& VisionStatus::hsvBlueRange.BrightnessMax >= vValue && VisionStatus::hsvBlueRange.BrightnessMin <= vValue){
+		
 		return true;
+		}
 	}
+		
 	        return false;
 }
 bool ColorCheck::HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue){  

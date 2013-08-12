@@ -1,4 +1,4 @@
-#ifdef _ColorCheck_H_
+#ifndef _ColorCheck_H_
 #define _ColorCheck_H_
 
 #include "VisionStatus.h"

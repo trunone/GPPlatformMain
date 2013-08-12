@@ -28,7 +28,7 @@ namespace Robot
 	public:
 		static const int MAXHOSTNAME = 200;
 		static const int MAXCONNECTIONS = 5;
-		static const int MAXRECV = 500;
+		static const int MAXRECV = 5000;  //max 5840
 
 		LinuxSocket();
 		virtual ~LinuxSocket();

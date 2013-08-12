@@ -1,6 +1,9 @@
 #include "Doornumber_detect.h"
+#include <iostream>
 using namespace Robot;
 using namespace std;
+
+
 
 Doornumber_detect* Doornumber_detect::m_UniqueInstance = new Doornumber_detect();
 
@@ -33,76 +36,75 @@ void Doornumber_detect::Gray_binarize(unsigned char *source,unsigned char *grayb
 	}	
 }
 void Doornumber_detect::Segment(unsigned char * TMPWebcamBoolBuffer){		//物件抓取
-		int temp=0,x1_temp,x2_temp,y1_temp,y2_temp;
-		for(int i=1; i<VisionStatus::GetInstance()->GetInstance()->ImageWidth-1; i++){
-			for(int j=1; j<VisionStatus::GetInstance()->GetInstance()->ImageHeight-1; j++){
-				if(TMPWebcamBoolBuffer[j * VisionStatus::GetInstance()->GetInstance()->ImageWidth + i]==2){  
+		int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
+		for(int i=1; i<VisionStatus::ImageWidth-1; i++){
+			for(int j=1; j<VisionStatus::ImageHeight-1; j++){
+				if(TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]==2){  
 					
-					PublicFunction::GetInstance()->SegmentationInit(i,j);
-					TMPWebcamBoolBuffer[j * VisionStatus::GetInstance()->ImageWidth + i]=0;  //清除標記
+					SegmentFunction::GetInstance()->SegmentationInit(i,j);
+					TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]=0;  //清除標記
 					int s=0;
-					while (s <= PublicFunction::GetInstance()->PointCnt){   //判斷是否抓完
-						int x = PublicFunction::GetInstance()->LocationList[s].x,  //pop
-							y = PublicFunction::GetInstance()->LocationList[s].y;
+					while (s <= VisionStatus::PointCnt){   //判斷是否抓完
+						int x = SegmentFunction::GetInstance()->LocationList[s].x,  //pop
+							y = SegmentFunction::GetInstance()->LocationList[s].y;
 						if(x == 0 || y == 0){  //防止超值(避免掃入邊緣點)
 							s++;
 							continue;
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + (x-1)]==2){ //判斷周圍左上
-							PublicFunction::GetInstance()->SegmentationInsert(x-1,y-1);
-							TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + (x-1)]=0;  //消除標記
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]==2){ //判斷周圍左上
+							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y-1);
+							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]=0;  //消除標記
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + x]==2){  //上
-							PublicFunction::GetInstance()->SegmentationInsert(x,y-1);
-							TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + x]=0;
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]==2){  //上
+							SegmentFunction::GetInstance()->SegmentationInsert(x,y-1);
+							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + (x+1)]==2){ //右上
-							PublicFunction::GetInstance()->SegmentationInsert(x+1,y-1);
-							TMPWebcamBoolBuffer[(y-1) * VisionStatus::GetInstance()->ImageWidth + (x+1)]=0;
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]==2){ //右上
+							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y-1);
+							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[y * VisionStatus::GetInstance()->ImageWidth + (x-1)]==2){  //左
-							PublicFunction::GetInstance()->SegmentationInsert(x-1,y);
-							TMPWebcamBoolBuffer[y * VisionStatus::GetInstance()->ImageWidth + (x-1)]=0;
+						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]==2){  //左
+							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y);
+							TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[y * VisionStatus::GetInstance()->ImageWidth + (x+1)]==2){  //右
-							PublicFunction::GetInstance()->SegmentationInsert(x+1,y);
-							TMPWebcamBoolBuffer[y * VisionStatus::GetInstance()->ImageWidth + (x+1)]=0;
+						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]==2){  //右
+							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y);
+							TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + (x-1)]==2){  //左下
-							PublicFunction::GetInstance()->SegmentationInsert(x-1,y+1);
-							TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + (x-1)]=0;
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]==2){  //左下
+							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y+1);
+							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + x]==2){  //下
-							PublicFunction::GetInstance()->SegmentationInsert(x,y+1);
-							TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + x]=0;
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]==2){  //下
+							SegmentFunction::GetInstance()->SegmentationInsert(x,y+1);
+							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + (x+1)]==2){  //右下
-							PublicFunction::GetInstance()->SegmentationInsert(x+1,y+1);
-							TMPWebcamBoolBuffer[(y+1) * VisionStatus::GetInstance()->ImageWidth + (x+1)]=0;
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]==2){  //右下
+							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y+1);
+							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]=0;
 						}
 						s++;
 					}  
 					if (temp<s)
 					{
 						temp=s;
-						x1_temp=PublicFunction::GetInstance()->Xmin;
-						x2_temp=PublicFunction::GetInstance()->Xmax;
-						y1_temp=PublicFunction::GetInstance()->Ymin;
-						y2_temp=PublicFunction::GetInstance()->Ymax;
+						x1_temp=VisionStatus::Xmin;
+						x2_temp=VisionStatus::Xmax;
+						y1_temp=VisionStatus::Ymin;
+						y2_temp=VisionStatus::Ymax;
 					}
 					
 					
 				}
 			}
 		}
-		PublicFunction::GetInstance()->Xmin=x1_temp;
-		PublicFunction::GetInstance()->Xmax=x2_temp;
-		PublicFunction::GetInstance()->Ymin=y1_temp;
-		PublicFunction::GetInstance()->Ymax=y2_temp;
+		VisionStatus::Xmin=x1_temp;
+		VisionStatus::Xmax=x2_temp;
+		VisionStatus::Ymin=y1_temp;
+		VisionStatus::Ymax=y2_temp;
 		
 	}
-void Doornumber_detect::merge(unsigned char *graybuffer	}
-},unsigned char *door,unsigned char *mix){
+void Doornumber_detect::merge(unsigned char *graybuffer	,unsigned char *door,unsigned char *mix){
 	for(int WidthCnt = 0; WidthCnt < 640; WidthCnt++){
 			for(int HeightCnt = 0; HeightCnt < 480; HeightCnt++){
 				float temp=(graybuffer[HeightCnt * 640 + WidthCnt])/255+door[HeightCnt * 640 +WidthCnt];
@@ -111,8 +113,8 @@ void Doornumber_detect::merge(unsigned char *graybuffer	}
 	}
 }
 void Doornumber_detect::background_check(unsigned char *mix,int *b,int *w){
-	for(int WidthCnt = (PublicFunction::GetInstance()->Xmin-5); WidthCnt <= (PublicFunction::GetInstance()->Xmax+5) ; WidthCnt++){
-		for(int HeightCnt = (PublicFunction::GetInstance()->Ymin-5);HeightCnt<=(PublicFunction::GetInstance()->Ymax+5) ; HeightCnt++){
+	for(int WidthCnt = (VisionStatus::Xmin-5); WidthCnt <= (VisionStatus::Xmax+5) ; WidthCnt++){
+		for(int HeightCnt = (VisionStatus::Ymin-5);HeightCnt<=(VisionStatus::Ymax+5) ; HeightCnt++){
 			if(mix[(HeightCnt *640 + WidthCnt)]==1){
 				w=w+1;
 			}else {
@@ -121,9 +123,13 @@ void Doornumber_detect::background_check(unsigned char *mix,int *b,int *w){
 				}
 			}
 		}
+	}
+}
 
-void Doornumber_detect::doornumber_check(Mat frame){
-	cvtColor(frame, hsv, CV_BGR2HSV);
+
+void Doornumber_detect::Process(){
+	Mat hsv;
+	cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
 	unsigned char graybuffer[3*640*480];
 	unsigned char Red_door[640*480];
 	unsigned char Blue_door[640*480];
@@ -133,42 +139,42 @@ void Doornumber_detect::doornumber_check(Mat frame){
 	for(int WidthCnt = 0; WidthCnt < 640; WidthCnt++){
 			for(int HeightCnt = 0; HeightCnt < 480; HeightCnt++){
 						
-				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]*360/180;
-				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]*100/255;
-				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]*100/255;
+				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]/180;
+				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]/255;
+				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]/255;
 				
 				
-				if(PublicFunction::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){					 
+				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
 					Red_door[(HeightCnt * 640 + WidthCnt)] = 2;
 				}else{
 					Red_door[(HeightCnt * 640 + WidthCnt)] = 0;	
 				}
-				if(PublicFunction::GetInstance()->HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
+				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
 					Green_door[(HeightCnt * 640 + WidthCnt)] = 2;
 				}else{
 					Green_door[HeightCnt * 640 + WidthCnt] = 0;
 				}
-				if(PublicFunction::GetInstance()->HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){
+				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){
 					Blue_door[(HeightCnt * 640 + WidthCnt)] = 2;
 				}else{
 					Blue_door[HeightCnt * 640 + WidthCnt] = 0;
 				}				
 			}
 		}
-	Gray_binarize(frame.data,graybuffer);
+	Gray_binarize(VisionStatus::VideoFrame.data,graybuffer);
 	merge(graybuffer,Red_door,mix);
 	Segment(Red_door);
 	
-	if(PublicFunction::GetInstance()->Xmax>0
-		&&PublicFunction::GetInstance()->Xmin>=0
-		&&PublicFunction::GetInstance()->Ymax>0
-		&&PublicFunction::GetInstance()->Ymin>=0){
-		background_check(mix,b,w);
+	if(VisionStatus::Xmax>0
+		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Ymax>0
+		&&VisionStatus::Ymin>=0){
+		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::GetInstance()->door_status = 1; //red
+			VisionStatus::door_status = 1; //red
 		}else {
 			b=0;
 			w=0;
@@ -176,16 +182,16 @@ void Doornumber_detect::doornumber_check(Mat frame){
 	}
 	merge(graybuffer,Green_door,mix);
 	Segment(Green_door);
-	if(PublicFunction::GetInstance()->Xmax>0
-		&&PublicFunction::GetInstance()->Xmin>=0
-		&&PublicFunction::GetInstance()->Ymax>0
-		&&PublicFunction::GetInstance()->Ymin>=0){
-		background_check(mix,b,w);
+	if(VisionStatus::Xmax>0
+		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Ymax>0
+		&&VisionStatus::Ymin>=0){
+		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::GetInstance()->door_status = 2; //green
+			VisionStatus::door_status = 2; //green
 		}else {
 			b=0;
 			w=0;
@@ -193,22 +199,21 @@ void Doornumber_detect::doornumber_check(Mat frame){
 	}
 	merge(graybuffer,Blue_door,mix);
 	Segment(Blue_door);
-	if(PublicFunction::GetInstance()->Xmax>0
-		&&PublicFunction::GetInstance()->Xmin>=0
-		&&PublicFunction::GetInstance()->Ymax>0
-		&&PublicFunction::GetInstance()->Ymin>=0){
-		background_check(mix,b,w);
+	if(VisionStatus::Xmax>0
+		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Ymax>0
+		&&VisionStatus::Ymin>=0){
+		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::GetInstance()->door_status = 3; //blue
+			VisionStatus::door_status = 3; //blue
 		}else {
 			b=0;
 			w=0;
 		}
 	}
-}
-void Process(){
-	doornumber_check(VisionStatus::GetInstance()->VideoFrame);
+	
+
 }

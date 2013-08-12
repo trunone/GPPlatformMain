@@ -14,6 +14,9 @@
 #include "LocationManager.h"
 #include "VisionModule.h"
 #include "VisionManager.h"
+#include "Doornumber_detect.h"
+#include "Segmentation.h"
+#include "SendImage.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Matrix.h"
@@ -29,5 +32,4 @@
 #include "ColorModel.h"
 #include "Speedometer.h"
 #include "ParticleFilter.h"
-
 #endif

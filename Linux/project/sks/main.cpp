@@ -4,8 +4,10 @@
  *   Author: Wu Chih-En
  */
 //#define ENABLE_STRATEGY
-//#define ENABLE_VISION
-#define ENABLE_LOCATION
+#define ENABLE_VISION
+//#define ENABLE_VISION_getball
+//#define ENABLE_VISION_facedection
+//#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -73,9 +75,20 @@ int main(void)
         printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
+	//#ifdef ENABLE_VISION_getball	
+		
+		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
+		
+		VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+	
+		VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
-    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
-
+		VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+		
+	//#endif
+	//#ifdef ENABLE_VISION_facedection
+        //	VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+	//#endif
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
 #endif
@@ -128,20 +141,23 @@ int main(void)
     {
         while(1) {
 
-            string xml;
+
+           string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
-	
             cout << "[Waiting..]" << endl;
             server.accept ( new_sock );
             cout << "[Accepted..]" << endl;	
 
             try
             {
-                while(true){	
+		cout<<"load"<<endl;
+            	while(true){	
                     TiXmlDocument doc;
-                    new_sock >> xml;
+                    //new_sock >> xml;
                     doc.Parse(xml.c_str());
+
+/*
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
                         TiXmlElement* element;
@@ -230,58 +246,70 @@ int main(void)
                         RequestDoc.Accept( &send );
                         new_sock << send.CStr();
                     }
-                    root = doc.FirstChildElement("Config");
-                    if(root != NULL){
-                        TiXmlElement* element = root->FirstChildElement("DirectionObject");
+*/
+                    //root = doc.FirstChildElement("ReloadConfig");	
+                    //if(root != NULL){
+			TiXmlDocument ConfigDoc("Config.xml");
+			ConfigDoc.LoadFile();
+			
+			TiXmlElement* Configroot = ConfigDoc.FirstChildElement("Config");
+                        TiXmlElement* element = Configroot->FirstChildElement("DirectionObject");
                         if(element != NULL){
+				
                             //LocationStatus::GetInstance()->LoadXMLSettings(element);
                         }
-                        delete element;
-                        element = root->FirstChildElement("ColorModel");
+			
+                        //delete element;
+			
+                        element = Configroot->FirstChildElement("ColorModel");
                         if(element != NULL){
-                            ColorModel::GetInstance()->LoadXMLSettings(element);
+                           ColorModel::GetInstance()->LoadXMLSettings(element);
                         }
-                        delete element;
-                        element = root->FirstChildElement("AStar_PathFinde");
+                        //delete element;
+                        element = Configroot->FirstChildElement("AStar_PathFinde");
+
                         if(element != NULL){
-                            AstarTool::GetInstance()->LoadXMLSettings(element);
+                            //AstarTool::GetInstance()->LoadXMLSettings(element);
                         }
-                        delete element;
-                        element = root->FirstChildElement("BasicConfig");
+                        //delete element;
+                        element = Configroot->FirstChildElement("BasicConfig");
+
                         if(element != NULL){
                             //StrategyStatus::GetInstance()->LoadXMLSettings(element);
                         }
-                        delete element;
-                        element = root->FirstChildElement("StraConfig");
+                        //delete element;
+                        /*element = Configroot->FirstChildElement("StraConfig");
                         if(element != NULL){
                             TiXmlElement* child = element->FirstChildElement("Stra_Astar");
                             if(child != NULL){
-                                Stra_AStar::GetInstance()->LoadXMLSettings(child);
+                                //Stra_AStar::GetInstance()->LoadXMLSettings(child);
                             }
                             delete child;
                             child = element->FirstChildElement("Stra_Avoid");
                             if(child != NULL){
-                                Stra_Avoid::GetInstance()->LoadXMLSettings(child);
+                                //Stra_Avoid::GetInstance()->LoadXMLSettings(child);
                             }
                             delete child;
                             child = element->FirstChildElement("Stra_PathPlan");
                             if(child != NULL){
-                                Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
+                                //Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
                             }
                             delete child;
                             child = element->FirstChildElement("Stra_VelocityControl");
                             if(child != NULL){
-                                Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
+                                //Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
                             }
-                        }
-                    }
+                        }*/
+                  //}
                 }
+		printf("asd\n");
             }
             catch ( LinuxSocketException& )
             {
                 cout << "[Disconnected]" << endl;
             }
-        }
+	printf("sdfg\n");
+	}
     }
     catch ( LinuxSocketException& e )
     {

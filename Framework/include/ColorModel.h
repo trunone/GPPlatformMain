@@ -12,15 +12,12 @@ namespace Robot
 	private:
 		ColorModel();
 		static ColorModel* m_UniqueInstance;
-
-		
-
 		void Erosion(unsigned char *source, unsigned char *target);
 		void Dilation(unsigned char *source, unsigned char *target);
 	public:
 		static ColorModel* GetInstance() { return m_UniqueInstance; }
 		~ColorModel();
-        void Initialize();
+        	void Initialize();
 		void Process();
 		int LoadXMLSettings(TiXmlElement* element);  //////////load xml
 	};
