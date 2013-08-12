@@ -82,8 +82,7 @@ void Stra_Task::Process(void)
         break;
         case 1://車頭面向房間
             ActiveState =  etTurnToAngle;
-            GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
-                         StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
+            GoalAngle = (StrategyStatus::Center1 - StrategyStatus::Door1).Angle();
         break;/*
         case 2:
 	    //WaitCatchball();
@@ -99,21 +98,30 @@ void Stra_Task::Process(void)
         break;*/
         }
     }
-    else if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM ||
-        StrategyStatus::Room.Cnt == StrategyStatus::Lib ||
-        StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
+    else if( StrategyStatus::Room.Cnt == StrategyStatus::etDinRM ||
+        StrategyStatus::Room.Cnt == StrategyStatus::etLib ||
+        StrategyStatus::Room.Cnt == StrategyStatus::etBedRM )
     {
         switch( GotoRoomStep )
         {
         case 0: // 到房間門口
             ActiveState =  etAStar;
             if( !FlagSetInitialData )
-                SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
+				if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)                
+					SetAStar( StrategyStatus::Door2 );
+				else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib)
+					SetAStar( StrategyStatus::Door4 );
+				else if(StrategyStatus::Room.Cnt == StrategyStatus::etBedRM)
+					SetAStar( StrategyStatus::Door3 );
         break;
         case 1: // 車頭面向房間
             ActiveState =  etTurnToAngle;
-            GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
-                         StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
+			if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)
+            	GoalAngle = (StrategyStatus::Center2 - StrategyStatus::Door2).Angle();
+			else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib)
+				GoalAngle = (StrategyStatus::Center4 - StrategyStatus::Door4).Angle();
+			else if(StrategyStatus::Room.Cnt == StrategyStatus::etBedRM)
+				GoalAngle = (StrategyStatus::Center3 - StrategyStatus::Door3).Angle();
         break;
         /*case 2:
             //if( Info->StraInfo->Room.Cnt ==2 && Info->StraInfo->ThiefRoom ==2 ) 

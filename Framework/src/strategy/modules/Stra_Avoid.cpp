@@ -74,8 +74,6 @@ void Stra_Avoid::Initialize(void)
 }
 void Stra_Avoid::Process(void)
 {
-    //if( this->bNewParameter ) this->ParameterReset();
-
     //if( StrategyStatus::FlagAvoidEnable )
     //{
         this->ScanLine = NULL ;//Info->HdwInfo->LaserInfo.ScanArray;
@@ -95,10 +93,9 @@ void Stra_Avoid::Process(void)
 
 		//printf("%f\n",StrategyStatus::MotionAngle);
     //}
-    //printf("Avoid done");
 }
 
-//*---------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 //---------- []
 

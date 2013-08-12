@@ -6,9 +6,14 @@
 using namespace Robot;
 using namespace std;
 
-double Stra_VelocityControl::w1;
-double Stra_VelocityControl::x1;
-double Stra_VelocityControl::y1;
+double Stra_VelocityControl::DistanceMax = 100;
+double Stra_VelocityControl::DistanceMin = 10;
+double Stra_VelocityControl::SpeedMax = 127;
+double Stra_VelocityControl::SpeedMin = 12;
+double Stra_VelocityControl::ThetaMax = 1.047197552;
+double Stra_VelocityControl::ThetaMin = 0.05;
+double Stra_VelocityControl::OmegaMax = 21;
+double Stra_VelocityControl::OmegaMin = 9;
 
 Stra_VelocityControl* Stra_VelocityControl::m_UniqueInstance = new Stra_VelocityControl();
 
@@ -62,7 +67,7 @@ int Stra_VelocityControl::LoadXMLSettings (TiXmlElement* element){
 		element->Attribute("w_min", &OmegaMin);
 	}
 }
-//--------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Stra_VelocityControl::Initialize(void)
 {
   //  string str_ = this->Caption +" Initial";
@@ -80,17 +85,17 @@ void Stra_VelocityControl::Process(void)
     if( StrategyStatus::MotionDistance != 0 )
     {
 		//printf("%f\n",StrategyStatus::MotionAngle);
-        //if( StrategyStatus::FlagForward )
-        //{
+        if( StrategyStatus::FlagForward )
+        {
 
-		StrategyStatus::Direction = StrategyStatus::MotionAngle;
+			StrategyStatus::Direction = StrategyStatus::MotionAngle;
 
 		//printf("%f\n",StrategyStatus::MotionAngle);
         
-		//}
-        //else
+		}
+        else
 
-        //{
+        {
 
             if( StrategyStatus::MotionAngle > M_PI_2)
 
@@ -116,7 +121,7 @@ void Stra_VelocityControl::Process(void)
 
             }
 			//printf("%f\n",StrategyStatus::MotionAngle);
-        //}
+        }
 
     }
 
@@ -177,7 +182,6 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
         SpeedCmd = Speed;
 
     } */
-	Speed = 1;
 	
 	StrategyStatus::x = StrategyStatus::MotionDistance * Speed * Vector.x;
 

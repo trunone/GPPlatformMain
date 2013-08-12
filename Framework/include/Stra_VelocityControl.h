@@ -22,10 +22,6 @@ namespace Robot{
 	{
 
 	public:
-
-		static double x1;       	
-		static double y1;
-		static double w1;
 		
     	~Stra_VelocityControl();
 
@@ -50,31 +46,31 @@ namespace Robot{
 
    		double Raise_Function( double V, double Cmd );
 
-   		double GoalDistance;
+   		static double GoalDistance;
 
-   		double GoalAngle;
+   		static double GoalAngle;
 
-   		double HandleAngle;
+   		static double HandleAngle;
 
-		double DistanceMax;
+		static double DistanceMax;
 
-   		double DistanceMin;
+   		static double DistanceMin;
 
-   		double SpeedMax;
+   		static double SpeedMax;
 
-        double SpeedMin;
+        static double SpeedMin;
 
-		double ThetaMax;
+		static double ThetaMax;
 
-   		double ThetaMin;
+   		static double ThetaMin;
 
-        double OmegaMax;
+        static double OmegaMax;
 
-        double OmegaMin;
+        static double OmegaMin;
 
-        double SpeedCmd;
+        static double SpeedCmd;
 
-   	 	double SpeedTmp;
+   	 	static double SpeedTmp;
 
 	};
 }
