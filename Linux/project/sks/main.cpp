@@ -189,70 +189,77 @@ int main(void)
                     if(root != NULL) {
                         TiXmlElement* element;
 //-----------------------------------------------------------------------------initial for send xml
-                        TiXmlElement* root = new TiXmlElement("Status");
+                        TiXmlElement RequestRoot("Status");
 //-----------------------------------------------------------------------------
                         element = root->FirstChildElement("Laser");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Laser");
+                            TiXmlElement element("Laser");
                             for(int i=1;i<=1000;i++){
-                                TiXmlElement* child=new TiXmlElement("Value");
+                                TiXmlElement child("Value");
                                 //child->SetDoubleAttribute("angle",???);
                                 //child->SetDoubleAttribute("distance",???);
-                                element->InsertEndChild(*(child->Clone()));
+                                element.InsertEndChild(*child.Clone());
                             }
-                            root->InsertEndChild(*(element->Clone()));
+                            RequestRoot.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Position");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Position");
+                            TiXmlElement element("Position");
                             //element->SetDoubleAttribute("x",???);
                             //element->SetDoubleAttribute("y",???);
                             //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            RequestRoot.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Camera_Angle");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Camera_Angle");
+                            TiXmlElement element("Camera_Angle");
                             //element->SetDoubleAttribute("ang",???);
-                            root->InsertEndChild(*(element->Clone()));
+                            RequestRoot.InsertEndChild(*element.Clone());
                         }
                         element = root->FirstChildElement("Movement");
                         if(element != NULL) {
-                            TiXmlElement* element=new TiXmlElement("Movement");
+                            TiXmlElement element("Movement");
                             //element->SetDoubleAttribute("x",???);
                             //element->SetDoubleAttribute("y",???);
                             //element->SetDoubleAttribute("sita",???);
-                            root->InsertEndChild(*(element->Clone()));	
+                            RequestRoot.InsertEndChild(*element.Clone());	
                         }
                         TiXmlDocument RequestDoc;
-                        RequestDoc.InsertEndChild(*(root->Clone()));
+                        RequestDoc.InsertEndChild(*RequestRoot.Clone());
                         TiXmlPrinter send;
                         RequestDoc.Accept( &send );
                         new_sock << send.CStr();
                     }
-                    root = doc.FirstChildElement("Config");
+                    root = doc.FirstChildElement("ReloadConfig");
                     if(root != NULL){
-                        TiXmlElement* element = root->FirstChildElement("DirectionObject");
+
+			TiXmlDocument ConfigDoc("Config.xml");
+			ConfigDoc.LoadFile();
+			TiXmlElement* Configroot = ConfigDoc.FirstChildElement("Config");
+                        
+
+			
+                        TiXmlElement* element = Configroot->FirstChildElement("DirectionObject");
                         if(element != NULL){
                             //LocationStatus::GetInstance()->LoadXMLSettings(element);
                         }
                         delete element;
-                        element = root->FirstChildElement("ColorModel");
+                        element = Configroot->FirstChildElement("ColorModel");
                         if(element != NULL){
                             ColorModel::GetInstance()->LoadXMLSettings(element);
                         }
                         delete element;
-                        element = root->FirstChildElement("AStar_PathFinde");
+                        element = Configroot->FirstChildElement("AStar_PathFinde");
                         if(element != NULL){
                             AstarTool::GetInstance()->LoadXMLSettings(element);
                         }
                         delete element;
-                        element = root->FirstChildElement("BasicConfig");
+                        element = Configroot->FirstChildElement("BasicConfig");
                         if(element != NULL){
                             //StrategyStatus::GetInstance()->LoadXMLSettings(element);
                         }
                         delete element;
-                        element = root->FirstChildElement("StraConfig");
+                        element = Configroot->FirstChildElement("StraConfig");
                         if(element != NULL){
                             TiXmlElement* child = element->FirstChildElement("Stra_Astar");
                             if(child != NULL){
