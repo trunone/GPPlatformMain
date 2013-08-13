@@ -14,6 +14,24 @@
     <ChargeArea x="546" y="4" Width="50" Height="50" Angle="0" />
     <EndArea x="546" y="308" Width="50" Height="50" Angle="0" />
   </DirectionObject>
+  <BasicConfig>
+	<LivRMDoor x="220" y="266" />
+	<DinRMDoor x="228" y="325" />
+	<BedRMDoor x="338" y="302" />
+	<LibDoor x="504" y="270" />
+	<LivRMCen x="138" y="92" />
+	<DinRMCen x="126" y="476" />
+	<BedRMCen x="438" y="472" />
+	<LibCen x="438" y="120" />
+	<ChrgDoor x="308" y="560" />
+	<ChrgCen x="308" y="596" />
+  </BasicConfig>
+  <StraConfig>
+    <Stra_Astar PathErrRange="45" AchieveErrRange="25" />
+    <Stra_Avoid StartAngle_du="-90" ScanLineSize="61" ScanLineScale_du="3" SafeRange="70" SafeArc_D="60" SafeArc_A="60" AvoidConfig1="1.2" AvoidForce_du="130" FixDirect="0" />
+	<Stra_PathPlan DetourConst="85" />
+	<Stra_VelocityControl dis_max="100" dis_min="10" spd_max="127" spd_min="12" sita_max="1.047197552" sita_min="0.05" w_max="21" w_min="9" />
+  </StraConfig>
   <ColorModel>
     <Blue HueMax="1" HueMin="0.4805556" SaturationMax="0.6" SaturationMin="0" BrightnessMax="1" BrightnessMin="0" />
     <Green HueMax="0.8" HueMin="0" SaturationMax="0.4" SaturationMin="0" BrightnessMax="0.7" BrightnessMin="0" />

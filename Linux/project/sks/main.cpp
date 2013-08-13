@@ -81,20 +81,15 @@ int DescompositionCommand (TiXmlElement* root)
 }
 int DescompositionSimulator (TiXmlElement* root)
 {
-	TiXmlElement* element;
-	element = root->FirstChildElement("Sim_status");
+	TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
 	if(element != NULL) {
-		 TiXmlElement* child;
-		 child = element->FirstChildElement("Site");
-		 if(child != NULL){
-				child->Attribute("x", &LocationStatus::Position.x);
-				child->Attribute("y", &LocationStatus::Position.y);
-				child->Attribute("sita", &LocationStatus::Handle);
-         }
+		element->Attribute("x", &LocationStatus::Position.x);
+		element->Attribute("y", &LocationStatus::Position.y);
+		element->Attribute("sita", &LocationStatus::Handle);
 	}
 }
 
-int DescompositionRequest (TiXmlElement* root,LinuxServer new_sock)
+int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
 {
 	TiXmlElement* element;
     TiXmlElement RequestRoot("Status");
@@ -112,9 +107,9 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer new_sock)
 	element = root->FirstChildElement("Position");
 	if(element != NULL) {
 		TiXmlElement element("Position");
-			//element->SetDoubleAttribute("x",???);
-			//element->SetDoubleAttribute("y",???);
-			//element->SetDoubleAttribute("sita",???);
+			element.SetDoubleAttribute("x",LocationStatus::Position.x);
+			element.SetDoubleAttribute("y",LocationStatus::Position.y);
+			element.SetDoubleAttribute("sita",LocationStatus::Handle);
 			RequestRoot.InsertEndChild(*element.Clone());
 	}
 	element = root->FirstChildElement("Camera_Angle");
@@ -126,51 +121,50 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer new_sock)
 	element = root->FirstChildElement("Movement");
 	if(element != NULL) {
 		TiXmlElement element("Movement");
-		//element->SetDoubleAttribute("x",???);
-		//element->SetDoubleAttribute("y",???);
-		//element->SetDoubleAttribute("sita",???);
+		element.SetDoubleAttribute("x",StrategyStatus::x);
+		element.SetDoubleAttribute("y",StrategyStatus::y);
+		element.SetDoubleAttribute("sita",StrategyStatus::w);
 		RequestRoot.InsertEndChild(*element.Clone());	
 	}
 	TiXmlDocument RequestDoc;
 	RequestDoc.InsertEndChild(*RequestRoot.Clone());
 	TiXmlPrinter send;
 	RequestDoc.Accept( &send );
-	new_sock << send.CStr();
+	*new_sock << send.CStr();
 }
-int DescompositionReloadConfig ()
+void DescompositionReloadConfig ()
 {
 	TiXmlDocument ConfigDoc("Robot_Config.xml");
 	ConfigDoc.LoadFile();
-	TiXmlElement* Configroot = ConfigDoc.FirstChildElement("Config");
-			
-    TiXmlElement* element = Configroot->FirstChildElement("DirectionObject");
+	TiXmlElement* root = ConfigDoc.FirstChildElement("Config");
+	
+    TiXmlElement* element = root->FirstChildElement("DirectionObject");
 		if(element != NULL){
                 //LocationStatus::GetInstance()->LoadXMLSettings(element);
         }
-        element = Configroot->FirstChildElement("ColorModel");
+        element = root->FirstChildElement("ColorModel");
         if(element != NULL){
                 ColorModel::GetInstance()->LoadXMLSettings(element);
         }
-//-------------------------------------------------
-		element = Configroot->FirstChildElement("GridMap");
+
+		element = root->FirstChildElement("GridMap");
 		if(element != NULL){
-				AstarTool::GetInstance()->LoadXMLSettings_GridMap(element);
+				AstarTool::GetInstance()->LoadXMLSettings(element);
+
 		}
-//-------------------------------------------------
-        element = Configroot->FirstChildElement("AStar_PathFinde");
-		if(element != NULL){
-                    AstarTool::GetInstance()->LoadXMLSettings(element);
-        }
-        element = Configroot->FirstChildElement("BasicConfig");
+
+        element = root->FirstChildElement("BasicConfig");
         if(element != NULL){
-                    //StrategyStatus::GetInstance()->LoadXMLSettings(element);
+				StrategyManager::GetInstance()->LoadXMLSettings(element);
         }
-        element = Configroot->FirstChildElement("StraConfig");
+
+        element = root->FirstChildElement("StraConfig");
         if(element != NULL){
                     TiXmlElement* child = element->FirstChildElement("Stra_Astar");
                     if(child != NULL){
                           Stra_AStar::GetInstance()->LoadXMLSettings(child);
                     }
+
                     child = element->FirstChildElement("Stra_Avoid");
                     if(child != NULL){
                           Stra_Avoid::GetInstance()->LoadXMLSettings(child);
@@ -186,18 +180,11 @@ int DescompositionReloadConfig ()
        }
 
 }
-int IntialGridMap(void){
-	TiXmlDocument ConfigDoc("Robot_Config.xml");
-	ConfigDoc.LoadFile();
-	TiXmlElement* Configroot = ConfigDoc.FirstChildElement("Config");
-	TiXmlElement* element = Configroot->FirstChildElement("GridMap");
-		if(element != NULL){
-				AstarTool::GetInstance()->LoadXMLSettings_GridMap(element);
-		}
-}
+
 int main(void)
 {
-	IntialGridMap();
+	DescompositionReloadConfig();
+
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
@@ -258,15 +245,15 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
     
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    //StrategyManager::GetInstance()->SetEnable(true);
+    StrategyManager::GetInstance()->SetEnable(true);
 
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
@@ -302,7 +289,7 @@ int main(void)
 					}
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
-                        DescompositionRequest (root,new_sock);
+                        DescompositionRequest (root, &new_sock);
                     }
                     root = doc.FirstChildElement("ReloadConfig");
                     if(root != NULL){
