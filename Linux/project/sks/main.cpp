@@ -79,7 +79,7 @@ int main(void)
 		
 		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
 		
-		VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+		//VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
 	
 		VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
@@ -247,7 +247,7 @@ int main(void)
                         new_sock << send.CStr();
                     }
 */
-                    //root = doc.FirstChildElement("ReloadConfig");	
+                    //root = doc.FirstChildElement("ReloadConfig"s);	
                     //if(root != NULL){
 			TiXmlDocument ConfigDoc("Config.xml");
 			ConfigDoc.LoadFile();
