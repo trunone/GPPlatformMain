@@ -15,8 +15,10 @@
 using namespace Robot;
 
 //-----cvimage
-Mat VisionStatus::send_frame;
+Mat VisionStatus::VideoFrame;
 
+//cvSetCaptureProperty(VideoFrame, CV_CAP_PROP_FRAME_WIDTH, 320);
+//cvSetCaptureProperty(VideoFrame, CV_CAP_PROP_FRAME_HEIGHT, 240);
 //-----ObjCut
 unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
@@ -42,7 +44,7 @@ VisionStatus::ColorRange VisionStatus::hsvGreenRange = {1.0, 0.0, 1.0, 0.0, 1.0,
 
 //------ FaceData ----------------------------------------------------------
 //------ FaceDetection ----------------------------------------------------------
-Mat VisionStatus::VideoFrame;
+
 
 //------ ImgProcess ----------------------------------------------------------
 unsigned char VisionStatus::Favg[40*40*3];

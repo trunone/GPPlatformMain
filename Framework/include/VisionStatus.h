@@ -70,7 +70,7 @@ namespace Robot
 		//--- Global
 		static const int ImageWidth = 640, ImageHeight = 480;
 
-		static Mat frame;
+		
 		static Mat send_frame;
 		
 		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],

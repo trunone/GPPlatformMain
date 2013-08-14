@@ -95,10 +95,9 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * 
 	Ycenter=(VisionStatus::Ymax+VisionStatus::Ymin)/2;
 	//DrawLine(WebcamBoolBuffer);
 }
-void Segmentation::DrawLine(unsigned char *WebcamBuffer){  //畫框框
-		
+void Segmentation::DrawLine(unsigned char *WebcamBuffer){ 
 	for(int j=VisionStatus::Ymin; j < VisionStatus::Ymax; j++){
-		WebcamBuffer[3*(j * VisionStatus::ImageWidth + VisionStatus::Xmin)+2] = 255;  //紅線
+		WebcamBuffer[3*(j * VisionStatus::ImageWidth + VisionStatus::Xmin)+2] = 255; 
 		WebcamBuffer[3*(j * VisionStatus::ImageWidth + VisionStatus::Xmin)+1] = 0;
 		WebcamBuffer[3*(j * VisionStatus::ImageWidth + VisionStatus::Xmin)+0] = 0;
 		WebcamBuffer[3*(j * VisionStatus::ImageWidth + VisionStatus::Xmax)+2] = 255;
@@ -114,9 +113,8 @@ void Segmentation::DrawLine(unsigned char *WebcamBuffer){  //畫框框
 		WebcamBuffer[3*(VisionStatus::Ymax * VisionStatus::ImageWidth + i)+0] = 0;
 	}
 }
-void Segmentation::Process(){
-	
-	Segment(VisionStatus::Blue_Ball, VisionStatus::VideoFrame.data);
+void Segmentation::Process(){	
+	/*Segment(VisionStatus::Blue_Ball, VisionStatus::VideoFrame.data);
 	VisionStatus::Blue_X=Xcenter; 
 	VisionStatus::Blue_Y=Ycenter;
 	Segment(VisionStatus::Red_Ball, VisionStatus::VideoFrame.data);
@@ -124,11 +122,10 @@ void Segmentation::Process(){
 	VisionStatus::Red_Y=Ycenter;
 	Segment(VisionStatus::Green_Ball, VisionStatus::VideoFrame.data);
 	VisionStatus::Green_X=Xcenter;
-	VisionStatus::Green_Y=Ycenter;
+	VisionStatus::Green_Y=Ycenter;*/
 	cv::imwrite("1.jpg",VisionStatus::VideoFrame);
 	
 	//cout<<"gx\t"<<VisionStatus::Green_X<<endl;
-	//cv::imshow( window_name, VisionStatus::VideoFrame );
 	
 	
 }

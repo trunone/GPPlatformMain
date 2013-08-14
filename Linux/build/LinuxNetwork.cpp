@@ -42,6 +42,10 @@ bool LinuxSocket::create()
 
     return true;
 }
+void LinuxSocket::close() {
+    if ( is_valid() )
+        ::close ( m_sock );
+}
 
 bool LinuxSocket::bind ( const int port )  {
     if ( ! is_valid() )

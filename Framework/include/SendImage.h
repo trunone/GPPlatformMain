@@ -18,7 +18,6 @@ namespace Robot
 	{
 	private:
 		static SendImage* m_UniqueInstance;
-		LinuxSocket client;
 		SendImage();
 	public:
 		

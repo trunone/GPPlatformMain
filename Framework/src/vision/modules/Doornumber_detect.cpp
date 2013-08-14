@@ -139,9 +139,9 @@ void Doornumber_detect::Process(){
 	for(int WidthCnt = 0; WidthCnt < 640; WidthCnt++){
 			for(int HeightCnt = 0; HeightCnt < 480; HeightCnt++){
 						
-				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]/180;
-				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]/255;
-				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]/255;
+				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]*0.1/18;
+				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]*0.1/25.5;
+				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]*0.1/25.5;
 				
 				
 				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){

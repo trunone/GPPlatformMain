@@ -50,7 +50,8 @@ namespace Robot
 
 		void set_non_blocking ( const bool );
 
-		bool is_valid() const { return m_sock != -1; }	
+		bool is_valid() const { return m_sock != -1; }
+		void close();
 	};
 
 	class LinuxSocketException  
