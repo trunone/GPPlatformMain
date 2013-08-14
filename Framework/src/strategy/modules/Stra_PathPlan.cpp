@@ -13,42 +13,6 @@ Stra_PathPlan::~Stra_PathPlan()
 {
 
 }
-
-//Need modifed to the xml system 
-/*/Stra_PathPlan::Stra_PathPlan()
-:TCommonUnit("./Strategy/StraConfig/Stra_PathPlan.txt", 1 )
-{
-
-    this->Caption = "Stra_PathPlan";
-
-    this->ParameterPath = "./Strategy/StraConfig/Stra_PathPlan.txt";
-
-    this->ParameterReset();
-
-    this->P1_Dis = 0;
-
-    this->P1_CutAng = 0;
-
-    this->P2_Dis = 0;
-
-    this->P2_CutAng = 0;
-
-}//*/
-
-//----------------------------------------------------------------------------
-/*
-string Stra_PathPlan::ParameterReset(void)
-{
-    string str_ = this->Caption +" ParameterReset";
-
-    this->DetourConst = this->Parameter[0];
-
-    this->bNewParameter = false;
-
-      return str_;
-
-}
-*/
 //------------------------------------------------------------------------------xml
 int Stra_PathPlan::LoadXMLSettings (TiXmlElement* element){
 	if(element != NULL){
@@ -59,8 +23,6 @@ int Stra_PathPlan::LoadXMLSettings (TiXmlElement* element){
 //------------------------------------------------------------------------------
 void Stra_PathPlan::Initialize(void)
 {
-//    string str_ = this->Caption +" Initial";
-
     P1_Dis = 0;         
 
     P1_CutAng = 0;      
@@ -68,35 +30,16 @@ void Stra_PathPlan::Initialize(void)
     P2_Dis = 0;
 
     P2_CutAng = 0;
-
-
-//    return str_;
-
 }
-
 //----------------------------------------------------------------------------
 
 void Stra_PathPlan::Process( void )
 {
-    //if( this->bNewParameter ) this->ParameterReset();
-
-    //------------------------------------------------------------------------
-    //TCoordinate StartPos = StrategyStatus::AStarPath.StartPos;
-   	//TCoordinate GoalPos  = StrategyStatus::AStarPath.GoalPos;
-	//printf("%f\n",StrategyStatus::Goal1.x);
-	//printf("%f\n",StrategyStatus::Goal1.y);
-	//printf("%f\n",StartPos.x);
-	//printf("%f\n",StartPos.y);
-	//printf("%f\n",GoalPos.x);
-	//printf("%f\n",GoalPos.y);
-
-
     #ifndef Def_OMNIDIRECTION_SYSTEM
 
     if(StrategyStatus::FlagForward )                                             //9.5
 
     {
-
         if( (StrategyStatus::Goal1.Length() *fabs(StrategyStatus::Goal1.Angle()) > 10.5 ) &&
 
             (fabs(StrategyStatus::Goal1.Angle()) > M_PI / 6 ) )//three wheel omnidircetion system
@@ -107,7 +50,6 @@ void Stra_PathPlan::Process( void )
 
             StrategyStatus::Goal1 =aVector(0,0);
 			
-
         }
 
     }
@@ -115,7 +57,6 @@ void Stra_PathPlan::Process( void )
     #endif
     //------------------------------------------------------------------------
     if( StrategyStatus::Goal1.Length() != 0 && StrategyStatus::Goal2.Length() != 0 ) //two points
-
     {
 
         P1_Dis    = StrategyStatus::Goal1.Length();
@@ -143,13 +84,17 @@ void Stra_PathPlan::Process( void )
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
     }
+	//printf("%f %f\n",StrategyStatus::Goal1.x ,StrategyStatus::Goal1.y);
+	
     StrategyStatus::MotionDistance =  StrategyStatus::GoalVector.Length();
+
+	//printf("%f\n",StrategyStatus::MotionDistance);
 
     StrategyStatus::MotionAngle    =  StrategyStatus::GoalVector.Angle();
 
-	//printf("%f\n",StrategyStatus::MotionDistance);
 	//printf("%f\n",StrategyStatus::MotionAngle);
 
+	
 
 }
 

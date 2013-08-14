@@ -24,8 +24,8 @@ StrategyManager::StrategyManager() :
 
 StrategyManager::~StrategyManager()
 {
+	
 }
-
 bool StrategyManager::Initialize(Motors *motors)
 {
     mMotors = motors;
@@ -38,7 +38,7 @@ bool StrategyManager::Initialize(Motors *motors)
     mMotors->SetEnableAll();
     mMotors->SetVelocityProfileAll(1000, 500);
     mMotors->ActivateProfileVelocityModeAll();
-
+	
 
 	return true;
 }
@@ -160,78 +160,65 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element){
 			child->Attribute("x", &StrategyStatus::RootHandle.x);
 			child->Attribute("y", &StrategyStatus::RootHandle.y);	
 		}
-        delete child;
 		child=element->FirstChildElement("StartPos");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::StartPosition.x);
 			child->Attribute("y", &StrategyStatus::StartPosition.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("EndPos");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::EndPosition.x);
 			child->Attribute("y", &StrategyStatus::EndPosition.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("FindBallEn");
 		if(child != NULL){
 			child->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
 		}
-        delete child;
 		child=element->FirstChildElement("LivRMDoor");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::LivRMDoor.x);
 			child->Attribute("y", &StrategyStatus::LivRMDoor.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("LivRMCen");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::LivRMCen.x);
 			child->Attribute("y", &StrategyStatus::LivRMCen.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("DinRMDoor");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::DinRMDoor.x);
 			child->Attribute("y", &StrategyStatus::DinRMDoor.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("DinRMCen");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::DinRMCen.x);
 			child->Attribute("y", &StrategyStatus::DinRMCen.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("LibDoor");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::LibDoor.x);
 			child->Attribute("y", &StrategyStatus::LibDoor.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("LibCen");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::LibCen.x);
 			child->Attribute("y", &StrategyStatus::LibCen.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("BedRMDoor");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::BedRMDoor.x);
 			child->Attribute("y", &StrategyStatus::BedRMDoor.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("BedRMCen");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::BedRMCen.x);
 			child->Attribute("y", &StrategyStatus::BedRMCen.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("ChrgDoor");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::ChrgDoor.x);
 			child->Attribute("y", &StrategyStatus::ChrgDoor.y);						
 		}
-        delete child;
 		child=element->FirstChildElement("ChrgCen");
 		if(child != NULL){
 			child->Attribute("x", &StrategyStatus::ChrgCen.x);

@@ -1,8 +1,7 @@
 #include <math.h>
 #include "AstarTool.h"
 using namespace Robot;
-
-
+using namespace Heap;
 
 AstarTool* AstarTool::m_UniqueInstance = new AstarTool();
 
@@ -15,10 +14,9 @@ AstarTool::AstarTool()
 
     CurrentStatus = 0;
     ObstacleThreshold = 200;
-
-	for(int i = 0; i<64; i++) {
+	for(int i = 0; i<60; i++){
 		vector<tsNode> vecTmp;
-		for(int j = 0; j<64; j++) {
+		for(int j = 0; j<60; j++){
 			tsNode tmp;
 			vecTmp.push_back(tmp);
 		}
@@ -32,22 +30,8 @@ void AstarTool::CleanList( void )
     ClosedList.clear();
     while( (OpenList.minnum()).x != -1 && (OpenList.minnum()).y != -1 ){ OpenList.extract_min(); }
 }
-//---------------------------------------------------------------------------xml
-int AstarTool::LoadXMLSettings (TiXmlElement* element){
-	if(element != NULL){	
-		TiXmlElement* modelchild;
-		modelchild=element->FirstChildElement("MapGrid_Config");
-		if(modelchild != NULL){
-			modelchild->Attribute("length",&MapHeight);
-			modelchild->Attribute("Width", &MapWidth);
-			modelchild->Attribute("NodeResolution", &NodeResolution);
-		}
-		
-	}
-	return 0;
-}
 //--------------------------------------------------------------------------xmlGridMap
-int AstarTool::LoadXMLSettings_GridMap(TiXmlElement* element){
+int AstarTool::LoadXMLSettings(TiXmlElement* element){
 	Map.clear();
 	if(element != NULL){
 		TiXmlElement* child=element->FirstChildElement();
@@ -63,7 +47,6 @@ int AstarTool::LoadXMLSettings_GridMap(TiXmlElement* element){
 			Map.push_back(vecTmp);
 			child=child->NextSiblingElement();
 		}
-		
 	}
 	return 0;
 }
@@ -71,32 +54,29 @@ int AstarTool::LoadXMLSettings_GridMap(TiXmlElement* element){
 void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
 {
     CurrentStatus += (CurrentStatus == 255 ? 6 : 5);
-
-    TCoordinate Front,Father;
-    //---- record the start and goal -----
-    StartNode.x = (int)Start.x/NodeResolution;
-    StartNode.y = (int)Start.y/NodeResolution;
-    GoalNode.x  = (int)Goal.x /NodeResolution;
-    GoalNode.y  = (int)Goal.y /NodeResolution;
 	
-	//printf("%f %f \n",StartNode.x, StartNode.y);
-	//printf("%f %f \n",GoalNode.x, GoalNode.y);
-    
+	
+	TCoordinate Front,Father;
+    //---- record the start and goal -----
+    StartNode.x = (int)(Start.x/NodeResolution);
+    StartNode.y = (int)(Start.y/NodeResolution);
+    GoalNode.x  = (int)(Goal.x /NodeResolution);
+    GoalNode.y  = (int)(Goal.y /NodeResolution);
+
+	printf("StartNode %f %f\n",StartNode.x,StartNode.y);
+	printf("GoalNode %f %f\n",GoalNode.x,GoalNode.y);
+
 	//---- initial the list information
     Map[StartNode.x][StartNode.y].Father = StartNode;
     Map[StartNode.x][StartNode.y].G = 0;
     Map[StartNode.x][StartNode.y].H = NodeResolution*(( GoalNode - StartNode ).Length());
     Map[StartNode.x][StartNode.y].F = Map[StartNode.x][StartNode.y].G + Map[StartNode.x][StartNode.y].H;
 
-	//printf("%d\n",Map[StartNode.x][StartNode.y].G);
-	//printf("%d\n",Map[StartNode.x][StartNode.y].H);
-	//printf("%d\n",Map[StartNode.x][StartNode.y].F);
-    
 	OpenList.insert( Map[StartNode.x][StartNode.y].F ,StartNode.x, StartNode.y );
-
     //---- execute the A Star
     Front.x = OpenList.minnum().x;
     Front.y = OpenList.minnum().y;
+	
     //--------------------------------------------------------------------------
     //-------------- Stop Condition --------------------------------------------
     //--------------------------------------------------------------------------
@@ -106,19 +86,22 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
         OpenList.extract_min();
 
         Map[Front.x][Front.y].Status = CurrentStatus-Def_Closed;
-
         ClosedList.push_back( Front );
         SearchNeighbor_8Connect( Front );
 
         Front.x = OpenList.minnum().x;
         Front.y = OpenList.minnum().y;
-
+		
+		
     }
+	printf("Front %f %f\n", Front.x, Front.y);
     //--------------------------------------------------------------------------
     //-------------- Return Path Info ------------------------------------------
     //--------------------------------------------------------------------------
-    if( Front.x == GoalNode.x && Front.y == GoalNode.y )
+	
+	if( Front.x == GoalNode.x && Front.y == GoalNode.y )
     {
+		printf("...\n");
         Path.insert( Path.begin(), Goal );
         Father = GoalNode;
         while( StartNode.x != Father.x || StartNode.y != Father.y   )
@@ -142,15 +125,13 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
         for( int j = -1; j < 2; j++ )
         {
             if( i==0 && j==0 ) continue;
-
-            TmpPos    = Current + aVector( i, j );
-            if( TmpPos.x < 0 || TmpPos.y < 0 || TmpPos.x >= MapWidth ||TmpPos.y >= MapHeight ) continue;
+            TmpPos = Current + aVector( i, j );
+            if( TmpPos.x < 0 || TmpPos.y < 0 || TmpPos.x >= Map[0].size() ||TmpPos.y >= Map.size() ) continue;
 
             TmpWeight = Map[TmpPos.x][TmpPos.y].Weight;
-
             if( TmpWeight < ObstacleThreshold  )
             {
-                if( i*j==0 ){       // if neighbor is diagonal, then G is 14.
+                if( i*j==0 ){       // if neighbor is diagonal, then G is 1a4.
                     TmpWeight += NodeResolution;
                 }else{
                     if( Map[TmpPos.x][Current.y].Weight > ObstacleThreshold ||
@@ -325,6 +306,7 @@ void AstarTool::OneStepExe()
     //--------------------------------------------------------------------------
     if( Front.x == GoalNode.x && Front.y == GoalNode.y )
     {
+		
         Path.insert( Path.begin(), GoalNode*NodeResolution );
         Father = GoalNode;
         while( StartNode.x != Father.x || StartNode.y != Father.y   )

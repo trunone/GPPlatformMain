@@ -43,14 +43,6 @@ namespace Robot
 		static TCoordinate BedRMCen;
 		static TCoordinate ChrgDoor;
 		static TCoordinate ChrgCen;
-		static TCoordinate Door1;
-		static TCoordinate Door2;
-		static TCoordinate Door3;
-		static TCoordinate Door4;
-		static TCoordinate Center1;
-		static TCoordinate Center2;
-		static TCoordinate Center3;
-		static TCoordinate Center4;
 		
 		//--------------------------------------------------
 		// task information

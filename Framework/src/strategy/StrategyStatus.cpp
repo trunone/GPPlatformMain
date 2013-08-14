@@ -15,21 +15,13 @@ double StrategyStatus::y(0);
 double StrategyStatus::FI(0);
 double StrategyStatus::w(0);
 
-TCoordinate StrategyStatus::Door1 = aVector(220,334);
-TCoordinate StrategyStatus::Door2 = aVector(228,298);
-TCoordinate StrategyStatus::Door3 = aVector(338,298);
-TCoordinate StrategyStatus::Door4 = aVector(504,330);
-TCoordinate StrategyStatus::Center1 = aVector(138,508);
-TCoordinate StrategyStatus::Center2 = aVector(126,124);
-TCoordinate StrategyStatus::Center3 = aVector(438,128);
-TCoordinate StrategyStatus::Center4 = aVector(437,480);
-
 TCoordinate StrategyStatus::StartPosition;
 TCoordinate StrategyStatus::EscapePosition;
 TCoordinate StrategyStatus::EndPosition;
 
 TCoordinate StrategyStatus::RobotPos;
 TCoordinate StrategyStatus::RootHandle;
+
 TCoordinate StrategyStatus::LivRMDoor;
 TCoordinate StrategyStatus::LivRMCen;
 TCoordinate StrategyStatus::DinRMDoor;

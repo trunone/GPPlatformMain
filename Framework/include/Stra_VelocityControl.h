@@ -46,31 +46,31 @@ namespace Robot{
 
    		double Raise_Function( double V, double Cmd );
 
-   		static double GoalDistance;
+   		double GoalDistance;
 
-   		static double GoalAngle;
+   		double GoalAngle;
 
-   		static double HandleAngle;
+   		double HandleAngle;
 
-		static double DistanceMax;
+		double DistanceMax;
 
-   		static double DistanceMin;
+   		double DistanceMin;
 
-   		static double SpeedMax;
+   		double SpeedMax;
 
-        static double SpeedMin;
+        double SpeedMin;
 
-		static double ThetaMax;
+		double ThetaMax;
 
-   		static double ThetaMin;
+   		double ThetaMin;
 
-        static double OmegaMax;
+        double OmegaMax;
 
-        static double OmegaMin;
+        double OmegaMin;
 
-        static double SpeedCmd;
+        double SpeedCmd;
 
-   	 	static double SpeedTmp;
+   	 	double SpeedTmp;
 
 	};
 }
