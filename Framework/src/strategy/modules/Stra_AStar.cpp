@@ -39,6 +39,7 @@ void Stra_AStar::Process(void)
 	//printf("enter astar module\n");
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
         StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
+
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
 	{
 			
@@ -71,7 +72,8 @@ void Stra_AStar::Behavior_AstarPath( void )
 	int Size = AstarTool::GetInstance()->SmoothPath.size();
 	//printf("AStarPath.PCnt %d Size  %d\n",StrategyStatus::AStarPath.PCnt,Size);
 	TCoordinate TmpGoal_V = AstarTool::GetInstance()->SmoothPath[ StrategyStatus::AStarPath.PCnt ] - LocationStatus::Position;
-    if( StrategyStatus::AStarPath.PCnt < Size ){
+
+	if( StrategyStatus::AStarPath.PCnt < Size ){
 		Length = TmpGoal_V.Length();
         if(StrategyStatus::AStarPath.PCnt == Size - 1){
 			StrategyStatus::Goal1 = TmpGoal_V >> LocationStatus::Handle;

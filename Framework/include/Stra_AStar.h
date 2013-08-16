@@ -40,7 +40,6 @@ namespace Robot
 		
 		Stra_AStar();
 
-		
 
 		TCoordinate StartPos, GoalPos;
 
