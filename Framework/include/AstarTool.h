@@ -8,7 +8,7 @@
 //Update   :2013/07/10
 //
 //Function :AStar alogrithm
-//===============================================
+//==============================================
 #ifndef AstarH
 #define AstarH
 #include "StrategyModule.h"
@@ -52,8 +52,6 @@ namespace Robot{
 	    void OneStepExe();
 	    unsigned char CurrentStatus;
 	    unsigned char ObstacleThreshold;
-
-
 
 	    vector <TCoordinate> SmoothPath;
 

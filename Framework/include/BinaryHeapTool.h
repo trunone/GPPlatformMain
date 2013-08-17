@@ -1,11 +1,8 @@
-//---------------------------------------------------------------------------
-
 #ifndef BinaryHeapH
 #define BinaryHeapH
-//---------------------------------------------------------------------------
 #include<iostream>
 #include<vector>
-
+using namespace Robot;
 using namespace std;
 
 typedef struct

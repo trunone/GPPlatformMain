@@ -13,7 +13,6 @@ Stra_AStar::~Stra_AStar()
 {
 
 }
-
 //-----------------------------------------------------------------
 int Stra_AStar::LoadXMLSettings(TiXmlElement* element){
 	if(element != NULL){				
@@ -21,7 +20,7 @@ int Stra_AStar::LoadXMLSettings(TiXmlElement* element){
 		element->Attribute("AchieveErrRange", &AchieveErrRange);
 	}
 }
-
+//-----------------------------------------------------------------
 void Stra_AStar::Initialize(void)
 {
 	
@@ -32,7 +31,6 @@ void Stra_AStar::Initialize(void)
     CloseState = false;
 
 }
-
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
 {	
@@ -40,8 +38,7 @@ void Stra_AStar::Process(void)
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
         StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
-	{
-			
+	{			
         	StartPos = StrategyStatus::AStarPath.StartPos;
 
         	GoalPos  = StrategyStatus::AStarPath.GoalPos;
@@ -59,17 +56,17 @@ void Stra_AStar::Process(void)
 			//printf("beh\n");
 			
     	}else{
-        	Behavior_AstarPath();
+        	
+			Behavior_AstarPath();
 
-    	}
-		
+    	}	
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Behavior_AstarPath( void )
 {
 	int Length = 0;
 	int Size = AstarTool::GetInstance()->SmoothPath.size();
-	//printf("AStarPath.PCnt %d Size  %d\n",StrategyStatus::AStarPath.PCnt,Size);
+	//printf("AStarPath.PCnt %d Size  %d\n",sStrategyStatus::AStarPath.PCnt,Size);
 	TCoordinate TmpGoal_V = AstarTool::GetInstance()->SmoothPath[ StrategyStatus::AStarPath.PCnt ] - LocationStatus::Position;
     if( StrategyStatus::AStarPath.PCnt < Size ){
 		Length = TmpGoal_V.Length();

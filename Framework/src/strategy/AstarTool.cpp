@@ -23,6 +23,7 @@ AstarTool::AstarTool()
 		Map.push_back(vecTmp);
 	}
 }
+int state=0;
 //---------------------------------------------------------------------------
 void AstarTool::CleanList( void )
 {
@@ -95,13 +96,13 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
 		
     }
 	printf("Front %f %f\n", Front.x, Front.y);
+	//getchar();
     //--------------------------------------------------------------------------
     //-------------- Return Path Info ------------------------------------------
     //--------------------------------------------------------------------------
 	
 	if( Front.x == GoalNode.x && Front.y == GoalNode.y )
     {
-		printf("...\n");
         Path.insert( Path.begin(), Goal );
         Father = GoalNode;
         while( StartNode.x != Father.x || StartNode.y != Father.y   )
@@ -127,8 +128,9 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
             if( i==0 && j==0 ) continue;
             TmpPos = Current + aVector( i, j );
             if( TmpPos.x < 0 || TmpPos.y < 0 || TmpPos.x >= Map[0].size() ||TmpPos.y >= Map.size() ) continue;
-
-            TmpWeight = Map[TmpPos.x][TmpPos.y].Weight;
+            	TmpWeight = Map[TmpPos.x][TmpPos.y].Weight;
+				printf("tmp_Pos %f %f temweight %d\n",TmpPos.x,TmpPos.y,TmpWeight);
+				//getchar();		
             if( TmpWeight < ObstacleThreshold  )
             {
                 if( i*j==0 ){       // if neighbor is diagonal, then G is 1a4.
