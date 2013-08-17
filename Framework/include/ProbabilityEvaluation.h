@@ -18,32 +18,34 @@
 #define NoDet 0
 #define PixelSigma 20
 
-namespace Robot{
+namespace Robot {
 
-	class ProbEvaluation
-	{
-	private:
-    	double NormalDistribution(float sigma , float deviation); //sigma is  NormalDistribution's standard deviation
-		static ProbEvaluation* m_UniqueInstance;
-	public:
-    	 ProbEvaluation();
-    	~ProbEvaluation();
+class ProbEvaluation
+{
+private:
+    double NormalDistribution(float sigma , float deviation); //sigma is  NormalDistribution's standard deviation
+    static ProbEvaluation* m_UniqueInstance;
+public:
+    ProbEvaluation();
+    ~ProbEvaluation();
 
-		static ProbEvaluation* GetInstance() { return m_UniqueInstance; }
-        Mat OriginalMap;
-		Mat VirtualLineMap; //point to systen virtual map;
+    static ProbEvaluation* GetInstance() {
+        return m_UniqueInstance;
+    }
+    Mat OriginalMap;
+    Mat VirtualLineMap; //point to systen virtual map;
 
-    	void AssignVirtualMap();
-    	float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
-       	double GetProbability(int x,int y ,float angle);  // get probability of virtual position
+    void AssignVirtualMap();
+    float* ScanLines(int x,int y ,float angle, float starR, float stopR);  //for virsual map
+    double GetProbability(int x,int y ,float angle);  // get probability of virtual position
 
-		double GetStandandDeviation(double ExpectationDis) ;
-		void ScanLinesInfoUpdate();  //for image
+    double GetStandandDeviation(double ExpectationDis) ;
+    void ScanLinesInfoUpdate();  //for image
 
 
-	    //run    ScanLinesInfoUpdate()  update image scanlines info
-	    //and then run n times main()  get all particle's probability
+    //run    ScanLinesInfoUpdate()  update image scanlines info
+    //and then run n times main()  get all particle's probability
 
-	};
+};
 }
 #endif

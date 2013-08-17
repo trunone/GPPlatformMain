@@ -14,18 +14,20 @@ using namespace std;
 
 namespace Robot
 {
-	class SendImage : public VisionModule
-	{
-	private:
-		static SendImage* m_UniqueInstance;
-		SendImage();
-	public:
-		
-		static SendImage* GetInstance() { return m_UniqueInstance; }
-		
-		~SendImage();
-		void Initialize();
-		void Process();
-	};
+class SendImage : public VisionModule
+{
+private:
+    static SendImage* m_UniqueInstance;
+    SendImage();
+public:
+
+    static SendImage* GetInstance() {
+        return m_UniqueInstance;
+    }
+
+    ~SendImage();
+    void Initialize();
+    void Process();
+};
 }
 #endif

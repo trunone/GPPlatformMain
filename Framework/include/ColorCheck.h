@@ -9,27 +9,29 @@ using namespace std;
 
 namespace Robot
 {
-	class ColorCheck 
-	{
+class ColorCheck
+{
 
-	private:
-		static ColorCheck* m_UniqueInstance;
-		
-		ColorCheck();
+private:
+    static ColorCheck* m_UniqueInstance;
 
-		
-	public:
-		
-		static ColorCheck* GetInstance() { return m_UniqueInstance; }
-		
-		~ColorCheck();
-		
-		bool HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue);
-		bool HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue);
-		bool HSV_hsvCheckRange_Green(float hValue, float sValue, float vValue);
+    ColorCheck();
 
-		
-	};
+
+public:
+
+    static ColorCheck* GetInstance() {
+        return m_UniqueInstance;
+    }
+
+    ~ColorCheck();
+
+    bool HSV_hsvCheckRange_Blue(float hValue, float sValue, float vValue);
+    bool HSV_hsvCheckRange_Red(float hValue, float sValue, float vValue);
+    bool HSV_hsvCheckRange_Green(float hValue, float sValue, float vValue);
+
+
+};
 }
 
 #endif

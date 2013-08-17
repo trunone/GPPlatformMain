@@ -19,41 +19,43 @@
 #include <tinyxml.h>
 namespace Robot
 {
-	class Stra_AStar  : public StrategyModule
-	{
-	public:
-		static Stra_AStar*  GetInstance() {return m_UniqueInstance;}
-		
-		~Stra_AStar();
+class Stra_AStar  : public StrategyModule
+{
+public:
+    static Stra_AStar*  GetInstance() {
+        return m_UniqueInstance;
+    }
 
-		void Initialize(void);                 
+    ~Stra_AStar();
 
-		void Process(void);  
+    void Initialize(void);
 
-		int LoadXMLSettings(TiXmlElement* element);
+    void Process(void);
 
-		void Behavior_AstarPath( void );
+    int LoadXMLSettings(TiXmlElement* element);
 
-	private:
+    void Behavior_AstarPath( void );
 
-        static Stra_AStar* m_UniqueInstance; 
-		
-		Stra_AStar();
+private:
+
+    static Stra_AStar* m_UniqueInstance;
+
+    Stra_AStar();
 
 
-		TCoordinate StartPos, GoalPos;
+    TCoordinate StartPos, GoalPos;
 
-		bool CloseState;
+    bool CloseState;
 
-		int PathErrRange;
+    int PathErrRange;
 
-		int AchieveErrRange;
+    int AchieveErrRange;
 
-		TCoordinate TargetVector,NextVector;
+    TCoordinate TargetVector,NextVector;
 
-		TCoordinate VirtualPos;
+    TCoordinate VirtualPos;
 
-	};
+};
 }
 
 #endif

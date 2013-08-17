@@ -1,7 +1,7 @@
 /*
  *   Motion.h
  *
- *   Author: Wu Chih-En 
+ *   Author: Wu Chih-En
  *
  */
 
@@ -15,27 +15,29 @@
 
 namespace Robot
 {
-	class Motion : public StrategyModule
-	{
-	private:
-		static Motion* m_UniqueInstance;
+class Motion : public StrategyModule
+{
+private:
+    static Motion* m_UniqueInstance;
 
-        const double mAngle1Sin;
-        const double mAngle2Sin;
-        const double mAngle3Sin;
+    const double mAngle1Sin;
+    const double mAngle2Sin;
+    const double mAngle3Sin;
 
-        const double mAngle1Cos;
-        const double mAngle2Cos;
-        const double mAngle3Cos;
-	public:
-		static Motion* GetInstance() { return m_UniqueInstance; }
-		
-		Motion();
-		~Motion();
+    const double mAngle1Cos;
+    const double mAngle2Cos;
+    const double mAngle3Cos;
+public:
+    static Motion* GetInstance() {
+        return m_UniqueInstance;
+    }
 
-		void Initialize();
-		void Process();
-	};
+    Motion();
+    ~Motion();
+
+    void Initialize();
+    void Process();
+};
 }
 
 #endif

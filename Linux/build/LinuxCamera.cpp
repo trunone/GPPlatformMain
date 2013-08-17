@@ -26,12 +26,12 @@ using namespace Robot;
 LinuxCamera* LinuxCamera::uniqueInstance = new LinuxCamera();
 
 LinuxCamera::LinuxCamera() :
-        settings(CameraSettings()),
-        camera_fd(-1),
-        buffers(0),
-        n_buffers(0)
+    settings(CameraSettings()),
+    camera_fd(-1),
+    buffers(0),
+    n_buffers(0)
 {
-	DEBUG_PRINT = false;
+    DEBUG_PRINT = false;
     fbuffer = new FrameBuffer(Camera::WIDTH, Camera::HEIGHT);
 }
 
@@ -186,14 +186,14 @@ int LinuxCamera::Initialize(int deviceIndex)
 
         buffers[n_buffers].length = buf.length;
         buffers[n_buffers].start =
-                mmap(NULL,
-                     buf.length,
-                     PROT_READ | PROT_WRITE,
-                     MAP_SHARED,
-                     camera_fd, buf.m.offset);
+            mmap(NULL,
+                 buf.length,
+                 PROT_READ | PROT_WRITE,
+                 MAP_SHARED,
+                 camera_fd, buf.m.offset);
 
         if (MAP_FAILED == buffers[n_buffers].start)
-                ErrorExit ("mmap");
+            ErrorExit ("mmap");
     }
 
     /* queue buffers */
@@ -398,19 +398,19 @@ int LinuxCamera::ReadFrame()
 
 void LinuxCamera::CaptureFrame()
 {
-	if(DEBUG_PRINT == true)
-	{
-		struct timeval tv;
-		static double beforeTime = 0;
-		double currentTime;
-		double durationTime;
-		
-		gettimeofday(&tv, NULL);
-		currentTime = (double)tv.tv_sec*1000.0 + (double)tv.tv_usec/1000.0;
-		durationTime = currentTime - beforeTime;
-		fprintf(stderr, "\rCamera: %.1fmsec(%.1ffps)                    ", durationTime, 1000.0 / durationTime);
-		beforeTime = currentTime;
-	}
+    if(DEBUG_PRINT == true)
+    {
+        struct timeval tv;
+        static double beforeTime = 0;
+        double currentTime;
+        double durationTime;
+
+        gettimeofday(&tv, NULL);
+        currentTime = (double)tv.tv_sec*1000.0 + (double)tv.tv_usec/1000.0;
+        durationTime = currentTime - beforeTime;
+        fprintf(stderr, "\rCamera: %.1fmsec(%.1ffps)                    ", durationTime, 1000.0 / durationTime);
+        beforeTime = currentTime;
+    }
 
     for (;;) {
         fd_set fds;

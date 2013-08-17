@@ -8,81 +8,81 @@ class TCoordinate
 
 private:
 
-	inline void CartesianPolar(void);				
-	inline void PolarCartesian(void);				
-	
-	double AngleValue;						        
-	double LengthValue;						        
+    inline void CartesianPolar(void);
+    inline void PolarCartesian(void);
+
+    double AngleValue;
+    double LengthValue;
 public:
 
-	double x;
-	double y;
+    double x;
+    double y;
 
 //-----------------------------------
 
-	//«ØºcšçŠ¡
+    //«ØºcšçŠ¡
 
-	TCoordinate(double xValue,double yValue);       //(X,Y)
+    TCoordinate(double xValue,double yValue);       //(X,Y)
 
-	TCoordinate(double sita);					    
+    TCoordinate(double sita);
 
-	TCoordinate();							        
+    TCoordinate();
 
-	//žÑºcšçŠ¡
+    //žÑºcšçŠ¡
 
-	~TCoordinate();							        
-	
+    ~TCoordinate();
+
 
 //------------¹Bºâ€l­«žü--------------
 
-	bool operator == (TCoordinate op2);	            
+    bool operator == (TCoordinate op2);
 
-	TCoordinate operator + (TCoordinate op2);       
+    TCoordinate operator + (TCoordinate op2);
 
-	TCoordinate operator - (TCoordinate op2);       
+    TCoordinate operator - (TCoordinate op2);
 
 
 
-	TCoordinate operator << (double ds);	        
+    TCoordinate operator << (double ds);
 
-	TCoordinate operator >> (double ds);	        
+    TCoordinate operator >> (double ds);
 
 //---------- -Šš­û šçŠ¡--------------
 
-	double	Angle();						        
+    double	Angle();
 
-	double	Length();						        
-
-
-	TCoordinate UnitVector();					    
-
-	double  dot(TCoordinate op);				    
-
-	double  cross(TCoordinate op);	                
+    double	Length();
 
 
-	void	AssignXY(double xValue,double yVlaue);  
+    TCoordinate UnitVector();
 
-	void	AssignAngle(double Vlaue);				
+    double  dot(TCoordinate op);
 
-	void	AssignLength(double Vlaue);				
+    double  cross(TCoordinate op);
 
-	
 
-	//-----------------------------------------------------------------
+    void	AssignXY(double xValue,double yVlaue);
 
-	friend TCoordinate  aVector(double xValue , double yValue);	    
+    void	AssignAngle(double Vlaue);
 
-        friend TCoordinate  operator*(TCoordinate op , double scale);	
+    void	AssignLength(double Vlaue);
 
-        friend TCoordinate  operator*(double scale , TCoordinate op);	
+
+
+    //-----------------------------------------------------------------
+
+    friend TCoordinate  aVector(double xValue , double yValue);
+
+    friend TCoordinate  operator*(TCoordinate op , double scale);
+
+    friend TCoordinate  operator*(double scale , TCoordinate op);
 
 };
 
 double NormalizeAngle(double Angle);
 TCoordinate aVector(double xValue , double yValue);
-TCoordinate operator*(TCoordinate op , double scale);	
-TCoordinate operator*(double scale , TCoordinate op);	
+TCoordinate operator*(TCoordinate op , double scale);
+TCoordinate operator*(double scale , TCoordinate op);
 
 //---------------------------------------------------------------------------
 

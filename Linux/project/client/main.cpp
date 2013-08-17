@@ -7,19 +7,19 @@
 
 using namespace Robot;
 using namespace std;
-int main(){
-	TiXmlDocument doc("Robot_Test.xml");
-	doc.LoadFile();
+int main() {
+    TiXmlDocument doc("Robot_Test.xml");
+    doc.LoadFile();
     TiXmlPrinter printer;
     printer.SetStreamPrinting();
-	doc.Accept( &printer );
-	printf("%s", printer.CStr());
-	LinuxSocket client;
-	client.create();
-	if(client.connect ( "192.168.137.75" , 10373 )) {	
-		client.send(printer.CStr());
-	}
-	
-	return 0;
+    doc.Accept( &printer );
+    printf("%s", printer.CStr());
+    LinuxSocket client;
+    client.create();
+    if(client.connect ( "192.168.137.75" , 10373 )) {
+        client.send(printer.CStr());
+    }
+
+    return 0;
 }
-         
+

@@ -6,25 +6,25 @@ inline void TCoordinate::CartesianPolar(void)
 
 {
 
-    if(x == 0 && y != 0){
+    if(x == 0 && y != 0) {
 
         this->LengthValue = fabs( y );
 
         this->AngleValue  = ( y > 0 ) ? M_PI / 2.0 : NormalizeAngle( M_PI / 2.0 + M_PI ) ;
 
-    }else if(x != 0 && y == 0){
+    } else if(x != 0 && y == 0) {
 
         this->LengthValue = fabs( x );
 
         this->AngleValue  = ( x > 0 )? 0 : M_PI;
 
-    }else if(x == 0 && y == 0){
+    } else if(x == 0 && y == 0) {
 
         this->AngleValue  = 0;
 
         this->LengthValue = 0;
 
-    }else{
+    } else {
 
         this->AngleValue  = atan2(this->y , this->x );
 

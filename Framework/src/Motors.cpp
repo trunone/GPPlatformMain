@@ -13,12 +13,12 @@
 using namespace Robot;
 
 Motors::Motors()
-{    
+{
 }
 
 Motors::~Motors()
 {
-	SetDisableAll();
+    SetDisableAll();
 }
 
 int Motors::Initialize()
@@ -34,13 +34,13 @@ int Motors::OpenDevice(short unsigned device_id)
     sprintf(device_name, "USB%d", device_id);
     mMotorHandle[device_id] = VCS_OpenDevice("EPOS2", "MAXON SERIAL V2", "USB", device_name, &mErrorCode);
 
-	if(mMotorHandle[device_id] != NULL)
-	{
-		if(!VCS_SetProtocolStackSettings(mMotorHandle[device_id], 1000000, 500, &mErrorCode))
-		{
-			fprintf(stderr,  "Open device failure, error code=0x%x\n", mErrorCode);
+    if(mMotorHandle[device_id] != NULL)
+    {
+        if(!VCS_SetProtocolStackSettings(mMotorHandle[device_id], 1000000, 500, &mErrorCode))
+        {
+            fprintf(stderr,  "Open device failure, error code=0x%x\n", mErrorCode);
             return 1;
-		}
+        }
     }
     else
     {
@@ -75,8 +75,8 @@ int Motors::SetEnable(short device_id)
     }
     else
     {
-            fprintf(stderr, "(SetEnable)Get fault state failed!, error code=0x%x\n", mErrorCode);
-            return 1;
+        fprintf(stderr, "(SetEnable)Get fault state failed!, error code=0x%x\n", mErrorCode);
+        return 1;
     }
     return 0;
 }
@@ -114,19 +114,19 @@ int Motors::SetDisable(short device_id)
 /////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::ActivateProfileVelocityMode(short device_id)
 {
-  	mErrorCode = 0;
-  	if(!VCS_ActivateProfileVelocityMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
-  	{
-		fprintf(stderr, "Activate Profile Velocity Mode failed!, error code=0x%x\n", mErrorCode);
-		return 1;
-  	}
+    mErrorCode = 0;
+    if(!VCS_ActivateProfileVelocityMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
+    {
+        fprintf(stderr, "Activate Profile Velocity Mode failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
     return 0;
 }
 
 int Motors::SetVelocityProfile(short device_id, int ProfileAcceleration, int ProfileDeceleration)
 {
-	mErrorCode = 0;
-	if(!VCS_SetVelocityProfile(mMotorHandle[device_id], NODE_ID,ProfileAcceleration,ProfileDeceleration,&mErrorCode))
+    mErrorCode = 0;
+    if(!VCS_SetVelocityProfile(mMotorHandle[device_id], NODE_ID,ProfileAcceleration,ProfileDeceleration,&mErrorCode))
     {
         fprintf(stderr, "Set Velocity Profile failed!, error code=0x%x\n", mErrorCode);
         return 1;
@@ -142,12 +142,12 @@ int Motors::SetVelocityRegulatorGain(short device_id, short P, short I)
         fprintf(stderr, "Set Velocity Regulator Gain failed!, error code=0x%x\n", mErrorCode);
         return 1;
     }
-    return 0; 
+    return 0;
 }
 
 int Motors::SetVelocity(short device_id, long TargetVelocity)
 {
-	mErrorCode = 0;
+    mErrorCode = 0;
     if(!VCS_MoveWithVelocity(mMotorHandle[device_id], NODE_ID,TargetVelocity,&mErrorCode))
     {
         fprintf(stderr, "Move With Velocity failed!, error code=0x%x\n", mErrorCode);
@@ -158,21 +158,21 @@ int Motors::SetVelocity(short device_id, long TargetVelocity)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::ActivateCurrentMode(short device_id)
 {
-	mErrorCode = 0;
-	if(!VCS_ActivateCurrentMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
-	{
-		fprintf(stderr, "Activate Current Mode failed!, error code=0x%x\n", mErrorCode);
-		return 1;
-	}
-	return 0;
+    mErrorCode = 0;
+    if(!VCS_ActivateCurrentMode(mMotorHandle[device_id], NODE_ID,&mErrorCode))
+    {
+        fprintf(stderr, "Activate Current Mode failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
+    return 0;
 }
 int Motors::SetEcMotorParameter(short device_id,short NominalCurrent,short MaxOutputCurrent,short ThermalTimeConstant,char NbOfPolePairs)
 {
     mErrorCode = 0;
     if(!VCS_SetEcMotorParameter(mMotorHandle[device_id], NODE_ID,NominalCurrent,MaxOutputCurrent,ThermalTimeConstant,NbOfPolePairs,&mErrorCode))
     {
-		fprintf(stderr, "Set EcMotor Parameter failed!, error code=0x%x\n", mErrorCode);
-		return 1;
+        fprintf(stderr, "Set EcMotor Parameter failed!, error code=0x%x\n", mErrorCode);
+        return 1;
     }
     return 0;
 }
@@ -181,20 +181,20 @@ int Motors::SetCurrentMust(short device_id,short CurrentMust)
     mErrorCode = 0;
     if(!VCS_SetCurrentMust(mMotorHandle[device_id],NODE_ID,CurrentMust,&mErrorCode))
     {
-            	fprintf(stderr, "Set Current Must failed!, error code=0x%x\n", mErrorCode);
-		return 1;
+        fprintf(stderr, "Set Current Must failed!, error code=0x%x\n", mErrorCode);
+        return 1;
     }
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Motors::HaltVelocityMovement(short device_id)
 {
-	mErrorCode = 0;
-	if(!VCS_HaltVelocityMovement(mMotorHandle[device_id], NODE_ID,&mErrorCode))
-	{
-		fprintf(stderr, "Halt Velocity Movement failed!, error code=0x%x\n", mErrorCode);
-		return 1;
-	}
+    mErrorCode = 0;
+    if(!VCS_HaltVelocityMovement(mMotorHandle[device_id], NODE_ID,&mErrorCode))
+    {
+        fprintf(stderr, "Halt Velocity Movement failed!, error code=0x%x\n", mErrorCode);
+        return 1;
+    }
     return 0;
 }
 

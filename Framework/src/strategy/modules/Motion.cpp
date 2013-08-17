@@ -40,9 +40,9 @@ void Motion::Initialize()
 
 void Motion::Process()
 {
-	double w = StrategyStatus::w*240;
-	StrategyStatus::MotorSpeed[0] = mAngle1Sin*StrategyStatus::x+mAngle1Cos*StrategyStatus::y-ROBOT_RADIUS*w;
-	StrategyStatus::MotorSpeed[1] = mAngle2Sin*StrategyStatus::x+mAngle2Cos*StrategyStatus::y-ROBOT_RADIUS*w;
-	StrategyStatus::MotorSpeed[2] = mAngle3Sin*StrategyStatus::x+mAngle3Cos*StrategyStatus::y-ROBOT_RADIUS*w;
+    double w = StrategyStatus::w*240;
+    StrategyStatus::MotorSpeed[0] = mAngle1Sin*StrategyStatus::x+mAngle1Cos*StrategyStatus::y-ROBOT_RADIUS*w;
+    StrategyStatus::MotorSpeed[1] = mAngle2Sin*StrategyStatus::x+mAngle2Cos*StrategyStatus::y-ROBOT_RADIUS*w;
+    StrategyStatus::MotorSpeed[2] = mAngle3Sin*StrategyStatus::x+mAngle3Cos*StrategyStatus::y-ROBOT_RADIUS*w;
 }
 

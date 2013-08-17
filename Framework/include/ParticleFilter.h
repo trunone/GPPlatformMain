@@ -7,7 +7,7 @@
 #include "TCoordinate.h"
 #include "ProbabilityEvaluation.h"
 #include "Normalrand.h"
-#define Def_ResamplingDis 10 
+#define Def_ResamplingDis 10
 #define Def_ResamplingAngle 0.03
 #define Def_ParticlesNum 100
 
@@ -19,55 +19,57 @@
 #define BPKeepRate      0.15     //Bast Particle keeprate
 #define SearchRate      0.03       //5% of map size;
 
-namespace Robot{
-	class ParticleFilter : LocationModule
-	{
-        typedef struct{
-            TCoordinate Position;
-            float Direction;
+namespace Robot {
+class ParticleFilter : LocationModule
+{
+    typedef struct {
+        TCoordinate Position;
+        float Direction;
 
-            double Probabilty;
-            double acProbability;  //Accumulate Probability;
-        }tsParticle;
+        double Probabilty;
+        double acProbability;  //Accumulate Probability;
+    } tsParticle;
 
-	public:
-		~ParticleFilter();
-		static ParticleFilter*  GetInstance() {return m_UniqueInstance;}
+public:
+    ~ParticleFilter();
+    static ParticleFilter*  GetInstance() {
+        return m_UniqueInstance;
+    }
 
-		void  Initialize(void);
-	    void  Process(void);
+    void  Initialize(void);
+    void  Process(void);
 
-	private:
-		ParticleFilter();
-		static ParticleFilter* m_UniqueInstance;
-		double PastMovement;
-		double PastDirection;	
-		
-		void InitialParticleFilter();	
-        
-        //-----Particles------------------------------------------------
-        vector <tsParticle> Particles;
+private:
+    ParticleFilter();
+    static ParticleFilter* m_UniqueInstance;
+    double PastMovement;
+    double PastDirection;
 
-        //-----Best Partiicle information-------------------------------
-        tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
-        int BestParticleNum;
+    void InitialParticleFilter();
 
-        // it will give probability Evaluation map
-        //this map black part is mean unable area be careful
+    //-----Particles------------------------------------------------
+    vector <tsParticle> Particles;
 
-        //----Main flow step--------------------------------------------
-        string InitialParticles(int ParticlesNum);
-        string InitialParticles(int ParticlesNum,int x ,int y , float r,float range);
-        // string EnvironmentInfoUpdate();
-        // Prediction step
-        string PredictionParticles();
-        string CorrectParticles();
-        string CorrectParticles(int x,int y,float r,float range);
-        // Correction step
-        string EvaluatuonParticles();
-        string ResamplingParticles();
+    //-----Best Partiicle information-------------------------------
+    tsParticle BestParticle;  // ¦ô´ú¦ì¸m - 2012/07/29 yao
+    int BestParticleNum;
 
-        //---------------------------------------------------------------
-	};
+    // it will give probability Evaluation map
+    //this map black part is mean unable area be careful
+
+    //----Main flow step--------------------------------------------
+    string InitialParticles(int ParticlesNum);
+    string InitialParticles(int ParticlesNum,int x ,int y , float r,float range);
+    // string EnvironmentInfoUpdate();
+    // Prediction step
+    string PredictionParticles();
+    string CorrectParticles();
+    string CorrectParticles(int x,int y,float r,float range);
+    // Correction step
+    string EvaluatuonParticles();
+    string ResamplingParticles();
+
+    //---------------------------------------------------------------
+};
 }
 #endif

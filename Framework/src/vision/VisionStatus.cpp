@@ -33,8 +33,8 @@ int VisionStatus::Red_X(0);
 int VisionStatus::Red_Y(0);
 int VisionStatus::Green_X(0);
 int VisionStatus::Green_Y(0);
-int VisionStatus::Blue_X(0); 
-int VisionStatus::Blue_Y(0); 
+int VisionStatus::Blue_X(0);
+int VisionStatus::Blue_Y(0);
 
 VisionStatus::ColorRange VisionStatus::hsvBlueRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 

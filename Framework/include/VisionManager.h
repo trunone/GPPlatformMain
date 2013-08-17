@@ -20,44 +20,48 @@
 
 namespace Robot
 {
-	class VisionManager
-	{
-	private:
-		static VisionManager* m_UniqueInstance;
-		std::list<VisionModule*> m_Modules;
-		bool m_ProcessEnable;
-		bool m_Enabled;
+class VisionManager
+{
+private:
+    static VisionManager* m_UniqueInstance;
+    std::list<VisionModule*> m_Modules;
+    bool m_ProcessEnable;
+    bool m_Enabled;
 
-		bool m_IsRunning;
-		bool m_IsThreadRunning;
-		bool m_IsLogging;
+    bool m_IsRunning;
+    bool m_IsThreadRunning;
+    bool m_IsLogging;
 
-		std::ofstream m_LogFileStream;
+    std::ofstream m_LogFileStream;
 
-        CvCapture *VisionCapture;
+    CvCapture *VisionCapture;
 
-        VisionManager();
+    VisionManager();
 
-	protected:
+protected:
 
-	public:
-		bool DEBUG_PRINT;
+public:
+    bool DEBUG_PRINT;
 
-		~VisionManager();
+    ~VisionManager();
 
-		static VisionManager* GetInstance() { return m_UniqueInstance; }
+    static VisionManager* GetInstance() {
+        return m_UniqueInstance;
+    }
 
-		bool Initialize(CvCapture*);
-		bool Reinitialize();
-        	void Process();
-		void SetEnable(bool enable);
-		bool GetEnable()				{ return m_Enabled; }
-		void AddModule(VisionModule *module);
-		void RemoveModule(VisionModule *module);
+    bool Initialize(CvCapture*);
+    bool Reinitialize();
+    void Process();
+    void SetEnable(bool enable);
+    bool GetEnable()				{
+        return m_Enabled;
+    }
+    void AddModule(VisionModule *module);
+    void RemoveModule(VisionModule *module);
 
-		void StartLogging();
-		void StopLogging();
-	};
+    void StartLogging();
+    void StopLogging();
+};
 }
 
 #endif

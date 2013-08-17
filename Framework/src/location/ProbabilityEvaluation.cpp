@@ -5,7 +5,7 @@
 
 //#define DRAW_PARTICLE_SCANLINE
 #define EdgeColor 255
-#define ScanLinesNum 19 
+#define ScanLinesNum 19
 
 using namespace Robot;
 using namespace cv;
@@ -14,7 +14,7 @@ ProbEvaluation* ProbEvaluation::m_UniqueInstance = new ProbEvaluation();
 
 ProbEvaluation::ProbEvaluation()
 {
-   
+
 }
 ProbEvaluation::~ProbEvaluation()
 {
@@ -22,11 +22,11 @@ ProbEvaluation::~ProbEvaluation()
 }
 void ProbEvaluation::AssignVirtualMap()
 {
-	OriginalMap = cvLoadImage("../../../Data/2013sksmap.bmp", 0);//load visual map(gray) in bmp format
-	
-	threshold(OriginalMap, VirtualLineMap, 254, 255, CV_THRESH_BINARY);
+    OriginalMap = cvLoadImage("../../../Data/2013sksmap.bmp", 0);//load visual map(gray) in bmp format
 
-	LocationStatus::enable = true;
+    threshold(OriginalMap, VirtualLineMap, 254, 255, CV_THRESH_BINARY);
+
+    LocationStatus::enable = true;
 }
 
 float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float stopR)
@@ -41,10 +41,10 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
     cv::circle(OriginalMap, Point(Pos.x, Pos.y), 3, Scalar(255, 0, 0), 1, 8, 0);
 #endif
 
-	int i;
+    int i;
     unsigned char DetColor;
 
-    for(i=0; i<ScanLinesNum ; i++){
+    for(i=0; i<ScanLinesNum ; i++) {
 
         DetectAngle =  angle + Def_ScanStarAngle +  Def_ScanScale*i;
         detectP = Pos + starR*(aVector(cos(DetectAngle), -sin(DetectAngle)));
@@ -52,26 +52,26 @@ float* ProbEvaluation::ScanLines(int x,int y ,float angle, float starR, float st
         if(detectP.y < 0 || detectP.y > VirtualLineMap.rows || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
             continue;
         DetColor = VirtualLineMap.at<uchar>((int)detectP.y, (int)detectP.x);
-        
-		while(DetColor != EdgeColor){
+
+        while(DetColor != EdgeColor) {
             detectP.x += cos(DetectAngle);
             detectP.y -= sin(DetectAngle);
 
             if((detectP-Pos).Length() > stopR) break;
 
             if(detectP.y < 0 || detectP.y > VirtualLineMap.rows
-                || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
+                    || detectP.x < 0 || detectP.x > VirtualLineMap.cols)
                 break;
             DetColor = VirtualLineMap.at<uchar>((int)detectP.y, (int)detectP.x);
         }
 
-        if((detectP-Pos).Length()<= stopR){
+        if((detectP-Pos).Length()<= stopR) {
             ScanLines[i] = (detectP-Pos).Length();
 #ifdef DRAW_PARTICLE_SCANLINE
             cv::line(OriginalMap, Point(detectP.x, detectP.y), Point(Pos.x, Pos.y), Scalar(255, 0, 0), 1, 8, 0);
 #endif
         }
-        else{
+        else {
             ScanLines[i] = NoDet;
         }
     }
@@ -103,24 +103,24 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
     vector<long>::iterator it = LocationStatus::LaserData.end()-1;
     for(int i=0; i<ScanLinesNum ; i++) {
         double ScanLine = *it/10.0;
-		if( ScanLine < stopR && ScanLine != 0){
-			if(vPosScanLines[i] != NoDet){
-				deviation = vPosScanLines[i] - ScanLine;
+        if( ScanLine < stopR && ScanLine != 0) {
+            if(vPosScanLines[i] != NoDet) {
+                deviation = vPosScanLines[i] - ScanLine;
                 //printf("%f\n", deviation);
-				Probability *= NormalDistribution(60, deviation);
+                Probability *= NormalDistribution(60, deviation);
                 //printf("%f\n", Probability);
-			}
-			else{
-				Probability = 0;
-				break;
-			}
+            }
+            else {
+                Probability = 0;
+                break;
+            }
             //printf("%d, %f,   %f\n", i, vPosScanLines[i], ScanLine);
-		}
+        }
         if(i == ScanLinesNum-1)
             it--;
         else
             it -= 4;
-	}
+    }
     //printf("\n");
     delete [] vPosScanLines;
     return Probability;
@@ -128,5 +128,5 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
 
 double ProbEvaluation::NormalDistribution(float sigma , float deviation)
 {
-   return ( 1/sqrt(2*M_PI*sigma*sigma) ) * exp(-0.5*(deviation/sigma)*(deviation/sigma))*100;
+    return ( 1/sqrt(2*M_PI*sigma*sigma) ) * exp(-0.5*(deviation/sigma)*(deviation/sigma))*100;
 }

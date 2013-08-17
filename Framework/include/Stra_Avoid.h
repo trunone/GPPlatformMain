@@ -17,58 +17,60 @@
 #include <stdio.h>
 #include <math.h>
 #include <tinyxml.h>
-namespace Robot{
-	class Stra_Avoid : public StrategyModule
-	{
-	public:
+namespace Robot {
+class Stra_Avoid : public StrategyModule
+{
+public:
 
-		static Stra_Avoid*  GetInstance() {return m_UniqueInstance;}
-    		
-		~Stra_Avoid();   
+    static Stra_Avoid*  GetInstance() {
+        return m_UniqueInstance;
+    }
 
-        void Initialize(void);                  
+    ~Stra_Avoid();
 
-        void Process(void);                     
+    void Initialize(void);
 
-        TCoordinate CorrectV;
+    void Process(void);
 
-		int LoadXMLSettings(TiXmlElement* element);  //load xml
+    TCoordinate CorrectV;
 
-	private:
+    int LoadXMLSettings(TiXmlElement* element);  //load xml
 
-		static Stra_Avoid* m_UniqueInstance;
-	    	
-		Stra_Avoid();
+private:
 
-    		TCoordinate ScanLineAvoidFunction( TCoordinate OrigTarget );
+    static Stra_Avoid* m_UniqueInstance;
 
-    		TCoordinate LeftForce, RightForce;
+    Stra_Avoid();
 
-    		int *ScanLine;
+    TCoordinate ScanLineAvoidFunction( TCoordinate OrigTarget );
 
-    		double ScanStartAngle;
+    TCoordinate LeftForce, RightForce;
 
-    		int ScanLineNum;
+    int *ScanLine;
 
-    		double ScanScale;
+    double ScanStartAngle;
 
-    		int SafeDistance;
+    int ScanLineNum;
 
-    		double SafeArc_D;
+    double ScanScale;
 
-    		double SafeArc_A;
+    int SafeDistance;
 
-    		double AvoidConfig1;
+    double SafeArc_D;
 
-    		double AvoidForce;
+    double SafeArc_A;
 
-    		int FixDirect;
+    double AvoidConfig1;
 
-    		int Lock_Avoid;
+    double AvoidForce;
 
-    		TCoordinate *Stone;
+    int FixDirect;
 
-	};
+    int Lock_Avoid;
+
+    TCoordinate *Stone;
+
+};
 }
 
 #endif

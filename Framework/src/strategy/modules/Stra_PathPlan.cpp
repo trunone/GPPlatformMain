@@ -14,18 +14,18 @@ Stra_PathPlan::~Stra_PathPlan()
 
 }
 //------------------------------------------------------------------------------xml
-int Stra_PathPlan::LoadXMLSettings (TiXmlElement* element){
-	if(element != NULL){
-		element->Attribute("DetourConst", &DetourConst);						
-	}
-	return 0;
+int Stra_PathPlan::LoadXMLSettings (TiXmlElement* element) {
+    if(element != NULL) {
+        element->Attribute("DetourConst", &DetourConst);
+    }
+    return 0;
 }
 //------------------------------------------------------------------------------
 void Stra_PathPlan::Initialize(void)
 {
-    P1_Dis = 0;         
+    P1_Dis = 0;
 
-    P1_CutAng = 0;      
+    P1_CutAng = 0;
 
     P2_Dis = 0;
 
@@ -35,26 +35,26 @@ void Stra_PathPlan::Initialize(void)
 
 void Stra_PathPlan::Process( void )
 {
-    #ifndef Def_OMNIDIRECTION_SYSTEM
+#ifndef Def_OMNIDIRECTION_SYSTEM
 
     if(StrategyStatus::FlagForward )                                             //9.5
 
     {
         if( (StrategyStatus::Goal1.Length() *fabs(StrategyStatus::Goal1.Angle()) > 10.5 ) &&
 
-            (fabs(StrategyStatus::Goal1.Angle()) > M_PI / 6 ) )//three wheel omnidircetion system
+                (fabs(StrategyStatus::Goal1.Angle()) > M_PI / 6 ) )//three wheel omnidircetion system
 
         {
 
-			StrategyStatus::Direction = StrategyStatus::Goal1.Angle();
+            StrategyStatus::Direction = StrategyStatus::Goal1.Angle();
 
             StrategyStatus::Goal1 =aVector(0,0);
-			
+
         }
 
     }
 
-    #endif
+#endif
     //------------------------------------------------------------------------
     if( StrategyStatus::Goal1.Length() != 0 && StrategyStatus::Goal2.Length() != 0 ) //two points
     {
@@ -84,17 +84,17 @@ void Stra_PathPlan::Process( void )
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
     }
-	//printf("%f %f\n",StrategyStatus::Goal1.x ,StrategyStatus::Goal1.y);
-	
+    //printf("%f %f\n",StrategyStatus::Goal1.x ,StrategyStatus::Goal1.y);
+
     StrategyStatus::MotionDistance =  StrategyStatus::GoalVector.Length();
 
-	//printf("%f\n",StrategyStatus::MotionDistance);
+    //printf("%f\n",StrategyStatus::MotionDistance);
 
     StrategyStatus::MotionAngle    =  StrategyStatus::GoalVector.Angle();
 
-	//printf("%f\n",StrategyStatus::MotionAngle);
+    //printf("%f\n",StrategyStatus::MotionAngle);
 
-	
+
 
 }
 
@@ -108,14 +108,14 @@ double Stra_PathPlan::Trajectory( void )
     short Sgn_Alpha = (dAlpha >= 0) ? 1 : -1;
 
 
-    if( StrategyStatus::FlagDetour ){
+    if( StrategyStatus::FlagDetour ) {
 
         dAlpha = fabs( dAlpha );
 
         return P1_CutAng + Sgn_Alpha * GetMin( dAlpha ,atan2( DetourConst , P1_Dis) );
 
 
-    }else{
+    } else {
 
         dAlpha = M_PI - fabs( dAlpha );
 

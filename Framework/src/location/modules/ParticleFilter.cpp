@@ -27,11 +27,11 @@ void ParticleFilter::Initialize(void)
 
 void ParticleFilter::Process( void )
 {
-	LocationStatus::FB_Movement.Position =LocationStatus::FB_Movement.Position + (LocationStatus::LaserGap << LocationStatus::FB_Movement.Direction) - LocationStatus::LaserGap;
-	PredictionParticles();
-	CorrectParticles( LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle, 50);
-	PastMovement += LocationStatus::FB_Movement.Position.Length();
-	PastDirection += fabs(LocationStatus::FB_Movement.Direction);
+    LocationStatus::FB_Movement.Position =LocationStatus::FB_Movement.Position + (LocationStatus::LaserGap << LocationStatus::FB_Movement.Direction) - LocationStatus::LaserGap;
+    PredictionParticles();
+    CorrectParticles( LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle, 50);
+    PastMovement += LocationStatus::FB_Movement.Position.Length();
+    PastDirection += fabs(LocationStatus::FB_Movement.Direction);
 
     //printf("Best: %f, %f, %f\n", BestParticle.Position.x, BestParticle.Position.y, BestParticle.Direction);
     //---- 計算蒙地卡羅粒子感測修正 (當總位移量 或 總旋轉量 超過設定數值後執行)
@@ -56,7 +56,7 @@ void ParticleFilter::Process( void )
     //getchar();
 }
 
-void ParticleFilter::InitialParticleFilter(){
+void ParticleFilter::InitialParticleFilter() {
 
     //InitialParticles( Def_ParticlesNum, PosTmp.x, PosTmp.y, LocationStatus::SetRobotHandle,  10 );  // PF灑點
     InitialParticles( Def_ParticlesNum );
@@ -71,13 +71,13 @@ string ParticleFilter::InitialParticles(int ParticlesNum)
 
     if(NULL)
         return "ParticleFilter Intial Failed" ;
-    else{
+    else {
         srand(time(NULL)+rand());           //selection rand model
         Particles.clear();
 
         tsParticle tempParticle;
         BestParticle.Probabilty = 0;
-        for(int i=0 ; i<ParticlesNum ; i++ ){
+        for(int i=0 ; i<ParticlesNum ; i++ ) {
             //tempParticle.Position.x = (ProbEvaluation::GetInstance()->VirtualLineMap.cols)*((float)rand()/(float)RAND_MAX) ;
             tempParticle.Position.x = 20*((float)rand()/(float)RAND_MAX)-10+LocationStatus::Position.x;
             //tempParticle.Position.x = LocationStatus::Position.x;
@@ -86,9 +86,9 @@ string ParticleFilter::InitialParticles(int ParticlesNum)
             //tempParticle.Position.y = LocationStatus::Position.y;
             tempParticle.Direction  = M_PI * ((float)rand()/(float)RAND_MAX) - M_PI;
             //tempParticle.Direction = LocationStatus::Handle;
-            tempParticle.Probabilty = 1.0/ParticlesNum; 
+            tempParticle.Probabilty = 1.0/ParticlesNum;
 
-            if(tempParticle.Probabilty > BestParticle.Probabilty){
+            if(tempParticle.Probabilty > BestParticle.Probabilty) {
                 BestParticle = tempParticle;
                 BestParticleNum = i;
             }
@@ -108,26 +108,26 @@ string ParticleFilter::PredictionParticles()
     // ¨½µ{­p¸ê°T -> ¼Ë¥»¹w´ú
     BestParticle.Position  = BestParticle.Position + (LocationStatus::FB_Movement.Position<< BestParticle.Direction) ;
     BestParticle.Direction += LocationStatus::FB_Movement.Direction;
-    for(i=0 ; i< i_size; i++){
+    for(i=0 ; i< i_size; i++) {
         //Particles[i].Position   = Particles[i].Position +
         //                        ( LocationStatus::FB_Movement.Position << Particles[i].Direction ) *( 1 + MoveErrorRate * NormalRand::GetInstance()->randn(0,1) );
         Particles[i].Position   = Particles[i].Position +
-                                ( LocationStatus::FB_Movement.Position << Particles[i].Direction );
+                                  ( LocationStatus::FB_Movement.Position << Particles[i].Direction );
 //        Particles[i].Direction += LocationStatus::FB_Movement.Direction * ( 1 + RotateErrorRate * NormalRand::GetInstance()->randn(0,1));
         Particles[i].Direction += LocationStatus::FB_Movement.Direction;
     }
     //--------------------
-    return "ParticleFilter Divination Successful"; 
+    return "ParticleFilter Divination Successful";
 }
 //------------------------------------------------------------------------------
 string ParticleFilter::CorrectParticles()
 {
     int i=0 , i_size;
     i_size = (int)Particles.size();
-    for(i=0 ; i< i_size; i++){
+    for(i=0 ; i< i_size; i++) {
         if(   Particles[i].Position.x < 0 || Particles[i].Position.y < 0
-            ||Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols
-            ||Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows)
+                ||Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols
+                ||Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows)
         {
             Particles[i].Position.x = (ProbEvaluation::GetInstance()->VirtualLineMap.cols) * ((float)rand()/(float)RAND_MAX) ;
             Particles[i].Position.y = (ProbEvaluation::GetInstance()->VirtualLineMap.rows)* ((float)rand()/(float)RAND_MAX) ;
@@ -139,43 +139,43 @@ string ParticleFilter::CorrectParticles()
 //------------------------------------------------------------------------------
 string ParticleFilter::CorrectParticles( int x,int y,float r,float range )
 {
-	int i=0 , i_size;
-	i_size = (int)Particles.size();
-	for(i=0 ; i< i_size; i++){
+    int i=0 , i_size;
+    i_size = (int)Particles.size();
+    for(i=0 ; i< i_size; i++) {
 
-		if(   Particles[i].Position.x < 0 || Particles[i].Position.y < 0
-			||Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols
-			||Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows)
-		{
+        if(   Particles[i].Position.x < 0 || Particles[i].Position.y < 0
+                ||Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols
+                ||Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows)
+        {
 
-			Particles[i].Position.x =  x+range *(((float)rand()/(float)RAND_MAX) - 0.5);
-			if ( Particles[i].Position.x < 0 )
-			{
-				Particles[i].Position.x  = fabs(Particles[i].Position.x );
-			}
-			else if(Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols )
-			{
-				Particles[i].Position.x = ProbEvaluation::GetInstance()->VirtualLineMap.cols - 
-                                                                       (Particles[i].Position.x - ProbEvaluation::GetInstance()->VirtualLineMap.cols);
-			}
+            Particles[i].Position.x =  x+range *(((float)rand()/(float)RAND_MAX) - 0.5);
+            if ( Particles[i].Position.x < 0 )
+            {
+                Particles[i].Position.x  = fabs(Particles[i].Position.x );
+            }
+            else if(Particles[i].Position.x > ProbEvaluation::GetInstance()->VirtualLineMap.cols )
+            {
+                Particles[i].Position.x = ProbEvaluation::GetInstance()->VirtualLineMap.cols -
+                                          (Particles[i].Position.x - ProbEvaluation::GetInstance()->VirtualLineMap.cols);
+            }
 
-			Particles[i].Position.y = y+range *(((float)rand()/(float)RAND_MAX) - 0.5);
-			if ( Particles[i].Position.y < 0 )
-			{
-				Particles[i].Position.y  = fabs(Particles[i].Position.y );
-			}
-			else if(Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows )
-			{
-				Particles[i].Position.y = ProbEvaluation::GetInstance()->VirtualLineMap.rows - 
-					(Particles[i].Position.y - ProbEvaluation::GetInstance()->VirtualLineMap.rows);
-			}
+            Particles[i].Position.y = y+range *(((float)rand()/(float)RAND_MAX) - 0.5);
+            if ( Particles[i].Position.y < 0 )
+            {
+                Particles[i].Position.y  = fabs(Particles[i].Position.y );
+            }
+            else if(Particles[i].Position.y > ProbEvaluation::GetInstance()->VirtualLineMap.rows )
+            {
+                Particles[i].Position.y = ProbEvaluation::GetInstance()->VirtualLineMap.rows -
+                                          (Particles[i].Position.y - ProbEvaluation::GetInstance()->VirtualLineMap.rows);
+            }
 
-			Particles[i].Direction  = r+M_PI/18 * NormalRand::GetInstance()->randn(0,1);
-		}
+            Particles[i].Direction  = r+M_PI/18 * NormalRand::GetInstance()->randn(0,1);
+        }
 
-	}
+    }
 
-	return "ParticleFilter Correct Successful" ;
+    return "ParticleFilter Correct Successful" ;
 
 }
 //------------------------------------------------------------------------------
@@ -183,17 +183,17 @@ string ParticleFilter::EvaluatuonParticles()
 {
     vector<tsParticle> TempParticles;
     vector<tsParticle>::iterator itParticles = Particles.begin();
-    while(itParticles != Particles.end()){
+    while(itParticles != Particles.end()) {
         itParticles->Probabilty =
             ProbEvaluation::GetInstance()->GetProbability( itParticles->Position.x,
-                                                         itParticles->Position.y,
-                                                         itParticles->Direction); //*/
+                    itParticles->Position.y,
+                    itParticles->Direction); //*/
         //printf("%f\n", itParticles->Probabilty);
         if(itParticles == Particles.begin()) TempParticles.push_back(*itParticles);
         else {
             vector<tsParticle>::iterator it = TempParticles.begin();
-            while(it != TempParticles.end()){
-                if( itParticles->Probabilty > it->Probabilty){
+            while(it != TempParticles.end()) {
+                if( itParticles->Probabilty > it->Probabilty) {
                     TempParticles.insert(it, *itParticles);
                     break;
                 }
@@ -219,7 +219,7 @@ string ParticleFilter::ResamplingParticles()
     i_size = (int)Particles.size();
 
     Particles[0].acProbability = Particles[0].Probabilty;
-    for(i=1 ; i< i_size; i++){
+    for(i=1 ; i< i_size; i++) {
         Particles[i].acProbability = Particles[i-1].acProbability + Particles[i].Probabilty;
     }
     //-----------------
@@ -228,12 +228,12 @@ string ParticleFilter::ResamplingParticles()
     int start_i = (int)((float)i_size*BPKeepRate) ;
     //keep best 30% of particle
     double Rdis,Rangle;
-    for(i=start_i ; i<i_size ;i++){
+    for(i=start_i ; i<i_size ; i++) {
         double dart = Particles[start_i].acProbability*((float)rand()/(float)RAND_MAX);
         int k = 0;
-        if(Particles[start_i].acProbability >= 0){
+        if(Particles[start_i].acProbability >= 0) {
             ParticleTemp.acProbability = 0;
-            while(ParticleTemp.acProbability < dart){
+            while(ParticleTemp.acProbability < dart) {
                 ParticleTemp = Particles[k];
                 k++;
                 if (k>start_i) break;
@@ -244,7 +244,7 @@ string ParticleFilter::ResamplingParticles()
             Particles[i].Position.x = ParticleTemp.Position.x + Rdis*cos(Rangle);
             Particles[i].Position.y = ParticleTemp.Position.y + Rdis*sin(Rangle);
             Particles[i].Direction  = ParticleTemp.Direction
-                                            +M_PI/90*(((float)rand()/(float)RAND_MAX)-0.5);
+                                      +M_PI/90*(((float)rand()/(float)RAND_MAX)-0.5);
         }
     } //*/
     //---------------
@@ -252,7 +252,7 @@ string ParticleFilter::ResamplingParticles()
     ParticleTemp.Position.x = 0.0;
     ParticleTemp.Position.y = 0.0;
     ParticleTemp.Direction  = 0.0;
-    for(i=0 ; i< i_size; i++){
+    for(i=0 ; i< i_size; i++) {
         ParticleTemp.Position.x += Particles[i].Position.x;
         ParticleTemp.Position.y += Particles[i].Position.y;
         ParticleTemp.Direction  += Particles[i].Direction;

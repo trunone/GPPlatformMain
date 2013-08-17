@@ -23,38 +23,42 @@
 //----------------------------------------------------------------------------
 namespace Robot
 {
-	class Stra_PathPlan : public StrategyModule
-	{
-	public:
-    	~Stra_PathPlan();
+class Stra_PathPlan : public StrategyModule
+{
+public:
+    ~Stra_PathPlan();
 
-		static Stra_PathPlan*  GetInstance() {return m_UniqueInstance;}
-		//virtual string  ParameterReset(void);
-	    void  Initialize(void);
-	    void  Process(void);
-		inline double GetMin(const double &dX_,const double &dY_){return (dX_>= dY_)?dY_:dX_;} 
+    static Stra_PathPlan*  GetInstance() {
+        return m_UniqueInstance;
+    }
+    //virtual string  ParameterReset(void);
+    void  Initialize(void);
+    void  Process(void);
+    inline double GetMin(const double &dX_,const double &dY_) {
+        return (dX_>= dY_)?dY_:dX_;
+    }
 
-		int LoadXMLSettings(TiXmlElement* element);  // load xml		
+    int LoadXMLSettings(TiXmlElement* element);  // load xml
 
-	private:
-        static Stra_PathPlan* m_UniqueInstance; 
+private:
+    static Stra_PathPlan* m_UniqueInstance;
 
-		Stra_PathPlan();
-			
-        void PathPlan( void );
-		
-		double Trajectory( void );
+    Stra_PathPlan();
 
-		int DetourConst;
+    void PathPlan( void );
 
-		double P1_Dis;          
+    double Trajectory( void );
 
-		double P1_CutAng;       
-	
-		double P2_Dis;          
+    int DetourConst;
 
-		double P2_CutAng;       
+    double P1_Dis;
 
-	};
+    double P1_CutAng;
+
+    double P2_Dis;
+
+    double P2_CutAng;
+
+};
 }
 #endif

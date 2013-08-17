@@ -48,40 +48,40 @@ string Stra_Avoid::ParameterReset(void)
 }
 */
 //------------------------------------------------------------------------------xml
-int Stra_Avoid::LoadXMLSettings (TiXmlElement* element){
-	if(element != NULL){
-		element->Attribute("StartAngle_du", &ScanStartAngle);
-		element->Attribute("ScanLineSize", &ScanLineNum);
-		element->Attribute("ScanLineScale_du", &ScanScale);
-		element->Attribute("SafeRange", &SafeDistance);
-		element->Attribute("SafeArc_D", &SafeArc_D);
-		element->Attribute("SafeArc_A", &SafeArc_A);
-		element->Attribute("AvoidConfig1", &AvoidConfig1);
-		element->Attribute("AvoidForce_du", &AvoidForce);
-		element->Attribute("FixDirect", &FixDirect);						
-	}
-	return 0;
+int Stra_Avoid::LoadXMLSettings (TiXmlElement* element) {
+    if(element != NULL) {
+        element->Attribute("StartAngle_du", &ScanStartAngle);
+        element->Attribute("ScanLineSize", &ScanLineNum);
+        element->Attribute("ScanLineScale_du", &ScanScale);
+        element->Attribute("SafeRange", &SafeDistance);
+        element->Attribute("SafeArc_D", &SafeArc_D);
+        element->Attribute("SafeArc_A", &SafeArc_A);
+        element->Attribute("AvoidConfig1", &AvoidConfig1);
+        element->Attribute("AvoidForce_du", &AvoidForce);
+        element->Attribute("FixDirect", &FixDirect);
+    }
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 void Stra_Avoid::Initialize(void)
 {
-/*
-    string str_ = this->Caption +" Initial";
-    Lock_Avoid = 0;
-    return str_;
-*/
+    /*
+        string str_ = this->Caption +" Initial";
+        Lock_Avoid = 0;
+        return str_;
+    */
 }
 void Stra_Avoid::Process(void)
 {
     if( StrategyStatus::FlagAvoidEnable )
     {
         this->ScanLine = NULL ;//Info->HdwInfo->LaserInfo.ScanArray;
-		
-		//printf("%f\n",StrategyStatus::MotionDistance);
-		//printf("%f\n",StrategyStatus::MotionAngle);
 
-		StrategyStatus::GoalVector = StrategyStatus::Goal1;
+        //printf("%f\n",StrategyStatus::MotionDistance);
+        //printf("%f\n",StrategyStatus::MotionAngle);
+
+        StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
         StrategyStatus::CorrectionVector = this->ScanLineAvoidFunction( StrategyStatus::GoalVector );
 
@@ -89,9 +89,9 @@ void Stra_Avoid::Process(void)
 
         StrategyStatus::MotionAngle    = StrategyStatus::CorrectionVector.Angle();
 
-		//printf("%f\n",StrategyStatus::MotionDistance);
+        //printf("%f\n",StrategyStatus::MotionDistance);
 
-		//printf("%f\n",StrategyStatus::MotionAngle);
+        //printf("%f\n",StrategyStatus::MotionAngle);
     }
 }
 
@@ -109,7 +109,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
     RightForce = aVector(0,0);
 
-    
+
 
     double StoneDistance = 0;
 
@@ -123,7 +123,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
     float TmpLen;
 
-    for( int i =0; i< this->ScanLineNum ;i++ )
+    for( int i =0; i< this->ScanLineNum ; i++ )
     {
         this->Stone[i] = aVector(1,0) << (i*this->ScanScale + this->ScanStartAngle);
 
@@ -141,13 +141,19 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
                 if( i < ScanLineNum/2 )
 
-                    if( RightForce.Length() < TmpLen ){RightForce= Stone[i]*TmpLen; RightCutAngle= TmpCutAngle; }
+                    if( RightForce.Length() < TmpLen ) {
+                        RightForce= Stone[i]*TmpLen;
+                        RightCutAngle= TmpCutAngle;
+                    }
 
 
 
                 if( i > ScanLineNum/2 )
 
-                    if( LeftForce.Length() < TmpLen ){ LeftForce = Stone[i]*TmpLen; LeftCutAngle = TmpCutAngle; }
+                    if( LeftForce.Length() < TmpLen ) {
+                        LeftForce = Stone[i]*TmpLen;
+                        LeftCutAngle = TmpCutAngle;
+                    }
 
 
 
@@ -165,14 +171,16 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
             {
 
-             
+
                 this->Stone[i] = aVector(0,0);
 
             }
 
         }
 
-        else{ this->Stone[i] = aVector(0,0); }
+        else {
+            this->Stone[i] = aVector(0,0);
+        }
 
 
 
@@ -208,8 +216,8 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
         if( Left_d + Right_d > 50 )
 
         {
-          
-          // int Config = 0.6;
+
+            // int Config = 0.6;
 
         }
 
@@ -237,7 +245,7 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
 
         float value_cross1 = ( break_vel >> M_PI_2 ).cross( Orien );
 
-        float avoid_value   = 0; /*Config * value_cross1*( Goal.Length()/this->SafeDistance )*/ // need to get the laser information 07/09  ming-hua 
+        float avoid_value   = 0; /*Config * value_cross1*( Goal.Length()/this->SafeDistance )*/ // need to get the laser information 07/09  ming-hua
 
 
 

@@ -46,22 +46,22 @@ void Odometer::Process()
     GetWheelDistance(0);
     GetWheelDistance(1);
     GetWheelDistance(2);
-    
-	LocationStatus::FB_Movement.Position.y =
+
+    LocationStatus::FB_Movement.Position.y =
         (-2.0/3.0)*( mAngle1Sin*mWheelDist[0] + mAngle2Sin*mWheelDist[1] + mAngle3Sin*mWheelDist[2]);
-	LocationStatus::FB_Movement.Position.x =
+    LocationStatus::FB_Movement.Position.x =
         (-2.0/3.0)*( mAngle1Cos*mWheelDist[0] + mAngle2Cos*mWheelDist[1] + mAngle3Cos*mWheelDist[2]);
-	LocationStatus::FB_Movement.Direction =
+    LocationStatus::FB_Movement.Direction =
         (-1.0/3.0)*( mWheelDist[0] + mWheelDist[1] + mWheelDist[2] );
-    
+
     LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
 }
 
 void Odometer::GetWheelDistance(short wheel_num) {
     if(mPastMotorPulse[wheel_num] == 0)
         mPastMotorPulse[wheel_num] = LocationStatus::MotorPulse[wheel_num];
-	double pulse_diff = LocationStatus::MotorPulse[wheel_num] - mPastMotorPulse[wheel_num];
-	mPastMotorPulse[wheel_num] = LocationStatus::MotorPulse[wheel_num];
-	mWheelDist[wheel_num] = pulse_diff*mDistConst;
+    double pulse_diff = LocationStatus::MotorPulse[wheel_num] - mPastMotorPulse[wheel_num];
+    mPastMotorPulse[wheel_num] = LocationStatus::MotorPulse[wheel_num];
+    mWheelDist[wheel_num] = pulse_diff*mDistConst;
 }
 
