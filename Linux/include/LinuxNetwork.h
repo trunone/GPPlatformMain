@@ -28,7 +28,7 @@ namespace Robot
 	public:
 		static const int MAXHOSTNAME = 200;
 		static const int MAXCONNECTIONS = 5;
-		static const int MAXRECV = 500;
+		static const int MAXRECV = 5000;  //max 5840
 
 		LinuxSocket();
 		virtual ~LinuxSocket();
@@ -50,7 +50,8 @@ namespace Robot
 
 		void set_non_blocking ( const bool );
 
-		bool is_valid() const { return m_sock != -1; }	
+		bool is_valid() const { return m_sock != -1; }
+		void close();
 	};
 
 	class LinuxSocketException  

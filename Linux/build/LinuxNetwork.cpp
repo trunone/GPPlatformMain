@@ -42,6 +42,10 @@ bool LinuxSocket::create()
 
     return true;
 }
+void LinuxSocket::close() {
+    if ( is_valid() )
+        ::close ( m_sock );
+}
 
 bool LinuxSocket::bind ( const int port )  {
     if ( ! is_valid() )
@@ -105,7 +109,8 @@ bool LinuxSocket::send ( const std::string s ) const
 
 bool LinuxSocket::send ( void* data, int length ) const
 {
-    int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+    //int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+int status = ::send ( m_sock, data, length, 0 );
     if ( status == -1 )
     {
         return false;

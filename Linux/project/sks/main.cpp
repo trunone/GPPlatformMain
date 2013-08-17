@@ -5,6 +5,8 @@
  */
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
+//#define ENABLE_VISION_getball
+//#define ENABLE_VISION_facedection
 #define ENABLE_LOCATION
 
 #include <stdio.h>
@@ -210,9 +212,20 @@ int main(void)
         printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
+	//#ifdef ENABLE_VISION_getball	
+		
+		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
+		
+		//VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+	
+		VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
-    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
-
+		VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+		
+	//#endif
+	//#ifdef ENABLE_VISION_facedection
+        //	VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+	//#endif
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
 #endif
@@ -264,17 +277,18 @@ int main(void)
     {
         while(1) {
 
-            string xml;
+
+           string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
-	
             cout << "[Waiting..]" << endl;
             server.accept ( new_sock );
             cout << "[Accepted..]" << endl;	
 
             try
             {
-                while(true){	
+		cout<<"load"<<endl;
+            	while(true){	
                     TiXmlDocument doc;
                     new_sock >> xml;
                     doc.Parse(xml.c_str());
@@ -302,7 +316,7 @@ int main(void)
             {
                 cout << "[Disconnected]" << endl;
             }
-        }
+	}
     }
     catch ( LinuxSocketException& e )
     {

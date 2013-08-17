@@ -15,15 +15,18 @@
 using namespace Robot;
 
 //-----cvimage
-Mat VisionStatus::send_frame;
+Mat VisionStatus::VideoFrame;
 
+//cvSetCaptureProperty(VideoFrame, CV_CAP_PROP_FRAME_WIDTH, 320);
+//cvSetCaptureProperty(VideoFrame, CV_CAP_PROP_FRAME_HEIGHT, 240);
 //-----ObjCut
 unsigned char VisionStatus::Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
-
+int VisionStatus::Xmax(0),VisionStatus::Xmin(0),VisionStatus::Ymax(0),VisionStatus::Ymin(0);
+int VisionStatus::PointCnt(0);
 //-----door number status
-int door_status(0);
+int VisionStatus::door_status(0);
 
 //-----ball posistion
 int VisionStatus::Red_X(0);
@@ -41,7 +44,7 @@ VisionStatus::ColorRange VisionStatus::hsvGreenRange = {1.0, 0.0, 1.0, 0.0, 1.0,
 
 //------ FaceData ----------------------------------------------------------
 //------ FaceDetection ----------------------------------------------------------
-Mat VisionStatus::VideoFrame;
+
 
 //------ ImgProcess ----------------------------------------------------------
 unsigned char VisionStatus::Favg[40*40*3];
