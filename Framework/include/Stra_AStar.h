@@ -26,11 +26,13 @@ namespace Robot
 		
 		~Stra_AStar();
 
-        void Initialize(void);                 
+		void Initialize(void);                 
 
-        void Process(void);  
+		void Process(void);  
 
 		int LoadXMLSettings(TiXmlElement* element);
+
+		void Behavior_AstarPath( void );
 
 	private:
 
@@ -38,19 +40,18 @@ namespace Robot
 		
 		Stra_AStar();
 
-		void Behavior_AstarPath( void );
 
-        TCoordinate StartPos, GoalPos;
+		TCoordinate StartPos, GoalPos;
 
-        bool CloseState;
+		bool CloseState;
 
-        int PathErrRange;
+		int PathErrRange;
 
 		int AchieveErrRange;
 
-        TCoordinate TargetVector,NextVector;
+		TCoordinate TargetVector,NextVector;
 
-        TCoordinate VirtualPos;
+		TCoordinate VirtualPos;
 
 	};
 }

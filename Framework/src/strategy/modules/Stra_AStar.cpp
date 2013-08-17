@@ -15,66 +15,67 @@ Stra_AStar::~Stra_AStar()
 }
 
 //-----------------------------------------------------------------
-//////////////////////////////////////////////////////xml
 int Stra_AStar::LoadXMLSettings(TiXmlElement* element){
 	if(element != NULL){				
 		element->Attribute("PathErrRange", &PathErrRange);
 		element->Attribute("AchieveErrRange", &AchieveErrRange);
 	}
 }
-///////////////////////////////////////////
+
 void Stra_AStar::Initialize(void)
 {
-
+	
    	GoalPos = aVector(-999, -999);
 
     StartPos= aVector(-999, -999);
 
     CloseState = false;
+
 }
 
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
-{
+{	
+	//printf("enter astar module\n");
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
         StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
 
-    //----- ­YŠ³·sªº¥ØŒÐÂI ©Î °_ÂI «h­«·s­pºâžô®|
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
 	{
-        StartPos = StrategyStatus::AStarPath.StartPos;
+			
+        	StartPos = StrategyStatus::AStarPath.StartPos;
 
-        GoalPos  = StrategyStatus::AStarPath.GoalPos;
-
-        AstarTool::GetInstance()->CleanList();
-
-        AstarTool::GetInstance()->Main( StartPos , GoalPos );
-
-        AstarTool::GetInstance()->AdjustPath();
-
-		StrategyStatus::AStarPath.PCnt = 0;
-
-        	//----- šÌ·Ó­pºâ¥Xªºžô®|²Ÿ°Ê
+        	GoalPos  = StrategyStatus::AStarPath.GoalPos;
+			
+        	AstarTool::GetInstance()->CleanList();
+			//printf("clean done\n");
+        	AstarTool::GetInstance()->Main( StartPos , GoalPos );
+			//printf("main done\n");
+        	AstarTool::GetInstance()->AdjustPath();
+			//printf("adj done\n");
+			StrategyStatus::AStarPath.PCnt = 0;
 
         	Behavior_AstarPath();
+			
+			//printf("beh\n");
+			
     	}else{
-
-        	//----- šÌ·Ó­pºâ¥Xªºžô®|²Ÿ°Ê
-
         	Behavior_AstarPath();
+
     	}
+		
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Behavior_AstarPath( void )
 {
 	int Length = 0;
 	int Size = AstarTool::GetInstance()->SmoothPath.size();
-
+	//printf("AStarPath.PCnt %d Size  %d\n",StrategyStatus::AStarPath.PCnt,Size);
 	TCoordinate TmpGoal_V = AstarTool::GetInstance()->SmoothPath[ StrategyStatus::AStarPath.PCnt ] - LocationStatus::Position;
 
-    if( StrategyStatus::AStarPath.PCnt < Size ){
-        Length = TmpGoal_V.Length();
-        if (StrategyStatus::AStarPath.PCnt == Size - 1){
+	if( StrategyStatus::AStarPath.PCnt < Size ){
+		Length = TmpGoal_V.Length();
+        if(StrategyStatus::AStarPath.PCnt == Size - 1){
 			StrategyStatus::Goal1 = TmpGoal_V >> LocationStatus::Handle;
 			if( Length < AchieveErrRange ){
 				StrategyStatus::AStarPath.PCnt++;
@@ -105,8 +106,9 @@ void Stra_AStar::Behavior_AstarPath( void )
 
 		}
 		StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
-    } else {
+    }else{
         StrategyStatus::AStarPath.Status = StrategyStatus::etAchieve;
     }
+
 }
    

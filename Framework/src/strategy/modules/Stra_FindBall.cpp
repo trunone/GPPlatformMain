@@ -62,7 +62,8 @@ string Stra_FindBall::ParameterReset(void)
 //----------------------------------------------------------------------------
 
 void Stra_FindBall::Initialize(void)
-{/*
+{
+/*
     string str_ = this->Caption +" Initial";
     CenterThreshold = Def_CenterThreshold;
     Info->HdwInfo->MSLCommand.AX12_Angle = 35;
@@ -86,7 +87,7 @@ void Stra_FindBall::Process(void )
     //int TmpCnt = 0;
     float AngleError;
 
-//    if( this->bNewParameter ) this->ParameterReset();
+    //if( this->bNewParameter ) this->ParameterReset();
     AnalyseBall();
 
     if(StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSCatchBall)
@@ -95,10 +96,7 @@ void Stra_FindBall::Process(void )
 
         RoomCnt = StrategyStatus::Room.Cnt;
 
-        RoomVector = StrategyStatus::Room.Info[RoomCnt].Center -
-
-                     StrategyStatus::Room.Info[RoomCnt].Door;
-
+        RoomVector = StrategyStatus::Room.Info[RoomCnt].Center - StrategyStatus::Room.Info[RoomCnt].Door;
 
         CenterVector = StrategyStatus::Room.Info[RoomCnt].Center - LocationStatus::Position;
 
@@ -307,6 +305,7 @@ void Stra_FindBall::Process(void )
     //TestFindBall2->Label4->Caption =( Info->LocInfo->FlagEvaluatuonEnable == false) ? "No Evaluatuon": "Have";
 
     StrategyStatus::FlagRecognize = FlagRecognize;
+	//printf("FindBall done");
 }
 
 //----------------------------------------------------------------------------
@@ -835,7 +834,7 @@ void  Stra_FindBall::SearchBall()
     break;
 
     }
-    printf("FindBall done");
+    
 }
 
 

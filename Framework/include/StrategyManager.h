@@ -29,11 +29,11 @@ namespace Robot
 		bool m_IsThreadRunning;
 		bool m_IsLogging;
 
-        Motors *mMotors;
+        	Motors *mMotors;
 
-        std::ofstream m_LogFileStream;
+        	std::ofstream m_LogFileStream;
 
-        StrategyManager();
+        	StrategyManager();
 
 	protected:
 
@@ -43,10 +43,10 @@ namespace Robot
 		~StrategyManager();
 
 		static StrategyManager* GetInstance() { return m_UniqueInstance; }
-        bool Initialize(Motors*);
+        	bool Initialize(Motors*);
 		bool Initialize();
 		bool Reinitialize();
-        void Process();
+        	void Process();
 		void SetEnable(bool enable);
 		bool GetEnable()				{ return m_Enabled; }
 		void AddModule(StrategyModule *module);
@@ -55,7 +55,7 @@ namespace Robot
 		void StartLogging();
 		void StopLogging();
 
-        int LoadXMLSettings(TiXmlElement*);
+        	int LoadXMLSettings(TiXmlElement*);
 	};
 }
 

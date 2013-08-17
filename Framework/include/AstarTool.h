@@ -12,28 +12,54 @@
 #ifndef AstarH
 #define AstarH
 #include "StrategyModule.h"
-#include "BinaryHeapTool.h"
 #include "TCoordinate.h"
 #include <vector>
+#include <iostream>
+#include <sstream>
+#include <tinyxml.h>
+
 #define Def_Open 1
 #define Def_Closed 2
-#include <tinyxml.h>
+using namespace std;
 namespace Robot{
 
 	typedef struct
 	{
     		TCoordinate Pos;
-    		unsigned char Weight;
+    		short Weight;
 	}tsNeighbor;
 
 	typedef struct
 	{
     		vector<tsNeighbor> Neighbor;
-    		unsigned char Status;
-    		unsigned char Weight;
+    		short Status;
+    		int Weight;
     		TCoordinate Father;
-    		short F,G,H;
+    		long F,G,H;
 	}tsNode;
+
+	class Nodelist{
+		public:
+			int x,y;
+			short Weight;
+			Nodelist(int x, int y, short Weight){
+				this->x = x;
+				this->y = y;
+				this->Weight = Weight; 
+			}
+			inline bool operator < (const Nodelist &rhs) const {return Weight < rhs.Weight;}
+		};
+
+	class NodelistFinder{
+		private:
+			int Weight;
+		public:
+			NodelistFinder(const int n):Weight(n){}
+			bool operator ()(const vector<Nodelist>::value_type & value){
+				return value.Weight > this->Weight;
+			}
+	};
+
 	
 	class AstarTool
 	{	
@@ -42,42 +68,40 @@ namespace Robot{
 		    		
 		AstarTool();
 
-    	void  Main( TCoordinate Start , TCoordinate Goal );
-    	void  AdjustPath( void );
-    	void  CleanList( void );
+	    void  Main( TCoordinate Start , TCoordinate Goal );
+	    void  AdjustPath( void );
+	    void  CleanList( void );
 
-    	void  AssignMap( vector< vector<tsNode> > &Map,
-            int W, int H, int Resolution );
+	    void OneStepInitial( TCoordinate Start , TCoordinate Goal );
+	    void OneStepExe();
+	    unsigned char CurrentStatus;
+	    unsigned char ObstacleThreshold;
 
-    	void OneStepInitial( TCoordinate Start , TCoordinate Goal );
-    	void OneStepExe();
-    	unsigned char CurrentStatus;
-    	unsigned char ObstacleThreshold;
 
-    	vector< vector<tsNode> > Map;
-    	vector<TCoordinate> Path;
 
-    	vector<TCoordinate> SmoothPath;
+	    vector <TCoordinate> SmoothPath;
 
-		int LoadXMLSettings (TiXmlElement* element);   // load xml
+		int LoadXMLSettings (TiXmlElement* element);
 
+	    vector < vector<tsNode> > Map;
+	    vector <TCoordinate> Path;
 	private:
 
-
+ 
 		static AstarTool* m_UniqueInstance;
     		
 		void SearchNeighbor( TCoordinate Current );
-    	void SearchNeighbor_8Connect( TCoordinate Current );
-    	unsigned int CheckPath_Same( unsigned int PathNum );
-    	unsigned int CheckPath_Diff( unsigned int PathNum );
+	    void SearchNeighbor_8Connect( TCoordinate Current );
+	    unsigned int CheckPath_Same( unsigned int PathNum );
+	    unsigned int CheckPath_Diff( unsigned int PathNum );
 
-    	Heap::BinaryHeap<int> OpenList;
-    	vector<TCoordinate> ClosedList;
+	    vector<Nodelist> OpenList;
+	    vector<TCoordinate> ClosedList;
 
-    	TCoordinate StartNode,GoalNode;
+	    TCoordinate StartNode,GoalNode;
 
-    	int NodeResolution;
-    	int MapWidth, MapHeight;
+	    int NodeResolution;
+
 
 	};
 }

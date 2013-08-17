@@ -53,17 +53,12 @@ inline void TCoordinate::PolarCartesian(void)
 //--------------------Construct Function----------------------------------------
 
 TCoordinate::TCoordinate(double xValue,double yValue)
-
 {
-
     this->x = xValue;
 
     this->y = yValue;
 
-
-
     CartesianPolar();
-
 }
 
 //------------------------------------------------------------------------------
