@@ -158,14 +158,12 @@ void DescompositionReloadConfig ()
         if(element != NULL){
 				StrategyManager::GetInstance()->LoadXMLSettings(element);
         }
-
         element = root->FirstChildElement("StraConfig");
         if(element != NULL){
                     TiXmlElement* child = element->FirstChildElement("Stra_Astar");
                     if(child != NULL){
                           Stra_AStar::GetInstance()->LoadXMLSettings(child);
                     }
-
                     child = element->FirstChildElement("Stra_Avoid");
                     if(child != NULL){
                           Stra_Avoid::GetInstance()->LoadXMLSettings(child);
@@ -174,12 +172,15 @@ void DescompositionReloadConfig ()
                     if(child != NULL){
                           Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
                     }
-                          child = element->FirstChildElement("Stra_VelocityControl");
+                    child = element->FirstChildElement("Stra_VelocityControl");
                     if(child != NULL){
                           Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
                     }
+                    child = element->FirstChildElement("Stra_Task");
+                    if(child != NULL){
+                          Stra_Task::GetInstance()->LoadXMLSettings(child);
+                    }
        }
-
 }
 
 int main(void)
@@ -259,7 +260,7 @@ int main(void)
     
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 

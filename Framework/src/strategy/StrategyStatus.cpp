@@ -47,10 +47,6 @@ StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
 int StrategyStatus::RoomSort;		
 int StrategyStatus::FindBallEn;		
-int StrategyStatus::LivRM;
-int StrategyStatus::DinRM; 
-int StrategyStatus::Lib;
-int StrategyStatus::BedRM;
 //----------SIM_FLAG---------------------------------------------------
 bool StrategyStatus::SimulatorFlag;
 //----------Test int----------------------------------------------------

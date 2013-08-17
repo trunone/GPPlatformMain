@@ -84,7 +84,7 @@ namespace Robot
 			float Angle; 
 			int Distance;
 			short UPDown;       //Down : 1 , Up : -1 , Mid : 0 , No ball :-999
-			short LeftRight;   //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
+			short LeftRight;    //Left : 1 , URightp : -1 , Mid : 0 , No ball :-999
 			unsigned char FindBallCnt; 
         }tsStraBallInfo;
 		static long MotorSpeed[3];

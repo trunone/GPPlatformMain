@@ -21,7 +21,6 @@ void AstarTool::CleanList( void )
     Path.clear();
     ClosedList.clear();
 	OpenList.clear();
-
 }
 //--------------------------------------------------------------------------xmlGridMap
 int AstarTool::LoadXMLSettings(TiXmlElement* element){
@@ -94,13 +93,10 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
         Map[Front.x][Front.y].Status = CurrentStatus-Def_Closed;
         ClosedList.push_back( Front );
         SearchNeighbor_8Connect( Front );
-		
-		//printf("Front %f %f\n", Front.x, Front.y);
 
         Front.x = OpenList.begin()->x;
         Front.y = OpenList.begin()->y;
-		
-		
+			
     }
     //--------------------------------------------------------------------------
     //-------------- Return Path Info ------------------------------------------
@@ -108,7 +104,6 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
 	
 	if( Front.x == GoalNode.x && Front.y == GoalNode.y )
     {
-		//printf("return Path\n");
         Path.insert( Path.begin(), Goal );
         Father = GoalNode;
         while( StartNode.x != Father.x || StartNode.y != Father.y   )
