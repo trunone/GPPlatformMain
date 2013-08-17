@@ -18,7 +18,6 @@ Motors::Motors()
 
 Motors::~Motors()
 {
-    SetDisableAll();
 }
 
 int Motors::Initialize()

@@ -85,8 +85,8 @@ void VisionManager::Process()
     m_IsRunning = true;
 
     VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);
-    VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    //VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
         {

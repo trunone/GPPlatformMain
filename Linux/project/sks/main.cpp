@@ -46,6 +46,8 @@ void change_current_dir()
 
 void sighandler(int sig)
 {
+    motors.SetDisableAll();
+    printf("Exit!\n");
     exit(0);
 }
 
@@ -97,11 +99,12 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
     element = root->FirstChildElement("Laser");
     if(element != NULL) {
         TiXmlElement element("Laser");
-        for(int i=1; i<=1000; i++) {
+        vector<long>::iterator it = LocationStatus::LaserData.begin();
+        while(it != LocationStatus::LaserData.end()) {
             TiXmlElement child("Value");
-            //child->SetDoubleAttribute("angle",???);
-            //child->SetDoubleAttribute("distance",???);
+            child.SetDoubleAttribute("d", *it);
             element.InsertEndChild(*child.Clone());
+            it++;
         }
         RequestRoot.InsertEndChild(*element.Clone());
     }
@@ -191,10 +194,11 @@ int main(void)
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
     signal(SIGINT, &sighandler);
+    signal(SIGTSTP, &sighandler);
 
     change_current_dir();
 
-    //motors.OpenDeviceAll();
+    motors.OpenDeviceAll();
 
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
@@ -246,7 +250,7 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
@@ -260,14 +264,14 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
-
+    //StrategyManager::GetInstance()->SetEnable(true);
+    
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
@@ -275,8 +279,6 @@ int main(void)
     try
     {
         while(1) {
-
-
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
@@ -286,7 +288,6 @@ int main(void)
 
             try
             {
-                cout<<"load"<<endl;
                 while(true) {
                     TiXmlDocument doc;
                     new_sock >> xml;
@@ -313,6 +314,10 @@ int main(void)
             }
             catch ( LinuxSocketException& )
             {
+                location_timer->Stop();
+                strategy_timer->Stop();
+                //vision_timer->Stop();
+                motors.SetDisableAll();
                 cout << "[Disconnected]" << endl;
             }
         }
