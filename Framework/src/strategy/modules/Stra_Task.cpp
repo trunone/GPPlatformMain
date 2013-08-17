@@ -26,6 +26,16 @@ Stra_Task::~Stra_Task()
 {
 
 }
+//---------------------------------------------------------------------------xml
+int Stra_Task::LoadXMLSettings (TiXmlElement* element){
+	if(element != NULL){
+		element->Attribute("LivRM", &LivRM);
+		element->Attribute("DinRM", &DinRM);
+		element->Attribute("Lib", &Lib);
+		element->Attribute("BedRM", &BedRM);						
+	}
+	return 0;
+}
 
 //---------------------------------------------------------------------------
 void Stra_Task::Initialize(void)
@@ -67,7 +77,7 @@ void Stra_Task::Process(void)
     }
     //---------------- by yao 2012/08/28-----------------------------------------------
     //printf("room cnt %d\n",StrategyStatus::Room.Cnt);;
-	if( StrategyStatus::Room.Cnt == StrategyStatus::etLivRM)  //客廳
+	if( StrategyStatus::Room.Cnt == LivRM)  //客廳
     {
         switch( GotoRoomStep )
         {
@@ -95,20 +105,20 @@ void Stra_Task::Process(void)
         }
     }
 
-    else if( StrategyStatus::Room.Cnt == StrategyStatus::etDinRM || 
-			StrategyStatus::Room.Cnt == StrategyStatus::etLib || 
-			StrategyStatus::Room.Cnt == StrategyStatus::etBedRM )
+    else if( StrategyStatus::Room.Cnt == DinRM || 
+			StrategyStatus::Room.Cnt == Lib || 
+			StrategyStatus::Room.Cnt == BedRM )
     {
         switch( GotoRoomStep )
         {
         case 0://到房間門口
             ActiveState =  etAStar;
             if( !FlagSetInitialData )
-				if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)                			
+				if(StrategyStatus::Room.Cnt == DinRM)                			
 					SetAStar( StrategyStatus::DinRMDoor );
-				else if(StrategyStatus::Room.Cnt == StrategyStatus::etBedRM)
+				else if(StrategyStatus::Room.Cnt == BedRM)
 					SetAStar( StrategyStatus::BedRMDoor );
-				else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib)
+				else if(StrategyStatus::Room.Cnt == Lib)
 					SetAStar( StrategyStatus::LibDoor );
 				
         break;
@@ -400,7 +410,7 @@ bool Stra_Task::MakeSoundMove()
 //---------------------------------------------------------------------------
 void Stra_Task::MakeSound()
 {
-	if( StrategyStatus::Room.Cnt == StrategyStatus::DinRM )
+	if( StrategyStatus::Room.Cnt == DinRM )
 	{
 		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Restaurant.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
@@ -414,7 +424,7 @@ void Stra_Task::MakeSound()
         		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
     		}
 	}
-	else if( StrategyStatus::Room.Cnt == StrategyStatus::Lib )
+	else if( StrategyStatus::Room.Cnt == Lib )
 	{
 		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Studyroom.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
@@ -428,7 +438,7 @@ void Stra_Task::MakeSound()
         		StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSMakeSound;
     		}
 	}
-	else if( StrategyStatus::Room.Cnt == StrategyStatus::BedRM )
+	else if( StrategyStatus::Room.Cnt == BedRM )
 	{
 		LinuxActionScript::PlayMP3("../../../Data/mp3/Patrol_Badroom.mp3");
 		if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )

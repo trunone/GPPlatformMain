@@ -12,30 +12,54 @@
 #ifndef AstarH
 #define AstarH
 #include "StrategyModule.h"
-#include "BinaryHeapTool.h"
 #include "TCoordinate.h"
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <tinyxml.h>
+
 #define Def_Open 1
 #define Def_Closed 2
-#include <tinyxml.h>
+using namespace std;
 namespace Robot{
 
 	typedef struct
 	{
     		TCoordinate Pos;
-    		unsigned char Weight;
+    		short Weight;
 	}tsNeighbor;
 
 	typedef struct
 	{
     		vector<tsNeighbor> Neighbor;
-    		unsigned char Status;
-    		unsigned char Weight;
+    		short Status;
+    		int Weight;
     		TCoordinate Father;
-    		short F,G,H;
+    		long F,G,H;
 	}tsNode;
+
+	class Nodelist{
+		public:
+			int x,y;
+			short Weight;
+			Nodelist(int x, int y, short Weight){
+				this->x = x;
+				this->y = y;
+				this->Weight = Weight; 
+			}
+			inline bool operator < (const Nodelist &rhs) const {return Weight < rhs.Weight;}
+		};
+
+	class NodelistFinder{
+		private:
+			int Weight;
+		public:
+			NodelistFinder(const int n):Weight(n){}
+			bool operator ()(const vector<Nodelist>::value_type & value){
+				return value.Weight > this->Weight;
+			}
+	};
+
 	
 	class AstarTool
 	{	
@@ -57,6 +81,8 @@ namespace Robot{
 
 		int LoadXMLSettings (TiXmlElement* element);
 
+	    vector < vector<tsNode> > Map;
+	    vector <TCoordinate> Path;
 	private:
 
  
@@ -67,15 +93,13 @@ namespace Robot{
 	    unsigned int CheckPath_Same( unsigned int PathNum );
 	    unsigned int CheckPath_Diff( unsigned int PathNum );
 
-	    Heap::BinaryHeap<int> OpenList;
+	    vector<Nodelist> OpenList;
 	    vector<TCoordinate> ClosedList;
 
 	    TCoordinate StartNode,GoalNode;
 
 	    int NodeResolution;
 
-	    vector < vector<tsNode> > Map;
-	    vector <TCoordinate> Path;
 
 	};
 }

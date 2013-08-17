@@ -15,6 +15,7 @@
 #include "LocationStatus.h"
 #include "StrategyModule.h"
 #include "TCoordinate.h"
+#include <tinyxml.h>
 
 #define Def_AnglePrecision (5*M_PI/180.0)
 #define Def_MinTurnAngle (20*M_PI/180.0)
@@ -123,7 +124,18 @@ namespace Robot
 
     	int *PastScanLineData;
 
+		int LivRM;
+
+		int DinRM;
+
+		int Lib;
+
+		int BedRM;	
+	
 	public:
+		//---------loadxml----------
+		int LoadXMLSettings(TiXmlElement* element);
+
 		static Stra_Task* GetInstance() { return m_UniqueInstance; }
 		
 		~Stra_Task();
