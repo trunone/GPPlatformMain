@@ -47,6 +47,9 @@ namespace Robot
 		static LocationManager* GetInstance() { return m_UniqueInstance; }
 
 		bool Initialize(qrk::Urg_driver*, Motors*);
+        bool Initialize(Motors*);
+        bool Initialize(qrk::Urg_driver*);
+        bool Initialize();
 		bool Reinitialize();
         void Process();
 		void SetEnable(bool enable);

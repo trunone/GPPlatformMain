@@ -5,7 +5,7 @@
  */
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
-//#define ENABLE_LOCATION
+#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -82,12 +82,13 @@ int main(void)
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_LOCATION
     if(LocationManager::GetInstance()->Initialize(&urg, &motors) == false)
+    //if(LocationManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Location Manager!\n");
         return 1;
     }
 
-    LocationManager::GetInstance()->AddModule((LocationModule*)Speedometer::GetInstance());
+    LocationManager::GetInstance()->AddModule((LocationModule*)Odometer::GetInstance());
     LocationManager::GetInstance()->AddModule((LocationModule*)ParticleFilter::GetInstance());
 
     LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
@@ -120,7 +121,7 @@ int main(void)
 
 	LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
 	strategy_timer->Start();
-    StrategyManager::GetInstance()->StartLogging();
+    //StrategyManager::GetInstance()->StartLogging();
 #endif
 
 

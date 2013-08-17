@@ -99,38 +99,6 @@ string ParticleFilter::InitialParticles(int ParticlesNum)
     }
 }
 //------------------------------------------------------------------------------
-string ParticleFilter::InitialParticles(int ParticlesNum,int x ,int y , float r,float range)
-{
-    if(NULL)
-        return "ParticleFilter Intial Failed" ;
-    else{
-        srand(time(NULL)+rand());           //selection rand model
-        Particles.clear();
-
-        tsParticle tempParticle;
-        BestParticle.Probabilty = 0;
-        for(int i=0 ; i<ParticlesNum ; i++ ){
-            tempParticle.Position.x = x+range * NormalRand::GetInstance()->randn(0,1);
-            tempParticle.Position.y = y+range * NormalRand::GetInstance()->randn(0,1);
-            tempParticle.Direction  = r+M_PI/18.0 * NormalRand::GetInstance()->randn(0,1);
-            tempParticle.Probabilty = ProbEvaluation::GetInstance()->GetProbability(  tempParticle.Position.x,
-                                                                                    tempParticle.Position.y,
-                                                                                    tempParticle.Direction);
-            if(tempParticle.Probabilty > BestParticle.Probabilty){
-                BestParticle = tempParticle;
-                BestParticleNum = i;
-            }
-
-            Particles.push_back(tempParticle);
-        }
-        BestParticle.Position.x = x;
-        BestParticle.Position.y = y;
-        BestParticle.Direction = r;
-        return "ParticleFilter Intial Successful";
-    }
-
-}
-//------------------------------------------------------------------------------
 string ParticleFilter::PredictionParticles()
 {
     int i=0 , i_size;

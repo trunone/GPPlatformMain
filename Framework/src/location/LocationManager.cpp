@@ -31,22 +31,33 @@ LocationManager::~LocationManager()
 
 bool LocationManager::Initialize(Urg_driver *urg, Motors *motors)
 {
+	return true&&Initialize()&&Initialize(urg)&&Initialize(motors);
+}
+bool LocationManager::Initialize(Motors* motors) {
+    mMotors = motors;
+    return true&&Initialize();
+}
+bool LocationManager::Initialize(qrk::Urg_driver* urg) {
+    mUrg = urg;
+
+    mUrg->set_scanning_parameter(mUrg->deg2step(-90), mUrg->deg2step(+90), 10);
+    mUrg->start_measurement(Urg_driver::Distance, 0, 0);
+
+    if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
+        fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
+
+    return true&&Initialize();
+}
+
+bool LocationManager::Initialize() {
 	m_Enabled = false;
 	m_ProcessEnable = true;
+
 	LocationStatus::Position = aVector(50, 250);
     LocationStatus::Handle   = 0.0;
     LocationStatus::FlagEvaluatuonEnable = true;
     LocationStatus::FlagCoerceEvaluatuon = false;
-
-    mUrg = urg;
-    mMotors = motors;
-
-    mUrg->set_scanning_parameter(mUrg->deg2step(-90), mUrg->deg2step(+90), 10);
-    mUrg->start_measurement(Urg_driver::Distance, 0, 0);
-    if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
-        fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
-
-	return true;
+    return true;
 }
 
 bool LocationManager::Reinitialize()
@@ -91,12 +102,15 @@ void LocationManager::Process()
 
     m_IsRunning = true;
 
-    if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
-        fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
+    if(mUrg != NULL)
+        if (!mUrg->get_distance(LocationStatus::LaserData, &LocationStatus::TimeStamp))
+            fprintf(stderr,  "urg_driver:: get_distance(): %s\n", mUrg->what());
 
-    mMotors->GetPositionIs(0, &LocationStatus::MotorPulse[0]);
-    mMotors->GetPositionIs(1, &LocationStatus::MotorPulse[1]);
-    mMotors->GetPositionIs(2, &LocationStatus::MotorPulse[2]);
+    if(mMotors != NULL) {
+        mMotors->GetPositionIs(0, &LocationStatus::MotorPulse[0]);
+        mMotors->GetPositionIs(1, &LocationStatus::MotorPulse[1]);
+        mMotors->GetPositionIs(2, &LocationStatus::MotorPulse[2]);
+    }
     
     if(m_Modules.size() != 0)
     {
@@ -111,8 +125,8 @@ void LocationManager::Process()
     if(m_IsLogging)
     {
         m_LogFileStream << "Encoder" << "," << std::endl;
-        //m_LogFileStream << LocationStatus::MotorPulse[0] << ","<< LocationStatus::MotorPulse[1] << ","<< LocationStatus::MotorPulse[2] << "," << std::endl;
-        m_LogFileStream << LocationStatus::FB_Movement.Position.x << ","<< LocationStatus::FB_Movement.Position.y << ","<< LocationStatus::FB_Movement.Direction << "," << std::endl;
+        m_LogFileStream << LocationStatus::MotorPulse[0] << ","<< LocationStatus::MotorPulse[1] << ","<< LocationStatus::MotorPulse[2] << "," << std::endl;
+        //m_LogFileStream << LocationStatus::FB_Movement.Position.x << ","<< LocationStatus::FB_Movement.Position.y << ","<< LocationStatus::FB_Movement.Direction << "," << std::endl;
         //m_LogFileStream << "Laser" << "," << std::endl;
         //for(int i = 0; i < LocationStatus::LaserData.size(); i++)
         //    m_LogFileStream << LocationStatus::LaserData[i] << ",";
