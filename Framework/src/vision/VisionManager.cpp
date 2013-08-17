@@ -33,13 +33,13 @@ bool VisionManager::Initialize(CvCapture *capture)
     m_Enabled = false;
     m_ProcessEnable = true;
 
+    ImgProcess::FaceData();
     if(capture) {
         VisionCapture = capture;
         return true;
     }else{
         return false;
     }
-    ImgProcess::FaceData();
 }
 
 bool VisionManager::Reinitialize()

@@ -5,8 +5,7 @@
  */
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
-//#define ENABLE_VISION_getball
-//#define ENABLE_VISION_facedection
+//#define ENABLE_VISION_FACEDETECTION
 #define ENABLE_LOCATION
 
 #include <stdio.h>
@@ -212,20 +211,19 @@ int main(void)
         printf("Fail to initialize Vision Manager!\n");
         return 1;
     }
-	//#ifdef ENABLE_VISION_getball	
-		
+
 		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
 		
 		//VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
 	
 		VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
+    #ifdef ENABLE_VISION_FACEDETECTION
+    	VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+    #endif
+
 		VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 		
-	//#endif
-	//#ifdef ENABLE_VISION_facedection
-        //	VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
-	//#endif
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
 #endif

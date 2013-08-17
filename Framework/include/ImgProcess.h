@@ -23,6 +23,7 @@ namespace Robot
 
 	public:
 		static void FaceData();
+
 	};
 }
 
