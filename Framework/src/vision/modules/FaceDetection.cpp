@@ -47,14 +47,14 @@ void FaceDetection::Process()
 	CvMat *SumWP;
 	float PeopleDW[40*40*3];
 	int Facedata=0;
-	int Iall=0,Iavg=0,I=0,Ih=0;
+	int Iall=0,Iavg=0,I=0;
 	std::vector<Rect> faces;
 	Mat Video = VisionStatus::VideoFrame;
    	Mat Video_gray;
 	Mat Face40size( Size(40,40) , CV_8UC3 );
    	cvtColor( Video, Video_gray, CV_BGR2GRAY );
    	equalizeHist( Video_gray, Video_gray );
-   	face_cascade.detectMultiScale( Video_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(40,40));
+	face_cascade.detectMultiScale(Video_gray, faces,1.1,2, 0|CV_HAAR_SCALE_IMAGE, Size(40,40));
    	for( size_t i = 0; i < faces.size(); i++ )
 	{
 		Facedata=0;
@@ -80,7 +80,7 @@ void FaceDetection::Process()
 		for(int i=0;i<40*40;i++)Iall = Iall+Face40size.data[i*3];
 		Iavg = Iall/(40*40);
 		for(int i=0;i<40*40*3;i++){
-	`		I = (128-Iavg)+Face40size.data[i];
+			I = (128-Iavg)+Face40size.data[i];
 			if(I<0)I=0;
 			if(I>255)I=255;
 			Face40size.data[i] = I;
@@ -103,5 +103,12 @@ void FaceDetection::Process()
 		SumWP=cvCreateMat(1,1,CV_32FC1);
 		cvMatMul(FFW,PW,SumWP);
 		printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
+		if(( 10000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<21000 )printf("Grandfa\n");
+		else if(( 190000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<280000 )printf("Mother\n");
+		else if(( 330000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<445000 )printf("Father\n");
+		else if(( 25000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<61000 )printf("Girl\n");
+		else if(( 90000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<160000 )printf("Boy\n");
+		else printf("Miss\n");	
+	
 	}
 }

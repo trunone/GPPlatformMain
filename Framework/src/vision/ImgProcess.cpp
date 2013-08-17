@@ -64,7 +64,7 @@ void detection( Mat Image,Mat Face40size )
 }
 void Image_Unify( Mat Before , Mat After)
 {
-	int Iall=0,Iavg=0,Ih=0,I=0;
+	int Iall=0,Iavg=0,I=0;
 	for(int i=0;i<40*40;i++)Iall = Iall+Before.data[i*3];
 	//Average gray
 	Iavg = Iall/(40*40);
@@ -159,7 +159,6 @@ void ImgProcess::FaceData()
 			Feature_Face.data[i*40*3+j] = Feature_Sum;
 		}
 	}
-	imshow(q,Feature_Face);
 	for(int i=0;i<40*40;i++){
 		VisionStatus::FeatureFaceW[i]=Feature_Face.data[i*3];
 		GrandfaDW[i]=Grandfa_Face.data[i*3];

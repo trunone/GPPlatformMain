@@ -40,9 +40,9 @@ VisionStatus::ColorRange VisionStatus::hsvGreenRange = {1.0, 0.0, 1.0, 0.0, 1.0,
 //------ FaceDetection ----------------------------------------------------------
 Mat VisionStatus::VideoFrame;
 
-//------ ImgProcess ----------------------------------------------------------
-unsigned char VisionStatus::Favg[40*40*3];
-float VisionStatus::FeatureFaceW[40*40*3];
+//------ ImgProcess -----------------------------------------------------------
+Mat VisionStatus::Favg_Face;
+float VisionStatus::FeatureFaceW[40*40];
 float VisionStatus::cvGet2D_1(0);
 float VisionStatus::cvGet2D_2(0);
 float VisionStatus::cvGet2D_3(0);
