@@ -53,7 +53,13 @@ void sighandler(int sig)
     exit(0);
 }
 
-int DescompositionCommand (TiXmlElement* root)
+void sigtstp_handler(int sig)
+{
+    motors.SetDisableAll();
+    exit(0);
+}
+
+int XMLReceiveCommand (TiXmlElement* root)
 {
     TiXmlElement* element;
     element = root->FirstChildElement("ManualDirection");
@@ -84,7 +90,8 @@ int DescompositionCommand (TiXmlElement* root)
         }
     }
 }
-int DescompositionSimulator (TiXmlElement* root)
+
+int XMLReceiveSimulator (TiXmlElement* root)
 {
     TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
     if(element != NULL) {
@@ -94,18 +101,19 @@ int DescompositionSimulator (TiXmlElement* root)
     }
 }
 
-int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
+TiXmlDocument XMLReceiveRequest (TiXmlElement* root)
 {
     TiXmlElement* element;
     TiXmlElement RequestRoot("Status");
     element = root->FirstChildElement("Laser");
     if(element != NULL) {
         TiXmlElement element("Laser");
-        for(int i=1; i<=1000; i++) {
+        vector<long>::iterator it = LocationStatus::LaserData.begin();
+        while(it != LocationStatus::LaserData.end()) {
             TiXmlElement child("Value");
-            //child->SetDoubleAttribute("angle",???);
-            //child->SetDoubleAttribute("distance",???);
+            child.SetDoubleAttribute("d", *it);
             element.InsertEndChild(*child.Clone());
+            it++;
         }
         RequestRoot.InsertEndChild(*element.Clone());
     }
@@ -131,13 +139,12 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
         element.SetDoubleAttribute("sita",StrategyStatus::w);
         RequestRoot.InsertEndChild(*element.Clone());
     }
-    TiXmlDocument RequestDoc;
-    RequestDoc.InsertEndChild(*RequestRoot.Clone());
-    TiXmlPrinter send;
-    RequestDoc.Accept( &send );
-    *new_sock << send.CStr();
+    TiXmlDocument request_doc;
+    request_doc.InsertEndChild(*RequestRoot.Clone());
+    return request_doc;
 }
-void DescompositionReloadConfig ()
+
+void XMLLoadConfig ()
 {
     TiXmlDocument ConfigDoc("Robot_Config.xml");
     ConfigDoc.LoadFile();
@@ -189,16 +196,17 @@ void DescompositionReloadConfig ()
 
 int main(void)
 {
-    DescompositionReloadConfig();
+    XMLLoadConfig();
 
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
     signal(SIGINT, &sighandler);
+    signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
 
-    //motors.OpenDeviceAll();
+    motors.OpenDeviceAll();
 
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
@@ -250,7 +258,7 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
@@ -264,14 +272,14 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
-
+    //StrategyManager::GetInstance()->SetEnable(true);
+    
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
@@ -281,39 +289,39 @@ int main(void)
     try
     {
         while(1) {
-
-
-            string xml;
-            LinuxServer new_sock;
+            LinuxServer connection;
             LinuxServer server(10373);
             cout << "[Waiting..]" << endl;
-            server.accept ( new_sock );
+            server.accept ( connection );
             cout << "[Accepted..]" << endl;
 
             try
             {
-                cout<<"load"<<endl;
                 while(true) {
+                    string receive_data;
                     TiXmlDocument doc;
-                    new_sock >> xml;
-                    doc.Parse(xml.c_str());
+                    connection >> receive_data;
+                    doc.Parse(receive_data.c_str());
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
-                        DescompositionCommand(root);
+                        XMLReceiveCommand(root);
                     }
                     if(StrategyStatus::SimulatorFlag) {
                         root = doc.FirstChildElement("Simulator");
                         if(root != NULL) {
-                            DescompositionSimulator (root);
+                            XMLReceiveSimulator(root);
                         }
                     }
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
-                        DescompositionRequest (root, &new_sock);
+                        TiXmlDocument request_doc = XMLReceiveRequest(root);
+                        TiXmlPrinter printer;
+                        request_doc.Accept( &printer );
+                        connection << printer.CStr();
                     }
                     root = doc.FirstChildElement("ReloadConfig");
                     if(root != NULL) {
-                        DescompositionReloadConfig();
+                        XMLLoadConfig();
                     }
                 }
             }

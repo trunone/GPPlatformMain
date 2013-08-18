@@ -217,7 +217,11 @@ void Stra_Task::ActiveFunction()
 {
     switch( ActiveState )
     {
-        //----------------------
+    case etIdle :
+        StrategyStatus::MotionDistance = 0.1;
+        StrategyStatus::MotionAngle = 0.0;
+
+        break;
     case etAStar :
         //printf("enter etAstar\n");
         if( StrategyStatus::AStarPath.Status != StrategyStatus::etAchieve )

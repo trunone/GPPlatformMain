@@ -35,10 +35,6 @@ void Odometer::Initialize()
     mPastMotorPulse[0] = 0;
     mPastMotorPulse[1] = 0;
     mPastMotorPulse[2] = 0;
-
-    tmpx = 0;
-    tmpy = 0;
-    tmpw = 0;
 }
 
 void Odometer::Process()
@@ -52,7 +48,7 @@ void Odometer::Process()
     LocationStatus::FB_Movement.Position.x =
         (-2.0/3.0)*( mAngle1Cos*mWheelDist[0] + mAngle2Cos*mWheelDist[1] + mAngle3Cos*mWheelDist[2]);
     LocationStatus::FB_Movement.Direction =
-        (-1.0/3.0)*( mWheelDist[0] + mWheelDist[1] + mWheelDist[2] );
+        (1.0/3.0)*( mWheelDist[0] + mWheelDist[1] + mWheelDist[2] );
 
     LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
 }

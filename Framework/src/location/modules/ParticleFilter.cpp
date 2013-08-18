@@ -1,6 +1,6 @@
 #include "ParticleFilter.h"
 
-#define Def_LaserGap 10
+#define Def_LaserGap 7
 
 using namespace Robot;
 using namespace std;
