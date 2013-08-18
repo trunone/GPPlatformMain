@@ -138,7 +138,6 @@ public:
     //----------- Avoidance ------------------------------------------------
     static bool FlagAvoidEnable;
     static TCoordinate CorrectionVector;
-
     //----------------------------------------------------------------------
     //----------- Velocity Control -----------------------------------------
     static float FixSpeed;                                 // Speed Power 1~100 %

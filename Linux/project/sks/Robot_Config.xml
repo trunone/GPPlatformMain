@@ -27,11 +27,11 @@
     <ChrgCen x="308" y="596" />
   </BasicConfig>
   <StraConfig>
+	<Stra_Task LivRM="0" DinRM="1" BedRM="2" Lib="3" />
     <Stra_Astar PathErrRange="35" AchieveErrRange="15" />
     <Stra_Avoid StartAngle_du="-90" ScanLineSize="61" ScanLineScale_du="3" SafeRange="70" SafeArc_D="60" SafeArc_A="60" AvoidConfig1="1.2" AvoidForce_du="130" FixDirect="0" />
     <Stra_PathPlan DetourConst="85" />
     <Stra_VelocityControl dis_max="100" dis_min="10" spd_max="200" spd_min="12" sita_max="1.047197552" sita_min="0.05" w_max="21" w_min="9" />
-	<Stra_Task LivRM="0" DinRM="1" BedRM="2" Lib="3" />
   </StraConfig>
   <ColorModel>
     <Blue HueMax="0.7277778" HueMin="0.6111111" SaturationMax="1" SaturationMin="0.49" BrightnessMax="1" BrightnessMin="0.36" />
