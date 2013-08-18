@@ -8,6 +8,9 @@
 //#define ENABLE_VISION_FACEDETECTION
 #define ENABLE_LOCATION
 
+//#define NETWORK_INTERFACE
+#define INTERACTIVE_INTERFACE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
@@ -26,6 +29,7 @@
 #include "urg_cpp/math_utilities.h"
 
 #include "LinuxWheeled.h"
+#include "cmd_process.h"
 
 using namespace Robot;
 using namespace std;
@@ -272,6 +276,8 @@ int main(void)
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
 #endif
+
+#ifdef NETWORK_INTERFACE
     try
     {
         while(1) {
@@ -321,5 +327,129 @@ int main(void)
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
+#endif
+
+#ifdef INTERACTIVE_INTERFACE
+    DrawIntro();
+    while(1)
+    {
+        int ch = _getch();
+        if(ch == 0x1b)
+        {
+            ch = _getch();
+            if(ch == 0x5b)
+            {
+                ch = _getch();
+                if(ch == 0x41) // Up arrow key
+                    MoveUpCursor();
+                else if(ch == 0x42) // Down arrow key
+                    MoveDownCursor();
+                else if(ch == 0x44) // Left arrow key
+                    MoveLeftCursor();
+                else if(ch == 0x43)
+                    MoveRightCursor();
+            }
+        }
+        else if( ch == '[' )
+            DecreaseValue(false);
+        else if( ch == ']' )
+            IncreaseValue(false);
+        else if( ch == '{' )
+            DecreaseValue(true);
+        else if( ch == '}' )
+            IncreaseValue(true);
+        else if( ch >= 'A' && ch <= 'z' )
+        {
+            char input[128] = {0,};
+            char *token;
+            int input_len;
+            char cmd[80];
+            char strParam[20][30];
+            int num_param;
+            int idx = 0;
+
+            BeginCommandMode();
+
+            printf("%c", ch);
+
+            input[idx++] = (char)ch;
+
+            while(1)
+            {
+                ch = _getch();
+                if( ch == 0x0A )
+                    break;
+                else if( ch == 0x7F )
+                {
+                    if(idx > 0)
+                    {
+                        ch = 0x08;
+                        printf("%c", ch);
+                        ch = ' ';
+                        printf("%c", ch);
+                        ch = 0x08;
+                        printf("%c", ch);
+                        input[--idx] = 0;
+                    }
+                }
+                else if( ch >= 'A' && ch <= 'z' )
+                {
+                    if(idx < 127)
+                    {
+                        printf("%c", ch);
+                        input[idx++] = (char)ch;
+                    }
+                }
+            }
+
+            fflush(stdin);
+            input_len = strlen(input);
+
+            if(input_len > 0)
+            {
+                token = strtok( input, " " );
+                if(token != 0)
+                {
+                    strcpy( cmd, token );
+                    token = strtok( 0, " " );
+                    num_param = 0;
+
+                    while(token != 0)
+                    {
+                        strcpy(strParam[num_param++], token);
+                        token = strtok( 0, " " );
+                    }
+
+                    if(strcmp(cmd, "exit") == 0)
+                    {
+                        if(AskSave() == false)
+                            break;
+                    }
+
+                    if(strcmp(cmd, "re") == 0)
+                        DrawScreen();
+                    else if(strcmp(cmd, "save") == 0)
+                    {
+                        Walking::GetInstance()->SaveINISettings(ini);
+                        SaveCmd();
+
+                    }
+                    else if(strcmp(cmd, "mon") == 0)
+                    {
+                        MonitorCmd();
+                    }
+                    else if(strcmp(cmd, "help") == 0)
+                        HelpCmd();
+                    else
+                        PrintCmd("Bad command! please input 'help'");
+                }
+            }
+
+            EndCommandMode();
+        }
+    }
+
+    DrawEnding();
+#endif
     return 0;
 }

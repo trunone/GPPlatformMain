@@ -16,7 +16,8 @@ CXXFLAGS += -O2 -DLINUX -Wall -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall $(INCLUDE_DIRS)
 LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp -ltinyxml -lEposCmd -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect
 
-OBJECTS = main.o
+OBJECTS = main.o \
+		  cmd_process.o
 
 all: $(TARGET)
 
