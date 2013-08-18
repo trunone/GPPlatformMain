@@ -53,6 +53,7 @@ public:
     bool GetEnable()				{
         return m_Enabled;
     }
+    bool IsRunning() { return m_IsRunning; }
     void AddModule(StrategyModule *module);
     void RemoveModule(StrategyModule *module);
 

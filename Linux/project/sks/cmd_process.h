@@ -1,12 +1,10 @@
 #ifndef _DXL_MANAGER_CMD_PROCESS_H_
 #define _DXL_MANAGER_CMD_PROCESS_H_
 
-
-#include "LinuxDARwIn.h"
-
+#include "LinuxWheeled.h"
 
 #define PROGRAM_VERSION	"v1.00"
-#define SCREEN_COL		35
+#define SCREEN_COL		80
 
 // Position of Column
 #define CMD_COL			2
@@ -14,11 +12,11 @@
 
 // Position of Row
 enum {
-    WALKING_MODE_ROW,
-    X_OFFSET_ROW,
-    Y_OFFSET_ROW,
-    Z_OFFSET_ROW,
-    ROLL_OFFSET_ROW,
+    LOCATION_THREAD_ROW = 1,
+    STRATEGY_THREAD_ROW,
+    VISION_THREAD_ROW,
+    MOVE_VELOCITY_ROW,
+    ROTATE_VELOCITY_ROW,
     PITCH_OFFSET_ROW,
     YAW_OFFSET_ROW,
     HIP_PITCH_OFFSET_ROW,
@@ -42,6 +40,7 @@ enum {
     P_GAIN_ROW,
     I_GAIN_ROW,
     D_GAIN_ROW,
+    EMPTY_ROW,
     CMD_ROW,
     SCREEN_ROW
 };
@@ -58,7 +57,7 @@ void MoveLeftCursor();
 void MoveRightCursor();
 
 // Disp & Drawing
-void DrawIntro(Robot::CM730 *cm730);
+void DrawIntro();
 void DrawEnding();
 void DrawScreen();
 void ClearCmd();

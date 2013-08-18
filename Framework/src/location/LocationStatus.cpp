@@ -10,22 +10,6 @@
 #include <stdio.h>
 
 using namespace Robot;
-/*
-LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
-LocationStatus::LivingRM_Table = {0,0,0,0,0};
-LocationStatus::LivingRM_Cabinet = {0,0,0,0,0};
-LocationStatus::DiningRM_Table = {0,0,0,0,0};
-LocationStatus::DiningRM_Chair = {0,0,0,0,0};
-LocationStatus::Library_Desk = {0,0,0,0,0};
-LocationStatus::Library_Chair = {0,0,0,0,0};
-LocationStatus::Library_Cabinet = {0,0,0,0,0};
-LocationStatus::BedRM_Bed = {0,0,0,0,0};
-LocationStatus::DiningRM_door = {0,0,0,0,0};
-LocationStatus::BedRM_door = {0,0,0,0,0};
-LocationStatus::ChargeArea = {0,0,0,0,0};
-LocationStatus::EndArea = {0,0,0,0,0};
-LocationStatus::LivingRM_Sofa = {0,0,0,0,0};
-*/
 
 LocationStatus::Furniture LocationStatus::LivingRM_Sofa;
 LocationStatus::Furniture LocationStatus::LivingRM_Table;

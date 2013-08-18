@@ -1,22 +1,23 @@
+#include "cmd_process.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <term.h>
 #include <ncurses.h>
-#include "cmd_process.h"
 
 using namespace Robot;
 
-
 int Col = PARAM_COL;
-int Row = WALKING_MODE_ROW;
+int Row = LOCATION_THREAD_ROW;
 int Old_Col;
 int Old_Row;
 bool bBeginCommandMode = false;
 bool bEdited = false;
-int indexPage = 1;
+int giMoveVelocity = 150;
+double gdRotateVelocity = 0.3;
 
 
 int _getch()
@@ -64,7 +65,7 @@ void set_stdin(void)
 {
 	tcgetattr(0,&oldterm);
 	new_term = oldterm;
-	new_term.c_lflag &= ~(ICANON | ECHO | ISIG); // 의미는 struct termios를 찾으면 됨.
+	new_term.c_lflag &= ~(ICANON | ECHO | ISIG);
 	new_term.c_cc[VMIN] = 1;
 	new_term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &new_term);
@@ -129,7 +130,7 @@ void MoveRightCursor()
 {
 }
 
-void DrawIntro(CM730 *cm730)
+void DrawIntro()
 {	
     /*
 	int n = 0;
@@ -166,7 +167,7 @@ void DrawIntro(CM730 *cm730)
 
 	system("clear");
 	printf("\n");
-	printf("[Walking Tuner for DARwIn %s]\n", PROGRAM_VERSION);
+	printf("[General Purpose Platform Controller %s]\n", PROGRAM_VERSION);
 	printf("\n");
 	printf(" *Terminal screen size must be %d(col)x%d(row).\n", SCREEN_COL, SCREEN_ROW);
     printf(" *Current terminal has %d columns and %d rows.\n", ncolumns, nrows);
@@ -182,7 +183,7 @@ void DrawEnding()
 {
 	system("clear");
 	printf("\n");
-	printf("Terminate Walking Tuner");
+	printf("Exit!");
 	printf("\n");
 }
 
@@ -195,54 +196,63 @@ void DrawScreen()
 	GoToCursor(0, 0);
 
 	// Display menu
-	//      01234567890123456789012345678901234  Total:35x29
-	printf("Walking Mode(on/off)      \n"); // 0
-	printf("X offset(mm)              \n"); // 1
-	printf("Y offset(mm)              \n"); // 2
-	printf("Z offset(mm)              \n"); // 3
-	printf("Roll(x) offset(degree)    \n"); // 4
-	printf("Pitch(y) offset(degree)   \n"); // 5
-	printf("Yaw(z) offset(degree)     \n"); // 6
-	printf("Hip pitch offset(degree)  \n"); // 7
-	printf("Auto balance(on/off)      \n"); // 8
-	printf("Period time(msec)         \n"); // 9
-	printf("DSP ratio                 \n"); // 0
-    printf("Step forward/back ratio   \n"); // 1
-	printf("Step forward/back(mm)     \n"); // 2
-	printf("Step right/left(mm)       \n"); // 3
-	printf("Step direction(degree)    \n"); // 4
-	printf("Turning aim(on/off)       \n"); // 5
-	printf("Foot height(mm)           \n"); // 6
-	printf("Swing right/left(mm)      \n"); // 7
-	printf("Swing top/down(mm)        \n"); // 8
-	printf("Pelvis offset(degree)     \n"); // 9
-	printf("Arm swing gain            \n"); // 0
-	printf("Balance knee gain         \n"); // 1
-	printf("Balance ankle pitch gain  \n"); // 2
-	printf("Balance hip roll gain     \n"); // 3
-	printf("Balance ankle roll gain   \n"); // 4
-    printf("P gain                    \n"); // 5
-    printf("I gain                    \n"); // 6
-    printf("D gain                    \n"); // 7
-    ClearCmd(); // 8
+	//      012345678901234567890123456789012345678901234567890123456789
+    printf("                                                 ------------------------------\n"); // 0
+	printf("Location Thread            **                    ---                        ---\n"); // 1
+	printf("Strategey Thread           **                    --------------  --------------\n"); // 2
+	printf("Vision Thread              **                    --------------  --------------\n"); // 3
+	printf("Robot Move Velocity        **                    --------------  --------------\n"); // 4
+	printf("Robot Rotate Velocity      **                    --------------  --------------\n"); // 5
+	printf("Pitch(y) offset(degree)    **                    --------------  --------------\n"); // 6
+	printf("Yaw(z) offset(degree)      **                    --------------  --------------\n"); // 7
+	printf("Hip pitch offset(degree)   **                    --------------  --------------\n"); // 8
+	printf("Auto balance(on/off)       **                    --------------  --------------\n"); // 9
+	printf("Period time(msec)          **                    ---  -----   -----------------\n"); // 0
+	printf("DSP ratio                  **                    ---  ----   ------------------\n"); // 1
+    printf("Step forward/back ratio    **                    ---  ---   -------------------\n"); // 2
+	printf("Step forward/back(mm)      **                    ---  --   --------------------\n"); // 3
+	printf("Step right/left(mm)        **                    ---     ----------------------\n"); // 4
+	printf("Step direction(degree)     **                    ---  -   ---------------------\n"); // 5
+	printf("Turning aim(on/off)        **                    ---  ---   -------------------\n"); // 6
+	printf("Foot height(mm)            **                    ---  ----   ------------------\n"); // 7
+	printf("Swing right/left(mm)       **                    ---  -----   -----------------\n"); // 8
+	printf("Swing top/down(mm)         **                    ------------------------------\n"); // 9
+	printf("Pelvis offset(degree)      **                    ---------------  --------  ---\n"); // 0
+	printf("Arm swing gain             **                    ---------------  --------  ---\n"); // 1
+	printf("Balance knee gain          **                    ---------------  --------  ---\n"); // 2
+	printf("Balance ankle pitch gain   **                    ---------------  --------  ---\n"); // 3
+	printf("Balance hip roll gain      **                    ---------------  --------  ---\n"); // 4
+	printf("Balance ankle roll gain    **                    ---------------  --------  ---\n"); // 5
+    printf("P gain                     **                    ---------------- -------- ----\n"); // 6
+    printf("I gain                     **                    ----------------- ------ -----\n"); // 7
+    printf("D gain                     **                    -------------------    -------\n"); // 8
+    printf("                                                 ------------------------------\n"); // 9 
+    ClearCmd();
 
-	GoToCursor(PARAM_COL, WALKING_MODE_ROW);
-	if(Walking::GetInstance()->IsRunning() == true)
+	GoToCursor(PARAM_COL, LOCATION_THREAD_ROW);
+	if(LocationManager::GetInstance()->IsRunning() == true)
 		printf("ON     ");
 	else
 		printf("OFF    ");
 
-	GoToCursor(PARAM_COL, X_OFFSET_ROW);
-	//printf("%d    ", (int)Walking::GetInstance()->X_OFFSET);
+	GoToCursor(PARAM_COL, STRATEGY_THREAD_ROW);
+	if(StrategyManager::GetInstance()->IsRunning() == true)
+		printf("ON     ");
+	else
+		printf("OFF    ");
 
-	GoToCursor(PARAM_COL, Y_OFFSET_ROW);
-	//printf("%d    ", (int)Walking::GetInstance()->Y_OFFSET);
+	GoToCursor(PARAM_COL, VISION_THREAD_ROW);
+	if(VisionManager::GetInstance()->IsRunning() == true)
+		printf("ON     ");
+	else
+		printf("OFF    ");
 
-	GoToCursor(PARAM_COL, Z_OFFSET_ROW);
-	//printf("%d    ", (int)Walking::GetInstance()->Z_OFFSET);
 
-	GoToCursor(PARAM_COL, ROLL_OFFSET_ROW);
-	//printf("%.1f    ", Walking::GetInstance()->R_OFFSET);
+	GoToCursor(PARAM_COL, MOVE_VELOCITY_ROW);
+	printf("%d    ", giMoveVelocity);
+
+	GoToCursor(PARAM_COL, ROTATE_VELOCITY_ROW);
+	printf("%.1f    ", gdRotateVelocity);
 
 	GoToCursor(PARAM_COL, PITCH_OFFSET_ROW);
 	//printf("%.1f    ", Walking::GetInstance()->P_OFFSET);
@@ -363,11 +373,11 @@ void IncreaseValue(bool large)
 
 	switch(row)
 	{
-	//case WALKING_MODE_ROW:
-	//    MotionManager::GetInstance()->StartLogging();
-	//	Walking::GetInstance()->Start();
-	//	printf("ON    ");
-	//	break;
+	case LOCATION_THREAD_ROW:
+	    LocationManager::GetInstance()->StartLogging();
+		//LocationManager::GetInstance()->Start();
+		printf("ON    ");
+		break;
 
 	//case X_OFFSET_ROW:
 	//	if(large == true)
@@ -385,21 +395,21 @@ void IncreaseValue(bool large)
 	//	printf("%d    ", (int)Walking::GetInstance()->Y_OFFSET);
 	//	break;
 
-	//case Z_OFFSET_ROW:
-	//	if(large == true)
-	//		Walking::GetInstance()->Z_OFFSET += 10;
-	//	else
-	//		Walking::GetInstance()->Z_OFFSET += 1;
-	//	printf("%d    ", (int)Walking::GetInstance()->Z_OFFSET);
-	//	break;
+	case MOVE_VELOCITY_ROW:
+		if(large == true)
+			giMoveVelocity += 10;
+		else
+			giMoveVelocity += 1;
+		printf("%d    ", giMoveVelocity);
+		break;
 
-	//case ROLL_OFFSET_ROW:
-	//	if(large == true)
-	//		Walking::GetInstance()->R_OFFSET += 1.0;
-	//	else
-	//		Walking::GetInstance()->R_OFFSET += 0.1;
-	//	printf("%.1f    ", Walking::GetInstance()->R_OFFSET);
-	//	break;
+	case ROTATE_VELOCITY_ROW:
+		if(large == true)
+			gdRotateVelocity += 1.0;
+		else
+			gdRotateVelocity += 0.1;
+		printf("%.1f    ", gdRotateVelocity);
+		break;
 
 	//case PITCH_OFFSET_ROW:
 	//	if(large == true)
@@ -605,20 +615,11 @@ void DecreaseValue(bool large)
 
 	switch(row)
 	{
-	//case WALKING_MODE_ROW:
-	//	Walking::GetInstance()->Stop();
-	//	MotionManager::GetInstance()->StopLogging();
-	//	printf("OFF");
-	//	GoToCursor(PARAM_COL, STEP_FORWARDBACK_ROW);
-	//	Walking::GetInstance()->X_MOVE_AMPLITUDE = 0;
-	//	printf("%d    ", (int)Walking::GetInstance()->X_MOVE_AMPLITUDE);
-	//	GoToCursor(PARAM_COL, STEP_RIGHTLEFT_ROW);
-	//	Walking::GetInstance()->Y_MOVE_AMPLITUDE = 0;
-	//	printf("%d    ", (int)Walking::GetInstance()->Y_MOVE_AMPLITUDE);
-	//	GoToCursor(PARAM_COL, STEP_DIRECTION_ROW);
-	//	Walking::GetInstance()->A_MOVE_AMPLITUDE = 0;
-	//	printf("%.1f    ", Walking::GetInstance()->A_MOVE_AMPLITUDE);
-	//	break;
+	case LOCATION_THREAD_ROW:
+		//Walking::GetInstance()->Stop();
+		LocationManager::GetInstance()->StopLogging();
+		printf("OFF");
+		break;
 
 	//case X_OFFSET_ROW:
 	//	if(large == true)
@@ -636,21 +637,25 @@ void DecreaseValue(bool large)
 	//	printf("%d    ", (int)Walking::GetInstance()->Y_OFFSET);
 	//	break;
 
-	//case Z_OFFSET_ROW:
-	//	if(large == true)
-	//		Walking::GetInstance()->Z_OFFSET -= 10;
-	//	else
-	//		Walking::GetInstance()->Z_OFFSET -= 1;
-	//	printf("%d    ", (int)Walking::GetInstance()->Z_OFFSET);
-	//	break;
+	case MOVE_VELOCITY_ROW:
+        if(giMoveVelocity > 0) {
+            if(large == true)
+                giMoveVelocity -= 10;
+            else
+                giMoveVelocity -= 1;
+            printf("%d    ", giMoveVelocity);
+        }
+		break;
 
-	//case ROLL_OFFSET_ROW:
-	//	if(large == true)
-	//		Walking::GetInstance()->R_OFFSET -= 1.0;
-	//	else
-	//		Walking::GetInstance()->R_OFFSET -= 0.1;
-	//	printf("%.1f    ", Walking::GetInstance()->R_OFFSET);
-	//	break;
+	case ROTATE_VELOCITY_ROW:
+        if(gdRotateVelocity > 0) {
+            if(large == true)
+                gdRotateVelocity -= 1.0;
+            else
+                gdRotateVelocity -= 0.1;
+            printf("%.1f    ", gdRotateVelocity);
+        }
+		break;
 
 	//case PITCH_OFFSET_ROW:
 	//	if(large == true)
@@ -829,7 +834,7 @@ void DecreaseValue(bool large)
     //        Walking::GetInstance()->D_GAIN -= 1;
     //    printf("%d    ", Walking::GetInstance()->D_GAIN);
     //    break;
-	//}
+	}
 	
 	GoToCursor(col, row);
 }
@@ -855,6 +860,7 @@ void HelpCmd()
 	printf("\n");
 	printf(" exit: Exits the program\n");
 	printf(" re: Refreshes the screen\n");
+	printf(" load: load config\n");
 	printf(" save: Saves any changes made\n");
 	printf(" mon: Monitoring sensor\n");
 	printf("\n");
@@ -876,12 +882,7 @@ void MonitorCmd()
 	int col;
 	int row;
 	int ch;
-	int value;
-	int GyroFB_min = 1000, GyroFB_max = -1000;
-	int GyroRL_min = 1000, GyroRL_max = -1000;
-	int AccelFB_min = 1000, AccelFB_max = -1000;
-	int AccelRL_min = 1000, AccelRL_max = -1000;
-
+	
 	if(bBeginCommandMode == true)
 	{
 		col = Old_Col;
@@ -895,50 +896,41 @@ void MonitorCmd()
 
 	system("clear");
 	printf("\n");	
-	printf("Gyro F/B                  \n"); // 0
+	//      01234567890123456789012345678901234  Total:35x29
+	printf("Robot Position            \n"); // 0
 	printf("Gyro R/L                  \n"); // 1
 	printf("Accel F/B                 \n"); // 2
 	printf("Accel R/L                 \n"); // 3
-	printf("ESC (quit), SPACE (reset)   \n");
+	printf("ESC (quit), SPACE (stop)   \n");
+	printf("W (forward), S (backward), A (left), D (right)   \n");
+	printf("Q (turn right), E (turn left)  \n");
 
 	set_stdin();
 	while(1)
 	{
-		//value = MotionStatus::FB_GYRO; //MotionStatus::FB_GYRO;
-        value = 0;
-		if(GyroFB_min > value)
-			GyroFB_min = value;
-		if(GyroFB_max < value)
-			GyroFB_max = value;
-		GoToCursor(PARAM_COL, X_OFFSET_ROW);
-		printf("%d (%d~%d)   ", value, GyroFB_min, GyroFB_max);
+		//value = LocationStatus::x; //MotionStatus::FB_GYRO;
+		GoToCursor(PARAM_COL, 1);
+		printf("(%f, %f), %f ", LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle);
 
-		//value = MotionStatus::RL_GYRO; //MotionStatus::RL_GYRO;
-        value = 0;
-		if(GyroRL_min > value)
-			GyroRL_min = value;
-		if(GyroRL_max < value)
-			GyroRL_max = value;
-		GoToCursor(PARAM_COL, Y_OFFSET_ROW);
-		printf("%d (%d~%d)   ", value, GyroRL_min, GyroRL_max);
+	//	//value = MotionStatus::RL_GYRO; //MotionStatus::RL_GYRO;
+	//	if(GyroRL_min > value)
+	//		GyroRL_min = value;
+	//	if(GyroRL_max < value)
+	//		GyroRL_max = value;
+	//	GoToCursor(PARAM_COL, 2);
+	//	printf("%d (%d~%d)   ", value, GyroRL_min, GyroRL_max);
 
-		//value = MotionStatus::FB_ACCEL;
-        value = 0;
-		if(AccelFB_min > value)
-			AccelFB_min = value;
-		if(AccelFB_max < value)
-			AccelFB_max = value;
-		GoToCursor(PARAM_COL, Z_OFFSET_ROW);
-		printf("%d (%d~%d)   ", value, AccelFB_min, AccelFB_max);
+	//	//value = MotionStatus::FB_ACCEL;
+	//	GoToCursor(PARAM_COL, 3);
+	//	printf("%d (%d~%d)   ", value, AccelFB_min, AccelFB_max);
 
-		//value = MotionStatus::RL_ACCEL;
-        value = 0;
-		if(AccelRL_min > value)
-			AccelRL_min = value;
-		if(AccelRL_max < value)
-			AccelRL_max = value;
-		GoToCursor(PARAM_COL, ROLL_OFFSET_ROW);
-		printf("%d (%d~%d)   ", value, AccelRL_min, AccelRL_max);
+	//	//value = MotionStatus::RL_ACCEL;
+	//	if(AccelRL_min > value)
+	//		AccelRL_min = value;
+	//	if(AccelRL_max < value)
+	//		AccelRL_max = value;
+	//	GoToCursor(PARAM_COL, ROLL_OFFSET_ROW);
+	//	printf("%d (%d~%d)   ", value, AccelRL_min, AccelRL_max);
 
 		if(kbhit())
 		{
@@ -947,14 +939,48 @@ void MonitorCmd()
 				break;
 			else if(ch == 0x20) // Space
 			{
-				GyroFB_min = 1000; GyroFB_max = -1000;
-				GyroRL_min = 1000; GyroRL_max = -1000;
-				AccelFB_min = 1000; AccelFB_max = -1000;
-				AccelRL_min = 1000; AccelRL_max = -1000;
+                StrategyStatus::x = 0.0;
+                StrategyStatus::y = 0.0;
+                StrategyStatus::w = 0.0;
 			}
+			else if(ch == 'w' || ch == 'W') // forward
+			{
+                StrategyStatus::x = giMoveVelocity;
+                StrategyStatus::y = 0.0;
+                StrategyStatus::w = 0.0;
+            }
+ 			else if(ch == 's' || ch == 'S') // forward
+			{
+                StrategyStatus::x = -giMoveVelocity;
+                StrategyStatus::y = 0.0;
+                StrategyStatus::w = 0.0;
+            }
+            else if(ch == 'a' || ch == 'A') // forward
+			{
+                StrategyStatus::x = 0.0;
+                StrategyStatus::y = giMoveVelocity;
+                StrategyStatus::w = 0.0;
+            }
+			else if(ch == 'd' || ch == 'D') // forward
+			{
+                StrategyStatus::x = 0.0;
+                StrategyStatus::y = -giMoveVelocity;
+                StrategyStatus::w = 0.0;
+            }
+			else if(ch == 'q' || ch == 'Q') // forward
+			{
+                StrategyStatus::x = 0.0;
+                StrategyStatus::y = 0.0;
+                StrategyStatus::w = gdRotateVelocity;
+            }
+			else if(ch == 'r' || ch == 'R') // forward
+			{
+                StrategyStatus::x = 0.0;
+                StrategyStatus::y = 0.0;
+                StrategyStatus::w = -gdRotateVelocity;
+            }
 		}
-
-		usleep(50000);
+		usleep(500);
 	}
 	reset_stdin();
 	GoToCursor(col, row);

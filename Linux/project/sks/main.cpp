@@ -3,10 +3,10 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
+//#define ENABLE_STRATEGY
 //#define ENABLE_VISION
 //#define ENABLE_VISION_FACEDETECTION
-#define ENABLE_LOCATION
+//#define ENABLE_LOCATION
 
 //#define NETWORK_INTERFACE
 #define INTERACTIVE_INTERFACE
@@ -436,9 +436,13 @@ int main(void)
 
                     if(strcmp(cmd, "re") == 0)
                         DrawScreen();
+                    else if(strcmp(cmd, "load") == 0)
+                    {
+                        XMLLoadConfig();
+                    }
                     else if(strcmp(cmd, "save") == 0)
                     {
-                        Walking::GetInstance()->SaveINISettings(ini);
+                        //Walking::GetInstance()->SaveINISettings(ini);
                         SaveCmd();
 
                     }

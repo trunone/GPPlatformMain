@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "VisionStatus.h"
 #include "VisionManager.h"
 #include "ImgProcess.h"
 
