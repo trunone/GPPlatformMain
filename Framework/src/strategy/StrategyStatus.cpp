@@ -69,7 +69,6 @@ TCoordinate StrategyStatus::GoalVector;
 //----------- Avoidance ------------------------------------------------
 bool StrategyStatus::FlagAvoidEnable;
 TCoordinate StrategyStatus::CorrectionVector;
-
 //----------------------------------------------------------------------
 //----------- Velocity Control -----------------------------------------
 float StrategyStatus::FixSpeed;                                 // Speed Power 1~100 %

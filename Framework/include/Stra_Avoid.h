@@ -46,11 +46,11 @@ private:
 
     TCoordinate LeftForce, RightForce;
 
-    int *ScanLine;
+	vector<long> AvoidLaserData;
+
+    int AvoidScanLineNum;
 
     double ScanStartAngle;
-
-    int ScanLineNum;
 
     double ScanScale;
 
