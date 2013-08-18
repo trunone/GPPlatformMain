@@ -30,7 +30,6 @@ private:
 
     void GetWheelDistance(short);
 
-    double tmpx, tmpy, tmpw;
 public:
     static Odometer* GetInstance() {
         return m_UniqueInstance;

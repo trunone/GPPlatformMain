@@ -46,12 +46,16 @@ void change_current_dir()
 
 void sighandler(int sig)
 {
-    motors.SetDisableAll();
-    printf("Exit!\n");
     exit(0);
 }
 
-int DescompositionCommand (TiXmlElement* root)
+void sigtstp_handler(int sig)
+{
+    motors.SetDisableAll();
+    exit(0);
+}
+
+int XMLReceiveCommand (TiXmlElement* root)
 {
     TiXmlElement* element;
     element = root->FirstChildElement("ManualDirection");
@@ -82,7 +86,8 @@ int DescompositionCommand (TiXmlElement* root)
         }
     }
 }
-int DescompositionSimulator (TiXmlElement* root)
+
+int XMLReceiveSimulator (TiXmlElement* root)
 {
     TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
     if(element != NULL) {
@@ -92,7 +97,7 @@ int DescompositionSimulator (TiXmlElement* root)
     }
 }
 
-int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
+TiXmlDocument XMLReceiveRequest (TiXmlElement* root)
 {
     TiXmlElement* element;
     TiXmlElement RequestRoot("Status");
@@ -130,13 +135,12 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
         element.SetDoubleAttribute("sita",StrategyStatus::w);
         RequestRoot.InsertEndChild(*element.Clone());
     }
-    TiXmlDocument RequestDoc;
-    RequestDoc.InsertEndChild(*RequestRoot.Clone());
-    TiXmlPrinter send;
-    RequestDoc.Accept( &send );
-    *new_sock << send.CStr();
+    TiXmlDocument request_doc;
+    request_doc.InsertEndChild(*RequestRoot.Clone());
+    return request_doc;
 }
-void DescompositionReloadConfig ()
+
+void XMLLoadConfig ()
 {
     TiXmlDocument ConfigDoc("Robot_Config.xml");
     ConfigDoc.LoadFile();
@@ -188,13 +192,13 @@ void DescompositionReloadConfig ()
 
 int main(void)
 {
-    DescompositionReloadConfig();
+    XMLLoadConfig();
 
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
     signal(SIGINT, &sighandler);
-    signal(SIGTSTP, &sighandler);
+    signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
 
@@ -279,45 +283,44 @@ int main(void)
     try
     {
         while(1) {
-            string xml;
-            LinuxServer new_sock;
+            LinuxServer connection;
             LinuxServer server(10373);
             cout << "[Waiting..]" << endl;
-            server.accept ( new_sock );
+            server.accept ( connection );
             cout << "[Accepted..]" << endl;
 
             try
             {
                 while(true) {
+                    string receive_data;
                     TiXmlDocument doc;
-                    new_sock >> xml;
-                    doc.Parse(xml.c_str());
+                    connection >> receive_data;
+                    doc.Parse(receive_data.c_str());
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
-                        DescompositionCommand(root);
+                        XMLReceiveCommand(root);
                     }
                     if(StrategyStatus::SimulatorFlag) {
                         root = doc.FirstChildElement("Simulator");
                         if(root != NULL) {
-                            DescompositionSimulator (root);
+                            XMLReceiveSimulator(root);
                         }
                     }
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
-                        DescompositionRequest (root, &new_sock);
+                        TiXmlDocument request_doc = XMLReceiveRequest(root);
+                        TiXmlPrinter printer;
+                        request_doc.Accept( &printer );
+                        connection << printer.CStr();
                     }
                     root = doc.FirstChildElement("ReloadConfig");
                     if(root != NULL) {
-                        DescompositionReloadConfig();
+                        XMLLoadConfig();
                     }
                 }
             }
             catch ( LinuxSocketException& )
             {
-                location_timer->Stop();
-                strategy_timer->Stop();
-                //vision_timer->Stop();
-                motors.SetDisableAll();
                 cout << "[Disconnected]" << endl;
             }
         }
