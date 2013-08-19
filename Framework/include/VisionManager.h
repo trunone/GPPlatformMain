@@ -56,6 +56,7 @@ public:
     bool GetEnable()				{
         return m_Enabled;
     }
+    bool IsRunning() { return m_IsRunning; }
     void AddModule(VisionModule *module);
     void RemoveModule(VisionModule *module);
 

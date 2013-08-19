@@ -14,9 +14,9 @@ INCLUDE_DIRS = -I../../include -I../../../Framework/include
 CXX = g++
 CXXFLAGS += -O2 -DLINUX -Wall -fopenmp $(INCLUDE_DIRS)
 #CXXFLAGS += -O2 -DDEBUG -DLINUX -Wall $(INCLUDE_DIRS)
-LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp -ltinyxml -lEposCmd -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect
+LFLAGS += -lpthread -ljpeg -lrt -lurg_cpp -ltinyxml -lEposCmd -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect -lncurses
 
-OBJECTS = main.o
+OBJECTS = cmd_process.o main.o
 
 all: $(TARGET)
 

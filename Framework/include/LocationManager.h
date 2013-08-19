@@ -58,6 +58,7 @@ public:
     bool GetEnable()				{
         return m_Enabled;
     }
+    bool IsRunning() { return m_IsRunning; }
     void AddModule(LocationModule *module);
     void RemoveModule(LocationModule *module);
 

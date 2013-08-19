@@ -137,25 +137,24 @@ void Stra_Task::Process(void)
             		GoalAngle = (StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor).Angle();
             	else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib);
             		GoalAngle = (StrategyStatus::LibCen - StrategyStatus::LibDoor).Angle();
+           break;
+           case 3:
+            	if(StrategyStatus::FlagMember = true)
+            		EncounterPeople();
             break;
-
-//            case 3:
-//            	if(StrategyStatus::FlagMember = true)
-//            		EncounterPeople();
-//            break;
-//            case 4:
-//                ActiveState =  etAStar;
-//                if( StrategyStatus::Room.Cnt == Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
-//                    StrategyStatus::FlagAvoidEnable = false; //關閉避障
-//                if( !FlagSetInitialData )
-//                    SetAStar( StrategyStatus::EscapePosition );
-//            break;
-            default:
-            	ActiveState = etIdle;
-            	StrategyStatus::Room.Cnt++;
-            	GotoRoomStep = 0;
-            	StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
-            	FlagSetInitialData = false;
+            case 4:
+                ActiveState =  etAStar;
+                if( StrategyStatus::Room.Cnt == Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
+                    StrategyStatus::FlagAvoidEnable = false; //關閉避障
+                if( !FlagSetInitialData )
+                    SetAStar( StrategyStatus::EscapePosition );
+            break;
+        default:
+            ActiveState = etIdle;
+            StrategyStatus::Room.Cnt++;
+            GotoRoomStep = 0;
+            StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+            FlagSetInitialData = false;
             break;
         }
     }
@@ -215,7 +214,7 @@ void Stra_Task::ActiveFunction()
 {
     switch( ActiveState )
     {
-    case etAStar :
+   case etAStar :
         //printf("enter etAstar\n");
         if( StrategyStatus::AStarPath.Status != StrategyStatus::etAchieve )
         {

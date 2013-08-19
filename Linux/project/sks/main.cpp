@@ -8,6 +8,9 @@
 //#define ENABLE_VISION_FACEDETECTION
 //#define ENABLE_LOCATION
 
+//#define NETWORK_INTERFACE
+#define INTERACTIVE_INTERFACE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
@@ -26,6 +29,7 @@
 #include "urg_cpp/math_utilities.h"
 
 #include "LinuxWheeled.h"
+#include "cmd_process.h"
 
 using namespace Robot;
 using namespace std;
@@ -49,7 +53,13 @@ void sighandler(int sig)
     exit(0);
 }
 
-int DescompositionCommand (TiXmlElement* root)
+void sigtstp_handler(int sig)
+{
+    motors.SetDisableAll();
+    exit(0);
+}
+
+int XMLReceiveCommand (TiXmlElement* root)
 {
     TiXmlElement* element;
     element = root->FirstChildElement("ManualDirection");
@@ -80,7 +90,8 @@ int DescompositionCommand (TiXmlElement* root)
         }
     }
 }
-int DescompositionSimulator (TiXmlElement* root)
+
+int XMLReceiveSimulator (TiXmlElement* root)
 {
     TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
     if(element != NULL) {
@@ -90,18 +101,19 @@ int DescompositionSimulator (TiXmlElement* root)
     }
 }
 
-int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
+TiXmlDocument XMLReceiveRequest (TiXmlElement* root)
 {
     TiXmlElement* element;
     TiXmlElement RequestRoot("Status");
     element = root->FirstChildElement("Laser");
     if(element != NULL) {
         TiXmlElement element("Laser");
-        for(int i=1; i<=1000; i++) {
+        vector<long>::iterator it = LocationStatus::LaserData.begin();
+        while(it != LocationStatus::LaserData.end()) {
             TiXmlElement child("Value");
-            //child->SetDoubleAttribute("angle",???);
-            //child->SetDoubleAttribute("distance",???);
+            child.SetDoubleAttribute("d", *it);
             element.InsertEndChild(*child.Clone());
+            it++;
         }
         RequestRoot.InsertEndChild(*element.Clone());
     }
@@ -127,13 +139,12 @@ int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
         element.SetDoubleAttribute("sita",StrategyStatus::w);
         RequestRoot.InsertEndChild(*element.Clone());
     }
-    TiXmlDocument RequestDoc;
-    RequestDoc.InsertEndChild(*RequestRoot.Clone());
-    TiXmlPrinter send;
-    RequestDoc.Accept( &send );
-    *new_sock << send.CStr();
+    TiXmlDocument request_doc;
+    request_doc.InsertEndChild(*RequestRoot.Clone());
+    return request_doc;
 }
-void DescompositionReloadConfig ()
+
+void XMLLoadConfig ()
 {
     TiXmlDocument ConfigDoc("Robot_Config.xml");
     ConfigDoc.LoadFile();
@@ -185,15 +196,17 @@ void DescompositionReloadConfig ()
 
 int main(void)
 {
-    DescompositionReloadConfig();
+    XMLLoadConfig();
+
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
     signal(SIGINT, &sighandler);
+    signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
 
-    //motors.OpenDeviceAll();
+    motors.OpenDeviceAll();
 
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );
@@ -245,7 +258,7 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize() == false)
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
@@ -259,54 +272,56 @@ int main(void)
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
-
+    //StrategyManager::GetInstance()->SetEnable(true);
+    
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
 #endif
+
+#ifdef NETWORK_INTERFACE
     try
     {
         while(1) {
-
-
-            string xml;
-            LinuxServer new_sock;
+            LinuxServer connection;
             LinuxServer server(10373);
             cout << "[Waiting..]" << endl;
-            server.accept ( new_sock );
+            server.accept ( connection );
             cout << "[Accepted..]" << endl;
 
             try
             {
-                cout<<"load"<<endl;
                 while(true) {
+                    string receive_data;
                     TiXmlDocument doc;
-                    new_sock >> xml;
-                    doc.Parse(xml.c_str());
+                    connection >> receive_data;
+                    doc.Parse(receive_data.c_str());
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
-                        DescompositionCommand(root);
+                        XMLReceiveCommand(root);
                     }
                     if(StrategyStatus::SimulatorFlag) {
                         root = doc.FirstChildElement("Simulator");
                         if(root != NULL) {
-                            DescompositionSimulator (root);
+                            XMLReceiveSimulator(root);
                         }
                     }
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
-                        DescompositionRequest (root, &new_sock);
+                        TiXmlDocument request_doc = XMLReceiveRequest(root);
+                        TiXmlPrinter printer;
+                        request_doc.Accept( &printer );
+                        connection << printer.CStr();
                     }
                     root = doc.FirstChildElement("ReloadConfig");
                     if(root != NULL) {
-                        DescompositionReloadConfig();
+                        XMLLoadConfig();
                     }
                 }
             }
@@ -320,5 +335,133 @@ int main(void)
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";
     }
+#endif
+
+#ifdef INTERACTIVE_INTERFACE
+    DrawIntro();
+    while(1)
+    {
+        int ch = _getch();
+        if(ch == 0x1b)
+        {
+            ch = _getch();
+            if(ch == 0x5b)
+            {
+                ch = _getch();
+                if(ch == 0x41) // Up arrow key
+                    MoveUpCursor();
+                else if(ch == 0x42) // Down arrow key
+                    MoveDownCursor();
+                else if(ch == 0x44) // Left arrow key
+                    MoveLeftCursor();
+                else if(ch == 0x43)
+                    MoveRightCursor();
+            }
+        }
+        else if( ch == '[' )
+            DecreaseValue(false);
+        else if( ch == ']' )
+            IncreaseValue(false);
+        else if( ch == '{' )
+            DecreaseValue(true);
+        else if( ch == '}' )
+            IncreaseValue(true);
+        else if( ch >= 'A' && ch <= 'z' )
+        {
+            char input[128] = {0,};
+            char *token;
+            int input_len;
+            char cmd[80];
+            char strParam[20][30];
+            int num_param;
+            int idx = 0;
+
+            BeginCommandMode();
+
+            printf("%c", ch);
+
+            input[idx++] = (char)ch;
+
+            while(1)
+            {
+                ch = _getch();
+                if( ch == 0x0A )
+                    break;
+                else if( ch == 0x7F )
+                {
+                    if(idx > 0)
+                    {
+                        ch = 0x08;
+                        printf("%c", ch);
+                        ch = ' ';
+                        printf("%c", ch);
+                        ch = 0x08;
+                        printf("%c", ch);
+                        input[--idx] = 0;
+                    }
+                }
+                else if( ch >= 'A' && ch <= 'z' )
+                {
+                    if(idx < 127)
+                    {
+                        printf("%c", ch);
+                        input[idx++] = (char)ch;
+                    }
+                }
+            }
+
+            fflush(stdin);
+            input_len = strlen(input);
+
+            if(input_len > 0)
+            {
+                token = strtok( input, " " );
+                if(token != 0)
+                {
+                    strcpy( cmd, token );
+                    token = strtok( 0, " " );
+                    num_param = 0;
+
+                    while(token != 0)
+                    {
+                        strcpy(strParam[num_param++], token);
+                        token = strtok( 0, " " );
+                    }
+
+                    if(strcmp(cmd, "exit") == 0)
+                    {
+                        if(AskSave() == false)
+                            break;
+                    }
+
+                    if(strcmp(cmd, "re") == 0)
+                        DrawScreen();
+                    else if(strcmp(cmd, "load") == 0)
+                    {
+                        XMLLoadConfig();
+                    }
+                    else if(strcmp(cmd, "save") == 0)
+                    {
+                        //Walking::GetInstance()->SaveINISettings(ini);
+                        SaveCmd();
+
+                    }
+                    else if(strcmp(cmd, "mon") == 0)
+                    {
+                        MonitorCmd();
+                    }
+                    else if(strcmp(cmd, "help") == 0)
+                        HelpCmd();
+                    else
+                        PrintCmd("Bad command! please input 'help'");
+                }
+            }
+
+            EndCommandMode();
+        }
+    }
+
+    DrawEnding();
+#endif
     return 0;
 }
