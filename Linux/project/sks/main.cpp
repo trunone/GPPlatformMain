@@ -6,7 +6,7 @@
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
 //#define ENABLE_VISION_FACEDETECTION
-#define ENABLE_LOCATION
+//#define ENABLE_LOCATION
 
 #include <stdio.h>
 #include <unistd.h>
@@ -186,7 +186,6 @@ void DescompositionReloadConfig ()
 int main(void)
 {
     DescompositionReloadConfig();
-
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);

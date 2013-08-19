@@ -43,6 +43,8 @@ void Stra_Avoid::Process(void)
     {
         //this->ScanLine = NULL ;//Info->HdwInfo->LaserInfo.ScanArray;
 
+		AvoidLaserData = LocationStatus::LaserData; //given laserdata, scannum is 19
+
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
         StrategyStatus::CorrectionVector = ScanLineAvoidFunction( StrategyStatus::GoalVector );

@@ -8,7 +8,6 @@
 #include "Stra_Task.h"
 #include "VisionStatus.h"
 #include "LinuxActionScript.h"
-// for use M_PI
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -122,7 +121,13 @@ break;*/
                     SetAStar( StrategyStatus::LibDoor );
 
             break;
-            /*case 1: // 車頭面向房間
+
+            case 1:
+            	MakeSound();
+                //WaitCatchball();
+                //else{
+                    //GotoRoomStep++;
+            case 2: // 車頭面向房間
                 ActiveState =  etTurnToAngle;
             	if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)
                 	GoalAngle = (StrategyStatus::DinRMCen - StrategyStatus::DinRMDoor).Angle();
@@ -130,29 +135,20 @@ break;*/
             		GoalAngle = (StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor).Angle();
             	else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib);
             		GoalAngle = (StrategyStatus::LibCen - StrategyStatus::LibDoor).Angle();
-            break;*/
-            /*case 2:
-            	ActiveState = etMakeSoundMove;
-            	MakeSound();
-                //WaitCatchball();
-                //else{
-                    //GotoRoomStep++;
-                    //StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
-                    //FlagSetInitialData = false;
-                //}
             break;
-            case 3:
-            	if(StrategyStatus::FlagMember = true)
-            		EncounterPeople();
-            break;
-            case 4:
-                ActiveState =  etAStar;
-                if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
-                    StrategyStatus::FlagAvoidEnable = false; //關閉避障
-                if( !FlagSetInitialData )
-                    SetAStar( StrategyStatus::EscapePosition );
-            break;*/
-        default:
+
+//            case 3:
+//            	if(StrategyStatus::FlagMember = true)
+//            		EncounterPeople();
+//            break;
+//            case 4:
+//                ActiveState =  etAStar;
+//                if( StrategyStatus::Room.Cnt == Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
+//                    StrategyStatus::FlagAvoidEnable = false; //關閉避障
+//                if( !FlagSetInitialData )
+//                    SetAStar( StrategyStatus::EscapePosition );
+//            break;
+            default:
             ActiveState = etIdle;
             StrategyStatus::Room.Cnt++;
             GotoRoomStep = 0;
@@ -161,46 +157,46 @@ break;*/
             break;
         }
     }
-    /*else if(StrategyStatus::Room.Cnt == 4 )  //充電區
-    {
-        switch( GotoRoomStep )
-        {
-        case 0: // 到房間門口
-    		ActiveState =  etAStar;
-            if( !FlagSetInitialData )
-                    SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
-        break;
-        case 1: // 車頭面向房間
-            ActiveState =  etTurnToAngle;
-            GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
-                         StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
-        break;
-        case 2: // 碰擊充電開關 by yao
-            ActiveState = etTouchButton;
-            StrategyStatus::FlagAvoidEnable = false; //關閉避障
-        break;
-        case 3:
-            ActiveState = etBackward; // 倒車動作
-            StrategyStatus::FlagAvoidEnable = false; //關閉避障
-        break;
-        default:
-            ActiveState = etIdle;
-            StrategyStatus::Room.Cnt++;
-            GotoRoomStep = 0;
-            StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
-            FlagSetInitialData = false;
-        break;
-        }
-    }*/
-    /*else  //待機區
-    {
-        ActiveState =  etAStar;
-        if( !FlagSetInitialData ) SetAStar( StrategyStatus::EndPosition );
-        if( (StrategyStatus::EndPosition - LocationStatus::Position).Length() < 50 )
-            StrategyStatus::FlagAvoidEnable = false; //關閉避障
-        this->FlagTaskFinish = false;
-    }*/
-    //-----------------------------------------------------------------------
+//    else if(StrategyStatus::Room.Cnt == 4 )  //充電區
+//    {
+//        switch( GotoRoomStep )
+//        {
+//        case 0: // 到房間門口
+//    		ActiveState =  etAStar;
+//            if( !FlagSetInitialData )
+//                    SetAStar( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door );
+//        break;
+//        case 1: // 車頭面向房間
+//            ActiveState =  etTurnToAngle;
+//            GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
+//                         StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
+//        break;
+//        case 2: // 碰擊充電開關 by yao
+//            ActiveState = etTouchButton;
+//            StrategyStatus::FlagAvoidEnable = false; //關閉避障
+//        break;
+//        case 3:
+//            ActiveState = etBackward; // 倒車動作
+//            StrategyStatus::FlagAvoidEnable = false; //關閉避障
+//        break;
+//        default:
+//            ActiveState = etIdle;
+//            StrategyStatus::Room.Cnt++;
+//            GotoRoomStep = 0;
+//            StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
+//            FlagSetInitialData = false;
+//        break;
+//        }
+//    }
+//    else  //待機區
+//    {
+//        ActiveState =  etAStar;
+//        if( !FlagSetInitialData ) SetAStar( StrategyStatus::EndPosition );
+//        if( (StrategyStatus::EndPosition - LocationStatus::Position).Length() < 50 )
+//            StrategyStatus::FlagAvoidEnable = false; //關閉避障
+//        this->FlagTaskFinish = false;
+//    }
+//    //-----------------------------------------------------------------------
 
     if( FlagTaskFinish == true )
     {
