@@ -23,130 +23,131 @@ using namespace std;
 
 namespace Robot
 {
-	class Stra_Task : public StrategyModule
-	{
-	typedef enum
-	{
+class Stra_Task : public StrategyModule
+{
+    typedef enum
+    {
 
-    	etIdle,
+        etIdle = 0,
 
-    	etAStar,
+        etAStar,
 
-    	etTurnToAngle,		
+        etTurnToAngle,
 
-    	etMotionToPos,
+        etMotionToPos,
 
-    	etSpecialMove,
+        etSpecialMove,
 
-    	etSpecialTurn,
+        etSpecialTurn,
 
-    	etTouchButton,
+        etTouchButton,
 
-    	etBackward,
+        etBackward,
 
-    	etWaitDoorOpen,
+        etWaitDoorOpen,
 
-		etMakeSoundMove		
-		
+        etMakeSoundMove
 
-	}teAvtiveState;
+    } teAvtiveState;
 
-	typedef enum{
+    typedef enum {
 
-    	etGRAStar = 0,
+        etGRAStar = 0,
 
-    	etGRFaceDoor
+        etGRFaceDoor
 
-    }teGeneralRoomState;
+    } teGeneralRoomState;
 
-	private:
-		static Stra_Task* m_UniqueInstance;
+private:
+    static Stra_Task* m_UniqueInstance;
 
-		//static Vector3D vector;
-		
-		Stra_Task();
+    //static Vector3D vector;
 
-		void SetAStar( TCoordinate  Goal );
-		
-		void ActiveFunction();
-		
-		//============= Active Function ==================
+    Stra_Task();
 
-    	bool MotionToPosition( TCoordinate  Goal );
+    void SetAStar( TCoordinate  Goal );
 
-    	bool TurnToAngle( float GoalAngle );
-		
-		bool SpecialMove( int Forward );
+    void ActiveFunction();
 
-        bool SpecialTurn();
+    //============= Active Function ==================
 
-        bool WaitDoorOpen();
+    bool MotionToPosition( TCoordinate  Goal );
 
-        bool TouchButton();		
+    bool TurnToAngle( float GoalAngle );
 
-        bool Backward();
+    bool SpecialMove( int Forward );
 
-		bool MakeSoundMove();		
+    bool SpecialTurn();
 
-    	//=============
+    bool WaitDoorOpen();
 
-        void WaitCatchball();
+    bool TouchButton();
 
-		void EncounterPeople();
-		
-		void MakeSound();		
+    bool Backward();
 
-    	void SpecialRoom3();
+    bool MakeSoundMove();
 
-    	//TCoordinate Room3StartPos;
+    //=============
 
-    	int Past_RoomCnt;
+    void WaitCatchball();
 
-    	bool FlagSetInitialData;		
+    void EncounterPeople();
 
-    	bool FlagTaskFinish;		
+    void MakeSound();
 
-    	int ActiveState;
+    void SpecialRoom3();
 
-    	int GotoRoomStep;
+    //TCoordinate Room3StartPos;
 
-    	float GoalAngle;		
+    int Past_RoomCnt;
 
-    	TCoordinate StartPos,GoalPos;		
+    bool FlagSetInitialData;
 
-		float SpecialDistance;
+    bool FlagTaskFinish;
 
-    	int Past_LaserData;
+    int ActiveState;
 
-    	bool DoorState;     //true: open, false: close
+    int GotoRoomStep;
 
-    	int TouchCnt;		
+    float GoalAngle;
 
-    	int *PastScanLineData;
+    TCoordinate StartPos,GoalPos;
 
-		int LivRM;
+    float SpecialDistance;
 
-		int DinRM;
+    int Past_LaserData;
 
-		int Lib;
+    bool DoorState;     //true: open, false: close
 
-		int BedRM;	
-	
-	public:
-		//---------loadxml----------
-		int LoadXMLSettings(TiXmlElement* element);
+    int TouchCnt;
 
-		static Stra_Task* GetInstance() { return m_UniqueInstance; }
-		
-		~Stra_Task();
+    int *PastScanLineData;
 
-		void Initialize();
+    int LivRM;
 
-		void Process();
+    int DinRM;
 
-		static TCoordinate vector;
-		    
-		};
+    int Lib;
+
+    int BedRM;
+
+public:
+    //---------loadxml----------
+    int LoadXMLSettings(TiXmlElement* element);
+
+    static Stra_Task* GetInstance() {
+        return m_UniqueInstance;
+    }
+
+    ~Stra_Task();
+
+    void Initialize();
+
+    void Process();
+
+    static TCoordinate vector;
+
+};
 }
 
 #endif

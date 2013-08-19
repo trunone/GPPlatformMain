@@ -42,6 +42,10 @@ bool LinuxSocket::create()
 
     return true;
 }
+void LinuxSocket::close() {
+    if ( is_valid() )
+        ::close ( m_sock );
+}
 
 bool LinuxSocket::bind ( const int port )  {
     if ( ! is_valid() )
@@ -54,8 +58,8 @@ bool LinuxSocket::bind ( const int port )  {
     m_addr.sin_port = htons ( port );
 
     int bind_return = ::bind ( m_sock,
-                             ( struct sockaddr * ) &m_addr,
-                             sizeof ( m_addr ) );
+                               ( struct sockaddr * ) &m_addr,
+                               sizeof ( m_addr ) );
     if ( bind_return == -1 )
     {
         return false;
@@ -105,7 +109,8 @@ bool LinuxSocket::send ( const std::string s ) const
 
 bool LinuxSocket::send ( void* data, int length ) const
 {
-    int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+    //int status = ::send ( m_sock, data, length, MSG_NOSIGNAL );
+    int status = ::send ( m_sock, data, length, 0 );
     if ( status == -1 )
     {
         return false;
@@ -144,7 +149,7 @@ int LinuxSocket::recv ( std::string& s ) const
 
 int LinuxSocket::recv ( void* data, int length ) const
 {
-	int status = ::recv ( m_sock, data, length, 0 );
+    int status = ::recv ( m_sock, data, length, 0 );
 
     if ( status == -1 )
     {
@@ -155,7 +160,7 @@ int LinuxSocket::recv ( void* data, int length ) const
     {
         return 0;
     }
-    
+
     return status;
 }
 
@@ -223,7 +228,7 @@ LinuxServer::~LinuxServer()
 }
 
 const LinuxServer& LinuxServer::operator << ( const std::string& s ) const
-{	
+{
     if ( ! LinuxSocket::send ( s ) )
     {
         throw LinuxSocketException ( "Could not write to socket." );
@@ -265,10 +270,10 @@ void LinuxServer::accept ( LinuxServer& sock )
 
 bool LinuxServer::send ( unsigned char* data, int length )
 {
-	return LinuxSocket::send(data, length);
+    return LinuxSocket::send(data, length);
 }
 
 int LinuxServer::recv ( unsigned char* data, int length )
 {
-	return LinuxSocket::recv(data, length);
+    return LinuxSocket::recv(data, length);
 }

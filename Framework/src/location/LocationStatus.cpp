@@ -48,8 +48,6 @@ double LocationStatus::Handle;
 bool LocationStatus::enable;
 TCoordinate LocationStatus::LaserGap;
 bool LocationStatus::FlagLocInit;
-TCoordinate LocationStatus::SetRobotPosition;
-double LocationStatus::SetRobotHandle;
 
 long LocationStatus::MotorPulse[3];
 LocationStatus::FeedBack_Info LocationStatus::FB_Movement;

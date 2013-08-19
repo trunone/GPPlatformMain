@@ -18,14 +18,14 @@ class jpeg_utils
 {
 private:
     typedef struct {
-      struct jpeg_destination_mgr pub; /* public fields */
+        struct jpeg_destination_mgr pub; /* public fields */
 
-      JOCTET * buffer;    /* start of buffer */
+        JOCTET * buffer;    /* start of buffer */
 
-      unsigned char *outbuffer;
-      int outbuffer_size;
-      unsigned char *outbuffer_cursor;
-      int *written;
+        unsigned char *outbuffer;
+        int outbuffer_size;
+        unsigned char *outbuffer_cursor;
+        int *written;
 
     } mjpg_destination_mgr;
 

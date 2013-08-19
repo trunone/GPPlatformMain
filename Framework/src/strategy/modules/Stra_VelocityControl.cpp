@@ -19,17 +19,17 @@ Stra_VelocityControl::~Stra_VelocityControl()
 
 }
 //----------------------------------------------------------------------------xml
-int Stra_VelocityControl::LoadXMLSettings (TiXmlElement* element){
-	if(element != NULL){
-		element->Attribute("dis_max", &DistanceMax);
-		element->Attribute("dis_min", &DistanceMin);
-		element->Attribute("spd_max", &SpeedMax);
-		element->Attribute("spd_min", &SpeedMin);
-		element->Attribute("sita_max", &ThetaMax);
-		element->Attribute("sita_min", &ThetaMin);
-		element->Attribute("w_max", &OmegaMax);
-		element->Attribute("w_min", &OmegaMin);
-	}
+int Stra_VelocityControl::LoadXMLSettings (TiXmlElement* element) {
+    if(element != NULL) {
+        element->Attribute("dis_max", &DistanceMax);
+        element->Attribute("dis_min", &DistanceMin);
+        element->Attribute("spd_max", &SpeedMax);
+        element->Attribute("spd_min", &SpeedMin);
+        element->Attribute("sita_max", &ThetaMax);
+        element->Attribute("sita_min", &ThetaMin);
+        element->Attribute("w_max", &OmegaMax);
+        element->Attribute("w_min", &OmegaMin);
+    }
 }
 //----------------------------------------------------------------------------
 void Stra_VelocityControl::Initialize(void)
@@ -39,14 +39,14 @@ void Stra_VelocityControl::Initialize(void)
 
 void Stra_VelocityControl::Process(void)
 {
-    #ifndef Def_OMNIDIRECTION_SYSTEM
+#ifndef Def_OMNIDIRECTION_SYSTEM
 
     if( StrategyStatus::MotionDistance != 0 )
     {
         if( StrategyStatus::FlagForward )
         {
-			StrategyStatus::Direction = StrategyStatus::MotionAngle;
-		}
+            StrategyStatus::Direction = StrategyStatus::MotionAngle;
+        }
         else
         {
             if( StrategyStatus::MotionAngle > M_PI_2)
@@ -56,7 +56,7 @@ void Stra_VelocityControl::Process(void)
 
             }
 
-            else if( StrategyStatus::MotionAngle < -M_PI_2) 
+            else if( StrategyStatus::MotionAngle < -M_PI_2)
 
             {
 
@@ -81,12 +81,12 @@ void Stra_VelocityControl::Process(void)
 		StrategyStatus::Direction = 0;
 	}
 
-    #endif
+#endif
 
     //------------------------------------------------------------------------
-	
+
     VelocityTransform( StrategyStatus::MotionDistance, StrategyStatus::MotionAngle, StrategyStatus::Direction );
-	
+
 }
 
 
@@ -96,13 +96,19 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 {
 
     TCoordinate Vector( dTargetCutAng );
-	printf("dis %f\n",dTargetDis);
 
     double Speed = 0;
 
     if( dTargetDis == 0){
+
+    //printf("%f\n",Vector.x);
+    //printf("%f\n",Vector.y);
+
+    double Speed = 0;
+
+    if( dTargetDis == 0)
+
         Speed = 0;
-		printf("speed =============================== %f\n",Speed);
 	}
     else if( dTargetDis > this->DistanceMax )
 
@@ -119,7 +125,7 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
                             this->DistanceMax, this->DistanceMin, dTargetDis);
 
     if( Speed != 0 && StrategyStatus::FixSpeed != 0 )
-		
+
         Speed = (StrategyStatus::FixSpeed/100.0)*this->SpeedMax ;
 
     /*if( Speed > 20 ){
@@ -133,13 +139,14 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
         SpeedCmd = Speed;
 
     }*/
-	
-	StrategyStatus::x = -Speed * Vector.y;
 
-	StrategyStatus::y = Speed * Vector.x;
+    StrategyStatus::x = -Speed * Vector.y;
 
-	printf("cmd %f %f\n",StrategyStatus::x, StrategyStatus::y);
-	printf("\n");
+    StrategyStatus::y = Speed * Vector.x;
+
+    //printf("%f\n",StrategyStatus::x);
+
+    //printf("%f\n",StrategyStatus::y);
 
     //StrategyStatus::PathMotion = Speed * Vector;
 
@@ -167,11 +174,11 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
 
 
-    
+
 
     StrategyStatus::PathRotation = (Theta < 0) ? -Omega : Omega;
-	
-	//StrategyStatus::w = StrategyStatus::PathRotation;
+
+    //StrategyStatus::w = StrategyStatus::PathRotation;
 
 }
 

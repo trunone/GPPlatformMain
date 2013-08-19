@@ -1,7 +1,7 @@
 /*
  *   ImgProcess.h
  *
- *   Author: Wu Chih-En 
+ *   Author: Wu Chih-En
  *
  */
 
@@ -17,13 +17,14 @@
 
 namespace Robot
 {
-	class ImgProcess
-	{
-	private:
+class ImgProcess
+{
+private:
 
-	public:
-		static void FaceData();
-	};
+public:
+    static void FaceData();
+
+};
 }
 
 #endif

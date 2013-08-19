@@ -17,46 +17,50 @@
 
 namespace Robot
 {
-	class StrategyManager
-	{
-	private:
-		static StrategyManager* m_UniqueInstance;
-		std::list<StrategyModule*> m_Modules;
-		bool m_ProcessEnable;
-		bool m_Enabled;
+class StrategyManager
+{
+private:
+    static StrategyManager* m_UniqueInstance;
+    std::list<StrategyModule*> m_Modules;
+    bool m_ProcessEnable;
+    bool m_Enabled;
 
-		bool m_IsRunning;
-		bool m_IsThreadRunning;
-		bool m_IsLogging;
+    bool m_IsRunning;
+    bool m_IsThreadRunning;
+    bool m_IsLogging;
 
-        	Motors *mMotors;
+    Motors *mMotors;
 
-        	std::ofstream m_LogFileStream;
+    std::ofstream m_LogFileStream;
 
-        	StrategyManager();
+    StrategyManager();
 
-	protected:
+protected:
 
-	public:
-		bool DEBUG_PRINT;
+public:
+    bool DEBUG_PRINT;
 
-		~StrategyManager();
+    ~StrategyManager();
 
-		static StrategyManager* GetInstance() { return m_UniqueInstance; }
-        	bool Initialize(Motors*);
-		bool Initialize();
-		bool Reinitialize();
-        	void Process();
-		void SetEnable(bool enable);
-		bool GetEnable()				{ return m_Enabled; }
-		void AddModule(StrategyModule *module);
-		void RemoveModule(StrategyModule *module);
+    static StrategyManager* GetInstance() {
+        return m_UniqueInstance;
+    }
+    bool Initialize(Motors*);
+    bool Initialize();
+    bool Reinitialize();
+    void Process();
+    void SetEnable(bool enable);
+    bool GetEnable()				{
+        return m_Enabled;
+    }
+    void AddModule(StrategyModule *module);
+    void RemoveModule(StrategyModule *module);
 
-		void StartLogging();
-		void StopLogging();
+    void StartLogging();
+    void StopLogging();
 
-        	int LoadXMLSettings(TiXmlElement*);
-	};
+    int LoadXMLSettings(TiXmlElement*);
+};
 }
 
 #endif

@@ -24,10 +24,10 @@ void *LinuxVisionTimer::TimerProc(void *param)
 {
     LinuxVisionTimer *timer = (LinuxVisionTimer *)param;
     static struct timespec next_time;
-    
+
     // The clock_gettime()  function returns the current time (in seconds and nanoseconds) for the specified clock
     // CLOCK_MONOTONIC : this clock always increases at a constant rate and can't be adjusted
-    clock_gettime(CLOCK_MONOTONIC,&next_time);	
+    clock_gettime(CLOCK_MONOTONIC,&next_time);
 
     while(!timer->m_FinishTimer)
     {
@@ -37,8 +37,8 @@ void *LinuxVisionTimer::TimerProc(void *param)
         if(timer->m_Manager != NULL)
             timer->m_Manager->Process();
 
-	// clock_nanosleep() function allows the calling thread to sleep for an interval specified with nanosecond precision
-	// TIMER_ABSTIME : absolute time
+        // clock_nanosleep() function allows the calling thread to sleep for an interval specified with nanosecond precision
+        // TIMER_ABSTIME : absolute time
         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &next_time, NULL);
     }
 
@@ -48,19 +48,19 @@ void *LinuxVisionTimer::TimerProc(void *param)
 void LinuxVisionTimer::Start(void)
 {
     int error;
-    struct sched_param param;    
-    pthread_attr_t attr;//build inital attributes of pthread 
+    struct sched_param param;
+    pthread_attr_t attr;//build inital attributes of pthread
 
     // The pthread_attr_init() function initializes the thread attributes object pointed to by attr with default attribute values
-    pthread_attr_init(&attr);//start pthread	
+    pthread_attr_init(&attr);//start pthread
 
     // The pthread_attr_setschedpolicy() function sets the scheduling policy attribute of the thread attributes object referred to by attr to the value specified in policy
     // SCHED_RR performs a round-robin with a certain timeslice
-    error = pthread_attr_setschedpolicy(&attr, SCHED_RR);	
+    error = pthread_attr_setschedpolicy(&attr, SCHED_RR);
     if(error != 0)
         printf("error = %d\n",error);
 
-    // The pthread_attr_setinheritsched() function sets the inherit scheduler attribute of the thread attributes object referred to by attr to the value specified in inheritsched	
+    // The pthread_attr_setinheritsched() function sets the inherit scheduler attribute of the thread attributes object referred to by attr to the value specified in inheritsched
     // PTHREAD_INHERIT_SCHED : Threads that are created using attr inherit scheduling attributes from the thread of creater
     error = pthread_attr_setinheritsched(&attr,PTHREAD_EXPLICIT_SCHED);
     if(error != 0)
@@ -95,7 +95,7 @@ void LinuxVisionTimer::Stop(void)
     {
         this->m_FinishTimer = true;
         // wait for the thread to end
-	// The pthread_join() function suspends execution of the calling thread until the target thread terminates, unless the target thread has already terminated
+        // The pthread_join() function suspends execution of the calling thread until the target thread terminates, unless the target thread has already terminated
         if((error = pthread_join(this->m_Thread, NULL))!= 0)
             exit(-1);
         this->m_FinishTimer = false;

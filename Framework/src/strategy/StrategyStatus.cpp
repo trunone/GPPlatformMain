@@ -47,8 +47,8 @@ int StrategyStatus::GotoRoomStep;
 
 StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
-int StrategyStatus::RoomSort;		
-int StrategyStatus::FindBallEn;		
+int StrategyStatus::RoomSort;
+int StrategyStatus::FindBallEn;
 //----------SIM_FLAG---------------------------------------------------
 bool StrategyStatus::SimulatorFlag;
 //----------Test int----------------------------------------------------
@@ -59,8 +59,8 @@ int StrategyStatus::FamilyMember;
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector
 TCoordinate StrategyStatus::Goal2;                   // Target2 vector
 double StrategyStatus::Direction;                    // Target direction
-bool StrategyStatus::FlagDetour;                     
-bool StrategyStatus::FlagForward;                     
+bool StrategyStatus::FlagDetour;
+bool StrategyStatus::FlagForward;
 StrategyStatus::tsAStarPath StrategyStatus::AStarPath;
 
 //----------------------------------------------------------------------
@@ -71,7 +71,6 @@ TCoordinate StrategyStatus::GoalVector;
 //----------- Avoidance ------------------------------------------------
 bool StrategyStatus::FlagAvoidEnable;
 TCoordinate StrategyStatus::CorrectionVector;
-
 //----------------------------------------------------------------------
 //----------- Velocity Control -----------------------------------------
 float StrategyStatus::FixSpeed;                                 // Speed Power 1~100 %
@@ -105,5 +104,5 @@ int StrategyStatus::FindBallState;
 
 bool StrategyStatus::FindLocResample;
 TCoordinate StrategyStatus::RseLocPos;
-	
+
 

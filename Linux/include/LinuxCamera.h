@@ -17,75 +17,81 @@
 
 namespace Robot
 {
-    class CameraSettings
-    {
-    private:
+class CameraSettings
+{
+private:
 
-    protected:
+protected:
 
-    public:
-        int brightness; /* 0 ~ 255 */
-        int contrast;   /* 0 ~ 255 */
-        int saturation; /* 0 ~ 255 */
-        int gain;       /* 0 ~ 255 */
-        int exposure;   /* 0 ~ 10000 */
+public:
+    int brightness; /* 0 ~ 255 */
+    int contrast;   /* 0 ~ 255 */
+    int saturation; /* 0 ~ 255 */
+    int gain;       /* 0 ~ 255 */
+    int exposure;   /* 0 ~ 10000 */
 
-        CameraSettings() :
-            brightness(-1),
-            contrast(-1),
-            saturation(-1),
-            gain(255),
-            exposure(1000)
-        {}
+    CameraSettings() :
+        brightness(-1),
+        contrast(-1),
+        saturation(-1),
+        gain(255),
+        exposure(1000)
+    {}
+};
+
+class LinuxCamera
+{
+private:
+    static LinuxCamera* uniqueInstance;
+
+    CameraSettings settings;
+
+    int camera_fd;
+    struct buffer {
+        void * start;
+        size_t length;
     };
+    struct buffer * buffers;
+    unsigned int n_buffers;
 
-	class LinuxCamera
-	{
-	private:
-        static LinuxCamera* uniqueInstance;
+    LinuxCamera();
 
-        CameraSettings settings;
+    void ErrorExit(const char* s);
+    int ReadFrame();
 
-	    int camera_fd;
-	    struct buffer {
-	        void * start;
-	        size_t length;
-	    };
-	    struct buffer * buffers;
-	    unsigned int n_buffers;
+protected:
 
-        LinuxCamera();
+public:
+    bool DEBUG_PRINT;
+    FrameBuffer* fbuffer;
 
-        void ErrorExit(const char* s);
-	    int ReadFrame();
+    ~LinuxCamera();
 
-	protected:
+    static LinuxCamera* GetInstance() {
+        return uniqueInstance;
+    }
 
-	public:
-		bool DEBUG_PRINT;
-        FrameBuffer* fbuffer;
+    int Initialize(int deviceIndex);
 
-		~LinuxCamera();
+    int v4l2GetControl(int control);
+    int v4l2SetControl(int control, int value);
+    int v4l2ResetControl(int control);
 
-        static LinuxCamera* GetInstance() { return uniqueInstance; }
+    void LoadINISettings(minIni* ini);
+    void SaveINISettings(minIni* ini);
 
-        int Initialize(int deviceIndex);
+    void SetCameraSettings(const CameraSettings& newset);
+    const CameraSettings& GetCameraSettings();
 
-	    int v4l2GetControl(int control);
-	    int v4l2SetControl(int control, int value);
-	    int v4l2ResetControl(int control);
+    void SetAutoWhiteBalance(int isAuto) {
+        v4l2SetControl(V4L2_CID_AUTO_WHITE_BALANCE, isAuto);
+    }
+    unsigned char GetAutoWhiteBalance() {
+        return (unsigned char)(v4l2GetControl(V4L2_CID_AUTO_WHITE_BALANCE));
+    }
 
-	    void LoadINISettings(minIni* ini);
-	    void SaveINISettings(minIni* ini);
-
-	    void SetCameraSettings(const CameraSettings& newset);
-	    const CameraSettings& GetCameraSettings();
-
-	    void SetAutoWhiteBalance(int isAuto) { v4l2SetControl(V4L2_CID_AUTO_WHITE_BALANCE, isAuto); }
-	    unsigned char GetAutoWhiteBalance() { return (unsigned char)(v4l2GetControl(V4L2_CID_AUTO_WHITE_BALANCE)); }
-
-	    void CaptureFrame();
-	};
+    void CaptureFrame();
+};
 }
 
 #endif

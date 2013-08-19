@@ -10,19 +10,19 @@
 
 namespace Robot
 {
-	class LocationModule
-	{
-	private:
+class LocationModule
+{
+private:
 
-	protected:
+protected:
 
-	public:
+public:
 
-		static const int TIME_UNIT = 100; //msec 
+    static const int TIME_UNIT = 50; //msec
 
-		virtual void Initialize() = 0;
-		virtual void Process() = 0;
-	};
+    virtual void Initialize() = 0;
+    virtual void Process() = 0;
+};
 }
 
 #endif

@@ -1,7 +1,7 @@
 /*
  *   FaceDetection.h
  *
- *   Author: Wu Chih-En 
+ *   Author: Wu Chih-En
  *
  */
 
@@ -14,18 +14,20 @@
 
 namespace Robot
 {
-	class FaceDetection : public VisionModule
-	{
-	private:
-		static FaceDetection* m_UniqueInstance;
-		FaceDetection();
+class FaceDetection : public VisionModule
+{
+private:
+    static FaceDetection* m_UniqueInstance;
+    FaceDetection();
 
-	public:
-		static FaceDetection* GetInstance() { return m_UniqueInstance; }	
-		~FaceDetection();
-		void Initialize();
-		void Process();
-	};
+public:
+    static FaceDetection* GetInstance() {
+        return m_UniqueInstance;
+    }
+    ~FaceDetection();
+    void Initialize();
+    void Process();
+};
 }
 
 #endif

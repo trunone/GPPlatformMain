@@ -19,50 +19,53 @@
 
 namespace Robot
 {
-	class LocationManager
-	{
-	private:
-		static LocationManager* m_UniqueInstance;
-		std::list<LocationModule*> m_Modules;
-		bool m_ProcessEnable;
-		bool m_Enabled;
-		bool m_IsRunning;
-		bool m_IsThreadRunning;
-		bool m_IsLogging;
-		bool FlagEvaluatuonEnable;		
-        bool FlagCoerceEvaluatuon;
-        TCoordinate Position;
-        double Handle;
+class LocationManager
+{
+private:
+    static LocationManager* m_UniqueInstance;
+    std::list<LocationModule*> m_Modules;
+    bool m_ProcessEnable;
+    bool m_Enabled;
+    bool m_IsRunning;
+    bool m_IsThreadRunning;
+    bool m_IsLogging;
 
-		std::ofstream m_LogFileStream;
+    std::ofstream m_LogFileStream;
 
-        qrk::Urg_driver *mUrg;
-        Motors *mMotors;
+    qrk::Urg_driver *mUrg;
+    Motors *mMotors;
 
-        LocationManager();
+    LocationManager();
 
-	protected:
+protected:
 
-	public:
-		bool DEBUG_PRINT;
+public:
+    bool DEBUG_PRINT;
 
-		~LocationManager();
+    ~LocationManager();
 
-		static LocationManager* GetInstance() { return m_UniqueInstance; }
+    static LocationManager* GetInstance() {
+        return m_UniqueInstance;
+    }
 
-		bool Initialize(qrk::Urg_driver*, Motors*);
-		bool Reinitialize();
-        void Process();
-		void SetEnable(bool enable);
-		bool GetEnable()				{ return m_Enabled; }
-		void AddModule(LocationModule *module);
-		void RemoveModule(LocationModule *module);
+    bool Initialize(qrk::Urg_driver*, Motors*);
+    bool Initialize(Motors*);
+    bool Initialize(qrk::Urg_driver*);
+    bool Initialize();
+    bool Reinitialize();
+    void Process();
+    void SetEnable(bool enable);
+    bool GetEnable()				{
+        return m_Enabled;
+    }
+    void AddModule(LocationModule *module);
+    void RemoveModule(LocationModule *module);
 
-		void StartLogging();
-		void StopLogging();
+    void StartLogging();
+    void StopLogging();
 
-        int LoadXMLSettings(TiXmlElement*);
-	};
+    int LoadXMLSettings(TiXmlElement*);
+};
 }
 
 #endif

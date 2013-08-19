@@ -93,30 +93,30 @@ int mjpg_streamer::input_cmd(in_cmd_type cmd, int value)
 
 int mjpg_streamer::send_image(Image* img)
 {
-	if(httpd::ClientRequest == true)
-	{
-		if(img->m_PixelSize == Image::YUV_PIXEL_SIZE)
-			memcpy(input_yuv->m_ImageData, img->m_ImageData, img->m_ImageSize);
-		else if(img->m_PixelSize == Image::RGB_PIXEL_SIZE)
-			memcpy(input_rgb->m_ImageData, img->m_ImageData, img->m_ImageSize);
+    if(httpd::ClientRequest == true)
+    {
+        if(img->m_PixelSize == Image::YUV_PIXEL_SIZE)
+            memcpy(input_yuv->m_ImageData, img->m_ImageData, img->m_ImageSize);
+        else if(img->m_PixelSize == Image::RGB_PIXEL_SIZE)
+            memcpy(input_rgb->m_ImageData, img->m_ImageData, img->m_ImageSize);
 
-		pthread_mutex_lock(&global.db);
+        pthread_mutex_lock(&global.db);
 
-		if(img->m_PixelSize == Image::YUV_PIXEL_SIZE)
-			global.size = jpeg_utils::compress_yuyv_to_jpeg(input_yuv, global.buf, input_yuv->m_ImageSize, 80);
-		else if(img->m_PixelSize == Image::RGB_PIXEL_SIZE)
-			global.size = jpeg_utils::compress_rgb_to_jpeg(input_rgb, global.buf, input_rgb->m_ImageSize, 80);
+        if(img->m_PixelSize == Image::YUV_PIXEL_SIZE)
+            global.size = jpeg_utils::compress_yuyv_to_jpeg(input_yuv, global.buf, input_yuv->m_ImageSize, 80);
+        else if(img->m_PixelSize == Image::RGB_PIXEL_SIZE)
+            global.size = jpeg_utils::compress_rgb_to_jpeg(input_rgb, global.buf, input_rgb->m_ImageSize, 80);
 
-		pthread_cond_broadcast(&global.db_update);
-		pthread_mutex_unlock(&global.db);
-		httpd::ClientRequest = false;
-	}
-	else
-	{
+        pthread_cond_broadcast(&global.db_update);
+        pthread_mutex_unlock(&global.db);
+        httpd::ClientRequest = false;
+    }
+    else
+    {
         pthread_mutex_lock(&global.db);
         pthread_cond_broadcast(&global.db_update);
         pthread_mutex_unlock(&global.db);
-	}
+    }
 
     return 0;
 }

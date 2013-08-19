@@ -15,22 +15,22 @@ using namespace Robot;
 StrategyManager* StrategyManager::m_UniqueInstance = new StrategyManager();
 
 StrategyManager::StrategyManager() :
-        m_ProcessEnable(false),
-        m_Enabled(false),
-        m_IsRunning(false),
-        m_IsThreadRunning(false),
-        m_IsLogging(false),
-        DEBUG_PRINT(false) {}
+    m_ProcessEnable(false),
+    m_Enabled(false),
+    m_IsRunning(false),
+    m_IsThreadRunning(false),
+    m_IsLogging(false),
+    DEBUG_PRINT(false) {}
 
 StrategyManager::~StrategyManager()
 {
-	
+
 }
 bool StrategyManager::Initialize(Motors *motors)
 {
     mMotors = motors;
-	m_Enabled = false;
-	m_ProcessEnable = true;
+    m_Enabled = false;
+    m_ProcessEnable = true;
 
     if(motors == NULL)
         return false;
@@ -38,9 +38,8 @@ bool StrategyManager::Initialize(Motors *motors)
     mMotors->SetEnableAll();
     mMotors->SetVelocityProfileAll(1000, 500);
     mMotors->ActivateProfileVelocityModeAll();
-	
 
-	return true;
+    return true;
 }
 
 bool StrategyManager::Initialize()
@@ -54,9 +53,9 @@ bool StrategyManager::Initialize()
 
 bool StrategyManager::Reinitialize()
 {
-	m_ProcessEnable = false;
+    m_ProcessEnable = false;
 
-	return true;
+    return true;
 }
 
 void StrategyManager::StartLogging()
@@ -70,7 +69,7 @@ void StrategyManager::StartLogging()
         if(0 != access(szFile, F_OK))
             break;
         count++;
-		if(count > 256) return;
+        if(count > 256) return;
     }
 
     m_LogFileStream.open(szFile, std::ios::out);
@@ -101,12 +100,11 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-	if(mMotors != NULL){
-    		mMotors->SetVelocityAll(
-        	-StrategyStatus::MotorSpeed[0],
-        	-StrategyStatus::MotorSpeed[1],
-        	-StrategyStatus::MotorSpeed[2]);
-	}
+
+    mMotors->SetVelocityAll(
+        StrategyStatus::MotorSpeed[0],
+        StrategyStatus::MotorSpeed[1],
+        StrategyStatus::MotorSpeed[2]);
 
     if(m_IsLogging)
     {
@@ -135,94 +133,94 @@ void StrategyManager::Process()
 
 void StrategyManager::SetEnable(bool enable)
 {
-	m_Enabled = enable;
-	if(m_Enabled == true)
-	if(mMotors)
-		mMotors->SetEnableAll();
+    m_Enabled = enable;
+    if(m_Enabled == true)
+        if(mMotors)
+            mMotors->SetEnableAll();
 }
 
 void StrategyManager::AddModule(StrategyModule *module)
 {
-	module->Initialize();
-	m_Modules.push_back(module);
+    module->Initialize();
+    m_Modules.push_back(module);
 }
 
 void StrategyManager::RemoveModule(StrategyModule *module)
 {
-	m_Modules.remove(module);
+    m_Modules.remove(module);
 }
 
-int StrategyManager::LoadXMLSettings(TiXmlElement* element){
-    if(element != NULL){	
-		TiXmlElement* child;
-		child=element->FirstChildElement("RootHandle");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::RootHandle.x);
-			child->Attribute("y", &StrategyStatus::RootHandle.y);	
-		}
-		child=element->FirstChildElement("StartPos");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::StartPosition.x);
-			child->Attribute("y", &StrategyStatus::StartPosition.y);						
-		}
-		child=element->FirstChildElement("EndPos");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::EndPosition.x);
-			child->Attribute("y", &StrategyStatus::EndPosition.y);						
-		}
-		child=element->FirstChildElement("FindBallEn");
-		if(child != NULL){
-			child->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
-		}
-		child=element->FirstChildElement("LivRMDoor");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::LivRMDoor.x);
-			child->Attribute("y", &StrategyStatus::LivRMDoor.y);						
-		}
-		child=element->FirstChildElement("LivRMCen");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::LivRMCen.x);
-			child->Attribute("y", &StrategyStatus::LivRMCen.y);						
-		}
-		child=element->FirstChildElement("DinRMDoor");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::DinRMDoor.x);
-			child->Attribute("y", &StrategyStatus::DinRMDoor.y);						
-		}
-		child=element->FirstChildElement("DinRMCen");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::DinRMCen.x);
-			child->Attribute("y", &StrategyStatus::DinRMCen.y);						
-		}
-		child=element->FirstChildElement("LibDoor");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::LibDoor.x);
-			child->Attribute("y", &StrategyStatus::LibDoor.y);						
-		}
-		child=element->FirstChildElement("LibCen");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::LibCen.x);
-			child->Attribute("y", &StrategyStatus::LibCen.y);						
-		}
-		child=element->FirstChildElement("BedRMDoor");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::BedRMDoor.x);
-			child->Attribute("y", &StrategyStatus::BedRMDoor.y);						
-		}
-		child=element->FirstChildElement("BedRMCen");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::BedRMCen.x);
-			child->Attribute("y", &StrategyStatus::BedRMCen.y);						
-		}
-		child=element->FirstChildElement("ChrgDoor");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::ChrgDoor.x);
-			child->Attribute("y", &StrategyStatus::ChrgDoor.y);						
-		}
-		child=element->FirstChildElement("ChrgCen");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::ChrgCen.x);
-			child->Attribute("y", &StrategyStatus::ChrgCen.y);						
+int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
+    if(element != NULL) {
+        TiXmlElement* child;
+        child=element->FirstChildElement("RootHandle");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::RootHandle.x);
+            child->Attribute("y", &StrategyStatus::RootHandle.y);
+        }
+        child=element->FirstChildElement("StartPos");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::StartPosition.x);
+            child->Attribute("y", &StrategyStatus::StartPosition.y);
+        }
+        child=element->FirstChildElement("EndPos");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::EndPosition.x);
+            child->Attribute("y", &StrategyStatus::EndPosition.y);
+        }
+        child=element->FirstChildElement("FindBallEn");
+        if(child != NULL) {
+            child->Attribute("FindBallEn", &StrategyStatus::FindBallEn);
+        }
+        child=element->FirstChildElement("LivRMDoor");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::LivRMDoor.x);
+            child->Attribute("y", &StrategyStatus::LivRMDoor.y);
+        }
+        child=element->FirstChildElement("LivRMCen");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::LivRMCen.x);
+            child->Attribute("y", &StrategyStatus::LivRMCen.y);
+        }
+        child=element->FirstChildElement("DinRMDoor");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::DinRMDoor.x);
+            child->Attribute("y", &StrategyStatus::DinRMDoor.y);
+        }
+        child=element->FirstChildElement("DinRMCen");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::DinRMCen.x);
+            child->Attribute("y", &StrategyStatus::DinRMCen.y);
+        }
+        child=element->FirstChildElement("LibDoor");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::LibDoor.x);
+            child->Attribute("y", &StrategyStatus::LibDoor.y);
+        }
+        child=element->FirstChildElement("LibCen");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::LibCen.x);
+            child->Attribute("y", &StrategyStatus::LibCen.y);
+        }
+        child=element->FirstChildElement("BedRMDoor");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::BedRMDoor.x);
+            child->Attribute("y", &StrategyStatus::BedRMDoor.y);
+        }
+        child=element->FirstChildElement("BedRMCen");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::BedRMCen.x);
+            child->Attribute("y", &StrategyStatus::BedRMCen.y);
+        }
+        child=element->FirstChildElement("ChrgDoor");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::ChrgDoor.x);
+            child->Attribute("y", &StrategyStatus::ChrgDoor.y);
+        }
+        child=element->FirstChildElement("ChrgCen");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::ChrgCen.x);
+            child->Attribute("y", &StrategyStatus::ChrgCen.y);
         }
 		child=element->FirstChildElement("EndPosition");
 		if(child != NULL){
@@ -232,5 +230,5 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element){
     }
     else
         return 1;
-	return 0;
+    return 0;
 }

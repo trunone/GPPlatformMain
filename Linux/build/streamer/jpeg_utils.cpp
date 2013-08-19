@@ -20,15 +20,15 @@ Input Value.:
 Return Value:
 ******************************************************************************/
 void jpeg_utils::init_destination(j_compress_ptr cinfo) {
-  mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
+    mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
 
-  /* Allocate the output buffer --- it will be released when done with image */
-  dest->buffer = (JOCTET *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE, OUTPUT_BUF_SIZE * sizeof(JOCTET));
+    /* Allocate the output buffer --- it will be released when done with image */
+    dest->buffer = (JOCTET *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE, OUTPUT_BUF_SIZE * sizeof(JOCTET));
 
-  *(dest->written) = 0;
+    *(dest->written) = 0;
 
-  dest->pub.next_output_byte = dest->buffer;
-  dest->pub.free_in_buffer = OUTPUT_BUF_SIZE;
+    dest->pub.next_output_byte = dest->buffer;
+    dest->pub.free_in_buffer = OUTPUT_BUF_SIZE;
 }
 
 /******************************************************************************
@@ -37,16 +37,16 @@ Input Value.:
 Return Value:
 ******************************************************************************/
 boolean jpeg_utils::empty_output_buffer(j_compress_ptr cinfo) {
-  mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
+    mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
 
-  memcpy(dest->outbuffer_cursor, dest->buffer, OUTPUT_BUF_SIZE);
-  dest->outbuffer_cursor += OUTPUT_BUF_SIZE;
-  *(dest->written) += OUTPUT_BUF_SIZE;
+    memcpy(dest->outbuffer_cursor, dest->buffer, OUTPUT_BUF_SIZE);
+    dest->outbuffer_cursor += OUTPUT_BUF_SIZE;
+    *(dest->written) += OUTPUT_BUF_SIZE;
 
-  dest->pub.next_output_byte = dest->buffer;
-  dest->pub.free_in_buffer = OUTPUT_BUF_SIZE;
+    dest->pub.next_output_byte = dest->buffer;
+    dest->pub.free_in_buffer = OUTPUT_BUF_SIZE;
 
-  return TRUE;
+    return TRUE;
 }
 
 /******************************************************************************
@@ -56,13 +56,13 @@ Input Value.:
 Return Value:
 ******************************************************************************/
 void jpeg_utils::term_destination(j_compress_ptr cinfo) {
-  mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
-  size_t datacount = OUTPUT_BUF_SIZE - dest->pub.free_in_buffer;
+    mjpg_dest_ptr dest = (mjpg_dest_ptr) cinfo->dest;
+    size_t datacount = OUTPUT_BUF_SIZE - dest->pub.free_in_buffer;
 
-  /* Write any data remaining in the buffer */
-  memcpy(dest->outbuffer_cursor, dest->buffer, datacount);
-  dest->outbuffer_cursor += datacount;
-  *(dest->written) += datacount;
+    /* Write any data remaining in the buffer */
+    memcpy(dest->outbuffer_cursor, dest->buffer, datacount);
+    dest->outbuffer_cursor += datacount;
+    *(dest->written) += datacount;
 }
 
 /******************************************************************************
@@ -72,20 +72,20 @@ Input Value.: buffer is the already allocated buffer memory that will hold
 Return Value: -
 ******************************************************************************/
 void jpeg_utils::dest_buffer(j_compress_ptr cinfo, unsigned char *buffer, int size, int *written) {
-  mjpg_dest_ptr dest;
+    mjpg_dest_ptr dest;
 
-  if (cinfo->dest == NULL) {
-    cinfo->dest = (struct jpeg_destination_mgr *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, sizeof(mjpg_destination_mgr));
-  }
+    if (cinfo->dest == NULL) {
+        cinfo->dest = (struct jpeg_destination_mgr *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, sizeof(mjpg_destination_mgr));
+    }
 
-  dest = (mjpg_dest_ptr) cinfo->dest;
-  dest->pub.init_destination = init_destination;
-  dest->pub.empty_output_buffer = empty_output_buffer;
-  dest->pub.term_destination = term_destination;
-  dest->outbuffer = buffer;
-  dest->outbuffer_size = size;
-  dest->outbuffer_cursor = buffer;
-  dest->written = written;
+    dest = (mjpg_dest_ptr) cinfo->dest;
+    dest->pub.init_destination = init_destination;
+    dest->pub.empty_output_buffer = empty_output_buffer;
+    dest->pub.term_destination = term_destination;
+    dest->outbuffer = buffer;
+    dest->outbuffer_size = size;
+    dest->outbuffer_cursor = buffer;
+    dest->written = written;
 }
 
 int jpeg_utils::compress_yuyv_to_jpeg(Image *src, unsigned char* buffer, int size, int quality)

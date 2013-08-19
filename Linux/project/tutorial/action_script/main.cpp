@@ -56,7 +56,7 @@ int main(void)
     if(MotionManager::GetInstance()->Initialize(&cm730) == false)
     {
         printf("Fail to initialize Motion Manager!\n");
-            return 0;
+        return 0;
     }
     MotionManager::GetInstance()->LoadINISettings(ini);
     MotionManager::GetInstance()->AddModule((MotionModule*)Action::GetInstance());

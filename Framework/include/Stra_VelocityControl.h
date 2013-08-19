@@ -17,61 +17,63 @@
 #include "StrategyModule.h"
 #include <stdio.h>
 #include <tinyxml.h>
-namespace Robot{
-	class Stra_VelocityControl : public StrategyModule
-	{
+namespace Robot {
+class Stra_VelocityControl : public StrategyModule
+{
 
-	public:
-		
-    	~Stra_VelocityControl();
+public:
 
-		static Stra_VelocityControl*  GetInstance() {return m_UniqueInstance;}
-		//static string  ParameterReset(void);
+    ~Stra_VelocityControl();
 
-        void Initialize(void);
+    static Stra_VelocityControl*  GetInstance() {
+        return m_UniqueInstance;
+    }
+    //static string  ParameterReset(void);
 
-        void Process(void);
+    void Initialize(void);
 
-		int LoadXMLSettings(TiXmlElement* element);  //LoadXMLSettings
+    void Process(void);
 
-	private:
+    int LoadXMLSettings(TiXmlElement* element);  //LoadXMLSettings
 
-		static Stra_VelocityControl* m_UniqueInstance; 
+private:
 
-		Stra_VelocityControl();
+    static Stra_VelocityControl* m_UniqueInstance;
 
-		void VelocityTransform( double, double, double );
+    Stra_VelocityControl();
 
-   		double S_Function( const double& , const double& , const double& , const double&, double );
+    void VelocityTransform( double, double, double );
 
-   		double Raise_Function( double V, double Cmd );
+    double S_Function( const double& , const double& , const double& , const double&, double );
 
-   		double GoalDistance;
+    double Raise_Function( double V, double Cmd );
 
-   		double GoalAngle;
+    double GoalDistance;
 
-   		double HandleAngle;
+    double GoalAngle;
 
-		double DistanceMax;
+    double HandleAngle;
 
-   		double DistanceMin;
+    double DistanceMax;
 
-   		double SpeedMax;
+    double DistanceMin;
 
-        double SpeedMin;
+    double SpeedMax;
 
-		double ThetaMax;
+    double SpeedMin;
 
-   		double ThetaMin;
+    double ThetaMax;
 
-        double OmegaMax;
+    double ThetaMin;
 
-        double OmegaMin;
+    double OmegaMax;
 
-        double SpeedCmd;
+    double OmegaMin;
 
-   	 	double SpeedTmp;
+    double SpeedCmd;
 
-	};
+    double SpeedTmp;
+
+};
 }
 #endif

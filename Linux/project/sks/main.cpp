@@ -5,6 +5,7 @@
  */
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
+//#define ENABLE_VISION_FACEDETECTION
 //#define ENABLE_LOCATION
 
 #include <stdio.h>
@@ -50,142 +51,141 @@ void sighandler(int sig)
 
 int DescompositionCommand (TiXmlElement* root)
 {
-	TiXmlElement* element;
+    TiXmlElement* element;
     element = root->FirstChildElement("ManualDirection");
-		if(element != NULL) {
-			TiXmlElement* child;
-			child = element->FirstChildElement("Rotate");
-			if(child != NULL){
-				child->Attribute("w", &StrategyStatus::w);
-			}
-			child = element->FirstChildElement("Vector");
-			if(child != NULL){
-				child->Attribute("x", &StrategyStatus::x);
-				child->Attribute("y", &StrategyStatus::y);
-			}
-			child = element->FirstChildElement("Camera");
-			if(child != NULL){
-				//child->Attribute("ang", &StrategyStatus::CmeraAngle);
-			}
-			child = element->FirstChildElement("TakeBall");
-			if(child != NULL){
-				child->Attribute("ballFlag", &StrategyStatus::CurrentBallState);
-			}
-			child = element->FirstChildElement("Sim_flag");
-			if(child != NULL){
-			 	StrategyStatus::SimulatorFlag=true;
-			}else{
-				StrategyStatus::SimulatorFlag=false;
-			}
-		}
+    if(element != NULL) {
+        TiXmlElement* child;
+        child = element->FirstChildElement("Rotate");
+        if(child != NULL) {
+            child->Attribute("w", &StrategyStatus::w);
+        }
+        child = element->FirstChildElement("Vector");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::x);
+            child->Attribute("y", &StrategyStatus::y);
+        }
+        child = element->FirstChildElement("Camera");
+        if(child != NULL) {
+            //child->Attribute("ang", &StrategyStatus::CmeraAngle);
+        }
+        child = element->FirstChildElement("TakeBall");
+        if(child != NULL) {
+            child->Attribute("ballFlag", &StrategyStatus::CurrentBallState);
+        }
+        child = element->FirstChildElement("Sim_flag");
+        if(child != NULL) {
+            StrategyStatus::SimulatorFlag=true;
+        } else {
+            StrategyStatus::SimulatorFlag=false;
+        }
+    }
 }
 int DescompositionSimulator (TiXmlElement* root)
 {
-	TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
-	if(element != NULL) {
-		element->Attribute("x", &LocationStatus::Position.x);
-		element->Attribute("y", &LocationStatus::Position.y);
-		element->Attribute("sita", &LocationStatus::Handle);
-	}
+    TiXmlElement* element = root ->FirstChildElement("Sim_Position");;
+    if(element != NULL) {
+        element->Attribute("x", &LocationStatus::Position.x);
+        element->Attribute("y", &LocationStatus::Position.y);
+        element->Attribute("sita", &LocationStatus::Handle);
+    }
 }
 
 int DescompositionRequest (TiXmlElement* root,LinuxServer *new_sock)
 {
-	TiXmlElement* element;
+    TiXmlElement* element;
     TiXmlElement RequestRoot("Status");
     element = root->FirstChildElement("Laser");
     if(element != NULL) {
-	TiXmlElement element("Laser");
-		for(int i=1;i<=1000;i++){
-			TiXmlElement child("Value");
-			//child->SetDoubleAttribute("angle",???);
-			//child->SetDoubleAttribute("distance",???);
-			element.InsertEndChild(*child.Clone());
-		}
-		RequestRoot.InsertEndChild(*element.Clone());
-	}
-	element = root->FirstChildElement("Position");
-	if(element != NULL) {
-		TiXmlElement element("Position");
-			element.SetDoubleAttribute("x",LocationStatus::Position.x);
-			element.SetDoubleAttribute("y",LocationStatus::Position.y);
-			element.SetDoubleAttribute("sita",LocationStatus::Handle);
-			RequestRoot.InsertEndChild(*element.Clone());
-	}
-	element = root->FirstChildElement("Camera_Angle");
-		if(element != NULL) {
-			TiXmlElement element("Camera_Angle");
-			//element->SetDoubleAttribute("ang",???);
-			RequestRoot.InsertEndChild(*element.Clone());
-		}
-	element = root->FirstChildElement("Movement");
-	if(element != NULL) {
-		TiXmlElement element("Movement");
-		element.SetDoubleAttribute("x",StrategyStatus::x);
-		element.SetDoubleAttribute("y",StrategyStatus::y);
-		element.SetDoubleAttribute("sita",StrategyStatus::w);
-		RequestRoot.InsertEndChild(*element.Clone());	
-	}
-	TiXmlDocument RequestDoc;
-	RequestDoc.InsertEndChild(*RequestRoot.Clone());
-	TiXmlPrinter send;
-	RequestDoc.Accept( &send );
-	*new_sock << send.CStr();
+        TiXmlElement element("Laser");
+        for(int i=1; i<=1000; i++) {
+            TiXmlElement child("Value");
+            //child->SetDoubleAttribute("angle",???);
+            //child->SetDoubleAttribute("distance",???);
+            element.InsertEndChild(*child.Clone());
+        }
+        RequestRoot.InsertEndChild(*element.Clone());
+    }
+    element = root->FirstChildElement("Position");
+    if(element != NULL) {
+        TiXmlElement element("Position");
+        element.SetDoubleAttribute("x",LocationStatus::Position.x);
+        element.SetDoubleAttribute("y",LocationStatus::Position.y);
+        element.SetDoubleAttribute("sita",LocationStatus::Handle);
+        RequestRoot.InsertEndChild(*element.Clone());
+    }
+    element = root->FirstChildElement("Camera_Angle");
+    if(element != NULL) {
+        TiXmlElement element("Camera_Angle");
+        //element->SetDoubleAttribute("ang",???);
+        RequestRoot.InsertEndChild(*element.Clone());
+    }
+    element = root->FirstChildElement("Movement");
+    if(element != NULL) {
+        TiXmlElement element("Movement");
+        element.SetDoubleAttribute("x",StrategyStatus::x);
+        element.SetDoubleAttribute("y",StrategyStatus::y);
+        element.SetDoubleAttribute("sita",StrategyStatus::w);
+        RequestRoot.InsertEndChild(*element.Clone());
+    }
+    TiXmlDocument RequestDoc;
+    RequestDoc.InsertEndChild(*RequestRoot.Clone());
+    TiXmlPrinter send;
+    RequestDoc.Accept( &send );
+    *new_sock << send.CStr();
 }
 void DescompositionReloadConfig ()
 {
-	TiXmlDocument ConfigDoc("Robot_Config.xml");
-	ConfigDoc.LoadFile();
-	TiXmlElement* root = ConfigDoc.FirstChildElement("Config");
-	
+    TiXmlDocument ConfigDoc("Robot_Config.xml");
+    ConfigDoc.LoadFile();
+    TiXmlElement* root = ConfigDoc.FirstChildElement("Config");
+
     TiXmlElement* element = root->FirstChildElement("DirectionObject");
-		if(element != NULL){
-                //LocationStatus::GetInstance()->LoadXMLSettings(element);
-        }
-        element = root->FirstChildElement("ColorModel");
-        if(element != NULL){
-                ColorModel::GetInstance()->LoadXMLSettings(element);
-        }
+    if(element != NULL) {
+        //LocationStatus::GetInstance()->LoadXMLSettings(element);
+    }
+    element = root->FirstChildElement("ColorModel");
+    if(element != NULL) {
+        ColorModel::GetInstance()->LoadXMLSettings(element);
+    }
 
-		element = root->FirstChildElement("GridMap");
-		if(element != NULL){
-				AstarTool::GetInstance()->LoadXMLSettings(element);
+    element = root->FirstChildElement("GridMap");
+    if(element != NULL) {
+        AstarTool::GetInstance()->LoadXMLSettings(element);
 
-		}
+    }
 
-        element = root->FirstChildElement("BasicConfig");
-        if(element != NULL){
-				StrategyManager::GetInstance()->LoadXMLSettings(element);
+    element = root->FirstChildElement("BasicConfig");
+    if(element != NULL) {
+        StrategyManager::GetInstance()->LoadXMLSettings(element);
+    }
+    element = root->FirstChildElement("StraConfig");
+    if(element != NULL) {
+        TiXmlElement* child = element->FirstChildElement("Stra_Astar");
+        if(child != NULL) {
+            Stra_AStar::GetInstance()->LoadXMLSettings(child);
         }
-        element = root->FirstChildElement("StraConfig");
-        if(element != NULL){
-                    TiXmlElement* child = element->FirstChildElement("Stra_Astar");
-                    if(child != NULL){
-                          Stra_AStar::GetInstance()->LoadXMLSettings(child);
-                    }
-                    child = element->FirstChildElement("Stra_Avoid");
-                    if(child != NULL){
-                          Stra_Avoid::GetInstance()->LoadXMLSettings(child);
-                    }
-                    child = element->FirstChildElement("Stra_PathPlan");
-                    if(child != NULL){
-                          Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
-                    }
-                    child = element->FirstChildElement("Stra_VelocityControl");
-                    if(child != NULL){
-                          Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
-                    }
-                    child = element->FirstChildElement("Stra_Task");
-                    if(child != NULL){
-                          Stra_Task::GetInstance()->LoadXMLSettings(child);
-                    }
-       }
+        child = element->FirstChildElement("Stra_Avoid");
+        if(child != NULL) {
+            Stra_Avoid::GetInstance()->LoadXMLSettings(child);
+        }
+        child = element->FirstChildElement("Stra_PathPlan");
+        if(child != NULL) {
+            Stra_PathPlan::GetInstance()->LoadXMLSettings(child);
+        }
+        child = element->FirstChildElement("Stra_VelocityControl");
+        if(child != NULL) {
+            Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
+        }
+        child = element->FirstChildElement("Stra_Task");
+        if(child != NULL) {
+            Stra_Task::GetInstance()->LoadXMLSettings(child);
+        }
+    }
 }
 
 int main(void)
 {
-	DescompositionReloadConfig();
-
+    DescompositionReloadConfig();
     signal(SIGABRT, &sighandler);
     signal(SIGTERM, &sighandler);
     signal(SIGQUIT, &sighandler);
@@ -204,7 +204,7 @@ int main(void)
         fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
 #endif
 
-   ////////////////// Framework Initialize ////////////////////////////
+    ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
     if(VisionManager::GetInstance()->Initialize(VisionCapture) == false)
     {
@@ -212,7 +212,17 @@ int main(void)
         return 1;
     }
 
+    //VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
+
+    //VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+
+    VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
+
+#ifdef ENABLE_VISION_FACEDETECTION
     VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+#endif
+
+    VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -220,17 +230,18 @@ int main(void)
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_LOCATION
     if(LocationManager::GetInstance()->Initialize(&urg, &motors) == false)
+        //if(LocationManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Location Manager!\n");
         return 1;
     }
 
-    LocationManager::GetInstance()->AddModule((LocationModule*)Speedometer::GetInstance());
+    LocationManager::GetInstance()->AddModule((LocationModule*)Odometer::GetInstance());
     LocationManager::GetInstance()->AddModule((LocationModule*)ParticleFilter::GetInstance());
 
     LinuxLocationTimer *location_timer = new LinuxLocationTimer(LocationManager::GetInstance());
     location_timer->Start();
-    LocationManager::GetInstance()->StartLogging();
+    //LocationManager::GetInstance()->StartLogging();
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
@@ -239,13 +250,13 @@ int main(void)
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
-    
+
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
 
     //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
-    
+
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
@@ -264,37 +275,38 @@ int main(void)
     {
         while(1) {
 
+
             string xml;
             LinuxServer new_sock;
             LinuxServer server(10373);
-	
             cout << "[Waiting..]" << endl;
             server.accept ( new_sock );
-            cout << "[Accepted..]" << endl;	
+            cout << "[Accepted..]" << endl;
 
             try
             {
-                while(true){	
+                cout<<"load"<<endl;
+                while(true) {
                     TiXmlDocument doc;
                     new_sock >> xml;
                     doc.Parse(xml.c_str());
                     TiXmlElement* root = doc.FirstChildElement("Command");
                     if(root != NULL) {
-						DescompositionCommand(root);
+                        DescompositionCommand(root);
                     }
-					if(StrategyStatus::SimulatorFlag){
-						    root = doc.FirstChildElement("Simulator");
-							if(root != NULL) {
-						    	DescompositionSimulator (root);
-							}
-					}
+                    if(StrategyStatus::SimulatorFlag) {
+                        root = doc.FirstChildElement("Simulator");
+                        if(root != NULL) {
+                            DescompositionSimulator (root);
+                        }
+                    }
                     root = doc.FirstChildElement("Request");
                     if(root != NULL) {
                         DescompositionRequest (root, &new_sock);
                     }
                     root = doc.FirstChildElement("ReloadConfig");
-                    if(root != NULL){
-						DescompositionReloadConfig();
+                    if(root != NULL) {
+                        DescompositionReloadConfig();
                     }
                 }
             }

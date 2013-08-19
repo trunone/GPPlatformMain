@@ -13,36 +13,38 @@ using namespace std;
 
 namespace Robot
 {
-	class SegmentationFunction : public VisionModule
-	{
+class SegmentationFunction : public VisionModule
+{
 
-	private:
-		static SegmentationFunction* m_UniqueInstance;
-		
-		SegmentationFunction();
+private:
+    static SegmentationFunction* m_UniqueInstance;
 
-		
-	public:
-		struct SegmentLocation
-		{
-			int x, y;
-		};
-		static SegmentationFunction* GetInstance() { return m_UniqueInstance; }
-		
-		~SegmentationFunction();
-		static int Xcenter,Ycenter;
-		static int Xmax, Xmin, Ymax, Ymin;
-		static int PointCnt;
-		void SegmentationInit(int Xvalue, int Yvalue);
-		void SegmentationInsert(int Xvalue, int Yvalue);
-		vector <SegmentLocation> LocationList;
-	
-		void Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
-		void DrawLine(unsigned char *WebcamBuffer);
+    SegmentationFunction();
 
-		void Process();
-	};
-		
+
+public:
+    struct SegmentLocation
+    {
+        int x, y;
+    };
+    static SegmentationFunction* GetInstance() {
+        return m_UniqueInstance;
+    }
+
+    ~SegmentationFunction();
+    static int Xcenter,Ycenter;
+    static int Xmax, Xmin, Ymax, Ymin;
+    static int PointCnt;
+    void SegmentationInit(int Xvalue, int Yvalue);
+    void SegmentationInsert(int Xvalue, int Yvalue);
+    vector <SegmentLocation> LocationList;
+
+    void Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
+    void DrawLine(unsigned char *WebcamBuffer);
+
+    void Process();
+};
+
 }
 
 #endif

@@ -17,128 +17,130 @@
 #include "LocationStatus.h"
 #include <time.h>
 #include "TCoordinate.h"
-namespace Robot{
-	class Stra_FindBall : public StrategyModule
-	{
+namespace Robot {
+class Stra_FindBall : public StrategyModule
+{
 
-	typedef enum
-	{
-    		etInitial = 0,
+    typedef enum
+    {
+        etInitial = 0,
 
-    		etEnterRoom,
+        etEnterRoom,
 
-    		etSearchBall,
+        etSearchBall,
 
-    		etTurnToBall,
+        etTurnToBall,
 
-    		etApproachBall,
+        etApproachBall,
 
-    		etEatBall,
+        etEatBall,
 
-    		etGotoCenter,
+        etGotoCenter,
 
-    		etRoom2,
+        etRoom2,
 
-    		etLeaveRoom
+        etLeaveRoom
 
-	}teFindBallState;
+    } teFindBallState;
 
-	typedef enum
-	{
+    typedef enum
+    {
 
-    		etLeftRight=0,
+        etLeftRight=0,
 
-    		etRoomMid,
+        etRoomMid,
 
-    		etNearSearch,
+        etNearSearch,
 
-    		etEndSearch
+        etEndSearch
 
-	}teSearchStep;
+    } teSearchStep;
 
-	public:
+public:
 
-		static Stra_FindBall*  GetInstance() {return m_UniqueInstance;}
-    		
-    	~Stra_FindBall();   //žÑºcšçŠ¡
+    static Stra_FindBall*  GetInstance() {
+        return m_UniqueInstance;
+    }
 
-    	//virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
+    ~Stra_FindBall();   //žÑºcšçŠ¡
 
-    	void Initialize(void);                  //ªì©l€Æ
+    //virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
 
-    	void Process(void);                     //°õŠæšçŒÆ
+    void Initialize(void);                  //ªì©l€Æ
 
-	private:
+    void Process(void);                     //°õŠæšçŒÆ
 
-        static Stra_FindBall* m_UniqueInstance; 
-		
-		Stra_FindBall();
+private:
 
-        void  RenewRoomCorner();
+    static Stra_FindBall* m_UniqueInstance;
 
-   		int  MiddleValue(int *Array, int Num);
+    Stra_FindBall();
 
-    	void  AnalyseBall();
+    void  RenewRoomCorner();
 
-    	int  DisTransfer(int AX12_CMD);
+    int  MiddleValue(int *Array, int Num);
 
-    	void  AX12_TakeBall();
+    void  AnalyseBall();
 
-    	void  SearchBall_Initial();
+    int  DisTransfer(int AX12_CMD);
 
-    	void  SearchBall();
+    void  AX12_TakeBall();
 
-    	void  TurnToBall();
+    void  SearchBall_Initial();
 
-    	void  Approach_Ball();
+    void  SearchBall();
 
-    	bool  Eat_Ball();
+    void  TurnToBall();
 
-    	void  DetermineEatDirection();
+    void  Approach_Ball();
 
-    	teFindBallState FindBallState;
+    bool  Eat_Ball();
 
-    	teSearchStep SearchStep;
+    void  DetermineEatDirection();
 
-    	int CenterThreshold;
+    teFindBallState FindBallState;
 
-    	short BallDirection;
+    teSearchStep SearchStep;
 
-    	short EatBallDirection;
+    int CenterThreshold;
 
-    	TCoordinate PastOdometer;
+    short BallDirection;
 
-    	int RoomCnt;
+    short EatBallDirection;
 
-    	TCoordinate RoomVector;
+    TCoordinate PastOdometer;
 
-    	TCoordinate CenterVector;
+    int RoomCnt;
 
-    	TCoordinate Corner[4];
+    TCoordinate RoomVector;
 
-    	int CornerID;
+    TCoordinate CenterVector;
 
-    	bool FlagEatBall;
+    TCoordinate Corner[4];
 
-    	bool FlagRecognize;
+    int CornerID;
 
-    	short LeftRightSearch;     // ¥ª : 1, ¥k :-1 , €€¶¡:0
+    bool FlagEatBall;
 
-    	float LoseBallAngle;
+    bool FlagRecognize;
 
-    	int LoseBallCnt;
+    short LeftRightSearch;     // ¥ª : 1, ¥k :-1 , €€¶¡:0
 
-    	int SearchTrunStep;
+    float LoseBallAngle;
 
-    	bool Lock;
+    int LoseBallCnt;
 
-    	int SearchTimes;
+    int SearchTrunStep;
 
-    	int *PastScanLineData;
+    bool Lock;
 
-		int Room2Step;
+    int SearchTimes;
 
-	};
+    int *PastScanLineData;
+
+    int Room2Step;
+
+};
 }
 
 #endif

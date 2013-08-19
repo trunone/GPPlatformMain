@@ -168,5 +168,4 @@ namespace Robot
 		static TCoordinate RseLocPos;
 	};
 }
-
 #endif

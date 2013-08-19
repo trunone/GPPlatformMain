@@ -9,8 +9,8 @@ AstarTool::AstarTool()
 {
     StartNode = aVector(-1,-1);
     GoalNode  = aVector(-1,-1);
-    
-	NodeResolution = 10;
+
+    NodeResolution = 10;
 
     CurrentStatus = 0;
     ObstacleThreshold = 200;
@@ -20,75 +20,75 @@ void AstarTool::CleanList( void )
 {
     Path.clear();
     ClosedList.clear();
-	OpenList.clear();
+    OpenList.clear();
 }
 //--------------------------------------------------------------------------xmlGridMap
-int AstarTool::LoadXMLSettings(TiXmlElement* element){
-	Map.clear();
-	if(element != NULL){
-		TiXmlElement* child=element->FirstChildElement();
-		while(child!=NULL){
-			vector<tsNode> vecTmp;
-			TiXmlAttribute* type=child->FirstAttribute();
-			while(type!=NULL){
-				tsNode tsNodeTmp;
-				tsNodeTmp.Weight = atoi(type->Value());
-				vecTmp.push_back(tsNodeTmp);
-				type=type->Next();
-			}
-			Map.push_back(vecTmp);
-			child=child->NextSiblingElement();
-		}
-	}
+int AstarTool::LoadXMLSettings(TiXmlElement* element) {
+    Map.clear();
+    if(element != NULL) {
+        TiXmlElement* child=element->FirstChildElement();
+        while(child!=NULL) {
+            vector<tsNode> vecTmp;
+            TiXmlAttribute* type=child->FirstAttribute();
+            while(type!=NULL) {
+                tsNode tsNodeTmp;
+                tsNodeTmp.Weight = atoi(type->Value());
+                vecTmp.push_back(tsNodeTmp);
+                type=type->Next();
+            }
+            Map.push_back(vecTmp);
+            child=child->NextSiblingElement();
+        }
+    }
 //	for(int i =59; i>=0; i--){
 //		for(int j=59; j>=0; j--){
-//			if(Map[i][j].Weight == 255) printf("X");		
+//			if(Map[i][j].Weight == 255) printf("X");
 //			if(Map[i][j].Weight == 128) printf("b");
 //			if(Map[i][j].Weight == 0) printf(" ");
 //			if(j==0) printf("\n");
 //
 //		}
-//	}	
-	
-	return 0;
+//	}
+
+    return 0;
 }
 //---------------------------------------------------------------------------
 void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
 {
     CurrentStatus %=255;
-	
+
     CurrentStatus +=5;
-	
-	TCoordinate Front,Father;
+
+    TCoordinate Front,Father;
     //---- record the start and goal -----
     StartNode.x = (int)(Start.x/NodeResolution);
     StartNode.y = (int)(Start.y/NodeResolution);
     GoalNode.x  = (int)(Goal.x /NodeResolution);
     GoalNode.y  = (int)(Goal.y /NodeResolution);
 
-	//printf("StartNode %f %f\n",StartNode.x,StartNode.y);
-	//printf("GoalNode %f %f\n",GoalNode.x,GoalNode.y);
+    //printf("StartNode %f %f\n",StartNode.x,StartNode.y);
+    //printf("GoalNode %f %f\n",GoalNode.x,GoalNode.y);
 
-	//---- initial the list information
+    //---- initial the list information
     Map[StartNode.x][StartNode.y].Father = StartNode;
     Map[StartNode.x][StartNode.y].G = 0;
     Map[StartNode.x][StartNode.y].H = NodeResolution*(( GoalNode - StartNode ).Length());
     Map[StartNode.x][StartNode.y].F = Map[StartNode.x][StartNode.y].G + Map[StartNode.x][StartNode.y].H;
 
-	OpenList.push_back(Nodelist(StartNode.x,StartNode.y,Map[StartNode.x][StartNode.y].Weight)); 
+    OpenList.push_back(Nodelist(StartNode.x,StartNode.y,Map[StartNode.x][StartNode.y].Weight));
     //---- execute the A Star
     Front.x = OpenList.begin()->x;
     Front.y = OpenList.begin()->y;
-	
+
     //--------------------------------------------------------------------------
     //-------------- Stop Condition --------------------------------------------
     //--------------------------------------------------------------------------
     while( (Front.x != -1        || Front.y != -1) &&
-           (Front.x != GoalNode.x || Front.y != GoalNode.y) )
+            (Front.x != GoalNode.x || Front.y != GoalNode.y) )
     {
         //OpenList.extract_min();
-		
-		OpenList.erase(OpenList.begin());
+
+        OpenList.erase(OpenList.begin());
 
         Map[Front.x][Front.y].Status = CurrentStatus-Def_Closed;
         ClosedList.push_back( Front );
@@ -96,13 +96,13 @@ void AstarTool::Main( TCoordinate Start , TCoordinate Goal )
 
         Front.x = OpenList.begin()->x;
         Front.y = OpenList.begin()->y;
-			
+
     }
     //--------------------------------------------------------------------------
     //-------------- Return Path Info ------------------------------------------
     //--------------------------------------------------------------------------
-	
-	if( Front.x == GoalNode.x && Front.y == GoalNode.y )
+
+    if( Front.x == GoalNode.x && Front.y == GoalNode.y )
     {
         Path.insert( Path.begin(), Goal );
         Father = GoalNode;
@@ -134,12 +134,12 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
             TmpWeight = Map[TmpPos.x][TmpPos.y].Weight;
 
             if( TmpWeight < ObstacleThreshold  )
-            {	
-                if( i*j==0 ){       // if neighbor is diagonal, then G is 1a4.
+            {
+                if( i*j==0 ) {      // if neighbor is diagonal, then G is 1a4.
                     TmpWeight += NodeResolution;
-                }else{
+                } else {
                     if( Map[TmpPos.x][Current.y].Weight > ObstacleThreshold ||
-                        Map[Current.x][TmpPos.y].Weight > ObstacleThreshold ) continue;
+                            Map[Current.x][TmpPos.y].Weight > ObstacleThreshold ) continue;
                     TmpWeight += 1.4*NodeResolution;
                 }
                 if( Map[TmpPos.x][TmpPos.y].Status == CurrentStatus-Def_Open)
@@ -149,11 +149,11 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
                         Map[TmpPos.x][TmpPos.y].Father = Current;
                         Map[TmpPos.x][TmpPos.y].G = Map[Current.x][Current.y].G + TmpWeight;
                         Map[TmpPos.x][TmpPos.y].F = Map[TmpPos.x][TmpPos.y].G + Map[TmpPos.x][TmpPos.y].H;
-						
-						vector<Nodelist>::iterator it = find_if(OpenList.begin(),OpenList.end(),NodelistFinder(Map[TmpPos.x][TmpPos.y].F));			
-						OpenList.insert(it, Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F));
-                     	//OpenList.push_back(Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F) );
-                    	//sort(OpenList.begin(),OpenList.end());
+
+                        vector<Nodelist>::iterator it = find_if(OpenList.begin(),OpenList.end(),NodelistFinder(Map[TmpPos.x][TmpPos.y].F));
+                        OpenList.insert(it, Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F));
+                        //OpenList.push_back(Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F) );
+                        //sort(OpenList.begin(),OpenList.end());
                     }
                 }
                 else if( Map[TmpPos.x][TmpPos.y].Status != CurrentStatus-Def_Closed )
@@ -163,19 +163,19 @@ void AstarTool::SearchNeighbor_8Connect( TCoordinate Current )
                     Map[TmpPos.x][TmpPos.y].G = Map[Current.x][Current.y].G + TmpWeight;
                     Map[TmpPos.x][TmpPos.y].H = NodeResolution*((GoalNode - TmpPos).Length());
                     Map[TmpPos.x][TmpPos.y].F = Map[TmpPos.x][TmpPos.y].G + Map[TmpPos.x][TmpPos.y].H;
-				
-					vector<Nodelist>::iterator it = find_if(OpenList.begin(),OpenList.end(),NodelistFinder(Map[TmpPos.x][TmpPos.y].F));			
-					OpenList.insert(it, Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F));
 
-					//OpenList.push_back(Nodelist(TmpPos.x, TmpPos.y,Map[TmpPos.x][TmpPos.y].F) );
+                    vector<Nodelist>::iterator it = find_if(OpenList.begin(),OpenList.end(),NodelistFinder(Map[TmpPos.x][TmpPos.y].F));
+                    OpenList.insert(it, Nodelist(TmpPos.x,TmpPos.y ,Map[TmpPos.x][TmpPos.y].F));
+
+                    //OpenList.push_back(Nodelist(TmpPos.x, TmpPos.y,Map[TmpPos.x][TmpPos.y].F) );
                     //sort(OpenList.begin(),OpenList.end());
                 }
-				//printf("G: %d ",Map[TmpPos.x][TmpPos.y].G );
-				//printf("H: %d ",Map[TmpPos.x][TmpPos.y].H );
+                //printf("G: %d ",Map[TmpPos.x][TmpPos.y].G );
+                //printf("H: %d ",Map[TmpPos.x][TmpPos.y].H );
             }
         }
-	}
-	//printf("\n");
+    }
+    //printf("\n");
 }
 //---------------------------------------------------------------------------
 //void AstarTool::SearchNeighbor( TCoordinate Current )
@@ -228,7 +228,7 @@ void AstarTool::AdjustPath( void )
     {
         SmoothPath.clear();
         SmoothPath.push_back(Path.front());
-        for(unsigned int i=2; i< Path.size()-1 ;i++)
+        for(unsigned int i=2; i< Path.size()-1 ; i++)
         {
             tmp1 = CheckPath_Same( i );
             if( tmp1 == i )
@@ -319,7 +319,7 @@ unsigned int AstarTool::CheckPath_Same( unsigned int PathNum )
 //    //--------------------------------------------------------------------------
 //    if( Front.x == GoalNode.x && Front.y == GoalNode.y )
 //    {
-//		
+//
 //        Path.insert( Path.begin(), GoalNode*NodeResolution );
 //        Father = GoalNode;
 //        while( StartNode.x != Father.x || StartNode.y != Father.y   )

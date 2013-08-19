@@ -28,7 +28,6 @@ using namespace cv;
 #define cCYAN       colorBGR(255,0,255)
 #define GrayPixel(Scale)    colorBGR(Scale,Scale,Scale)
 #define BinaryPixel(White)  (White)?cWHITE:cBLACK
-#define EdgeColor 1
 #define NaN 0
 #define Def_ImgWidth    640
 #define Def_ImgHeight   480
@@ -40,124 +39,137 @@ using namespace cv;
 
 namespace Robot
 {
-	
-	class VisionStatus
-	{
 
-	private:
+class VisionStatus
+{
 
-	public:
-		struct ColorRange
-		{
-			double HueMax;
-			double HueMin;
-			double SaturationMax;
-			double SaturationMin;
-			double BrightnessMax;
-			double BrightnessMin;
-		};
+private:
 
-        unsigned char *yiqColorModel; 
+public:
+    struct ColorRange
+    {
+        double HueMax;
+        double HueMin;
+        double SaturationMax;
+        double SaturationMin;
+        double BrightnessMax;
+        double BrightnessMin;
+    };
 
-		//---seg
-		
-		/*static int Xmax, Xmin, Ymax, Ymin;
-		static int PointCnt;
-		static void SegmentationInit(int Xvalue, int Yvalue);
-		static void SegmentationInsert(int Xvalue, int Yvalue);
-		static vector <SegmentLocation> LocationList;*/
-	
-		//--- Global
-		static const int ImageWidth = 640, ImageHeight = 480;
+    unsigned char *yiqColorModel;
 
-		static Mat frame;
-		static Mat send_frame;
-		
-		static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
-				     Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
-				     Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
-		static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
+    //---seg
 
-		//--- ModelUnit
-		static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;
+    /*static int Xmax, Xmin, Ymax, Ymin;
+    static int PointCnt;
+    static void SegmentationInit(int Xvalue, int Yvalue);
+    static void SegmentationInsert(int Xvalue, int Yvalue);
+    static vector <SegmentLocation> LocationList;*/
 
-		static int ColorDeep;
-
-		static int xImageCenter, yImageCenter;
-		static int GlobalScanMagnEnd;
-
-		static float AngularToRadian,RadianToAngular;
+    //--- Global
+    static const int ImageWidth = 640, ImageHeight = 480;
 
 
-		static float ComputeCenterAngle(float AngleStartPoint, float AngleEndPoint);
+    static Mat send_frame;
 
-		static Mat VideoFrame;
-	
-		typedef enum{ etDinRM=0, etBedRM, etLib }teRoomOrder;
+    static unsigned char Blue_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+           Green_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight],
+           Red_Ball[VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+    static int Xmax,Xmin,Ymax,Ymin;
+    static int PointCnt;
+    static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
+    //-----door number status
+    static int door_status;
 
-		typedef enum{ etGrandPa=0, etGrandMa, etFather, etMother, etSon, etdaughter }teMember;
+    //--- ModelUnit
+    static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;
 
-		typedef enum{ BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 }BGRcolor;
+    static int ColorDeep;
 
-		typedef enum{ Y=0 , U=1 , V=2}YUVcolor;
-	
-		typedef struct{
-            unsigned char ColorEle[3];
-		}tsColor;
+    static int xImageCenter, yImageCenter;
+    static int GlobalScanMagnEnd;
 
-		typedef struct{
-            int CenterX;
-	    int CenterY;
-            int InternalRadius;
-            int ExternalRadius;
-            void LoadSetting();
-            void WriteSetting();
-            unsigned char BinaryThreshold;
-		}tsImgProSet;
+    static float AngularToRadian,RadianToAngular;
 
 
-		//---------------------------------------------------------------------------
-        typedef struct{
-			int X;
-			int Y;
-        }tsCoordinate;
+    static float ComputeCenterAngle(float AngleStartPoint, float AngleEndPoint);
 
-        typedef struct{
-			short int Cx;
-			short int Cy;
-			short int Cr;
-			short int PixelDistance;
-			double Angle;
-        }tsObjectiveInfo;
-	//----------------------------------------
+    static Mat VideoFrame;
 
-    	typedef struct{
+    typedef enum { etDinRM=0, etBedRM, etLib } teRoomOrder;
 
-        	tsCoordinate LeftUp;
+    typedef enum { etGrandPa=0, etGrandMa, etFather, etMother, etSon, etdaughter } teMember;
 
-        	tsCoordinate RightDown;
+    typedef enum { BLUE=0 , GREEN=1 , RED=2 , B=0 , G=1 , R=2 } BGRcolor;
 
-        	unsigned int countcolor;
+    typedef enum { Y=0 , U=1 , V=2} YUVcolor;
 
-    	}tsRecord_Blockinfo;
+    typedef struct {
+        unsigned char ColorEle[3];
+    } tsColor;
 
-	//------ FaceData ----------------------------------------------------------
-		static unsigned char Favg[40*40*3];
-		static float FeatureFaceW[40*40*3];
-		static float cvGet2D_1;
-		static float cvGet2D_2;
-		static float cvGet2D_3;
-		static float cvGet2D_4;
-		static float cvGet2D_5;
-		static float cvGet2D_6;
-		static float cvGet2D_7;
-		static float cvGet2D_8;
-		static float cvGet2D_9;
-		static float cvGet2D_10;
-		static float cvGet2D_11;
-		static float cvGet2D_12;
+    typedef struct {
+        int CenterX;
+        int CenterY;
+        int InternalRadius;
+        int ExternalRadius;
+        void LoadSetting();
+        void WriteSetting();
+        unsigned char BinaryThreshold;
+    } tsImgProSet;
 
-	};
+
+    //---------------------------------------------------------------------------
+    typedef struct {
+        int X;
+        int Y;
+    } tsCoordinate;
+
+    typedef struct {
+        short int Cx;
+        short int Cy;
+        short int Cr;
+        short int PixelDistance;
+        double Angle;
+    } tsObjectiveInfo;
+    //----------------------------------------
+
+    typedef struct {
+
+        tsCoordinate LeftUp;
+
+        tsCoordinate RightDown;
+
+        unsigned int countcolor;
+
+    } tsRecord_Blockinfo;
+
+    //------ FaceData ----------------------------------------------------------
+    static Mat Favg_Face;
+    static float FeatureFaceW[40*40];
+    static float cvGet2D_1;
+    static float cvGet2D_2;
+    static float cvGet2D_3;
+    static float cvGet2D_4;
+    static float cvGet2D_5;
+    static float cvGet2D_6;
+    static float cvGet2D_7;
+    static float cvGet2D_8;
+    static float cvGet2D_9;
+    static float cvGet2D_10;
+    static float cvGet2D_11;
+    static float cvGet2D_12;
+
+    //------ ImgProcess ----------------------------------------------------------
+    static int counter1;
+    static int counter2;
+    static int counter3;
+    static int counter4;
+    static int counter5;
+    static int counter6;
+    static int counter7;
+
+};
 }
 
 #endif

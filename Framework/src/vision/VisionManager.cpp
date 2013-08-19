@@ -17,12 +17,12 @@ using namespace cv;
 VisionManager* VisionManager::m_UniqueInstance = new VisionManager();
 
 VisionManager::VisionManager() :
-        m_ProcessEnable(false),
-        m_Enabled(false),
-        m_IsRunning(false),
-        m_IsThreadRunning(false),
-        m_IsLogging(false),
-        DEBUG_PRINT(false) {}
+    m_ProcessEnable(false),
+    m_Enabled(false),
+    m_IsRunning(false),
+    m_IsThreadRunning(false),
+    m_IsLogging(false),
+    DEBUG_PRINT(false) {}
 
 VisionManager::~VisionManager()
 {
@@ -33,20 +33,20 @@ bool VisionManager::Initialize(CvCapture *capture)
     m_Enabled = false;
     m_ProcessEnable = true;
 
+    ImgProcess::FaceData();
     if(capture) {
         VisionCapture = capture;
         return true;
-    }else{
+    } else {
         return false;
     }
-    ImgProcess::FaceData();
 }
 
 bool VisionManager::Reinitialize()
 {
-	m_ProcessEnable = false;
+    m_ProcessEnable = false;
 
-	return true;
+    return true;
 }
 
 void VisionManager::StartLogging()
@@ -60,7 +60,7 @@ void VisionManager::StartLogging()
         if(0 != access(szFile, F_OK))
             break;
         count++;
-		if(count > 256) return;
+        if(count > 256) return;
     }
 
     m_LogFileStream.open(szFile, std::ios::out);
@@ -85,7 +85,8 @@ void VisionManager::Process()
     m_IsRunning = true;
 
     VisionStatus::VideoFrame = cvQueryFrame(VisionCapture);
-
+    //VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //VisionStatus::VideoFrame.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     if(m_Modules.size() != 0) {
         for(std::list<VisionModule*>::iterator i = m_Modules.begin(); i != m_Modules.end(); i++)
         {
@@ -114,18 +115,18 @@ void VisionManager::Process()
 
 void VisionManager::SetEnable(bool enable)
 {
-	m_Enabled = enable;
-	//if(m_Enabled == true)
-	//	m_CM730->WriteWord(CM730::ID_BROADCAST, MX28::P_MOVING_SPEED_L, 0, 0);
+    m_Enabled = enable;
+    //if(m_Enabled == true)
+    //	m_CM730->WriteWord(CM730::ID_BROADCAST, MX28::P_MOVING_SPEED_L, 0, 0);
 }
 
 void VisionManager::AddModule(VisionModule *module)
 {
-	module->Initialize();
-	m_Modules.push_back(module);
+    module->Initialize();
+    m_Modules.push_back(module);
 }
 
 void VisionManager::RemoveModule(VisionModule *module)
 {
-	m_Modules.remove(module);
+    m_Modules.remove(module);
 }
