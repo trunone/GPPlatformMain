@@ -60,7 +60,7 @@ void Stra_Task::Initialize(void)
 }
 //---------------------------------------------------------------------------
 void Stra_Task::Process(void)
-{
+{   
     while( StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Enable == false && StrategyStatus::Room.Cnt < 5 ) {
         StrategyStatus::Room.Cnt++;
     }

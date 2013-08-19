@@ -100,12 +100,12 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-
-    mMotors->SetVelocityAll(
-        StrategyStatus::MotorSpeed[0],
-        StrategyStatus::MotorSpeed[1],
-        StrategyStatus::MotorSpeed[2]);
-
+	if( mMotors != NULL){
+    	mMotors->SetVelocityAll(
+        	StrategyStatus::MotorSpeed[0],
+        	StrategyStatus::MotorSpeed[1],
+        	StrategyStatus::MotorSpeed[2]);
+	}
     if(m_IsLogging)
     {
         for(int id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)

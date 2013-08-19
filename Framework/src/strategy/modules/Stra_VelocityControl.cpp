@@ -38,7 +38,7 @@ void Stra_VelocityControl::Initialize(void)
 }
 
 void Stra_VelocityControl::Process(void)
-{
+{     
 #ifndef Def_OMNIDIRECTION_SYSTEM
 
     if( StrategyStatus::MotionDistance != 0 )

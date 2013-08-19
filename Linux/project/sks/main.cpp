@@ -8,8 +8,9 @@
 //#define ENABLE_VISION_FACEDETECTION
 //#define ENABLE_LOCATION
 
-//#define NETWORK_INTERFACE
-#define INTERACTIVE_INTERFACE
+#define ENABLE_SIMULATOR
+#define NETWORK_INTERFACE
+//#define INTERACTIVE_INTERFACE
 
 #include <stdio.h>
 #include <unistd.h>
@@ -205,7 +206,6 @@ int main(void)
     signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
-
     motors.OpenDeviceAll();
 
 #ifdef ENABLE_VISION
@@ -258,27 +258,33 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
-    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
+
+#ifdef ENABLE_SIMULATOR
+	if(StrategyManager::GetInstance()->Initialize() == false){
+		printf("Fail to initialize Strategy Manager!\n");
+		return 1;
+	}
+#else
+  if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
+#endif
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
-
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
-
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+    
+	StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    //StrategyManager::GetInstance()->SetEnable(true);
+    StrategyManager::GetInstance()->SetEnable(true);
     
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
