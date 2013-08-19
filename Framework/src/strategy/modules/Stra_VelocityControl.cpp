@@ -69,12 +69,17 @@ void Stra_VelocityControl::Process(void)
             {
 
                 StrategyStatus::Direction = StrategyStatus::MotionAngle;
-				//printf("%f\n",StrategyStatus::Direction);
 
             }
         }
 
     }
+	else if( StrategyStatus::MotionDistance == 0 && StrategyStatus::MotionAngle == 0 )
+	{
+		StrategyStatus::MotionDistance = 0;
+		StrategyStatus::MotionAngle = 0;
+		StrategyStatus::Direction = 0;
+	}
 
     #endif
 
@@ -91,16 +96,14 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 {
 
     TCoordinate Vector( dTargetCutAng );
-
-	//printf("%f\n",Vector.x);
-	//printf("%f\n",Vector.y);
+	printf("dis %f\n",dTargetDis);
 
     double Speed = 0;
 
-    if( dTargetDis == 0)
-		
+    if( dTargetDis == 0){
         Speed = 0;
-
+		printf("speed =============================== %f\n",Speed);
+	}
     else if( dTargetDis > this->DistanceMax )
 
         Speed = SpeedMax;
@@ -135,9 +138,8 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
 	StrategyStatus::y = Speed * Vector.x;
 
-	//printf("%f\n",StrategyStatus::x);
-
-	//printf("%f\n",StrategyStatus::y);
+	printf("cmd %f %f\n",StrategyStatus::x, StrategyStatus::y);
+	printf("\n");
 
     //StrategyStatus::PathMotion = Speed * Vector;
 

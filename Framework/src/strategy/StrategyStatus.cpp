@@ -43,6 +43,8 @@ bool StrategyStatus::FlagSon;
 bool StrategyStatus::Flagdaughter;
 int StrategyStatus::CurrentBallState;
 
+int StrategyStatus::GotoRoomStep;
+
 StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
 int StrategyStatus::RoomSort;		

@@ -44,6 +44,7 @@ namespace Robot
 		static TCoordinate ChrgDoor;
 		static TCoordinate ChrgCen;
 		
+		static int GotoRoomStep;
 		//--------------------------------------------------
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;

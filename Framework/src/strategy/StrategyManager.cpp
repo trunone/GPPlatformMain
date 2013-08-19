@@ -224,6 +224,11 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element){
 			child->Attribute("x", &StrategyStatus::ChrgCen.x);
 			child->Attribute("y", &StrategyStatus::ChrgCen.y);						
         }
+		child=element->FirstChildElement("EndPosition");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::EndPosition.x);
+			child->Attribute("y", &StrategyStatus::EndPosition.y);						
+        }
     }
     else
         return 1;

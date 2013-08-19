@@ -34,10 +34,8 @@ void Stra_AStar::Initialize(void)
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
 {	
-	//printf("enter astar module\n");
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
         StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
-
 	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
 	{			
         	StartPos = StrategyStatus::AStarPath.StartPos;
@@ -45,16 +43,14 @@ void Stra_AStar::Process(void)
         	GoalPos  = StrategyStatus::AStarPath.GoalPos;
 			
         	AstarTool::GetInstance()->CleanList();
-			//printf("clean done\n");
+			
         	AstarTool::GetInstance()->Main( StartPos , GoalPos );
-			//printf("main done\n");
+			
         	AstarTool::GetInstance()->AdjustPath();
-			//printf("adj done\n");
+			
 			StrategyStatus::AStarPath.PCnt = 0;
 
         	Behavior_AstarPath();
-			
-			//printf("beh\n");
 			
     	}else{
         	
@@ -105,6 +101,7 @@ void Stra_AStar::Behavior_AstarPath( void )
 		StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
     }else{
         StrategyStatus::AStarPath.Status = StrategyStatus::etAchieve;
+		StrategyStatus::Goal1 = aVector(0,0);
     }
 
 }

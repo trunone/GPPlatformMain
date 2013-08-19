@@ -28,7 +28,7 @@ namespace Robot
 	typedef enum
 	{
 
-    	etIdle = 0,
+    	etIdle,
 
     	etAStar,
 
