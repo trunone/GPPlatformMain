@@ -52,6 +52,9 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
 		../../Framework/src/strategy/modules/Stra_AStar.o\
 		../../Framework/src/strategy/modules/Motion.o\
         ../../Framework/src/Motors.o\
+	../../Framework/src/DXL.o\
+	dynamixel.o\
+	dxl_hal.o\
         LinuxStrategyTimer.o\
         LinuxVisionTimer.o\
         LinuxLocationTimer.o\
