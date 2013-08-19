@@ -17,7 +17,7 @@
   </DirectionObject>
   <BasicConfig>
     <LivRMDoor x="225" y="175" />
-    <DinRMDoor x="225" y="315" />
+    <DinRMDoor x="225" y="330" />
     <LibDoor x="550" y="180" />
     <BedRMDoor x="395" y="330" />
     <LivRMCen x="138" y="92" />

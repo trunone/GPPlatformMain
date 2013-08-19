@@ -131,9 +131,10 @@ break;*/
             	else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib);
             		GoalAngle = (StrategyStatus::LibCen - StrategyStatus::LibDoor).Angle();
             break;*/
-            /*case 2:
-            	ActiveState = etMakeSoundMove;
-            	MakeSound();
+           case 1:
+            //	ActiveState = etMakeSoundMove
+                printf("play\n");
+                MakeSound();
                 //WaitCatchball();
                 //else{
                     //GotoRoomStep++;
@@ -141,13 +142,13 @@ break;*/
                     //FlagSetInitialData = false;
                 //}
             break;
-            case 3:
+           /* case 3:
             	if(StrategyStatus::FlagMember = true)
             		EncounterPeople();
             break;
             case 4:
                 ActiveState =  etAStar;
-                if( StrategyStatus::Room.Cnt == StrategyStatus::Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
+                if( StrategyStatus::Room.Cnt == Lib && (StrategyStatus::EscapePosition-LocationStatus::Position).Length() < 150 )
                     StrategyStatus::FlagAvoidEnable = false; //關閉避障
                 if( !FlagSetInitialData )
                     SetAStar( StrategyStatus::EscapePosition );

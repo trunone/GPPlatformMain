@@ -3,10 +3,10 @@
  *
  *   Author: Wu Chih-En
  */
-//#define ENABLE_STRATEGY
+#define ENABLE_STRATEGY
 //#define ENABLE_VISION
 //#define ENABLE_VISION_FACEDETECTION
-//#define ENABLE_LOCATION
+#define ENABLE_LOCATION
 
 //#define NETWORK_INTERFACE
 #define INTERACTIVE_INTERFACE

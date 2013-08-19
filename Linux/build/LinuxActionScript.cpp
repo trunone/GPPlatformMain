@@ -125,7 +125,7 @@ int LinuxActionScript::PlayMP3(const char* filename)
         fprintf(stderr, "Fork failed!! \n");
         break;
     case 0:
-        fprintf(stderr, "Playing MPEG stream from \"%s\" ...\n", filename);
+        //fprintf(stderr, "Playing MPEG stream from \"%s\" ...\n", filename);
         execl("/usr/bin/madplay", "madplay", filename, "-q", (char*)0);
         fprintf(stderr, "exec failed!! \n");
         break;
