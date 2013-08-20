@@ -31,7 +31,7 @@ namespace Robot
 		static int Xcenter,Ycenter;
 		
 		void Initialize();
-		void Segment(unsigned char *TMPWebcamBoolBuffer,unsigned char *WebcamBoolBuffer);
+		void Segment(unsigned char *TMPWebcamBoolBuffer);
 		void DrawLine(unsigned char *WebcamBuffer);
 
 		void Process();

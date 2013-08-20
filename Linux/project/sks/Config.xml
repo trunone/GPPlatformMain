@@ -15,9 +15,9 @@
     <EndArea x="554" y="305" Width="50" Height="50" Angle="0" />
   </DirectionObject>
   <ColorModel>
-    <Blue HueMax="0.76" HueMin="0.53" SaturationMax="100" SaturationMin="0" BrightnessMax="100" BrightnessMin="0" />
-    <Green HueMax="0" HueMin="0" SaturationMax="0" SaturationMin="0" BrightnessMax="0" BrightnessMin="0" />
-    <Red HueMax="0" HueMin="0" SaturationMax="0" SaturationMin="0" BrightnessMax="0" BrightnessMin="0" />
+    <Blue HueMax="1" HueMin="1" SaturationMax="1" SaturationMin="1" BrightnessMax="1" BrightnessMin="1" />
+    <Green HueMax="0.4" HueMin="0.3" SaturationMax="1" SaturationMin="0" BrightnessMax="1" BrightnessMin="0" />
+    <Red HueMax="1" HueMin="1" SaturationMax="1" SaturationMin="1" BrightnessMax="1" BrightnessMin="1" />
   </ColorModel>
   <GridMap>
     <value x0y0="255" x1y0="255" x2y0="255" x3y0="255" x4y0="255" x5y0="255" x6y0="255" x7y0="255" x8y0="255" x9y0="255" x10y0="255" x11y0="255" x12y0="255" x13y0="255" x14y0="255" x15y0="255" x16y0="255" x17y0="255" x18y0="255" x19y0="255" x20y0="255" x21y0="255" x22y0="255" x23y0="255" x24y0="255" x25y0="255" x26y0="255" x27y0="255" x28y0="255" x29y0="255" x30y0="255" x31y0="255" x32y0="255" x33y0="255" x34y0="255" x35y0="255" x36y0="255" x37y0="255" x38y0="255" x39y0="255" x40y0="255" x41y0="255" x42y0="255" x43y0="255" x44y0="255" x45y0="255" x46y0="255" x47y0="255" x48y0="255" x49y0="255" x50y0="255" x51y0="255" x52y0="255" x53y0="255" x54y0="255" x55y0="255" x56y0="255" x57y0="255" x58y0="255" x59y0="255" x60y0="255" />

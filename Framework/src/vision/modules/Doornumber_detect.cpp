@@ -1,5 +1,6 @@
 #include "Doornumber_detect.h"
 #include <iostream>
+#include <stdio.h>
 using namespace Robot;
 using namespace std;
 
@@ -35,51 +36,51 @@ void Doornumber_detect::Gray_binarize(unsigned char *source,unsigned char *grayb
 		}
 	}	
 }
-void Doornumber_detect::Segment(unsigned char * TMPWebcamBoolBuffer){		//物件抓取
+void Doornumber_detect::Segment(unsigned char * TMPWebcamBoolBuffer){	
 		int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
 		for(int i=1; i<VisionStatus::ImageWidth-1; i++){
 			for(int j=1; j<VisionStatus::ImageHeight-1; j++){
 				if(TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]==2){  
 					
 					SegmentFunction::GetInstance()->SegmentationInit(i,j);
-					TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]=0;  //清除標記
+					TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]=0; 
 					int s=0;
-					while (s <= VisionStatus::PointCnt){   //判斷是否抓完
-						int x = SegmentFunction::GetInstance()->LocationList[s].x,  //pop
+					while (s <= VisionStatus::PointCnt){ 
+						int x = SegmentFunction::GetInstance()->LocationList[s].x,  
 							y = SegmentFunction::GetInstance()->LocationList[s].y;
-						if(x == 0 || y == 0){  //防止超值(避免掃入邊緣點)
+						if(x == 0 || y == 0){  
 							s++;
 							continue;
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]==2){ //判斷周圍左上
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]==2){
 							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y-1);
-							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]=0;  //消除標記
+							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]=0; 
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]==2){  //上
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]==2){  
 							SegmentFunction::GetInstance()->SegmentationInsert(x,y-1);
 							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + x]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]==2){ //右上
+						if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]==2){ 
 							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y-1);
 							TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x+1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]==2){  //左
+						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]==2){ 
 							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y);
 							TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x-1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]==2){  //右
+						if(TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]==2){
 							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y);
 							TMPWebcamBoolBuffer[y * VisionStatus::ImageWidth + (x+1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]==2){  //左下
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]==2){ 
 							SegmentFunction::GetInstance()->SegmentationInsert(x-1,y+1);
 							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x-1)]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]==2){  //下
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]==2){
 							SegmentFunction::GetInstance()->SegmentationInsert(x,y+1);
 							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + x]=0;
 						}
-						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]==2){  //右下
+						if(TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]==2){
 							SegmentFunction::GetInstance()->SegmentationInsert(x+1,y+1);
 							TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]=0;
 						}
@@ -130,6 +131,8 @@ void Doornumber_detect::background_check(unsigned char *mix,int *b,int *w){
 void Doornumber_detect::Process(){
 	Mat hsv;
 	cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
+	
+	//cout<<"in"<<endl;
 	unsigned char graybuffer[3*640*480];
 	unsigned char Red_door[640*480];
 	unsigned char Blue_door[640*480];
@@ -139,14 +142,20 @@ void Doornumber_detect::Process(){
 	for(int WidthCnt = 0; WidthCnt < 640; WidthCnt++){
 			for(int HeightCnt = 0; HeightCnt < 480; HeightCnt++){
 						
-				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]*0.1/18;
-				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]*0.1/25.5;
-				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]*0.1/25.5;
+				float hValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+0]/180.0;
+				float sValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+1]/255.0;
+				float vValue = hsv.data[3*(HeightCnt * 640 + WidthCnt)+2]/255.0;
 				
-				
+				cout<<hValue<<endl;
+				cout<<VisionStatus::hsvRedRange.HueMax<<endl;
+				cout<<VisionStatus::hsvRedRange.HueMin<<endl;				
+				getchar();
 				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
 					Red_door[(HeightCnt * 640 + WidthCnt)] = 2;
+					//cout<<"in"<<endl;
+					
 				}else{
+					
 					Red_door[(HeightCnt * 640 + WidthCnt)] = 0;	
 				}
 				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
@@ -214,6 +223,7 @@ void Doornumber_detect::Process(){
 			w=0;
 		}
 	}
-	
+	cout<<VisionStatus::door_status<<endl;
+	getchar();
 
 }

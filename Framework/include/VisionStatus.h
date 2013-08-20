@@ -61,12 +61,6 @@ namespace Robot
 
 		//---seg
 		
-		/*static int Xmax, Xmin, Ymax, Ymin;
-		static int PointCnt;
-		static void SegmentationInit(int Xvalue, int Yvalue);
-		static void SegmentationInsert(int Xvalue, int Yvalue);
-		static vector <SegmentLocation> LocationList;*/
-	
 		//--- Global
 		static const int ImageWidth = 640, ImageHeight = 480;
 

@@ -76,14 +76,14 @@ int main(void)
         return 1;
     }
 	//#ifdef ENABLE_VISION_getball	
+
+		VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
 		
-		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
-		
-		//VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+		//VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());		
 	
 		VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
-		VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+		//VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 		
 	//#endif
 	//#ifdef ENABLE_VISION_facedection
@@ -151,7 +151,7 @@ int main(void)
 
             try
             {
-		cout<<"load"<<endl;
+		//cout<<"load"<<endl;
             	while(true){	
                     TiXmlDocument doc;
                     //new_sock >> xml;
@@ -302,13 +302,13 @@ int main(void)
                         }*/
                   //}
                 }
-		printf("asd\n");
+		
             }
             catch ( LinuxSocketException& )
             {
                 cout << "[Disconnected]" << endl;
             }
-	printf("sdfg\n");
+	
 	}
     }
     catch ( LinuxSocketException& e )

@@ -57,14 +57,16 @@ void ColorModel::Process(){
 	unsigned char temp [VisionStatus::ImageWidth * VisionStatus::ImageHeight];
 	
 	cv::Mat hsv;
+	cv::Mat test;
 	cv::cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
-	
+	unsigned char *tmp;
+	unsigned char *source;
 	for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
 		for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++){
 						
-			float hValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+0]*0.1/18;
-			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1]*0.1/25.5;
-			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2]*0.1/25.5;
+			float hValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+0]/180.0;
+			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1]/255.0;
+			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2]/255.0;
 			//cout<<sValue<<endl;
 			//------catch Blue
 			if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){					 
@@ -88,7 +90,20 @@ void ColorModel::Process(){
 			}
 		}
 	}
-
+	//cv::imwrite("1.jpg",VisionStatus::VideoFrame);
+	/*
+	tmp=test.data;
+	source=VisionStatus::Red_Ball;
+	for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
+		for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++){
+			
+			*tmp++=*source++;
+			*tmp++=*source++;
+			*tmp++=*source++;
+		}
+	}*/
+	//cout<<"save"<<endl;
+	//cv::imwrite("1.jpg",test);
 	
 }
 

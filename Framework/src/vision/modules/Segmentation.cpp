@@ -1,6 +1,7 @@
 #include "Segmentation.h"
 #include "VisionStatus.h"
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 using namespace Robot;
 
@@ -15,7 +16,7 @@ void Segmentation::Initialize() {
 
 int Segmentation::Xcenter=0,Segmentation::Ycenter=0;
 
-void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * WebcamBoolBuffer)//物件抓取
+void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer)//物件抓取
 {
 	int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
 	/*for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
@@ -73,6 +74,7 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * 
 						TMPWebcamBoolBuffer[(y+1) * VisionStatus::ImageWidth + (x+1)]=0;
 					}
 					s++;
+					
 				}
 				
 					if (temp<s)
@@ -91,6 +93,8 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer, unsigned char * 
 	VisionStatus::Xmax=x2_temp;
 	VisionStatus::Ymin=y1_temp;
 	VisionStatus::Ymax=y2_temp;
+	
+	
 	Xcenter=(VisionStatus::Xmax+VisionStatus::Xmin)/2;
 	Ycenter=(VisionStatus::Ymax+VisionStatus::Ymin)/2;
 	//DrawLine(WebcamBoolBuffer);
@@ -114,17 +118,21 @@ void Segmentation::DrawLine(unsigned char *WebcamBuffer){
 	}
 }
 void Segmentation::Process(){	
-	/*Segment(VisionStatus::Blue_Ball, VisionStatus::VideoFrame.data);
+	Segment(VisionStatus::Blue_Ball);
 	VisionStatus::Blue_X=Xcenter; 
 	VisionStatus::Blue_Y=Ycenter;
-	Segment(VisionStatus::Red_Ball, VisionStatus::VideoFrame.data);
+	Segment(VisionStatus::Red_Ball);
 	VisionStatus::Red_X=Xcenter;
 	VisionStatus::Red_Y=Ycenter;
-	Segment(VisionStatus::Green_Ball, VisionStatus::VideoFrame.data);
+	Segment(VisionStatus::Green_Ball);
+	cout<<VisionStatus::Xmin<<"\t"<<VisionStatus::Xmax<<"\t"<<Xcenter<<endl;
 	VisionStatus::Green_X=Xcenter;
-	VisionStatus::Green_Y=Ycenter;*/
-	cv::imwrite("1.jpg",VisionStatus::VideoFrame);
-	
+	VisionStatus::Green_Y=Ycenter;
+	//cout<<VisionStatus::Green_X<<endl;
+	//cout<<VisionStatus::Green_Y<<endl;
+	//getchar();
+	cv::imwrite("2.jpg",VisionStatus::VideoFrame);
+	//cout << VisionStatus::VideoFrame.rows<<endl;
 	//cout<<"gx\t"<<VisionStatus::Green_X<<endl;
 	
 	
