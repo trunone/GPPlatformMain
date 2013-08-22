@@ -49,6 +49,7 @@ void Stra_Avoid::Process(void)
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
         StrategyStatus::CorrectionVector = ScanLineAvoidFunction( StrategyStatus::GoalVector );
+        //StrategyStatus::CorrectionVector = NewAvoidFunction( StrategyStatus::GoalVector );
 
         StrategyStatus::MotionDistance = StrategyStatus::CorrectionVector.Length();
 
@@ -154,26 +155,24 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
     return (Goal + break_vel);
 }
 
-//TCoordinate Stra_Avoid::NewAvoidFunction( TCoordinate Goal ){
-//
-//	vector<TCoordinate> AvoidVector;
-//	vector<TCoordinate> Tmp;
-//	TCoordinate MinH;
-//	double AvgDis = 0.0;
-//	double AvoidDis = 40.0;
-//	int j = 0;
-//	for(int i = 3; i < AvoidLaserData.size() - 3; i++){
-//		AvgDis = AvoidLaserData[i-3] + AvoidLaserData[i-2] + AvoidLaserData[i-1] + AvoidLaserData[i] + 	
-//				 AvoidLaserData[i+3] + AvoidLaserData[i+2] + AvoidLaserData[i+1];
-//		AvgDis /= 7;
-//		if(AvgDis < AvoidDis){
-//			Tmp.push_back(TCoordinate(ScanStartAngle + i*ScanScale) * AvgDis);
-//		}
-//	}	
-//	for(int j = 0; j < Tmp.size(); j++){
-//		AvoidVector.push_back( Goal + Tmp[j]);
-//	} 
-//	sort(AvoidVector.begin(), AvoidVector.end());
-//	return AvoidVector;
-//}
+TCoordinate Stra_Avoid::NewAvoidFunction( TCoordinate Goal ){
+
+	vector<VecGaplist> AvoidVector;
+	TCoordinate Tmp;
+	double AvgDis = 0.0;
+	double AvoidDis = 40.0;
+
+	for(int i = 3; i < AvoidLaserData.size() - 3; i++){
+		AvgDis = AvoidLaserData[i-3] + AvoidLaserData[i-2] + AvoidLaserData[i-1] + AvoidLaserData[i] + 	
+				 AvoidLaserData[i+3] + AvoidLaserData[i+2] + AvoidLaserData[i+1];
+		AvgDis /= 7;
+
+		if(AvgDis < AvoidDis){
+			Tmp =(TCoordinate(ScanStartAngle + i*ScanScale) * AvgDis) + Goal;
+     		AvoidVector.push_back(VecGaplist(Tmp, Tmp.Angle()));
+        	sort(AvoidVector.begin(),AvoidVector.end());
+		}
+	}			
+	return AvoidVector[0].vec;
+}
 

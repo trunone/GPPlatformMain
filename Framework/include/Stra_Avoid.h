@@ -18,6 +18,18 @@
 #include <math.h>
 #include <tinyxml.h>
 namespace Robot {
+class VecGaplist {
+public:
+	TCoordinate vec;
+	double ang;
+    VecGaplist(TCoordinate vec, double ang) {
+       	this->vec = vec;
+       	this->ang = ang;
+    }	
+    inline bool operator < (const VecGaplist &rhs) const {
+       	return ang < rhs.ang;
+    }
+};
 class Stra_Avoid : public StrategyModule
 {
 public:
