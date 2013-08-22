@@ -42,15 +42,22 @@ void Odometer::Process()
     GetWheelDistance(0);
     GetWheelDistance(1);
     GetWheelDistance(2);
+	double tmp[3];
 
-    LocationStatus::FB_Movement.Position.y =
-        (-2.0/3.0)*( mAngle1Sin*mWheelDist[0] + mAngle2Sin*mWheelDist[1] + mAngle3Sin*mWheelDist[2]);
-    LocationStatus::FB_Movement.Position.x =
-        (-2.0/3.0)*( mAngle1Cos*mWheelDist[0] + mAngle2Cos*mWheelDist[1] + mAngle3Cos*mWheelDist[2]);
-    LocationStatus::FB_Movement.Direction =
-        (1.0/3.0)*( mWheelDist[0] + mWheelDist[1] + mWheelDist[2] );
+	tmp[0] = fabs(mWheelDist[0]) / mWheelDist[0];
+	tmp[1] = fabs(mWheelDist[1]) / mWheelDist[1];
+	tmp[2] = fabs(mWheelDist[2]) / mWheelDist[2];
 
-    LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
+	if( (tmp[0] == tmp[1]) && (tmp[1] == tmp[2])){
+			LocationStatus::FB_Movement.Direction /= ROBOT_RADIUS;
+	}else{
+			LocationStatus::FB_Movement.Position.y =
+				(-2.0/3.0)*( mAngle1Sin*mWheelDist[0] + mAngle2Sin*mWheelDist[1] + mAngle3Sin*mWheelDist[2]);
+			LocationStatus::FB_Movement.Position.x =
+				(-2.0/3.0)*( mAngle1Cos*mWheelDist[0] + mAngle2Cos*mWheelDist[1] + mAngle3Cos*mWheelDist[2]);
+			LocationStatus::FB_Movement.Direction =
+				(1.0/3.0)*( mWheelDist[0] + mWheelDist[1] + mWheelDist[2] );
+	}	
 }
 
 void Odometer::GetWheelDistance(short wheel_num) {

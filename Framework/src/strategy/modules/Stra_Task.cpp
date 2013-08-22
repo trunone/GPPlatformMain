@@ -125,7 +125,7 @@ void Stra_Task::Process(void)
             break;
 
             case 1:
-            	MakeSound();
+          	MakeSound();
                 //WaitCatchball();
                 //else{
                     //GotoRoomStep++;
@@ -191,7 +191,6 @@ void Stra_Task::Process(void)
     }
     else  //待機區
     {
-		printf("enter\n");
         ActiveState =  etAStar;
         if( !FlagSetInitialData ) SetAStar( StrategyStatus::EndPosition );
         if( (StrategyStatus::EndPosition - LocationStatus::Position).Length() < 50 )

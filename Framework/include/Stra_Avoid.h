@@ -44,6 +44,8 @@ private:
 
     TCoordinate ScanLineAvoidFunction( TCoordinate OrigTarget );
 
+	TCoordinate NewAvoidFunction( TCoordinate OrigTarget);
+
     TCoordinate LeftForce, RightForce;
 
 	vector<long> AvoidLaserData;
