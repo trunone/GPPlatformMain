@@ -145,8 +145,10 @@ public:
     } tsRecord_Blockinfo;
 
     //------ FaceData ----------------------------------------------------------
-    static Mat Favg_Face;
-    static float FeatureFaceW[40*40];
+    static Mat Favg_Face_20cm;
+    static float FeatureFaceW_20cm[40*40];
+    static Mat Favg_Face_50cm;
+    static float FeatureFaceW_50cm[40*40];
     static float cvGet2D_1;
     static float cvGet2D_2;
     static float cvGet2D_3;
@@ -161,13 +163,13 @@ public:
     static float cvGet2D_12;
 
     //------ ImgProcess ----------------------------------------------------------
-    static int counter1;
-    static int counter2;
-    static int counter3;
-    static int counter4;
-    static int counter5;
-    static int counter6;
-    static int counter7;
+    static int Grandfa_counter;
+    static int Grandma_counter;
+    static int Mother_counter;
+    static int Father_counter;
+    static int Girl_counter;
+    static int Boy_counter;
+    static int Thief_counter;
 
 };
 }

@@ -231,7 +231,7 @@ int main(void)
     VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
 #endif
 
-    VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+   // VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();

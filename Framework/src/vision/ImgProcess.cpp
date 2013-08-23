@@ -70,7 +70,6 @@ void detection_20cm( Mat Image,Mat Face40size )
     equalizeHist( Image_gray, Image_gray );
     face_cascade.detectMultiScale( Image_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(100, 100) );
     Mat Image_Face( Size(faces[0].width,faces[0].height) , CV_8UC3 );
-    printf("%d\n",faces[0].height);
     for(int i=faces[0].y; i<faces[0].y + faces[0].height; i++) {
         for(int j=faces[0].x; j<faces[0].x+faces[0].width; j++) {
             Image_Face.data[Facedata] = Image.data[i*Image.cols*3+(j*3)];
@@ -98,7 +97,6 @@ void detection_50cm( Mat Image,Mat Face40size )
     equalizeHist( Image_gray, Image_gray );
     face_cascade.detectMultiScale( Image_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(50, 50) );
     Mat Image_Face( Size(faces[0].width,faces[0].height) , CV_8UC3 );
-    printf("%d\n",faces[0].height);
     for(int i=faces[0].y; i<faces[0].y + faces[0].height; i++) {
         for(int j=faces[0].x; j<faces[0].x+faces[0].width; j++) {
             Image_Face.data[Facedata] = Image.data[i*Image.cols*3+(j*3)];
@@ -148,12 +146,12 @@ void differences_In_Face(Mat Before , Mat After , Mat Favg)
 void ImgProcess::FaceData()
 {
     face_cascade.load( face_cascade_name );
-    Mat Grandfa_20cm = imread( "../../../Data/jpg/Grandfa_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Grandma_20cm = imread( "../../../Data/jpg/Grandma_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Mother_20cm = imread( "../../../Data/jpg/Mother_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Father_20cm = imread( "../../../Data/jpg/Father_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Girl_20cm = imread( "../../../Data/jpg/Girl_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Boy_20cm = imread( "../../../Data/jpg/Boy_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Grandfa_20cm = imread( "../../../Data/jpg/20cm_0/Grandfa_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Grandma_20cm = imread( "../../../Data/jpg/20cm_0/Grandma_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Mother_20cm = imread( "../../../Data/jpg//20cm_0/Mother_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Father_20cm = imread( "../../../Data/jpg/20cm_0/Father_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Girl_20cm = imread( "../../../Data/jpg/20cm_0/Girl_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Boy_20cm = imread( "../../../Data/jpg/20cm_0/Boy_20cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
     Mat Grandfa_Face_20cm( Size(40,40) , CV_8UC3 );
     Mat Grandma_Face_20cm( Size(40,40) , CV_8UC3 );
     Mat Mother_Face_20cm( Size(40,40) , CV_8UC3 );
@@ -176,7 +174,7 @@ void ImgProcess::FaceData()
     for(int i=0; i<40*40*3; i++)
         Favg_Face_20cm.data[i] = ( Grandfa_Face_20cm.data[i]+Grandma_Face_20cm.data[i]+Mother_Face_20cm.data[i]
                               +Father_Face_20cm.data[i]+Girl_Face_20cm.data[i]+Boy_Face_20cm.data[i] )/6;
-    VisionStatus::Favg_Face = Favg_Face_20cm;
+    VisionStatus::Favg_Face_20cm = Favg_Face_20cm;
     differences_In_Face(Grandfa_Face_20cm , Grandfa_Face_20cm , Favg_Face_20cm );
     differences_In_Face(Grandma_Face_20cm , Grandma_Face_20cm , Favg_Face_20cm );
     differences_In_Face(Mother_Face_20cm , Mother_Face_20cm , Favg_Face_20cm );
@@ -222,16 +220,16 @@ void ImgProcess::FaceData()
         }
     }
     for(int i=0; i<40*40; i++) {
-        VisionStatus::FeatureFaceW[i]=Feature_Face_20cm.data[i*3];
-        GrandfaDW_20cm[i]=Grandfa_Face_20cm.data[i*3];
+        VisionStatus::FeatureFaceW_20cm[i]=Feature_Face_20cm.data[i*3];
+       /* GrandfaDW_20cm[i]=Grandfa_Face_20cm.data[i*3];
 	GrandmaDW_20cm[i]=Grandma_Face_20cm.data[i*3];
         MotherDW_20cm[i]=Mother_Face_20cm.data[i*3];
         FatherDW_20cm[i]=Father_Face_20cm.data[i*3];
         GirlDW_20cm[i]=Girl_Face_20cm.data[i*3];
-        BoyDW_20cm[i]=Boy_Face_20cm.data[i*3];
+        BoyDW_20cm[i]=Boy_Face_20cm.data[i*3];*/
     }
-    FFW_20cm=cvCreateMat(1,40*40,CV_32FC1);
-    cvSetData(FFW_20cm,VisionStatus::FeatureFaceW,FFW_20cm->step);
+/*    FFW_20cm=cvCreateMat(1,40*40,CV_32FC1);
+    cvSetData(FFW_20cm,VisionStatus::FeatureFaceW_20cm,FFW_20cm->step);
     GfW_20cm=cvCreateMat(40*40,1,CV_32FC1);
     cvSetData(GfW_20cm,GrandfaDW_20cm,GfW_20cm->step);
     GmW_20cm=cvCreateMat(40*40,1,CV_32FC1);
@@ -261,14 +259,14 @@ void ImgProcess::FaceData()
     printf("%f\n",cvGet2D(SumW3_20cm,0,0).val[0]);
     printf("%f\n",cvGet2D(SumW4_20cm,0,0).val[0]);
     printf("%f\n",cvGet2D(SumW5_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW6_20cm,0,0).val[0]);
+    printf("%f\n",cvGet2D(SumW6_20cm,0,0).val[0]);*/
 ///////////////////////////////////////////////////////////////////////////////////////////
-    Mat Grandfa_50cm = imread( "../../../Data/jpg/Grandfa_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Grandma_50cm = imread( "../../../Data/jpg/Grandma_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Mother_50cm = imread( "../../../Data/jpg/Mother_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Father_50cm = imread( "../../../Data/jpg/Father_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Girl_50cm = imread( "../../../Data/jpg/Girl_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
-    Mat Boy_50cm = imread( "../../../Data/jpg/Boy_50cm_0.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Grandfa_50cm = imread( "../../../Data/jpg/50cm_0/Grandfa.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Grandma_50cm = imread( "../../../Data/jpg/50cm_0/Grandma.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Mother_50cm = imread( "../../../Data/jpg/50cm_0/Mother.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Father_50cm = imread( "../../../Data/jpg/50cm_0/Father.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Girl_50cm = imread( "../../../Data/jpg/50cm_0/Girl.jpg" , CV_LOAD_IMAGE_COLOR );
+    Mat Boy_50cm = imread( "../../../Data/jpg/50cm_0/Boy.jpg" , CV_LOAD_IMAGE_COLOR );
     Mat Grandfa_Face_50cm( Size(40,40) , CV_8UC3 );
     Mat Grandma_Face_50cm( Size(40,40) , CV_8UC3 );
     Mat Mother_Face_50cm( Size(40,40) , CV_8UC3 );
@@ -291,7 +289,7 @@ void ImgProcess::FaceData()
     for(int i=0; i<40*40*3; i++)
         Favg_Face_50cm.data[i] = ( Grandfa_Face_50cm.data[i]+Grandma_Face_50cm.data[i]+Mother_Face_50cm.data[i]
                               +Father_Face_50cm.data[i]+Girl_Face_50cm.data[i]+Boy_Face_50cm.data[i] )/6;
-    VisionStatus::Favg_Face = Favg_Face_50cm;
+    VisionStatus::Favg_Face_50cm = Favg_Face_50cm;
     differences_In_Face(Grandfa_Face_50cm , Grandfa_Face_50cm , Favg_Face_50cm );
     differences_In_Face(Grandma_Face_50cm , Grandma_Face_50cm , Favg_Face_50cm );
     differences_In_Face(Mother_Face_50cm , Mother_Face_50cm , Favg_Face_50cm );
@@ -337,16 +335,16 @@ void ImgProcess::FaceData()
         }
     }
     for(int i=0; i<40*40; i++) {
-        VisionStatus::FeatureFaceW[i]=Feature_Face_50cm.data[i*3];
-        GrandfaDW_50cm[i]=Grandfa_Face_50cm.data[i*3];
+        VisionStatus::FeatureFaceW_50cm[i]=Feature_Face_50cm.data[i*3];
+      /*  GrandfaDW_50cm[i]=Grandfa_Face_50cm.data[i*3];
 	GrandmaDW_50cm[i]=Grandma_Face_50cm.data[i*3];
         MotherDW_50cm[i]=Mother_Face_50cm.data[i*3];
         FatherDW_50cm[i]=Father_Face_50cm.data[i*3];
         GirlDW_50cm[i]=Girl_Face_50cm.data[i*3];
-        BoyDW_50cm[i]=Boy_Face_50cm.data[i*3];
+        BoyDW_50cm[i]=Boy_Face_50cm.data[i*3];*/
     }
-    FFW_50cm=cvCreateMat(1,40*40,CV_32FC1);
-    cvSetData(FFW_50cm,VisionStatus::FeatureFaceW,FFW_50cm->step);
+   /* FFW_50cm=cvCreateMat(1,40*40,CV_32FC1);
+    cvSetData(FFW_50cm,VisionStatus::FeatureFaceW_50cm,FFW_50cm->step);
     GfW_50cm=cvCreateMat(40*40,1,CV_32FC1);
     cvSetData(GfW_50cm,GrandfaDW_50cm,GfW_50cm->step);
     GmW_50cm=cvCreateMat(40*40,1,CV_32FC1);
@@ -376,7 +374,7 @@ void ImgProcess::FaceData()
     printf("%f\n",cvGet2D(SumW3_50cm,0,0).val[0]);
     printf("%f\n",cvGet2D(SumW4_50cm,0,0).val[0]);
     printf("%f\n",cvGet2D(SumW5_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW6_50cm,0,0).val[0]);
+    printf("%f\n",cvGet2D(SumW6_50cm,0,0).val[0]);*/
 }
 
 
