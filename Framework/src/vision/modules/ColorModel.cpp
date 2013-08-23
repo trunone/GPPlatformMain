@@ -82,10 +82,7 @@ void ColorModel::Process(){
 				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
 			}else{
 				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
-			}
-			int tmp=VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)];
-			cout<<tmp<<"\t"<<endl;
-			//getchar();
+			}			
 			//------catch red
 			if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
 				VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;

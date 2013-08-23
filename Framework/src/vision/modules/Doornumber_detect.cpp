@@ -126,8 +126,6 @@ void Doornumber_detect::background_check(unsigned char *mix,int *b,int *w){
 		}
 	}
 }
-
-
 void Doornumber_detect::Process(){
 	Mat hsv;
 	cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
@@ -224,7 +222,5 @@ void Doornumber_detect::Process(){
 			w=0;
 		}
 	}
-	cout<<VisionStatus::door_status<<endl;
-	getchar();
-
+	//cout<<VisionStatus::door_status<<endl;	
 }

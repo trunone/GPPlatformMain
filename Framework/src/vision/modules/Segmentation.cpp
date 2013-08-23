@@ -76,10 +76,6 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer)
 				//cout<<s;
 				if (temp<s)
 				{
-					cout << temp <<endl;
-					temp=s;
-					s=0;
-					cout << temp <<endl;
 					x1_temp=VisionStatus::Xmin;
 					x2_temp=VisionStatus::Xmax;
 					y1_temp=VisionStatus::Ymin;
