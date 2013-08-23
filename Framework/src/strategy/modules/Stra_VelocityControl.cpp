@@ -86,7 +86,6 @@ void Stra_VelocityControl::Process(void)
     //------------------------------------------------------------------------
 
     VelocityTransform( StrategyStatus::MotionDistance, StrategyStatus::MotionAngle, StrategyStatus::Direction );
-
 }
 
 

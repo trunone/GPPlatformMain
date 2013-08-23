@@ -18,7 +18,7 @@ protected:
 
 public:
 
-    static const int TIME_UNIT = 8; //msec
+    static const int TIME_UNIT = 100; //msec
 
     virtual void Initialize() = 0;
     virtual void Process() = 0;

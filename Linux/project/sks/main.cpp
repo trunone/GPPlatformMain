@@ -6,9 +6,11 @@
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
 //#define ENABLE_VISION_FACEDETECTION
-//#define ENABLE_LOCATION
+#define ENABLE_LOCATION
 
-#define ENABLE_SIMULATOR
+//#define ENABLE_SIMULATOR
+//#define ENABLE_MANUAL
+
 #define NETWORK_INTERFACE
 //#define INTERACTIVE_INTERFACE
 
@@ -272,19 +274,20 @@ int main(void)
     }
 #endif
 
+#ifndef ENABLE_MANUAL
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
     
 	StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
-
+#endif
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
-    StrategyManager::GetInstance()->SetEnable(true);
+    //StrategyManager::GetInstance()->SetEnable(true);
     
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();

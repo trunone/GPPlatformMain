@@ -27,7 +27,7 @@ LocationStatus::Furniture LocationStatus::EndArea;
 
 bool LocationStatus::FlagEvaluatuonEnable;
 bool LocationStatus::FlagCoerceEvaluatuon;
-TCoordinate LocationStatus::Position = aVector(40,250);
+TCoordinate LocationStatus::Position = aVector(30,270);
 double LocationStatus::Handle;
 bool LocationStatus::enable;
 TCoordinate LocationStatus::LaserGap;
