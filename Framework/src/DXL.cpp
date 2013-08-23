@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <termio.h>
-#include <unistd.h>
+#include "time.h"
 #include "DXL.h"
+#include "dynamixel.h"
 
 // Control table address
 #define P_GOAL_POSITION_L	30
@@ -15,17 +15,22 @@
 
 using namespace Robot;
 
-int  DXL::initialize(int deviceIndex)
+DXL::~DXL()
 {
-    float baudrate;
-    baudrate = 115200;
-    if( dxl_hal_open(deviceIndex, baudrate) == 0 )
-        return 0;
-
-    return 1;
-
 }
-void DXL::Degree(int deg)
+
+DXL::DXL()
+{
+}
+
+int  DXL::OpenDevice(int deviceIndex)
+{
+    if( dxl_initialize(deviceIndex, 0 ) == 0 )
+        return 0;
+    return 1;
+}
+
+void DXL::GoToDegree(int deg)
 {
     if(deg>MAX_DEGREE)
     {
@@ -37,32 +42,34 @@ void DXL::Degree(int deg)
     deg=(deg*NORMALIZE)+512;
     dxl_write_word( 1, P_GOAL_POSITION_L ,deg);
 }
+
 void DXL::EndlessTurn(int mode)
 {
 	switch(mode){
-	case 0 : dxl_write_word( 2, Moving_Speed_L,0);
-		 dxl_write_word( 3, Moving_Speed_L,0);  break;	//1~1023=>CCW 1024~2047=>CW
-			
-	case 1 : dxl_write_word( 2, Moving_Speed_L,1536);
-		 dxl_write_word( 3, Moving_Speed_L,512); break; 	//eat
+	case STOP:
+        dxl_write_word( 2, Moving_Speed_L,0);
+        dxl_write_word( 3, Moving_Speed_L,0);
+        break;			
 
-	case 2 : dxl_write_word( 2, Moving_Speed_L,512);
-		 dxl_write_word( 3, Moving_Speed_L,1536);
-		 usleep(2200000);
-		 dxl_write_word( 2, Moving_Speed_L,1700);
-		 dxl_write_word( 3, Moving_Speed_L,1536); 
-		 usleep(1900000);   
-		 dxl_write_word( 2, Moving_Speed_L,0);
-		 dxl_write_word( 3, Moving_Speed_L,0);break; 	//spit
+	case CATCH:
+        dxl_write_word( 2, Moving_Speed_L,1536);
+        dxl_write_word( 3, Moving_Speed_L,512);
+        break;
+
+	case THROW:
+        dxl_write_word( 2, Moving_Speed_L,512);
+		dxl_write_word( 3, Moving_Speed_L,1536);
+		//usleep(2200000);
+		dxl_write_word( 2, Moving_Speed_L,1700);
+		dxl_write_word( 3, Moving_Speed_L,1536); 
+		//usleep(1900000);   
+		dxl_write_word( 2, Moving_Speed_L,0);
+		dxl_write_word( 3, Moving_Speed_L,0);
+        break;
 	}
 }
-void DXL::dxl_terminate(void)
+
+void DXL::CloseDevice(void)
 {
-    dxl_hal_close();
-}
-DXL::~DXL()
-{
-}
-DXL::DXL()
-{
+    dxl_terminate();
 }

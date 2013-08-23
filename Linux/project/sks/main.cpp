@@ -24,10 +24,6 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "Motors.h"
-#include "urg_cpp/Urg_driver.h"
-#include "urg_cpp/math_utilities.h"
-
 #include "LinuxWheeled.h"
 #include "cmd_process.h"
 
@@ -37,6 +33,7 @@ using namespace std;
 Motors motors;
 qrk::Urg_driver urg;
 CvCapture *VisionCapture;
+DXL dxl;
 
 void change_current_dir()
 {
@@ -207,6 +204,8 @@ int main(void)
     change_current_dir();
 
     motors.OpenDeviceAll();
+
+    dxl.OpenDevice(0);
 
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );

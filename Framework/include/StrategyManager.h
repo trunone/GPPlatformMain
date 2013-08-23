@@ -14,6 +14,7 @@
 #include "StrategyStatus.h"
 #include "StrategyModule.h"
 #include "Motors.h"
+#include "DXL.h"
 
 namespace Robot
 {

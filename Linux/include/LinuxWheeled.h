@@ -15,5 +15,9 @@
 #include "LinuxNetwork.h"
 #include "LinuxActionScript.h"
 #include "LinuxEPOS.h"
+#include "DXL.h"
+#include "Motors.h"
+#include "urg_cpp/Urg_driver.h"
+#include "urg_cpp/math_utilities.h"
 
 #endif

@@ -30,8 +30,19 @@ int dxl_hal_open(int deviceIndex, float baudrate)
 
     if((gSocket_fd = open(gDeviceName, O_RDWR|O_NOCTTY|O_NONBLOCK)) < 0) {
         fprintf(stderr, "device open error: %s\n", dev_name);
-        //goto DXL_HAL_OPEN_ERROR;
+        goto DXL_HAL_OPEN_ERROR;
     }
+/*
+    newtio.c_cflag		= B115200|CS8|CLOCAL|CREAD;
+    newtio.c_iflag		= IGNPAR;
+    newtio.c_oflag		= 0;
+    newtio.c_lflag		= 0;
+    newtio.c_cc[VTIME]	= 0;	// time-out 값 (TIME * 0.1초) 0 : disable
+    newtio.c_cc[VMIN]	= 0;	// MIN 은 read 가 return 되기 위한 최소 문자 개수
+
+    tcflush(gSocket_fd, TCIFLUSH);
+    tcsetattr(gSocket_fd, TCSANOW, &newtio);
+    */
 
     if(gSocket_fd == -1)
         return 0;
@@ -40,40 +51,28 @@ int dxl_hal_open(int deviceIndex, float baudrate)
         fprintf(stderr, "Cannot get serial info\n");
         return 0;
     }
-    /*
-    	newtio.c_cflag		= B115200|CS8|CLOCAL|CREAD;
-    	newtio.c_iflag		= IGNPAR;
-    	newtio.c_oflag		= 0;
-    	newtio.c_lflag		= 0;
-    	newtio.c_cc[VTIME]	= 0;	// time-out 값 (TIME * 0.1초) 0 : disable
-    	newtio.c_cc[VMIN]	= 0;	// MIN 은 read 가 return 되기 위한 최소 문자 개수
+/*    
+    serinfo.flags &= ~ASYNC_SPD_MASK;
+    serinfo.flags |= ASYNC_SPD_CUST;
+    serinfo.custom_divisor = serinfo.baud_base / baudrate;
 
-    	tcflush(gSocket_fd, TCIFLUSH);
-    	tcsetattr(gSocket_fd, TCSANOW, &newtio);
+    if(ioctl(gSocket_fd, TIOCSSERIAL, &serinfo) < 0) {
+    	fprintf(stderr, "Cannot set serial info\n");
+    	return 0;
+    }
 
+    dxl_hal_close();
 
+    gfByteTransTime = (float)((1000.0f / baudrate) * 12.0f);
 
-    	serinfo.flags &= ~ASYNC_SPD_MASK;
-    	serinfo.flags |= ASYNC_SPD_CUST;
-    	serinfo.custom_divisor = serinfo.baud_base / baudrate;
+    strcpy(gDeviceName, dev_name);
+    memset(&newtio, 0, sizeof(newtio));
+    dxl_hal_close();
 
-    	if(ioctl(gSocket_fd, TIOCSSERIAL, &serinfo) < 0) {
-    		fprintf(stderr, "Cannot set serial info\n");
-    		return 0;
-    	}
-
-    	dxl_hal_close();
-
-    	gfByteTransTime = (float)((1000.0f / baudrate) * 12.0f);
-
-    	strcpy(gDeviceName, dev_name);
-    	memset(&newtio, 0, sizeof(newtio));
-    	dxl_hal_close();
-
-    	if((gSocket_fd = open(gDeviceName, O_RDWR|O_NOCTTY|O_NONBLOCK)) < 0) {
-    		fprintf(stderr, "device open error: %s\n", dev_name);
-    		goto DXL_HAL_OPEN_ERROR;
-    	}
+    if((gSocket_fd = open(gDeviceName, O_RDWR|O_NOCTTY|O_NONBLOCK)) < 0) {
+    	fprintf(stderr, "device open error: %s\n", dev_name);
+    	goto DXL_HAL_OPEN_ERROR;
+    }
     */
     newtio.c_cflag		= B115200|CS8|CLOCAL|CREAD;
     newtio.c_iflag		= IGNPAR;
@@ -87,10 +86,9 @@ int dxl_hal_open(int deviceIndex, float baudrate)
 
     return 1;
 
-    /*	DXL_HAL_OPEN_ERROR:
-    	dxl_hal_close();
-    	return 0;
-    */
+DXL_HAL_OPEN_ERROR:
+    dxl_hal_close();
+    return 0;
 }
 
 void dxl_hal_close()

@@ -3,28 +3,34 @@
  *   DXL.h
  *
  */
+#ifndef DXL_H
+#define DXL_H
 
-#include "dynamixel.h"
-#include "time.h"
-#include "dxl_hal.h"
-#include "dynamixel.h"
+
 namespace Robot
 {
-class DXL
-{
-private:
+    class DXL
+    {
+    private:
 
-public:
-    DXL();
-    virtual ~DXL();
+    public:
+        enum {
+            STOP,
+            CATCH,
+            THROW
+        };
 
-    int initialize(int deviceIndex);
+        DXL();
+        ~DXL();
 
-    void Degree(int deg );
+        int OpenDevice(int deviceIndex);
 
-    void EndlessTurn(int mode); //0:stop, 1:catch ball, 2:throw ball
+        void GoToDegree(int deg);
 
-    void dxl_terminate();
+        void EndlessTurn(int mode); //0:stop, 1:catch ball, 2:throw ball
 
-};
+        void CloseDevice();
+    };
 }
+
+#endif

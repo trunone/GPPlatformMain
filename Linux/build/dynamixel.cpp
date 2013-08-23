@@ -19,7 +19,7 @@ int giBusUsing = 0;
 int dxl_initialize(int deviceIndex, int baudnum )
 {
     float baudrate;
-    baudrate = 115200;
+    baudrate = 2000000.0f / (float)(baudnum + 1);
 
     if( dxl_hal_open(deviceIndex, baudrate) == 0 )
         return 0;
