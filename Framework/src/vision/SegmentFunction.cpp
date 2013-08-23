@@ -33,8 +33,8 @@ void SegmentFunction::SegmentationInsert(int Xvalue, int Yvalue)
 	SegmentLocation node;
 	node.x = Xvalue;
 	node.y = Yvalue;
+	//LocationList.insert(LocationList.begin(),node);
 	LocationList.push_back(node);
-	
 	
 	if(Xvalue > VisionStatus::Xmax)	VisionStatus::Xmax = Xvalue;  
 	if(Xvalue < VisionStatus::Xmin)	VisionStatus::Xmin = Xvalue;

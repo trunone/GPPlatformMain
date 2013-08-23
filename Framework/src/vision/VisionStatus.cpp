@@ -40,7 +40,7 @@ VisionStatus::ColorRange VisionStatus::hsvBlueRange = {1.0, 0.0, 1.0, 0.0, 1.0, 
 
 VisionStatus::ColorRange VisionStatus::hsvRedRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 
-VisionStatus::ColorRange VisionStatus::hsvGreenRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
+VisionStatus::ColorRange VisionStatus::hsvGreenRange = {0.51, 0.15, 1.0, 0.0, 1.0, 0.0};
 
 //------ FaceData ----------------------------------------------------------
 //------ FaceDetection ----------------------------------------------------------

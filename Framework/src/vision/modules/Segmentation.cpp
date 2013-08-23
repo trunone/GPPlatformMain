@@ -1,5 +1,6 @@
 #include "Segmentation.h"
 #include "VisionStatus.h"
+#include "SegmentFunction.h"
 #include <iostream>
 #include <stdio.h>
 using namespace std;
@@ -16,31 +17,26 @@ void Segmentation::Initialize() {
 
 int Segmentation::Xcenter=0,Segmentation::Ycenter=0;
 
-void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer)//物件抓取
+void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer)
 {
 	int temp=0,x1_temp=0,x2_temp=0,y1_temp=0,y2_temp=0;
-	/*for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
-		for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++){
-			if(TMPWebcamBoolBuffer[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)]==1){			
-				int a=TMPWebcamBoolBuffer[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)];
-				cout<<a<<endl;
-			}
-		}
-	}*/
+	
 	for(int i=1; i<VisionStatus::ImageWidth-1; i++){
 		for(int j=1; j<VisionStatus::ImageHeight-1; j++){
 			if(TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]==1){  //找到第一個被mark的點
-				
 				SegmentFunction::GetInstance()->SegmentationInit(i,j);
 				TMPWebcamBoolBuffer[j * VisionStatus::ImageWidth + i]=0;  //清除標記
-				int s=0;
+				int s;
+				s=0;
 				while (s <= VisionStatus::PointCnt){   //判斷是否抓完
 					int x = SegmentFunction::GetInstance()->LocationList[s].x;  //pop
 					int y = SegmentFunction::GetInstance()->LocationList[s].y;
-					if(x == 0 || y == 0){  //防止超值(避免掃入邊緣點)
+					
+					if(x == 0 || y == 0 || x==639 || y==479){  //防止超值(避免掃入邊緣點)
 						s++;
 						continue;
 					}
+					
 					if(TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]==1){ 
 						SegmentFunction::GetInstance()->SegmentationInsert(x-1,y-1);
 						TMPWebcamBoolBuffer[(y-1) * VisionStatus::ImageWidth + (x-1)]=0;  
@@ -77,15 +73,23 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer)//物件抓取
 					
 				}
 				
-					if (temp<s)
-					{
-						temp=s;
-						x1_temp=VisionStatus::Xmin;
-						x2_temp=VisionStatus::Xmax;
-						y1_temp=VisionStatus::Ymin;
-						y2_temp=VisionStatus::Ymax;
-					}
-							
+				//cout<<s;
+				if (temp<s)
+				{
+					cout << temp <<endl;
+					temp=s;
+					s=0;
+					cout << temp <<endl;
+					x1_temp=VisionStatus::Xmin;
+					x2_temp=VisionStatus::Xmax;
+					y1_temp=VisionStatus::Ymin;
+					y2_temp=VisionStatus::Ymax;
+					//cout << x1_temp <<"\t" <<x2_temp<<"\t"<<y1_temp<<"\t"<<y2_temp<<endl;
+				}
+				//cout<< s << "\t"<< temp <<endl;
+				//cout << SegmentFunction::GetInstance()->LocationList.size()<<endl;
+				SegmentFunction::GetInstance()->LocationList.clear();
+					
 			}
 		}
 	}
@@ -121,19 +125,17 @@ void Segmentation::Process(){
 	Segment(VisionStatus::Blue_Ball);
 	VisionStatus::Blue_X=Xcenter; 
 	VisionStatus::Blue_Y=Ycenter;
+	
 	Segment(VisionStatus::Red_Ball);
 	VisionStatus::Red_X=Xcenter;
 	VisionStatus::Red_Y=Ycenter;
+	
 	Segment(VisionStatus::Green_Ball);
-	cout<<VisionStatus::Xmin<<"\t"<<VisionStatus::Xmax<<"\t"<<Xcenter<<endl;
 	VisionStatus::Green_X=Xcenter;
 	VisionStatus::Green_Y=Ycenter;
+	
 	//cout<<VisionStatus::Green_X<<endl;
 	//cout<<VisionStatus::Green_Y<<endl;
-	//getchar();
+	
 	cv::imwrite("2.jpg",VisionStatus::VideoFrame);
-	//cout << VisionStatus::VideoFrame.rows<<endl;
-	//cout<<"gx\t"<<VisionStatus::Green_X<<endl;
-	
-	
 }

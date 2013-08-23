@@ -48,7 +48,7 @@ void Doornumber_detect::Segment(unsigned char * TMPWebcamBoolBuffer){
 					while (s <= VisionStatus::PointCnt){ 
 						int x = SegmentFunction::GetInstance()->LocationList[s].x,  
 							y = SegmentFunction::GetInstance()->LocationList[s].y;
-						if(x == 0 || y == 0){  
+						if(x == 0 || y == 0 || x==639 || y==479){  
 							s++;
 							continue;
 						}
@@ -151,9 +151,7 @@ void Doornumber_detect::Process(){
 				cout<<VisionStatus::hsvRedRange.HueMin<<endl;				
 				getchar();
 				if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
-					Red_door[(HeightCnt * 640 + WidthCnt)] = 2;
-					//cout<<"in"<<endl;
-					
+					Red_door[(HeightCnt * 640 + WidthCnt)] = 2;					
 				}else{
 					
 					Red_door[(HeightCnt * 640 + WidthCnt)] = 0;	
@@ -175,16 +173,17 @@ void Doornumber_detect::Process(){
 	Segment(Red_door);
 	
 	if(VisionStatus::Xmax>0
-		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Xmin>0
 		&&VisionStatus::Ymax>0
-		&&VisionStatus::Ymin>=0){
+		&&VisionStatus::Ymin>0){
 		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::door_status = 1; //red
+			VisionStatus::door_red = 1; //red
 		}else {
+			VisionStatus::door_red = 0;
 			b=0;
 			w=0;
 		}
@@ -192,16 +191,17 @@ void Doornumber_detect::Process(){
 	merge(graybuffer,Green_door,mix);
 	Segment(Green_door);
 	if(VisionStatus::Xmax>0
-		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Xmin>0
 		&&VisionStatus::Ymax>0
-		&&VisionStatus::Ymin>=0){
+		&&VisionStatus::Ymin>0){
 		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::door_status = 2; //green
+			VisionStatus::door_green = 1; //green
 		}else {
+			VisionStatus::door_green = 0; 
 			b=0;
 			w=0;
 		}
@@ -209,16 +209,17 @@ void Doornumber_detect::Process(){
 	merge(graybuffer,Blue_door,mix);
 	Segment(Blue_door);
 	if(VisionStatus::Xmax>0
-		&&VisionStatus::Xmin>=0
+		&&VisionStatus::Xmin>0
 		&&VisionStatus::Ymax>0
-		&&VisionStatus::Ymin>=0){
+		&&VisionStatus::Ymin>0){
 		background_check(mix,&b,&w);
 		if(b<w)
 		{
 			b=0;
 			w=0;
-			VisionStatus::door_status = 3; //blue
+			VisionStatus::door_blue = 1; //blue
 		}else {
+			VisionStatus::door_green = 0; 
 			b=0;
 			w=0;
 		}
