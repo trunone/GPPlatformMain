@@ -5,7 +5,9 @@
  */
 
 #include "dynamixel.h"
-
+#include "time.h"
+#include "dxl_hal.h"
+#include "dynamixel.h"
 namespace Robot
 {
 class DXL

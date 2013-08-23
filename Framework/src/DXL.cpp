@@ -2,14 +2,16 @@
 #include <termio.h>
 #include <unistd.h>
 #include "DXL.h"
-#include "dynamixel.h"
-#include "dxl_hal.h"
 
 // Control table address
 #define P_GOAL_POSITION_L	30
 #define P_GOAL_POSITION_H	31
 #define Moving_Speed_L    	32
 #define Moving_Speed_H		33
+
+#define NORMALIZE 3.41 // 1023/300
+
+#define MAX_DEGREE 70
 
 using namespace Robot;
 
@@ -25,41 +27,34 @@ int  DXL::initialize(int deviceIndex)
 }
 void DXL::Degree(int deg)
 {
-    if(deg>90)
+    if(deg>MAX_DEGREE)
     {
-        deg=90;
+        deg=MAX_DEGREE;
     } else if(deg<0)
     {
         deg=0;
     }
-    deg=(deg*1023/300)+512;
+    deg=(deg*NORMALIZE)+512;
     dxl_write_word( 1, P_GOAL_POSITION_L ,deg);
 }
 void DXL::EndlessTurn(int mode)
 {
-    int left = 0;
-    int right  = 0;
-    switch(mode)
-    {
-    case 0 :
-        left=0;
-        right=0;
-        break;	//1~1023=>CCW 1024~2047=>CW
+	switch(mode){
+	case 0 : dxl_write_word( 2, Moving_Speed_L,0);
+		 dxl_write_word( 3, Moving_Speed_L,0);  break;	//1~1023=>CCW 1024~2047=>CW
+			
+	case 1 : dxl_write_word( 2, Moving_Speed_L,1536);
+		 dxl_write_word( 3, Moving_Speed_L,512); break; 	//eat
 
-    case 1 :
-        left=1023;
-        right=2047;
-        break;
-
-    case 2 :
-        left=1535;
-        right=512;
-        break;
-    }
-    dxl_write_word( 2, Moving_Speed_L ,left);
-    dxl_write_word( 3, Moving_Speed_L ,right);
-
-
+	case 2 : dxl_write_word( 2, Moving_Speed_L,512);
+		 dxl_write_word( 3, Moving_Speed_L,1536);
+		 usleep(2200000);
+		 dxl_write_word( 2, Moving_Speed_L,1700);
+		 dxl_write_word( 3, Moving_Speed_L,1536); 
+		 usleep(1900000);   
+		 dxl_write_word( 2, Moving_Speed_L,0);
+		 dxl_write_word( 3, Moving_Speed_L,0);break; 	//spit
+	}
 }
 void DXL::dxl_terminate(void)
 {
