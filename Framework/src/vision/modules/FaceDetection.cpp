@@ -11,7 +11,6 @@
 #include "FaceDetection.h"
 #include "VisionStatus.h"
 #include "StrategyStatus.h"
-
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -212,12 +211,13 @@ void FaceDetection::Process()
 			VisionStatus::Thief_counter++;
 		}
     	}
-    	if( VisionStatus::Grandfa_counter==3 )printf("Grandfa\n");
-    	if( VisionStatus::Grandma_counter==3 )printf("Grandma\n"); 
-    	if( VisionStatus::Mother_counter==3 )printf("Mother\n"); 
-    	if( VisionStatus::Father_counter==3 )printf("Father\n"); 
-    	if( VisionStatus::Girl_counter==3 )printf("Girl\n"); 
-    	if( VisionStatus::Boy_counter==3 )printf("Boy\n"); 
-    	//if(Thief_counter==3)printf("Thief\n");
+	StrategyStatus::FlagMember == true;
+    	if( VisionStatus::Grandfa_counter==3 )/*printf("Grandfa\n");*/	StrategyStatus::FamilyMember = 0;
+   	if( VisionStatus::Grandma_counter==3 )/*printf("Grandma\n"); */	StrategyStatus::FamilyMember = 1;
+    	if( VisionStatus::Mother_counter==3 )/*printf("Mother\n"); */	StrategyStatus::FamilyMember = 3;
+    	if( VisionStatus::Father_counter==3) /*)printf("Father\n"); */	StrategyStatus::FamilyMember = 2;
+    	if( VisionStatus::Girl_counter==3 )/*printf("Girl\n"); */	StrategyStatus::FamilyMember = 5;
+    	if( VisionStatus::Boy_counter==3 )/*printf("Boy\n"); */		StrategyStatus::FamilyMember = 4;
+    	//if(VisionStatus::Thief_counter==3)/*printf("Thief\n");*/ cv::imwrite("Thief.jpg",VisionStatus::VideoFrame);
     }	
 }
