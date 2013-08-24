@@ -26,19 +26,23 @@ StrategyManager::~StrategyManager()
 {
 
 }
-bool StrategyManager::Initialize(Motors *motors)
+bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
 {
     mMotors = motors;
+    mDXL = dxl;
     m_Enabled = false;
     m_ProcessEnable = true;
 
     if(motors == NULL)
         return false;
-
     mMotors->SetEnableAll();
     mMotors->SetVelocityProfileAll(1000, 500);
     mMotors->ActivateProfileVelocityModeAll();
 
+    if(dxl == NULL)
+	return false;
+    dxl->GoToDegree(0);
+    dxl->EndlessTurn(0);
     return true;
 }
 
@@ -100,11 +104,20 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
+    if(mMotors != NULL){    	
+    	mMotors->SetVelocityAll(
+			StrategyStatus::MotorSpeed[0],
+			StrategyStatus::MotorSpeed[1],
+			StrategyStatus::MotorSpeed[2]);
+    }
+	
+    if(mDXL != NULL){
+		mDXL->GoToDegree(
+			StrategyStatus::AX12_Angle);
+		mDXL->EndlessTurn(
+			StrategyStatus::CatchBallMode);
+	}
 
-    mMotors->SetVelocityAll(
-        StrategyStatus::MotorSpeed[0],
-        StrategyStatus::MotorSpeed[1],
-        StrategyStatus::MotorSpeed[2]);
 
     if(m_IsLogging)
     {

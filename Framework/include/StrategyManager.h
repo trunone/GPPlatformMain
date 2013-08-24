@@ -31,7 +31,7 @@ private:
     bool m_IsLogging;
 
     Motors *mMotors;
-
+    DXL *mDXL;
     std::ofstream m_LogFileStream;
 
     StrategyManager();
@@ -46,7 +46,7 @@ public:
     static StrategyManager* GetInstance() {
         return m_UniqueInstance;
     }
-    bool Initialize(Motors*);
+    bool Initialize(Motors*,DXL*);
     bool Initialize();
     bool Reinitialize();
     void Process();

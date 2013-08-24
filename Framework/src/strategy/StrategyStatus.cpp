@@ -87,7 +87,7 @@ StrategyStatus::tsStraBallInfo StrategyStatus::RadBallInfo;
 //tsObjectiveInfo RedBall;
 
 int StrategyStatus::AX12_Angle;
-
+int StrategyStatus::CatchBallMode;
 unsigned char StrategyStatus::FindBallCnt;
 bool StrategyStatus::FlagRecognize;
 

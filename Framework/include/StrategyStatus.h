@@ -153,6 +153,7 @@ public:
     //----------- Ball Data ------------------------------------------------
     static tsStraBallInfo RadBallInfo;
     static int AX12_Angle;
+    static int CatchBallMode;
     //tsObjectiveInfo RedBall;
     static unsigned char FindBallCnt;
     static bool FlagRecognize;
