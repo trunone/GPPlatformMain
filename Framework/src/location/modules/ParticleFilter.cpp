@@ -27,7 +27,7 @@ void ParticleFilter::Initialize(void)
 
 void ParticleFilter::Process( void )
 {
-    //LocationStatus::FB_Movement.Position =LocationStatus::FB_Movement.Position + (LocationStatus::LaserGap << LocationStatus::FB_Movement.Direction) - LocationStatus::LaserGap;
+    LocationStatus::FB_Movement.Position =LocationStatus::FB_Movement.Position + (LocationStatus::LaserGap << LocationStatus::FB_Movement.Direction) - LocationStatus::LaserGap;
     PredictionParticles();
     CorrectParticles( LocationStatus::Position.x, LocationStatus::Position.y, LocationStatus::Handle, 50);
     PastMovement += LocationStatus::FB_Movement.Position.Length();

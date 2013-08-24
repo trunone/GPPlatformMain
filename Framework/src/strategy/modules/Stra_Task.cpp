@@ -158,6 +158,7 @@ void Stra_Task::Process(void)
     }
     else if(StrategyStatus::Room.Cnt == 4 )  //充電區
     { 
+        printf("enter charg\n");
         switch( GotoRoomStep )
         {
         case 0: // 到房間門口
@@ -171,19 +172,14 @@ void Stra_Task::Process(void)
             ActiveState =  etTurnToAngle;
             GoalAngle = (StrategyStatus::ChrgCen -StrategyStatus::ChrgDoor).Angle();
         break;
-       case 2:
-            ActiveState =  etTurnToAngle;
-            GoalAngle = (StrategyStatus::ChrgDoor -StrategyStatus::ChrgCen).Angle();
-        break;
-
-       /* case 2: // 碰擊充電開關 by yao
+       case 3: // 碰擊充電開關 by yao
             ActiveState = etTouchButton;
             StrategyStatus::FlagAvoidEnable = false; //關閉避障
         break;
-        case 3:
-            ActiveState = etBackward; // 倒車動作
-            StrategyStatus::FlagAvoidEnable = false; //關閉避障
-        break;*/
+       // case 4:
+       //     ActiveState = etBackward; // 倒車動作
+       //     StrategyStatus::FlagAvoidEnable = false; //關閉避障
+       // break;
         default:
             ActiveState = etIdle;
             StrategyStatus::Room.Cnt++;
