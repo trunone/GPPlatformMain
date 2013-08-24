@@ -2,7 +2,6 @@
 #include "time.h"
 #include "DXL.h"
 #include "dynamixel.h"
-
 // Control table address
 #define P_GOAL_POSITION_L	30
 #define P_GOAL_POSITION_H	31
@@ -45,6 +44,7 @@ void DXL::GoToDegree(int deg)
 
 void DXL::EndlessTurn(int mode)
 {
+	clock_t StartTime;
 	switch(mode){
 	case STOP:
         dxl_write_word( 2, Moving_Speed_L,0);
@@ -56,16 +56,25 @@ void DXL::EndlessTurn(int mode)
         dxl_write_word( 3, Moving_Speed_L,512);
         break;
 
-	case THROW:
-        dxl_write_word( 2, Moving_Speed_L,512);
-		dxl_write_word( 3, Moving_Speed_L,1536);
-		//usleep(2200000);
-		dxl_write_word( 2, Moving_Speed_L,1700);
-		dxl_write_word( 3, Moving_Speed_L,1536); 
-		//usleep(1900000);   
+	case THROW: 
 		dxl_write_word( 2, Moving_Speed_L,0);
 		dxl_write_word( 3, Moving_Speed_L,0);
-        break;
+		while((clock()-StartTime)<1*CLOCKS_PER_SEC);
+		dxl_write_word( 2, Moving_Speed_L,400);
+		dxl_write_word( 3, Moving_Speed_L,1424);
+		StartTime=clock();    					
+		while((clock()-StartTime)<2.7*CLOCKS_PER_SEC);
+		dxl_write_word( 2, Moving_Speed_L,0);
+		dxl_write_word( 3, Moving_Speed_L,0);
+		StartTime=clock();
+		while((clock()-StartTime)<1*CLOCKS_PER_SEC);
+		dxl_write_word( 2, Moving_Speed_L,1700);
+		dxl_write_word( 3, Moving_Speed_L,1536);
+		StartTime=clock();
+		while((clock()-StartTime)<2*CLOCKS_PER_SEC);
+		dxl_write_word( 2, Moving_Speed_L,0);
+		dxl_write_word( 3, Moving_Speed_L,0);
+		break;
 	}
 }
 
