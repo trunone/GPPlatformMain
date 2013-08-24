@@ -6,9 +6,9 @@
 #define ENABLE_STRATEGY
 //#define ENABLE_VISION
 //#define ENABLE_VISION_FACEDETECTION
-#define ENABLE_LOCATION
+//#define ENABLE_LOCATION
 
-//#define ENABLE_SIMULATOR
+#define ENABLE_SIMULATOR
 //#define ENABLE_MANUAL
 
 #define NETWORK_INTERFACE
@@ -208,7 +208,7 @@ int main(void)
     signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
-    motors.OpenDeviceAll();
+    //motors.OpenDeviceAll();
 
 #ifdef ENABLE_VISION
     VisionCapture = cvCaptureFromCAM( -1 );

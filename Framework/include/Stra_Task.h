@@ -85,8 +85,6 @@ private:
 
     bool Backward();
 
-    bool MakeSoundMove();
-
     //=============
 
     void WaitCatchball();
@@ -130,6 +128,10 @@ private:
     int Lib;
 
     int BedRM;
+
+	TCoordinate RoomVector;
+
+    TCoordinate CenterVector;
 
 public:
     //---------loadxml----------

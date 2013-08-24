@@ -38,56 +38,17 @@ Stra_FindBall::~Stra_FindBall()
 
 }
 
-/*
-Stra_FindBall::Stra_FindBall()
-:TCommonUnit("./Strategy/StraConfig/Stra_FindBall.txt", 0 )
-{
-    this->Caption = "Stra_FindBall";
-    this->ParameterPath = "./Strategy/StraConfig/Stra_FindBall.txt";
-    this->ParameterReset();
-    CenterThreshold = Def_CenterThreshold;
-    FindBallState = etTurnToBall;
-    RoomCnt = 0;
-    PastScanLineData = new int[24];
-}
-*/
-/*
-string Stra_FindBall::ParameterReset(void)
-{
-    string str_ = this->Caption +" ParameterReset";
-    this->bNewParameter = false;
-    return str_;
-}
-*/
-//----------------------------------------------------------------------------
-
 void Stra_FindBall::Initialize(void)
 {
-    /*
-        string str_ = this->Caption +" Initial";
-        CenterThreshold = Def_CenterThreshold;
-        Info->HdwInfo->MSLCommand.AX12_Angle = 35;
-        RoomCnt = 0;
-        FindBallState = etInitial;
-        SearchStep    = etLeftRight;
-        PastOdometer = aVector(0,0);
-        BallDirection = 0;
-        EatBallDirection = 0;
-        FlagEatBall = false;
-        FlagRecognize = true;
-        SearchBall_Initial();
-        Room2Step = 0;
-    */
+
 }
 
 //----------------------------------------------------------------------------
 
 void Stra_FindBall::Process(void )
 {
-    //int TmpCnt = 0;
     float AngleError;
 
-    //if( this->bNewParameter ) this->ParameterReset();
     AnalyseBall();
 
     if(StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSCatchBall)
@@ -132,7 +93,7 @@ void Stra_FindBall::Process(void )
 
             break;
 
-        case etEnterRoom:
+        /*case etEnterRoom:
 
             StrategyStatus::Goal1 = CenterVector >> LocationStatus::Handle;
 
@@ -166,7 +127,7 @@ void Stra_FindBall::Process(void )
 
             break;
 
-            //----------------------------------------
+            //----------------------------------------*/
 
         case etSearchBall:   //  §ä²y
 
@@ -687,8 +648,6 @@ void  Stra_FindBall::SearchBall()
     switch(SearchStep)
 
     {
-
-        //---------------------------------------------------------------------------
 
     case etLeftRight:
 

@@ -45,7 +45,6 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 		../../Framework/src/strategy/AstarTool.o\
         ../../Framework/src/strategy/modules/Stra_Task.o\
-		../../Framework/src/strategy/modules/Stra_FindBall.o\
 		../../Framework/src/strategy/modules/Stra_Avoid.o\
 		../../Framework/src/strategy/modules/Stra_PathPlan.o\
 		../../Framework/src/strategy/modules/Stra_VelocityControl.o\
