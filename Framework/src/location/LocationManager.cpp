@@ -53,7 +53,7 @@ bool LocationManager::Initialize() {
     m_Enabled = false;
     m_ProcessEnable = true;
 
-    LocationStatus::Position = aVector(50, 250);
+    LocationStatus::Position = aVector(35, 260);
     LocationStatus::Handle   = 0.0;
     LocationStatus::FlagEvaluatuonEnable = true;
     LocationStatus::FlagCoerceEvaluatuon = false;

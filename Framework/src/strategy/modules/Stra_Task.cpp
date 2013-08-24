@@ -61,7 +61,10 @@ void Stra_Task::Initialize(void)
 //---------------------------------------------------------------------------
 void Stra_Task::Process(void)
 {   //-----
-
+    TCoordinate LivTmp = aVector(StrategyStatus::LivRMDoor.x, 0);
+    TCoordinate DinTmp = aVector(0, StrategyStatus::DinRMDoor.y);
+    TCoordinate BedTmp = aVector(0, StrategyStatus::BedRMDoor.y);
+    TCoordinate LibTmp = aVector(0, StrategyStatus::LibDoor.y);
     if( StrategyStatus::FlagRoomRenew == true )
     {
         ActiveState  = etIdle;
@@ -87,11 +90,11 @@ void Stra_Task::Process(void)
             break;
         case 2: 
             ActiveState = etTurnToAngle;
-            GoalAngle = (StrategyStatus::LivRMDoor - StrategyStatus::LivRMCen).Angle();
+            GoalAngle = (StrategyStatus::LivRMDoor - LivTmp).Angle();
 	    	if(StrategyStatus::FlagMember == true){
 	    		ActiveState = etIdle;
 	        	EncounterPeople();
-	    	}
+            }
             break;
         default:
             ActiveState = etIdle;
@@ -106,6 +109,7 @@ void Stra_Task::Process(void)
 			StrategyStatus::Room.Cnt == Lib || 
 			StrategyStatus::Room.Cnt == BedRM )
     {
+        
         switch( GotoRoomStep )
         {
         case 0://到房間門口
@@ -118,20 +122,26 @@ void Stra_Task::Process(void)
                 else if(StrategyStatus::Room.Cnt == Lib)
                     SetAStar( StrategyStatus::LibDoor );
                 break;
-
-            case 1:
-            	MakeSound();
+            case 1: 
                 ActiveState = etTurnToAngle;
+            	MakeSound();
                 if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)
                 	GoalAngle = (StrategyStatus::DinRMCen -StrategyStatus::DinRMDoor).Angle();
             	else if(StrategyStatus::Room.Cnt == StrategyStatus::etBedRM)
-            		GoalAngle = (StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor).Angle();
+                    GoalAngle = (StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor).Angle();
             	else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib);
             		GoalAngle = (StrategyStatus::LibCen -StrategyStatus::LibDoor).Angle();
-
-                break;
-            case 2: 
                break;
+            case 2:
+                ActiveState = etTurnToAngle;
+                if(StrategyStatus::Room.Cnt == StrategyStatus::etDinRM)
+                	GoalAngle = (StrategyStatus::DinRMDoor - DinTmp ).Angle();
+            	else if(StrategyStatus::Room.Cnt == StrategyStatus::etBedRM)
+            		GoalAngle = (StrategyStatus::BedRMDoor - BedTmp).Angle();
+                else if(StrategyStatus::Room.Cnt == StrategyStatus::etLib);
+            		GoalAngle = (StrategyStatus::LibDoor - LibTmp).Angle();
+                break;
+            
             case 3:
             	if(StrategyStatus::FlagMember == true)
             		EncounterPeople();
@@ -139,6 +149,7 @@ void Stra_Task::Process(void)
             default:
                 ActiveState = etIdle;
                 StrategyStatus::Room.Cnt++;
+                printf("%d\n",StrategyStatus::Room.Cnt);
                 GotoRoomStep = 0;
                 StrategyStatus::Room.SKSRoomState = StrategyStatus::etSKSMoving;
                 FlagSetInitialData = false;
@@ -146,7 +157,7 @@ void Stra_Task::Process(void)
         }
     }
     else if(StrategyStatus::Room.Cnt == 4 )  //充電區
-    {   
+    { 
         switch( GotoRoomStep )
         {
         case 0: // 到房間門口
@@ -156,12 +167,16 @@ void Stra_Task::Process(void)
                 SetAStar( StrategyStatus::ChrgDoor );
             }
             break;
-        /*case 1: // 車頭面向房間
+       case 1: // 車頭面向房間
             ActiveState =  etTurnToAngle;
-            GoalAngle = (StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Center -
-                         StrategyStatus::Room.Info[StrategyStatus::Room.Cnt].Door).Angle();
+            GoalAngle = (StrategyStatus::ChrgCen -StrategyStatus::ChrgDoor).Angle();
         break;
-        case 2: // 碰擊充電開關 by yao
+       case 2:
+            ActiveState =  etTurnToAngle;
+            GoalAngle = (StrategyStatus::ChrgDoor -StrategyStatus::ChrgCen).Angle();
+        break;
+
+       /* case 2: // 碰擊充電開關 by yao
             ActiveState = etTouchButton;
             StrategyStatus::FlagAvoidEnable = false; //關閉避障
         break;
