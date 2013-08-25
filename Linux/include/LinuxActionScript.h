@@ -8,6 +8,10 @@
 #ifndef LINUXACTIONSCRIPT_H_
 #define LINUXACTIONSCRIPT_H_
 
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <pthread.h>
 
@@ -32,6 +36,10 @@ public:
     static int ScriptStart(const char* filename);
     static int PlayMP3Wait(const char* filename);
     static int PlayMP3(const char* filename);
+    static int GetPlayable(){
+        int status;
+        return waitpid(mp3_pid, &status, 0);
+    } 
 };
 }
 

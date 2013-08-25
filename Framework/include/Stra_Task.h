@@ -75,17 +75,7 @@ private:
 
     bool TurnToAngle( float GoalAngle );
 
-    bool SpecialMove( int Forward );
-
-    bool SpecialTurn();
-
-    bool WaitDoorOpen();
-
     bool TouchButton();
-
-    bool Backward();
-
-    bool MakeSoundMove();
 
     //=============
 
@@ -94,10 +84,6 @@ private:
     void EncounterPeople();
 
     void MakeSound();
-
-    void SpecialRoom3();
-
-    //TCoordinate Room3StartPos;
 
     int Past_RoomCnt;
 

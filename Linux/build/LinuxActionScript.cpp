@@ -5,10 +5,6 @@
  *      Author: zerom
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
 
 #include "LinuxActionScript.h"
 #include "LinuxStrategyTimer.h"
@@ -126,7 +122,7 @@ int LinuxActionScript::PlayMP3(const char* filename)
         break;
     case 0:
         //fprintf(stderr, "Playing MPEG stream from \"%s\" ...\n", filename);
-        execl("/usr/bin/madplay", "madplay", filename, "-q", (char*)0);
+        execl("/usr/bin/mpg123", "mpg123", "-q", filename, (char*)0);
         fprintf(stderr, "exec failed!! \n");
         break;
     default:

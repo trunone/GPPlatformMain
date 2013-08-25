@@ -16,6 +16,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 #define PI 3.1415926
+#define GET_FACE_CNT 2
 
 using namespace Robot;
 using namespace std;
@@ -211,13 +212,31 @@ void FaceDetection::Process()
 			VisionStatus::Thief_counter++;
 		}
     	}
-	StrategyStatus::FlagMember == true;
-    	if( VisionStatus::Grandfa_counter==3 )/*printf("Grandfa\n");*/	StrategyStatus::FamilyMember = 0;
-   	if( VisionStatus::Grandma_counter==3 )/*printf("Grandma\n"); */	StrategyStatus::FamilyMember = 1;
-    	if( VisionStatus::Mother_counter==3 )/*printf("Mother\n"); */	StrategyStatus::FamilyMember = 3;
-    	if( VisionStatus::Father_counter==3) /*)printf("Father\n"); */	StrategyStatus::FamilyMember = 2;
-    	if( VisionStatus::Girl_counter==3 )/*printf("Girl\n"); */	StrategyStatus::FamilyMember = 5;
-    	if( VisionStatus::Boy_counter==3 )/*printf("Boy\n"); */		StrategyStatus::FamilyMember = 4;
+	StrategyStatus::FlagMember = true;
+    	if( VisionStatus::Grandfa_counter== GET_FACE_CNT) {
+            //printf("Grandfa\n");
+            StrategyStatus::FamilyMember = 0;
+        }
+    	if( VisionStatus::Grandma_counter==GET_FACE_CNT){
+            //printf("Grandma\n"); 
+            StrategyStatus::FamilyMember = 1;
+        }
+    	if( VisionStatus::Mother_counter== GET_FACE_CNT){
+            //printf("Mother\n"); 
+            StrategyStatus::FamilyMember = 3;
+        }
+    	if( VisionStatus::Father_counter==GET_FACE_CNT){
+            //printf("Father\n"); 
+            StrategyStatus::FamilyMember = 2;
+        }
+    	if( VisionStatus::Girl_counter== GET_FACE_CNT){
+            //printf("Girl\n"); 
+            StrategyStatus::FamilyMember = 5;
+        }
+    	if( VisionStatus::Boy_counter== GET_FACE_CNT){ 
+            //printf("Boy\n");
+            StrategyStatus::FamilyMember = 4;
+        }
     	//if(VisionStatus::Thief_counter==3)/*printf("Thief\n");*/ cv::imwrite("Thief.jpg",VisionStatus::VideoFrame);
     }	
 }
