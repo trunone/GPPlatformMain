@@ -17,6 +17,7 @@
 #include "LocationStatus.h"
 #include <time.h>
 #include "TCoordinate.h"
+#include "Stra_Task.h"
 namespace Robot {
 class Stra_FindBall : public StrategyModule
 {
@@ -64,11 +65,11 @@ public:
 
     ~Stra_FindBall();   //žÑºcšçŠ¡
 
-    //virtual string  ParameterReset(void);           //°ÑŒÆ­«žm
+    //virtual string  ParameterReset(void);
 
-    void Initialize(void);                  //ªì©l€Æ
+    void Initialize(void);
 
-    void Process(void);                     //°õŠæšçŒÆ
+    void Process(void);
 
 private:
 
@@ -124,7 +125,7 @@ private:
 
     bool FlagRecognize;
 
-    short LeftRightSearch;     // ¥ª : 1, ¥k :-1 , €€¶¡:0
+    short LeftRightSearch;
 
     float LoseBallAngle;
 
@@ -139,6 +140,7 @@ private:
     int *PastScanLineData;
 
     int Room2Step;
+
 
 };
 }

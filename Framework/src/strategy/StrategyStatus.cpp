@@ -45,7 +45,6 @@ int StrategyStatus::CurrentBallState;
 
 int StrategyStatus::GotoRoomStep;
 
-StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
 int StrategyStatus::RoomSort;
 int StrategyStatus::FindBallEn;
