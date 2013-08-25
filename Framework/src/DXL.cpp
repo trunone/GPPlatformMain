@@ -44,38 +44,38 @@ void DXL::GoToDegree(int deg)
 
 void DXL::EndlessTurn(int mode)
 {
-	clock_t StartTime;
-	switch(mode){
-	case STOP:
+    clock_t StartTime;
+    switch(mode) {
+    case STOP:
         dxl_write_word( 2, Moving_Speed_L,0);
         dxl_write_word( 3, Moving_Speed_L,0);
-        break;			
+        break;
 
-	case CATCH:
+    case CATCH:
         dxl_write_word( 2, Moving_Speed_L,1536);
         dxl_write_word( 3, Moving_Speed_L,512);
         break;
 
-	case THROW: 
-		dxl_write_word( 2, Moving_Speed_L,0);
-		dxl_write_word( 3, Moving_Speed_L,0);
-		while((clock()-StartTime)<1*CLOCKS_PER_SEC);
-		dxl_write_word( 2, Moving_Speed_L,400);
-		dxl_write_word( 3, Moving_Speed_L,1424);
-		StartTime=clock();    					
-		while((clock()-StartTime)<2.7*CLOCKS_PER_SEC);
-		dxl_write_word( 2, Moving_Speed_L,0);
-		dxl_write_word( 3, Moving_Speed_L,0);
-		StartTime=clock();
-		while((clock()-StartTime)<1*CLOCKS_PER_SEC);
-		dxl_write_word( 2, Moving_Speed_L,1700);
-		dxl_write_word( 3, Moving_Speed_L,1536);
-		StartTime=clock();
-		while((clock()-StartTime)<2*CLOCKS_PER_SEC);
-		dxl_write_word( 2, Moving_Speed_L,0);
-		dxl_write_word( 3, Moving_Speed_L,0);
-		break;
-	}
+    case THROW:
+        dxl_write_word( 2, Moving_Speed_L,0);
+        dxl_write_word( 3, Moving_Speed_L,0);
+        while((clock()-StartTime)<1*CLOCKS_PER_SEC);
+        dxl_write_word( 2, Moving_Speed_L,400);
+        dxl_write_word( 3, Moving_Speed_L,1424);
+        StartTime=clock();
+        while((clock()-StartTime)<2.7*CLOCKS_PER_SEC);
+        dxl_write_word( 2, Moving_Speed_L,0);
+        dxl_write_word( 3, Moving_Speed_L,0);
+        StartTime=clock();
+        while((clock()-StartTime)<1*CLOCKS_PER_SEC);
+        dxl_write_word( 2, Moving_Speed_L,1700);
+        dxl_write_word( 3, Moving_Speed_L,1536);
+        StartTime=clock();
+        while((clock()-StartTime)<2*CLOCKS_PER_SEC);
+        dxl_write_word( 2, Moving_Speed_L,0);
+        dxl_write_word( 3, Moving_Speed_L,0);
+        break;
+    }
 }
 
 void DXL::CloseDevice(void)

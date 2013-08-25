@@ -236,7 +236,7 @@ int main(void)
     VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
 #endif
 
-   // VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+    // VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -261,10 +261,10 @@ int main(void)
 #ifdef ENABLE_STRATEGY
 
 #ifdef ENABLE_SIMULATOR
-	if(StrategyManager::GetInstance()->Initialize() == false){
-		printf("Fail to initialize Strategy Manager!\n");
-		return 1;
-	}
+    if(StrategyManager::GetInstance()->Initialize() == false) {
+        printf("Fail to initialize Strategy Manager!\n");
+        return 1;
+    }
 #else
     if(StrategyManager::GetInstance()->Initialize(&motors, &dxl) == false)
     {
@@ -275,19 +275,19 @@ int main(void)
 
 #ifndef ENABLE_MANUAL
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
-    
-	StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-   // StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+    // StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
 #endif
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     //StrategyManager::GetInstance()->SetEnable(true);
-    
+
     LinuxStrategyTimer *strategy_timer = new LinuxStrategyTimer(StrategyManager::GetInstance());
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
@@ -338,7 +338,7 @@ int main(void)
                 cout << "[Disconnected]" << endl;
             }
         }
-	}
+    }
     catch ( LinuxSocketException& e )
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";

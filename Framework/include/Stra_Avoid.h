@@ -20,14 +20,14 @@
 namespace Robot {
 class VecGaplist {
 public:
-	TCoordinate vec;
-	double ang;
+    TCoordinate vec;
+    double ang;
     VecGaplist(TCoordinate vec, double ang) {
-       	this->vec = vec;
-       	this->ang = ang;
-    }	
+        this->vec = vec;
+        this->ang = ang;
+    }
     inline bool operator < (const VecGaplist &rhs) const {
-       	return ang < rhs.ang;
+        return ang < rhs.ang;
     }
 };
 class Stra_Avoid : public StrategyModule
@@ -56,11 +56,11 @@ private:
 
     TCoordinate ScanLineAvoidFunction( TCoordinate OrigTarget );
 
-	TCoordinate NewAvoidFunction( TCoordinate OrigTarget);
+    TCoordinate NewAvoidFunction( TCoordinate OrigTarget);
 
     TCoordinate LeftForce, RightForce;
 
-	vector<long> AvoidLaserData;
+    vector<long> AvoidLaserData;
 
     int AvoidScanLineNum;
 

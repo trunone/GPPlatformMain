@@ -86,157 +86,193 @@ void FaceDetection::Process()
             Face40size.data[a] = I;
         }
         int fd = 0;
-      	if(faces[i].width >= 100){
-		for(int a=0; a<40; a++) {
-            		for(int j=0; j<40; j++) {
-                		fd = Face40size.data[a*40*3+j*3] - VisionStatus::Favg_Face_20cm.data[a*40*3+j*3];
-                		if(fd<0)fd=0;
-               			Face40size.data[a*40*3+j*3]=fd;
-               			Face40size.data[a*40*3+j*3+1]=fd;
-        	        	Face40size.data[a*40*3+j*3+2]=fd;
-        	    	}
-        	}
-	}else{
-		for(int a=0; a<40; a++) {
-            		for(int j=0; j<40; j++) {
-                		fd = Face40size.data[a*40*3+j*3] - VisionStatus::Favg_Face_50cm.data[a*40*3+j*3];
-                		if(fd<0)fd=0;
-               			Face40size.data[a*40*3+j*3]=fd;
-               			Face40size.data[a*40*3+j*3+1]=fd;
-        	        	Face40size.data[a*40*3+j*3+2]=fd;
-        	    	}
-        	}
+        if(faces[i].width >= 100) {
+            for(int a=0; a<40; a++) {
+                for(int j=0; j<40; j++) {
+                    fd = Face40size.data[a*40*3+j*3] - VisionStatus::Favg_Face_20cm.data[a*40*3+j*3];
+                    if(fd<0)fd=0;
+                    Face40size.data[a*40*3+j*3]=fd;
+                    Face40size.data[a*40*3+j*3+1]=fd;
+                    Face40size.data[a*40*3+j*3+2]=fd;
+                }
+            }
+        } else {
+            for(int a=0; a<40; a++) {
+                for(int j=0; j<40; j++) {
+                    fd = Face40size.data[a*40*3+j*3] - VisionStatus::Favg_Face_50cm.data[a*40*3+j*3];
+                    if(fd<0)fd=0;
+                    Face40size.data[a*40*3+j*3]=fd;
+                    Face40size.data[a*40*3+j*3+1]=fd;
+                    Face40size.data[a*40*3+j*3+2]=fd;
+                }
+            }
 
-	}
+        }
         for(int a=0; a<40*40; a++)PeopleDW[a]=Face40size.data[a*3];
-        if(faces[i].width >= 100){
-		FFW=cvCreateMat(1,40*40,CV_32FC1);
-        	cvSetData(FFW,VisionStatus::FeatureFaceW_20cm,FFW->step);
-        }else{
-		FFW=cvCreateMat(1,40*40,CV_32FC1);
-        	cvSetData(FFW,VisionStatus::FeatureFaceW_50cm,FFW->step);
-	}
-	PW=cvCreateMat(40*40,1,CV_32FC1);
+        if(faces[i].width >= 100) {
+            FFW=cvCreateMat(1,40*40,CV_32FC1);
+            cvSetData(FFW,VisionStatus::FeatureFaceW_20cm,FFW->step);
+        } else {
+            FFW=cvCreateMat(1,40*40,CV_32FC1);
+            cvSetData(FFW,VisionStatus::FeatureFaceW_50cm,FFW->step);
+        }
+        PW=cvCreateMat(40*40,1,CV_32FC1);
         cvSetData(PW,PeopleDW,PW->step);
         SumWP=cvCreateMat(1,1,CV_32FC1);
         cvMatMul(FFW,PW,SumWP);
-	if( faces[i].width >= 100 )
-	{
-     //		printf("%d\n",faces[i].width);
+        if( faces[i].width >= 100 )
+        {
+            //		printf("%d\n",faces[i].width);
 //		printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
-		if(( 10000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<19000 ){
+            if(( 10000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<19000 ) {
 //			printf("Grandfa\n");
-			VisionStatus::Grandfa_counter++;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 180000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<400000 ){
+                VisionStatus::Grandfa_counter++;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 180000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<400000 ) {
 //			printf("Mother\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter++;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 400000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<540000 ){
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter++;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 400000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<540000 ) {
 //			printf("Father\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter++;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 30000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<56500 ){
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter++;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 30000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<56500 ) {
 //			printf("Girl\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter++;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 70000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<140000 ){
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter++;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 70000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<140000 ) {
 //			printf("Boy\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter++; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else {
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter++;
+                VisionStatus::Thief_counter=0;
+            }
+            else {
 //			printf("Niss\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter++;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter++;
-		}
-	}else{
-	//	printf("%d\n",faces[i].width);
-	//	printf("%f\n",cvGet2D(SumWP,0,0).val[0]);		
-		if(( 18000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<50000 ){
-	//		printf("Grandfa\n");
-			VisionStatus::Grandfa_counter++;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 190000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<330000 ){
-	//		printf("Mother\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter++;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 330000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<530000 ){
-	//		printf("Father\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter++;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 50000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<70000 ){
-	//		printf("Girl\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter++;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else if(( 70000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<130000 ){
-	//		printf("Boy\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter=0;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter++; 
-			VisionStatus::Thief_counter=0;
-		}
-        	else {
-	//		printf("Miss\n");
-			VisionStatus::Grandfa_counter=0;VisionStatus::Grandma_counter++;
-		 	VisionStatus::Mother_counter=0;VisionStatus::Father_counter=0;
-		 	VisionStatus::Girl_counter=0;VisionStatus::Boy_counter=0; 
-			VisionStatus::Thief_counter++;
-		}
-    	}
-	StrategyStatus::FlagMember = true;
-    	if( VisionStatus::Grandfa_counter== GET_FACE_CNT) {
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter++;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter++;
+            }
+        } else {
+            //	printf("%d\n",faces[i].width);
+            //	printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
+            if(( 18000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<50000 ) {
+                //		printf("Grandfa\n");
+                VisionStatus::Grandfa_counter++;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 190000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<330000 ) {
+                //		printf("Mother\n");
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter++;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 330000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<530000 ) {
+                //		printf("Father\n");
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter++;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 50000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<70000 ) {
+                //		printf("Girl\n");
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter++;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter=0;
+            }
+            else if(( 70000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<130000 ) {
+                //		printf("Boy\n");
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter=0;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter++;
+                VisionStatus::Thief_counter=0;
+            }
+            else {
+                //		printf("Miss\n");
+                VisionStatus::Grandfa_counter=0;
+                VisionStatus::Grandma_counter++;
+                VisionStatus::Mother_counter=0;
+                VisionStatus::Father_counter=0;
+                VisionStatus::Girl_counter=0;
+                VisionStatus::Boy_counter=0;
+                VisionStatus::Thief_counter++;
+            }
+        }
+        StrategyStatus::FlagMember = true;
+        if( VisionStatus::Grandfa_counter== GET_FACE_CNT) {
             //printf("Grandfa\n");
             StrategyStatus::FamilyMember = 0;
         }
-    	if( VisionStatus::Grandma_counter==GET_FACE_CNT){
-            //printf("Grandma\n"); 
+        if( VisionStatus::Grandma_counter==GET_FACE_CNT) {
+            //printf("Grandma\n");
             StrategyStatus::FamilyMember = 1;
         }
-    	if( VisionStatus::Mother_counter== GET_FACE_CNT){
-            //printf("Mother\n"); 
+        if( VisionStatus::Mother_counter== GET_FACE_CNT) {
+            //printf("Mother\n");
             StrategyStatus::FamilyMember = 3;
         }
-    	if( VisionStatus::Father_counter==GET_FACE_CNT){
-            //printf("Father\n"); 
+        if( VisionStatus::Father_counter==GET_FACE_CNT) {
+            //printf("Father\n");
             StrategyStatus::FamilyMember = 2;
         }
-    	if( VisionStatus::Girl_counter== GET_FACE_CNT){
-            //printf("Girl\n"); 
+        if( VisionStatus::Girl_counter== GET_FACE_CNT) {
+            //printf("Girl\n");
             StrategyStatus::FamilyMember = 5;
         }
-    	if( VisionStatus::Boy_counter== GET_FACE_CNT){ 
+        if( VisionStatus::Boy_counter== GET_FACE_CNT) {
             //printf("Boy\n");
             StrategyStatus::FamilyMember = 4;
         }
-    	//if(VisionStatus::Thief_counter==3)/*printf("Thief\n");*/ cv::imwrite("Thief.jpg",VisionStatus::VideoFrame);
-    }	
+        //if(VisionStatus::Thief_counter==3)/*printf("Thief\n");*/ cv::imwrite("Thief.jpg",VisionStatus::VideoFrame);
+    }
 }

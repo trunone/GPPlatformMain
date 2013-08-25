@@ -33,30 +33,32 @@ void Stra_AStar::Initialize(void)
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
-{	
+{
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
-        StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ){ return ;}
-	if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
-	{			
-        	StartPos = StrategyStatus::AStarPath.StartPos;
+            StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ) {
+        return ;
+    }
+    if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
+    {
+        StartPos = StrategyStatus::AStarPath.StartPos;
 
-        	GoalPos  = StrategyStatus::AStarPath.GoalPos;
-			
-        	AstarTool::GetInstance()->CleanList();
-			
-        	AstarTool::GetInstance()->Main( StartPos , GoalPos );
-			
-        	AstarTool::GetInstance()->AdjustPath();
-			
-			StrategyStatus::AStarPath.PCnt = 0;
+        GoalPos  = StrategyStatus::AStarPath.GoalPos;
 
-        	Behavior_AstarPath();
-			
-    	}else{
-        	
-			Behavior_AstarPath();
+        AstarTool::GetInstance()->CleanList();
 
-    	}	
+        AstarTool::GetInstance()->Main( StartPos , GoalPos );
+
+        AstarTool::GetInstance()->AdjustPath();
+
+        StrategyStatus::AStarPath.PCnt = 0;
+
+        Behavior_AstarPath();
+
+    } else {
+
+        Behavior_AstarPath();
+
+    }
 }
 //-----------------------------------------------------------------
 void Stra_AStar::Behavior_AstarPath( void )
@@ -103,7 +105,7 @@ void Stra_AStar::Behavior_AstarPath( void )
         StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
     } else {
         StrategyStatus::AStarPath.Status = StrategyStatus::etAchieve;
-		StrategyStatus::Goal1 = aVector(0,0);
+        StrategyStatus::Goal1 = aVector(0,0);
     }
 
 }

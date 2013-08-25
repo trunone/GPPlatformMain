@@ -38,7 +38,7 @@ void Stra_VelocityControl::Initialize(void)
 }
 
 void Stra_VelocityControl::Process(void)
-{     
+{
 #ifndef Def_OMNIDIRECTION_SYSTEM
 
     if( StrategyStatus::MotionDistance != 0 )
@@ -92,14 +92,14 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
     double Speed = 0;
 
-    if( dTargetDis == 0){
+    if( dTargetDis == 0) {
 
-    double Speed = 0;
+        double Speed = 0;
 
-    if( dTargetDis == 0)
+        if( dTargetDis == 0)
 
-        Speed = 0;
-	}
+            Speed = 0;
+    }
     else if( dTargetDis > this->DistanceMax )
 
         Speed = SpeedMax;

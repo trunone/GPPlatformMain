@@ -36,24 +36,24 @@ void ParticleFilter::Process( void )
     //printf("Best: %f, %f, %f\n", BestParticle.Position.x, BestParticle.Position.y, BestParticle.Direction);
     //---- 計算蒙地卡羅粒子感測修正 (當總位移量 或 總旋轉量 超過設定數值後執行)
     if (PastMovement > Def_ResamplingDis|| fabs(PastDirection) > Def_ResamplingAngle ||
-        LocationStatus::FlagCoerceEvaluatuon  )
-  // if(true)
-   {
-       if(LocationStatus::FlagEvaluatuonEnable || LocationStatus::FlagCoerceEvaluatuon)
-       {
-           // Correction Step of PF
-           EvaluatuonParticles();
-           ResamplingParticles();
+            LocationStatus::FlagCoerceEvaluatuon  )
+        // if(true)
+    {
+        if(LocationStatus::FlagEvaluatuonEnable || LocationStatus::FlagCoerceEvaluatuon)
+        {
+            // Correction Step of PF
+            EvaluatuonParticles();
+            ResamplingParticles();
 
-           PastMovement  = 0;
-           PastDirection = 0;
-       }
-   }
+            PastMovement  = 0;
+            PastDirection = 0;
+        }
+    }
     LocationStatus::Position = BestParticle.Position;
     LocationStatus::Handle   = BestParticle.Direction;
     LocationStatus::Position.x -= Def_LaserGap * cos(LocationStatus::Handle);
     LocationStatus::Position.y -= Def_LaserGap * sin(LocationStatus::Handle);
- //   printf("x:%f y:%f w:%f \n",LocationStatus::Position.x,  LocationStatus::Position.y,LocationStatus::Handle);
+//   printf("x:%f y:%f w:%f \n",LocationStatus::Position.x,  LocationStatus::Position.y,LocationStatus::Handle);
 }
 
 void ParticleFilter::InitialParticleFilter() {

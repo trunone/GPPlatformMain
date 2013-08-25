@@ -173,7 +173,7 @@ void ImgProcess::FaceData()
     Mat Favg_Face_20cm( Size(40,40) , CV_8UC3 );
     for(int i=0; i<40*40*3; i++)
         Favg_Face_20cm.data[i] = ( Grandfa_Face_20cm.data[i]+Grandma_Face_20cm.data[i]+Mother_Face_20cm.data[i]
-                              +Father_Face_20cm.data[i]+Girl_Face_20cm.data[i]+Boy_Face_20cm.data[i] )/6;
+                                   +Father_Face_20cm.data[i]+Girl_Face_20cm.data[i]+Boy_Face_20cm.data[i] )/6;
     VisionStatus::Favg_Face_20cm = Favg_Face_20cm;
     differences_In_Face(Grandfa_Face_20cm , Grandfa_Face_20cm , Favg_Face_20cm );
     differences_In_Face(Grandma_Face_20cm , Grandma_Face_20cm , Favg_Face_20cm );
@@ -209,11 +209,11 @@ void ImgProcess::FaceData()
     for(int i=0; i<40; i++) {
         for(int j=0; j<40*3; j++) {
             Feature_Sum_20cm = Grandfa_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,0).val[0]
-			  +Grandma_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,1).val[0]
-                          + Mother_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,2).val[0]
-                          + Father_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,3).val[0]
-                          + Girl_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,4).val[0]
-                          + Boy_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,5).val[0];
+                               +Grandma_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,1).val[0]
+                               + Mother_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,2).val[0]
+                               + Father_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,3).val[0]
+                               + Girl_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,4).val[0]
+                               + Boy_Face_20cm.data[i*40*3+j]*cvGet2D(EigenVector_20cm,Num_20cm,5).val[0];
             if (Feature_Sum_20cm<0)Feature_Sum_20cm = 0;
             if (Feature_Sum_20cm>255)Feature_Sum_20cm = 255;
             Feature_Face_20cm.data[i*40*3+j] = Feature_Sum_20cm;
@@ -221,45 +221,45 @@ void ImgProcess::FaceData()
     }
     for(int i=0; i<40*40; i++) {
         VisionStatus::FeatureFaceW_20cm[i]=Feature_Face_20cm.data[i*3];
-       /* GrandfaDW_20cm[i]=Grandfa_Face_20cm.data[i*3];
-	GrandmaDW_20cm[i]=Grandma_Face_20cm.data[i*3];
-        MotherDW_20cm[i]=Mother_Face_20cm.data[i*3];
-        FatherDW_20cm[i]=Father_Face_20cm.data[i*3];
-        GirlDW_20cm[i]=Girl_Face_20cm.data[i*3];
-        BoyDW_20cm[i]=Boy_Face_20cm.data[i*3];*/
+        /* GrandfaDW_20cm[i]=Grandfa_Face_20cm.data[i*3];
+        GrandmaDW_20cm[i]=Grandma_Face_20cm.data[i*3];
+               MotherDW_20cm[i]=Mother_Face_20cm.data[i*3];
+               FatherDW_20cm[i]=Father_Face_20cm.data[i*3];
+               GirlDW_20cm[i]=Girl_Face_20cm.data[i*3];
+               BoyDW_20cm[i]=Boy_Face_20cm.data[i*3];*/
     }
-/*    FFW_20cm=cvCreateMat(1,40*40,CV_32FC1);
-    cvSetData(FFW_20cm,VisionStatus::FeatureFaceW_20cm,FFW_20cm->step);
-    GfW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GfW_20cm,GrandfaDW_20cm,GfW_20cm->step);
-    GmW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GmW_20cm,GrandmaDW_20cm,GmW_20cm->step);
-    MW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(MW_20cm,MotherDW_20cm,MW_20cm->step);
-    FW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(FW_20cm,FatherDW_20cm,FW_20cm->step);
-    GW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GW_20cm,GirlDW_20cm,GW_20cm->step);
-    BW_20cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(BW_20cm,BoyDW_20cm,BW_20cm->step);
-    SumW1_20cm=cvCreateMat(1,1,CV_32FC1);
-    SumW2_20cm=cvCreateMat(1,1,CV_32FC1);
-    SumW3_20cm=cvCreateMat(1,1,CV_32FC1);
-    SumW4_20cm=cvCreateMat(1,1,CV_32FC1);
-    SumW5_20cm=cvCreateMat(1,1,CV_32FC1);
-    SumW6_20cm=cvCreateMat(1,1,CV_32FC1);
-    cvMatMul(FFW_20cm,GfW_20cm,SumW1_20cm);
-    cvMatMul(FFW_20cm,GmW_20cm,SumW2_20cm);
-    cvMatMul(FFW_20cm,MW_20cm,SumW3_20cm);
-    cvMatMul(FFW_20cm,FW_20cm,SumW4_20cm);
-    cvMatMul(FFW_20cm,GW_20cm,SumW5_20cm);
-    cvMatMul(FFW_20cm,BW_20cm,SumW6_20cm);
-    printf("%f\n",cvGet2D(SumW1_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW2_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW3_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW4_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW5_20cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW6_20cm,0,0).val[0]);*/
+    /*    FFW_20cm=cvCreateMat(1,40*40,CV_32FC1);
+        cvSetData(FFW_20cm,VisionStatus::FeatureFaceW_20cm,FFW_20cm->step);
+        GfW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(GfW_20cm,GrandfaDW_20cm,GfW_20cm->step);
+        GmW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(GmW_20cm,GrandmaDW_20cm,GmW_20cm->step);
+        MW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(MW_20cm,MotherDW_20cm,MW_20cm->step);
+        FW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(FW_20cm,FatherDW_20cm,FW_20cm->step);
+        GW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(GW_20cm,GirlDW_20cm,GW_20cm->step);
+        BW_20cm=cvCreateMat(40*40,1,CV_32FC1);
+        cvSetData(BW_20cm,BoyDW_20cm,BW_20cm->step);
+        SumW1_20cm=cvCreateMat(1,1,CV_32FC1);
+        SumW2_20cm=cvCreateMat(1,1,CV_32FC1);
+        SumW3_20cm=cvCreateMat(1,1,CV_32FC1);
+        SumW4_20cm=cvCreateMat(1,1,CV_32FC1);
+        SumW5_20cm=cvCreateMat(1,1,CV_32FC1);
+        SumW6_20cm=cvCreateMat(1,1,CV_32FC1);
+        cvMatMul(FFW_20cm,GfW_20cm,SumW1_20cm);
+        cvMatMul(FFW_20cm,GmW_20cm,SumW2_20cm);
+        cvMatMul(FFW_20cm,MW_20cm,SumW3_20cm);
+        cvMatMul(FFW_20cm,FW_20cm,SumW4_20cm);
+        cvMatMul(FFW_20cm,GW_20cm,SumW5_20cm);
+        cvMatMul(FFW_20cm,BW_20cm,SumW6_20cm);
+        printf("%f\n",cvGet2D(SumW1_20cm,0,0).val[0]);
+        printf("%f\n",cvGet2D(SumW2_20cm,0,0).val[0]);
+        printf("%f\n",cvGet2D(SumW3_20cm,0,0).val[0]);
+        printf("%f\n",cvGet2D(SumW4_20cm,0,0).val[0]);
+        printf("%f\n",cvGet2D(SumW5_20cm,0,0).val[0]);
+        printf("%f\n",cvGet2D(SumW6_20cm,0,0).val[0]);*/
 ///////////////////////////////////////////////////////////////////////////////////////////
     Mat Grandfa_50cm = imread( "../../../Data/jpg/50cm_0/Grandfa.jpg" , CV_LOAD_IMAGE_COLOR );
     Mat Grandma_50cm = imread( "../../../Data/jpg/50cm_0/Grandma.jpg" , CV_LOAD_IMAGE_COLOR );
@@ -288,7 +288,7 @@ void ImgProcess::FaceData()
     Mat Favg_Face_50cm( Size(40,40) , CV_8UC3 );
     for(int i=0; i<40*40*3; i++)
         Favg_Face_50cm.data[i] = ( Grandfa_Face_50cm.data[i]+Grandma_Face_50cm.data[i]+Mother_Face_50cm.data[i]
-                              +Father_Face_50cm.data[i]+Girl_Face_50cm.data[i]+Boy_Face_50cm.data[i] )/6;
+                                   +Father_Face_50cm.data[i]+Girl_Face_50cm.data[i]+Boy_Face_50cm.data[i] )/6;
     VisionStatus::Favg_Face_50cm = Favg_Face_50cm;
     differences_In_Face(Grandfa_Face_50cm , Grandfa_Face_50cm , Favg_Face_50cm );
     differences_In_Face(Grandma_Face_50cm , Grandma_Face_50cm , Favg_Face_50cm );
@@ -324,11 +324,11 @@ void ImgProcess::FaceData()
     for(int i=0; i<40; i++) {
         for(int j=0; j<40*3; j++) {
             Feature_Sum_50cm = Grandfa_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,0).val[0]
-			  +Grandma_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,1).val[0]
-                          + Mother_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,2).val[0]
-                          + Father_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,3).val[0]
-                          + Girl_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,4).val[0]
-                          + Boy_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,5).val[0];
+                               +Grandma_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,1).val[0]
+                               + Mother_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,2).val[0]
+                               + Father_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,3).val[0]
+                               + Girl_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,4).val[0]
+                               + Boy_Face_50cm.data[i*40*3+j]*cvGet2D(EigenVector_50cm,Num_50cm,5).val[0];
             if (Feature_Sum_50cm<0)Feature_Sum_50cm = 0;
             if (Feature_Sum_50cm>255)Feature_Sum_50cm = 255;
             Feature_Face_50cm.data[i*40*3+j] = Feature_Sum_50cm;
@@ -336,45 +336,45 @@ void ImgProcess::FaceData()
     }
     for(int i=0; i<40*40; i++) {
         VisionStatus::FeatureFaceW_50cm[i]=Feature_Face_50cm.data[i*3];
-      /*  GrandfaDW_50cm[i]=Grandfa_Face_50cm.data[i*3];
-	GrandmaDW_50cm[i]=Grandma_Face_50cm.data[i*3];
-        MotherDW_50cm[i]=Mother_Face_50cm.data[i*3];
-        FatherDW_50cm[i]=Father_Face_50cm.data[i*3];
-        GirlDW_50cm[i]=Girl_Face_50cm.data[i*3];
-        BoyDW_50cm[i]=Boy_Face_50cm.data[i*3];*/
+        /*  GrandfaDW_50cm[i]=Grandfa_Face_50cm.data[i*3];
+        GrandmaDW_50cm[i]=Grandma_Face_50cm.data[i*3];
+               MotherDW_50cm[i]=Mother_Face_50cm.data[i*3];
+               FatherDW_50cm[i]=Father_Face_50cm.data[i*3];
+               GirlDW_50cm[i]=Girl_Face_50cm.data[i*3];
+               BoyDW_50cm[i]=Boy_Face_50cm.data[i*3];*/
     }
-   /* FFW_50cm=cvCreateMat(1,40*40,CV_32FC1);
-    cvSetData(FFW_50cm,VisionStatus::FeatureFaceW_50cm,FFW_50cm->step);
-    GfW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GfW_50cm,GrandfaDW_50cm,GfW_50cm->step);
-    GmW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GmW_50cm,GrandmaDW_50cm,GmW_50cm->step);
-    MW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(MW_50cm,MotherDW_50cm,MW_50cm->step);
-    FW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(FW_50cm,FatherDW_50cm,FW_50cm->step);
-    GW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(GW_50cm,GirlDW_50cm,GW_50cm->step);
-    BW_50cm=cvCreateMat(40*40,1,CV_32FC1);
-    cvSetData(BW_50cm,BoyDW_50cm,BW_50cm->step);
-    SumW1_50cm=cvCreateMat(1,1,CV_32FC1);
-    SumW2_50cm=cvCreateMat(1,1,CV_32FC1);
-    SumW3_50cm=cvCreateMat(1,1,CV_32FC1);
-    SumW4_50cm=cvCreateMat(1,1,CV_32FC1);
-    SumW5_50cm=cvCreateMat(1,1,CV_32FC1);
-    SumW6_50cm=cvCreateMat(1,1,CV_32FC1);
-    cvMatMul(FFW_50cm,GfW_50cm,SumW1_50cm);
-    cvMatMul(FFW_50cm,GmW_50cm,SumW2_50cm);
-    cvMatMul(FFW_50cm,MW_50cm,SumW3_50cm);
-    cvMatMul(FFW_50cm,FW_50cm,SumW4_50cm);
-    cvMatMul(FFW_50cm,GW_50cm,SumW5_50cm);
-    cvMatMul(FFW_50cm,BW_50cm,SumW6_50cm);
-    printf("%f\n",cvGet2D(SumW1_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW2_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW3_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW4_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW5_50cm,0,0).val[0]);
-    printf("%f\n",cvGet2D(SumW6_50cm,0,0).val[0]);*/
+    /* FFW_50cm=cvCreateMat(1,40*40,CV_32FC1);
+     cvSetData(FFW_50cm,VisionStatus::FeatureFaceW_50cm,FFW_50cm->step);
+     GfW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(GfW_50cm,GrandfaDW_50cm,GfW_50cm->step);
+     GmW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(GmW_50cm,GrandmaDW_50cm,GmW_50cm->step);
+     MW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(MW_50cm,MotherDW_50cm,MW_50cm->step);
+     FW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(FW_50cm,FatherDW_50cm,FW_50cm->step);
+     GW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(GW_50cm,GirlDW_50cm,GW_50cm->step);
+     BW_50cm=cvCreateMat(40*40,1,CV_32FC1);
+     cvSetData(BW_50cm,BoyDW_50cm,BW_50cm->step);
+     SumW1_50cm=cvCreateMat(1,1,CV_32FC1);
+     SumW2_50cm=cvCreateMat(1,1,CV_32FC1);
+     SumW3_50cm=cvCreateMat(1,1,CV_32FC1);
+     SumW4_50cm=cvCreateMat(1,1,CV_32FC1);
+     SumW5_50cm=cvCreateMat(1,1,CV_32FC1);
+     SumW6_50cm=cvCreateMat(1,1,CV_32FC1);
+     cvMatMul(FFW_50cm,GfW_50cm,SumW1_50cm);
+     cvMatMul(FFW_50cm,GmW_50cm,SumW2_50cm);
+     cvMatMul(FFW_50cm,MW_50cm,SumW3_50cm);
+     cvMatMul(FFW_50cm,FW_50cm,SumW4_50cm);
+     cvMatMul(FFW_50cm,GW_50cm,SumW5_50cm);
+     cvMatMul(FFW_50cm,BW_50cm,SumW6_50cm);
+     printf("%f\n",cvGet2D(SumW1_50cm,0,0).val[0]);
+     printf("%f\n",cvGet2D(SumW2_50cm,0,0).val[0]);
+     printf("%f\n",cvGet2D(SumW3_50cm,0,0).val[0]);
+     printf("%f\n",cvGet2D(SumW4_50cm,0,0).val[0]);
+     printf("%f\n",cvGet2D(SumW5_50cm,0,0).val[0]);
+     printf("%f\n",cvGet2D(SumW6_50cm,0,0).val[0]);*/
 }
 
 

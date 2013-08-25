@@ -50,28 +50,29 @@ class Stra_Task : public StrategyModule
 
     } teAvtiveState;
 
-	typedef enum{ etSKSStop =0, etSKSEatBall ,etSKSThrowBall }teSKSBallState;
+    typedef enum { etSKSStop =0, etSKSEatBall ,etSKSThrowBall } teSKSBallState;
 
-	typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
+    typedef enum { etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish } teSKSState;
 
-	typedef struct{ bool Enable; 
-            	TCoordinate Door; 
-            	TCoordinate Center;
-            	TCoordinate LeftBottom;
-				TCoordinate RightTop; 
-            	short BallDirection; 
-    }tsRoom;
+    typedef struct {
+        bool Enable;
+        TCoordinate Door;
+        TCoordinate Center;
+        TCoordinate LeftBottom;
+        TCoordinate RightTop;
+        short BallDirection;
+    } tsRoom;
 
-	typedef enum{ etLivRM =0, etDinRM, etLib, etBedRM } teRoom;
+    typedef enum { etLivRM =0, etDinRM, etLib, etBedRM } teRoom;
 
-	typedef struct{
-		tsRoom Info[5];
-		teRoom SortList[5];
-		int Cnt; 
-		teSKSState SKSRoomState; 
-    }tsRoomInfo;
+    typedef struct {
+        tsRoom Info[5];
+        teRoom SortList[5];
+        int Cnt;
+        teSKSState SKSRoomState;
+    } tsRoomInfo;
 
-	tsRoomInfo Room;
+    tsRoomInfo Room;
 
     typedef enum {
 
@@ -83,13 +84,13 @@ class Stra_Task : public StrategyModule
 
 
 
-	typedef struct {
-		TCoordinate FrontPosition;
-		TCoordinate MemberPosition;
-		teRoom Room;
-	} tsMember;
+    typedef struct {
+        TCoordinate FrontPosition;
+        TCoordinate MemberPosition;
+        teRoom Room;
+    } tsMember;
 
-	tsMember Members[3];
+    tsMember Members[3];
 
 private:
     static Stra_Task* m_UniqueInstance;
@@ -142,7 +143,7 @@ private:
 
     int *PastScanLineData;
 
-	TCoordinate RoomVector;
+    TCoordinate RoomVector;
 
     TCoordinate CenterVector;
 

@@ -40,7 +40,7 @@ bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
     mMotors->ActivateProfileVelocityModeAll();
 
     if(dxl == NULL)
-	return false;
+        return false;
     dxl->GoToDegree(0);
     dxl->EndlessTurn(0);
     return true;
@@ -104,21 +104,21 @@ void StrategyManager::Process()
             (*i)->Process();
         }
     }
-    if(mMotors != NULL){    	
-    	mMotors->SetVelocityAll(
-			StrategyStatus::MotorSpeed[0],
-			StrategyStatus::MotorSpeed[1],
-			StrategyStatus::MotorSpeed[2]);
+    if(mMotors != NULL) {
+        mMotors->SetVelocityAll(
+            StrategyStatus::MotorSpeed[0],
+            StrategyStatus::MotorSpeed[1],
+            StrategyStatus::MotorSpeed[2]);
     }
-	
-    if(mDXL != NULL){
-		mDXL->GoToDegree(
-			StrategyStatus::AX12_Angle);
-		mDXL->EndlessTurn(
-			StrategyStatus::CatchBallMode);
-	}
 
-   if(m_IsLogging)
+    if(mDXL != NULL) {
+        mDXL->GoToDegree(
+            StrategyStatus::AX12_Angle);
+        mDXL->EndlessTurn(
+            StrategyStatus::CatchBallMode);
+    }
+
+    if(m_IsLogging)
     {
         for(int id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
         {
@@ -234,10 +234,10 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
             child->Attribute("x", &StrategyStatus::ChrgCen.x);
             child->Attribute("y", &StrategyStatus::ChrgCen.y);
         }
-		child=element->FirstChildElement("EndPosition");
-		if(child != NULL){
-			child->Attribute("x", &StrategyStatus::EndPosition.x);
-			child->Attribute("y", &StrategyStatus::EndPosition.y);						
+        child=element->FirstChildElement("EndPosition");
+        if(child != NULL) {
+            child->Attribute("x", &StrategyStatus::EndPosition.x);
+            child->Attribute("y", &StrategyStatus::EndPosition.y);
         }
 
     }

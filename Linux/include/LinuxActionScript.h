@@ -36,10 +36,10 @@ public:
     static int ScriptStart(const char* filename);
     static int PlayMP3Wait(const char* filename);
     static int PlayMP3(const char* filename);
-    static int GetPlayable(){
+    static int GetPlayable() {
         int status;
         return waitpid(mp3_pid, &status, 0);
-    } 
+    }
 };
 }
 

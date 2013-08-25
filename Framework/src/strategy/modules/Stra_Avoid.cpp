@@ -34,9 +34,9 @@ int Stra_Avoid::LoadXMLSettings (TiXmlElement* element) {
 
 void Stra_Avoid::Initialize(void)
 {
-	Lock_Avoid = 0;
-	AvoidLaserData = LocationStatus::LaserData; //given laserdata, scannum is 19
-	StrategyStatus::FlagAvoidEnable;	
+    Lock_Avoid = 0;
+    AvoidLaserData = LocationStatus::LaserData; //given laserdata, scannum is 19
+    StrategyStatus::FlagAvoidEnable;
 }
 void Stra_Avoid::Process(void)
 {
@@ -44,7 +44,7 @@ void Stra_Avoid::Process(void)
     {
         //this->ScanLine = NULL ;//Info->HdwInfo->LaserInfo.ScanArray;
 
-		AvoidLaserData = LocationStatus::LaserData; //given laserdata, scannum is 19
+        AvoidLaserData = LocationStatus::LaserData; //given laserdata, scannum is 19
 
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
 
@@ -155,24 +155,24 @@ TCoordinate Stra_Avoid::ScanLineAvoidFunction( TCoordinate Goal )
     return (Goal + break_vel);
 }
 
-TCoordinate Stra_Avoid::NewAvoidFunction( TCoordinate Goal ){
+TCoordinate Stra_Avoid::NewAvoidFunction( TCoordinate Goal ) {
 
-	vector<VecGaplist> AvoidVector;
-	TCoordinate Tmp;
-	double AvgDis = 0.0;
-	double AvoidDis = 40.0;
+    vector<VecGaplist> AvoidVector;
+    TCoordinate Tmp;
+    double AvgDis = 0.0;
+    double AvoidDis = 40.0;
 
-	for(int i = 3; i < AvoidLaserData.size() - 3; i++){
-		AvgDis = AvoidLaserData[i-3] + AvoidLaserData[i-2] + AvoidLaserData[i-1] + AvoidLaserData[i] + 	
-				 AvoidLaserData[i+3] + AvoidLaserData[i+2] + AvoidLaserData[i+1];
-		AvgDis /= 7;
+    for(int i = 3; i < AvoidLaserData.size() - 3; i++) {
+        AvgDis = AvoidLaserData[i-3] + AvoidLaserData[i-2] + AvoidLaserData[i-1] + AvoidLaserData[i] +
+                 AvoidLaserData[i+3] + AvoidLaserData[i+2] + AvoidLaserData[i+1];
+        AvgDis /= 7;
 
-		if(AvgDis < AvoidDis){
-			Tmp =(TCoordinate(ScanStartAngle + i*ScanScale) * AvgDis) + Goal;
-     		AvoidVector.push_back(VecGaplist(Tmp, Tmp.Angle()));
-        	sort(AvoidVector.begin(),AvoidVector.end());
-		}
-	}			
-	return AvoidVector[0].vec;
+        if(AvgDis < AvoidDis) {
+            Tmp =(TCoordinate(ScanStartAngle + i*ScanScale) * AvgDis) + Goal;
+            AvoidVector.push_back(VecGaplist(Tmp, Tmp.Angle()));
+            sort(AvoidVector.begin(),AvoidVector.end());
+        }
+    }
+    return AvoidVector[0].vec;
 }
 

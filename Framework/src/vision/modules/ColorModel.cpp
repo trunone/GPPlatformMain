@@ -52,43 +52,43 @@ int ColorModel::LoadXMLSettings(TiXmlElement* element) {
 }
 //----------------------------------
 
-void ColorModel::Process(){ 
-	unsigned char temp [VisionStatus::ImageWidth * VisionStatus::ImageHeight];
-	
-	cv::Mat hsv;
-	cv::Mat test;
-	cv::cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
-	unsigned char *tmp;
-	unsigned char *source;
-	int k=0;
-	for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++){
-		for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++){
-						
-			float hValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+0]/180.0;
-			float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1]/255.0;
-			float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2]/255.0;
-						
-			//------catch Blue
-			if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Blue(hValue, sValue, vValue)){					 
-				VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;	
-				
-			}else{
-				VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;	
-				
-			}
-			//------catch Green
-			if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Green(hValue, sValue, vValue)){
-				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
-			}else{
-				VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
-			}			
-			//------catch red
-			if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)){
-				VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
-			}else{
-				VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
-			}
-		}
-	}	
+void ColorModel::Process() {
+    unsigned char temp [VisionStatus::ImageWidth * VisionStatus::ImageHeight];
+
+    cv::Mat hsv;
+    cv::Mat test;
+    cv::cvtColor(VisionStatus::VideoFrame, hsv, CV_BGR2HSV);
+    unsigned char *tmp;
+    unsigned char *source;
+    int k=0;
+    for(int WidthCnt = 0; WidthCnt < VisionStatus::ImageWidth; WidthCnt++) {
+        for(int HeightCnt = 0; HeightCnt < VisionStatus::ImageHeight; HeightCnt++) {
+
+            float hValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+0]/180.0;
+            float sValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+1]/255.0;
+            float vValue = hsv.data[3*(HeightCnt * VisionStatus::ImageWidth + WidthCnt)+2]/255.0;
+
+            //------catch Blue
+            if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Blue(hValue, sValue, vValue)) {
+                VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
+
+            } else {
+                VisionStatus::Blue_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
+
+            }
+            //------catch Green
+            if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Green(hValue, sValue, vValue)) {
+                VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
+            } else {
+                VisionStatus::Green_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
+            }
+            //------catch red
+            if(ColorCheck::GetInstance()->HSV_hsvCheckRange_Red(hValue, sValue, vValue)) {
+                VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 1;
+            } else {
+                VisionStatus::Red_Ball[(HeightCnt * VisionStatus::ImageWidth + WidthCnt)] = 0;
+            }
+        }
+    }
 }
 

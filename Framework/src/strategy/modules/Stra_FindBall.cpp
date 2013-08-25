@@ -41,7 +41,7 @@ Stra_FindBall::~Stra_FindBall()
 
 void Stra_FindBall::Initialize(void)
 {
-	
+
 }
 
 //----------------------------------------------------------------------------
@@ -56,26 +56,26 @@ void Stra_FindBall::Process(void )
     {
         FlagRecognize = true;
 
-		if(StrategyStatus::Room.Cnt == DinRM)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::DinRM;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::Lib;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::BedRM;
-		
-		if(StrategyStatus::Room.Cnt == DinRM)
-        	RoomVector = StrategyStatus::DinRMCen - StrategyStatus::DinRMDoor;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			RoomVector = StrategyStatus::LibCen -StrategyStatus::LibDoor;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor;
-		
-		if(StrategyStatus::Room.Cnt == DinRM)
-        	CenterVector = StrategyStatus::DinRMCen - LocationStatus::Position;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			CenterVector = StrategyStatus::LibCen - LocationStatus::Position;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			CenterVector = StrategyStatus::BedRMCen - LocationStatus::Position;
+        if(StrategyStatus::Room.Cnt == DinRM)
+            RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::DinRM;
+        else if(StrategyStatus::Room.Cnt == Lib)
+            RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::Lib;
+        else if(StrategyStatus::Room.Cnt == BedRM)
+            RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::BedRM;
+
+        if(StrategyStatus::Room.Cnt == DinRM)
+            RoomVector = StrategyStatus::DinRMCen - StrategyStatus::DinRMDoor;
+        else if(StrategyStatus::Room.Cnt == Lib)
+            RoomVector = StrategyStatus::LibCen -StrategyStatus::LibDoor;
+        else if(StrategyStatus::Room.Cnt == BedRM)
+            StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor;
+
+        if(StrategyStatus::Room.Cnt == DinRM)
+            CenterVector = StrategyStatus::DinRMCen - LocationStatus::Position;
+        else if(StrategyStatus::Room.Cnt == Lib)
+            CenterVector = StrategyStatus::LibCen - LocationStatus::Position;
+        else if(StrategyStatus::Room.Cnt == BedRM)
+            CenterVector = StrategyStatus::BedRMCen - LocationStatus::Position;
 
         switch( FindBallState )
         {
@@ -91,11 +91,11 @@ void Stra_FindBall::Process(void )
 
             FlagEatBall      = false;
 
-			//need Flag
+            //need Flag
 
             FindBallState = etSearchBall;
 
-        break;
+            break;
 
         case etSearchBall:
 
@@ -111,7 +111,7 @@ void Stra_FindBall::Process(void )
                 SearchBall();
 
             }
-        break;
+            break;
 
         case etTurnToBall:
 
@@ -165,8 +165,8 @@ void Stra_FindBall::Process(void )
                 FlagEatBall == true;
             }
 
-        break;
-		case etEatBall:
+            break;
+        case etEatBall:
             if( Eat_Ball() )
             {
                 if( RoomCnt == Def_LivingRoom )
@@ -176,7 +176,7 @@ void Stra_FindBall::Process(void )
             }
             break;
             //----------------------------------------
-        case  etGotoCenter: 
+        case  etGotoCenter:
 
             if( NormalizeAngle(CenterVector.Angle() - LocationStatus::Handle ) > (45 * M_PI /180.0) )
 
@@ -202,7 +202,7 @@ void Stra_FindBall::Process(void )
 
             break;
 
-        case  etLeaveRoom: 
+        case  etLeaveRoom:
 
             StrategyStatus::Goal1 = (StrategyStatus::Room.Info[RoomCnt].Door - LocationStatus::Position) >> LocationStatus::Handle;
 
@@ -222,7 +222,7 @@ void Stra_FindBall::Process(void )
 
     //TestFindBall2->Label4->Caption =( Info->LocInfo->FlagEvaluatuonEnable == false) ? "No Evaluatuon": "Have";
 
-            
+
     StrategyStatus::FlagRecognize = FlagRecognize;
 }
 
@@ -398,56 +398,56 @@ int  Stra_FindBall::MiddleValue(int *Array, int Num)
 
 void  Stra_FindBall::RenewRoomCorner()
 {
-	if(StrategyStatus::Room.Cnt == DinRM){
-    	if( fabs(RoomVector.x) > fabs(RoomVector.y) ){
-        	if( RoomVector.x > 0)
-			{
-            	Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+    if(StrategyStatus::Room.Cnt == DinRM) {
+        if( fabs(RoomVector.x) > fabs(RoomVector.y) ) {
+            if( RoomVector.x > 0)
+            {
+                Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-            	Corner[2] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+                Corner[2] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-            	Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+                Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
-            	Corner[0] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-       		else
-        	{
-            	Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+                Corner[0] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+            }
+            else
+            {
+                Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-		        Corner[0] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+                Corner[0] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-		        Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+                Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
-		        Corner[2] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-		}
-    	else{
-        	if( RoomVector.y > 0)
-        	{
-		        Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+                Corner[2] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+            }
+        }
+        else {
+            if( RoomVector.y > 0)
+            {
+                Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-		        Corner[1] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+                Corner[1] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-		        Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+                Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
-		        Corner[3] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-        	else
-        	{
-		        Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+                Corner[3] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+            }
+            else
+            {
+                Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-		        Corner[3] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+                Corner[3] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-		        Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+                Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
-		        Corner[1] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-		}
-	}
-	else if(StrategyStatus::Room.Cnt == BedRM){
-	}
-	else if(StrategyStatus::Room.Cnt == Lib){
-	}
+                Corner[1] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+            }
+        }
+    }
+    else if(StrategyStatus::Room.Cnt == BedRM) {
+    }
+    else if(StrategyStatus::Room.Cnt == Lib) {
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -495,9 +495,9 @@ void  Stra_FindBall::AnalyseBall()
 
             else if(( 240-Info->ImgInfo->BallInfo.Cy ) < -CenterThreshold )
 
-            {     StrategyStatus::RadBallInfo.UPDown = -1;}                
+            {     StrategyStatus::RadBallInfo.UPDown = -1;}
 
-            else{ StrategyStatus::RadBallInfo.UPDown =  0;}                
+            else{ StrategyStatus::RadBallInfo.UPDown =  0;}
 
             CenterThreshold = StrategyStatus::RadBallInfo.UPDown == 0 ? Def_CenterThresholdHoldOn :Def_CenterThreshold;
 

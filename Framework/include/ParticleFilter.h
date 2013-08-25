@@ -8,7 +8,7 @@
 #include "ProbabilityEvaluation.h"
 #include "Normalrand.h"
 #define Def_ResamplingDis 30
-#define Def_ResamplingAngle 5 
+#define Def_ResamplingAngle 5
 #define Def_ParticlesNum 100
 
 #define MoveErrorRate   0.01       //+-50% error

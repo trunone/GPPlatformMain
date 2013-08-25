@@ -14,28 +14,30 @@ using namespace std;
 
 namespace Robot
 {
-	class Segmentation : public VisionModule
-	{
+class Segmentation : public VisionModule
+{
 
-	private:
-		static Segmentation* m_UniqueInstance;
-		
-		Segmentation();
+private:
+    static Segmentation* m_UniqueInstance;
 
-		
-	public:
-		
-		static Segmentation* GetInstance() { return m_UniqueInstance; }
-		
-		~Segmentation();
-		static int Xcenter,Ycenter;
-		
-		void Initialize();
-		void Segment(unsigned char *TMPWebcamBoolBuffer);
-		void DrawLine(unsigned char *WebcamBuffer);
+    Segmentation();
 
-		void Process();
-	};
+
+public:
+
+    static Segmentation* GetInstance() {
+        return m_UniqueInstance;
+    }
+
+    ~Segmentation();
+    static int Xcenter,Ycenter;
+
+    void Initialize();
+    void Segment(unsigned char *TMPWebcamBoolBuffer);
+    void DrawLine(unsigned char *WebcamBuffer);
+
+    void Process();
+};
 }
 
 #endif
