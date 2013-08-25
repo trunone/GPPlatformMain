@@ -49,13 +49,7 @@ namespace Robot
 		// task information
 		typedef enum{ etFree = 0, etOpen, etClosed, etObstacle, etFocus }teNodeStatus;
 		
-		typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
-
-		typedef enum{ etSKSStop =0, etSKSEatBall ,etSKSThrowBall }teSKSBallState;
-		
 		typedef enum{ etMotion =0, etAchieve }teAstarStatus;
-
-		typedef enum{ etLivRM =0, etDinRM, etLib, etBedRM }teRoom;
 
         typedef struct{ int Status;
 				TCoordinate StartPos;
@@ -67,20 +61,7 @@ namespace Robot
 			float Scale;
 			int Width,Height;
         }tsMapInfo;
-		
-		typedef struct{ bool Enable; 
-            	TCoordinate Door; 
-            	TCoordinate Center;
-            	TCoordinate LeftBottom;
-				TCoordinate RightTop; 
-            	short BallDirection; 
-        	}tsRoom;
-		
-		typedef struct{ tsRoom Info[5]; 
-			int Cnt; 
-			teSKSState SKSRoomState; 
-        	}tsRoomInfo;
-		
+			
 		typedef struct{ TCoordinate Position; 
 			float Angle; 
 			int Distance;
@@ -111,9 +92,9 @@ namespace Robot
 		static bool Flagdaughter;
 
 		static bool FlagRoomRenew;
-		static tsRoomInfo Room;
+
 		static int ThiefRoom;
-		static int RoomSort;		
+		static int RoomSort;
 		static int FindBallEn;		
 		static int LivRM, DinRM, Lib, BedRM;
 		static tsAStarPath AStarPath;

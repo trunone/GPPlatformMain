@@ -1,4 +1,20 @@
 <Config>
+  <DirectionObject>
+    <LivingRM_Sofa x="4" y="423" Width="80" Height="140" Angle="0" />
+    <LivingRM_Table x="78" y="508" Width="60" Height="90" Angle="90" />
+    <LivingRM_Cabinet x="141" y="576" Width="40" Height="140" Angle="90" />
+    <DiningRM_Table x="196" y="179" Width="80" Height="160" Angle="180" />
+    <DiningRM_Chair x="163" y="109" Width="45" Height="45" Angle="0" />
+    <Library_Desk x="302" y="515" Width="60" Height="120" Angle="180" />
+    <Library_Chair x="404" y="395" Width="45" Height="45" Angle="0" />
+    <Library_Cabinet x="476" y="596" Width="120" Height="40" Angle="180" />
+    <BedRM_Bed x="312" y="95" Width="180" Height="130" Angle="90" />
+    <DiningRM_door x="0" y="0" Width="0" Height="0" Angle="0" />
+    <BedRM_door x="0" y="0" Width="0" Height="0" Angle="0" />
+    <Trashcan x="470" y="362" Width="30" Height="30" Angle="0" />
+    <ChargeArea x="4" y="129" Width="50" Height="50" Angle="0" />
+    <EndArea x="249" y="392" Width="50" Height="50" Angle="0" />
+  </DirectionObject>
   <BasicConfig>
     <LivRMDoor x="240" y="225" />
     <DinRMDoor x="215" y="355" />
@@ -17,7 +33,14 @@
     <Stra_Avoid StartAngle_du="-90" ScanLineSize="61" ScanLineScale_du="3" SafeRange="70" SafeArc_D="60" SafeArc_A="60" AvoidConfig1="1.2" AvoidForce_du="130" FixDirect="0" />
     <Stra_PathPlan DetourConst="85" />
     <Stra_VelocityControl dis_max="100" dis_min="10" spd_max="200" spd_min="30" sita_max="1.047197552" sita_min="0.05" w_max="21" w_min="9" />
-    <Stra_Task LivRM="0" DinRM="1" BedRM="3" Lib="2" />
+    <Stra_Task>
+		<RoomList>
+		<LivRM/><DinRM/><BedRM/><Lib/>
+		</RoomList>
+		<Members x="0" y="0" room="Lib">
+		<Members x="0" y="0" room="Lib">
+		<Members x="0" y="0" room="Lib">
+	</Stra_Task>
   </StraConfig>
   <ColorModel>
     <Blue HueMax="0.7277778" HueMin="0.6111111" SaturationMax="1" SaturationMin="0.49" BrightnessMax="1" BrightnessMin="0.36" />

@@ -1,7 +1,6 @@
 #include "Stra_FindBall.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "Stra_Task.h"
 #define Def_AnglePrecision (5*M_PI/180.0)
 #define Def_MinTurnAngle (20*M_PI/180.0)
 #define Def_CenterThreshold 20
@@ -39,49 +38,75 @@ Stra_FindBall::~Stra_FindBall()
 
 }
 
+/*
+Stra_FindBall::Stra_FindBall()
+:TCommonUnit("./Strategy/StraConfig/Stra_FindBall.txt", 0 )
+{
+    this->Caption = "Stra_FindBall";
+    this->ParameterPath = "./Strategy/StraConfig/Stra_FindBall.txt";
+    this->ParameterReset();
+    CenterThreshold = Def_CenterThreshold;
+    FindBallState = etTurnToBall;
+    RoomCnt = 0;
+    PastScanLineData = new int[24];
+}
+*/
+/*
+string Stra_FindBall::ParameterReset(void)
+{
+    string str_ = this->Caption +" ParameterReset";
+    this->bNewParameter = false;
+    return str_;
+}
+*/
+//----------------------------------------------------------------------------
+
 void Stra_FindBall::Initialize(void)
 {
-	
+    /*
+        string str_ = this->Caption +" Initial";
+        CenterThreshold = Def_CenterThreshold;
+        Info->HdwInfo->MSLCommand.AX12_Angle = 35;
+        RoomCnt = 0;
+        FindBallState = etInitial;
+        SearchStep    = etLeftRight;
+        PastOdometer = aVector(0,0);
+        BallDirection = 0;
+        EatBallDirection = 0;
+        FlagEatBall = false;
+        FlagRecognize = true;
+        SearchBall_Initial();
+        Room2Step = 0;
+    */
 }
 
 //----------------------------------------------------------------------------
 
 void Stra_FindBall::Process(void )
 {
+    //int TmpCnt = 0;
     float AngleError;
 
-    AnalyseBall();	//need fix
+    //if( this->bNewParameter ) this->ParameterReset();
+    AnalyseBall();
 
     if(StrategyStatus::Room.SKSRoomState == StrategyStatus::etSKSCatchBall)
     {
         FlagRecognize = true;
 
-		if(StrategyStatus::Room.Cnt == DinRM)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::DinRM;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::Lib;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			RoomCnt = StrategyStatus::Room.Cnt = Stra_Task::BedRM;
-		
-		if(StrategyStatus::Room.Cnt == DinRM)
-        	RoomVector = StrategyStatus::DinRMCen - StrategyStatus::DinRMDoor;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			RoomVector = StrategyStatus::LibCen -StrategyStatus::LibDoor;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			StrategyStatus::BedRMCen - StrategyStatus::BedRMDoor;
-		
-		if(StrategyStatus::Room.Cnt == DinRM)
-        	CenterVector = StrategyStatus::DinRMCen - LocationStatus::Position;
-		else if(StrategyStatus::Room.Cnt == Lib)
-			CenterVector = StrategyStatus::LibCen - LocationStatus::Position;
-		else if(StrategyStatus::Room.Cnt == BedRM)
-			CenterVector = StrategyStatus::BedRMCen - LocationStatus::Position;
+        RoomCnt = StrategyStatus::Room.Cnt;
+
+        RoomVector = StrategyStatus::Room.Info[RoomCnt].Center - StrategyStatus::Room.Info[RoomCnt].Door;
+
+        CenterVector = StrategyStatus::Room.Info[RoomCnt].Center - LocationStatus::Position;
 
         switch( FindBallState )
         {
         case etInitial:
 
-            RenewRoomCorner();	//need fix
+            StrategyStatus::AX12_Angle = 35;
+
+            RenewRoomCorner();
 
             SearchBall_Initial();
 
@@ -91,17 +116,65 @@ void Stra_FindBall::Process(void )
 
             FlagEatBall      = false;
 
-			//need Flag
+            switch(RoomCnt)
+            {
+            case Def_LivingRoom:
+            case Def_Library:
 
-            FindBallState = etSearchBall;
+            case Def_DiningRoom:
+            case Def_BedRoom:
 
-        break;
+                FindBallState = etSearchBall;
 
-        case etSearchBall:
+                break;
 
-            if( StrategyStatus::FlagMember == true  )
+            }
+
+            break;
+
+        case etEnterRoom:
+
+            StrategyStatus::Goal1 = CenterVector >> LocationStatus::Handle;
+
+            StrategyStatus::FixSpeed = Def_EnterDoorSpeed;
+
+            //---------------------------------------------------------------
+
+            AX12_TakeBall();
+
+            if( StrategyStatus::RadBallInfo.FindBallCnt > 0 &&    // ¬Ýš£²y
+
+                    StrategyStatus::RadBallInfo.Distance < Def_EnterDoorEatDistance   &&    // ²yŠbŠY²y¶ZÂ÷€º
+
+                    fabs(StrategyStatus::RadBallInfo.Angle ) < Def_EnterDoorEatAngle )     // ²yŠbŠY²yš€«×€º
+
             {
                 FindBallState = etTurnToBall;
+
+            }
+
+            if( CenterVector.Length() < 10 )
+            {
+                if(StrategyStatus::RadBallInfo.FindBallCnt > 0 )
+
+                    FindBallState = etTurnToBall;
+
+                else
+
+                    FindBallState = etSearchBall;
+            }
+
+            break;
+
+            //----------------------------------------
+
+        case etSearchBall:   //  §ä²y
+
+            if( StrategyStatus::RadBallInfo.FindBallCnt > 0 )
+            {
+                FindBallState = etTurnToBall;
+
+                AX12_TakeBall();
 
                 TurnToBall();
             }
@@ -111,13 +184,17 @@ void Stra_FindBall::Process(void )
                 SearchBall();
 
             }
-        break;
+            break;
 
-        case etTurnToBall:
+            //----------------------------------------
+
+        case etTurnToBall:  //  ÂàŠV²y
+
+            AX12_TakeBall();
 
             TurnToBall();
 
-            if( StrategyStatus::FlagMember == false && FlagEatBall == false)
+            if( StrategyStatus::RadBallInfo.FindBallCnt == 0 && FlagEatBall == false)
             {
                 FindBallState = etSearchBall;
 
@@ -136,10 +213,12 @@ void Stra_FindBall::Process(void )
 
             //----------------------------------------
 
-        case etApproachBall:
+        case etApproachBall: //  Ÿaªñ²y
+
+            AX12_TakeBall();
 
             Approach_Ball();
-            if(StrategyStatus::FlagMember == false && FlagEatBall == false)
+            if(StrategyStatus::RadBallInfo.FindBallCnt == 0 && FlagEatBall == false)
             {
 
                 FindBallState = etSearchBall;
@@ -165,8 +244,9 @@ void Stra_FindBall::Process(void )
                 FlagEatBall == true;
             }
 
-        break;
-		case etEatBall:
+            break;
+            //----------------------------------------
+        case etEatBall:    //  ŠY±Œ²y
             if( Eat_Ball() )
             {
                 if( RoomCnt == Def_LivingRoom )
@@ -176,7 +256,9 @@ void Stra_FindBall::Process(void )
             }
             break;
             //----------------------------------------
-        case  etGotoCenter: 
+        case  etGotoCenter:  //  Š^€€€ßÂI
+
+            //---- AdjustJun  šÌ·ÓÂ¶Šæ­yžñ°Ÿ²Ÿ
 
             if( NormalizeAngle(CenterVector.Angle() - LocationStatus::Handle ) > (45 * M_PI /180.0) )
 
@@ -202,7 +284,9 @@ void Stra_FindBall::Process(void )
 
             break;
 
-        case  etLeaveRoom: 
+        case  etLeaveRoom:  //  ªðŠ^ªù€f
+
+            //--- Â÷¶}©Ð¶¡¡AšÏ¥Î©T©w³t«×
 
             StrategyStatus::Goal1 = (StrategyStatus::Room.Info[RoomCnt].Door - LocationStatus::Position) >> LocationStatus::Handle;
 
@@ -222,8 +306,8 @@ void Stra_FindBall::Process(void )
 
     //TestFindBall2->Label4->Caption =( Info->LocInfo->FlagEvaluatuonEnable == false) ? "No Evaluatuon": "Have";
 
-            
     StrategyStatus::FlagRecognize = FlagRecognize;
+    //printf("FindBall done");
 }
 
 //----------------------------------------------------------------------------
@@ -258,6 +342,11 @@ void  Stra_FindBall::Approach_Ball()
 
 bool  Stra_FindBall::Eat_Ball()
 {
+
+    //if( LocationStatus::FlagNewFeedback ){
+
+    // PastOdometer = PastOdometer + TCoordinate::aVector(Share_Info->HdwInfo->NIOSFeedback.ShiftX,Share_Info->HdwInfo->NIOSFeedback.ShiftY );
+    //}
     static bool Dir_Lock = false;
 
     int AddCornerRange = ( Dir_Lock )? 20 : 0;
@@ -276,6 +365,28 @@ bool  Stra_FindBall::Eat_Ball()
 
     }
     else return true;
+}
+
+//----------------------------------------------------------------------------
+
+void  Stra_FindBall::AX12_TakeBall()
+{   /*
+       if( Info->ImgInfo->BallInfo.Cy != -999 )
+       {
+           if( StrategyStatus::RadBallInfo.UPDown == 1)
+
+               Info->HdwInfo->MSLCommand.AX12_Angle++ ;
+
+           else if( StrategyStatus::RadBallInfo.UPDown == -1 )
+
+               Info->HdwInfo->MSLCommand.AX12_Angle--;
+
+           if( Info->HdwInfo->MSLCommand.AX12_Angle > 41 ) Info->HdwInfo->MSLCommand.AX12_Angle = 41;
+
+           if( Info->HdwInfo->MSLCommand.AX12_Angle < 32 ) Info->HdwInfo->MSLCommand.AX12_Angle = 32;
+
+       }
+    */
 }
 
 //----------------------------------------------------------------------------
@@ -364,7 +475,7 @@ int  Stra_FindBall::DisTransfer(int AX12_CMD)
 
 //----------------------------------------------------------------------------
 
-int  Stra_FindBall::MiddleValue(int *Array, int Num)
+int  Stra_FindBall::MiddleValue(int *Array, int Num)    //€€­È
 
 {
 
@@ -397,57 +508,67 @@ int  Stra_FindBall::MiddleValue(int *Array, int Num)
 //----------------------------------------------------------------------------
 
 void  Stra_FindBall::RenewRoomCorner()
+
 {
-	if(StrategyStatus::Room.Cnt == DinRM){
-    	if( fabs(RoomVector.x) > fabs(RoomVector.y) ){
-        	if( RoomVector.x > 0)
-			{
-            	Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-            	Corner[2] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+    if( fabs(RoomVector.x) > fabs(RoomVector.y) )
 
-            	Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+        if( RoomVector.x > 0)
 
-            	Corner[0] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-       		else
-        	{
-            	Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+        {
 
-		        Corner[0] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+            Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-		        Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[2] = StrategyStatus::Room.Info[RoomCnt].RightTop;
 
-		        Corner[2] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-		}
-    	else{
-        	if( RoomVector.y > 0)
-        	{
-		        Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+            Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
 
-		        Corner[1] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+            Corner[0] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
 
-		        Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+        }
 
-		        Corner[3] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-        	else
-        	{
-		        Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+        else
 
-		        Corner[3] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+        {
 
-		        Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+            Corner[1] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
 
-		        Corner[1] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
-        	}
-		}
-	}
-	else if(StrategyStatus::Room.Cnt == BedRM){
-	}
-	else if(StrategyStatus::Room.Cnt == Lib){
-	}
+            Corner[0] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+
+            Corner[3] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+
+            Corner[2] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+
+        }
+
+    else
+
+        if( RoomVector.y > 0)
+
+        {
+
+            Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+
+            Corner[1] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+
+            Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+
+            Corner[3] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+
+        }
+
+        else
+
+        {
+
+            Corner[0] = aVector(StrategyStatus::Room.Info[RoomCnt].LeftBottom.x, StrategyStatus::Room.Info[RoomCnt].RightTop.y);
+
+            Corner[3] = StrategyStatus::Room.Info[RoomCnt].RightTop;
+
+            Corner[2] = aVector(StrategyStatus::Room.Info[RoomCnt].RightTop.x, StrategyStatus::Room.Info[RoomCnt].LeftBottom.y);
+
+            Corner[1] = StrategyStatus::Room.Info[RoomCnt].LeftBottom;
+        }
 }
 
 //----------------------------------------------------------------------------
@@ -485,26 +606,40 @@ void  Stra_FindBall::AnalyseBall()
 
         {
 
+            //----- ¬ö¿ýš€«×
+
             StrategyStatus::RadBallInfo.Angle = Info->ImgInfo->BallInfo.Angle * Def_DuToPI;
 
             BallDirection = (StrategyStatus::RadBallInfo.Angle > 0 )? 1 : -1;
 
             if( ( 240-Info->ImgInfo->BallInfo.Cy ) > CenterThreshold )
 
-            {     StrategyStatus::RadBallInfo.UPDown =  1;}
+            {     StrategyStatus::RadBallInfo.UPDown =  1;}                //AX12©R¥OŒW¥[  ©¹€U²Ÿ°Ê(Šb€€€ßœu€U€è)
 
             else if(( 240-Info->ImgInfo->BallInfo.Cy ) < -CenterThreshold )
 
-            {     StrategyStatus::RadBallInfo.UPDown = -1;}                
+            {     StrategyStatus::RadBallInfo.UPDown = -1;}                //AX12©R¥OŽî€Ö  ©¹€W²Ÿ°Ê(Šb€€€ßœu€W€è)
 
-            else{ StrategyStatus::RadBallInfo.UPDown =  0;}                
+            else{ StrategyStatus::RadBallInfo.UPDown =  0;}                //AX12€£°Ê      Šb€€€ßŠìžm
+
+
+
+            //----------- Á×§KŸ_Àúªº»Ö­È 40 : 20
 
             CenterThreshold = StrategyStatus::RadBallInfo.UPDown == 0 ? Def_CenterThresholdHoldOn :Def_CenterThreshold;
+
+
+
+            //------------ ·í²yŠbµe­±€€¶¡®É ------------------------------------
 
             if(StrategyStatus::RadBallInfo.UPDown == 0)
             {
 
+                //-- ²yŠb³õŠaªº€èŠV
+
                 float BallAngle = LocationStatus::Handle + StrategyStatus::RadBallInfo.Angle;
+
+                //-- ²yªº¶ZÂ÷
 
                 StrategyStatus::RadBallInfo.Distance = DisTransfer( Info->HdwInfo->MSLCommand.AX12_Angle );
 
@@ -552,6 +687,8 @@ void  Stra_FindBall::SearchBall()
     switch(SearchStep)
 
     {
+
+        //---------------------------------------------------------------------------
 
     case etLeftRight:
 
@@ -658,7 +795,7 @@ void  Stra_FindBall::SearchBall()
 
         }
 
-        break;
+        break; //*/
 
         //---------------------------------------------------------------------------
 

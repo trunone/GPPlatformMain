@@ -50,6 +50,29 @@ class Stra_Task : public StrategyModule
 
     } teAvtiveState;
 
+	typedef enum{ etSKSStop =0, etSKSEatBall ,etSKSThrowBall }teSKSBallState;
+
+	typedef enum{ etSKSMoving = 0, etSKSCatchBall, etSKSMakeSound, etCatchFinish }teSKSState;
+
+	typedef struct{ bool Enable; 
+            	TCoordinate Door; 
+            	TCoordinate Center;
+            	TCoordinate LeftBottom;
+				TCoordinate RightTop; 
+            	short BallDirection; 
+    }tsRoom;
+
+	typedef enum{ etLivRM =0, etDinRM, etLib, etBedRM } teRoom;
+
+	typedef struct{
+		tsRoom Info[5];
+		teRoom SortList[5];
+		int Cnt; 
+		teSKSState SKSRoomState; 
+    }tsRoomInfo;
+
+	tsRoomInfo Room;
+
     typedef enum {
 
         etGRAStar = 0,
@@ -58,10 +81,18 @@ class Stra_Task : public StrategyModule
 
     } teGeneralRoomState;
 
+
+
+	typedef struct {
+		TCoordinate FrontPosition;
+		TCoordinate MemberPosition;
+		teRoom Room;
+	} tsMember;
+
+	tsMember Members[3];
+
 private:
     static Stra_Task* m_UniqueInstance;
-
-    //static Vector3D vector;
 
     Stra_Task();
 
@@ -76,6 +107,8 @@ private:
     bool TurnToAngle( float GoalAngle );
 
     bool TouchButton();
+
+    bool Backward();
 
     //=============
 
@@ -109,13 +142,11 @@ private:
 
     int *PastScanLineData;
 
-    int LivRM;
+	TCoordinate RoomVector;
 
-    int DinRM;
+    TCoordinate CenterVector;
 
-    int Lib;
-
-    int BedRM;
+    int MemberIndex;
 
 public:
     //---------loadxml----------

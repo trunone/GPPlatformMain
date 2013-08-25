@@ -239,6 +239,7 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
 			child->Attribute("x", &StrategyStatus::EndPosition.x);
 			child->Attribute("y", &StrategyStatus::EndPosition.y);						
         }
+
     }
     else
         return 1;
