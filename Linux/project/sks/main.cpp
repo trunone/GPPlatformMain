@@ -8,8 +8,11 @@
 //#define ENABLE_VISION_FACEDETECTION
 #define ENABLE_LOCATION
 
-//#define NETWORK_INTERFACE
-#define INTERACTIVE_INTERFACE
+//#define ENABLE_SIMULATOR
+//#define ENABLE_MANUAL
+
+#define NETWORK_INTERFACE
+//#define INTERACTIVE_INTERFACE
 
 #include <stdio.h>
 #include <unistd.h>
@@ -202,7 +205,6 @@ int main(void)
     signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
-
     motors.OpenDeviceAll();
 
     dxl.OpenDevice(0);
@@ -257,24 +259,31 @@ int main(void)
 #endif
     //-----------------------------------------------------------------------------------//
 #ifdef ENABLE_STRATEGY
+
+#ifdef ENABLE_SIMULATOR
+	if(StrategyManager::GetInstance()->Initialize() == false){
+		printf("Fail to initialize Strategy Manager!\n");
+		return 1;
+	}
+#else
     if(StrategyManager::GetInstance()->Initialize(&motors, &dxl) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
     }
+#endif
 
+#ifndef ENABLE_MANUAL
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
-
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_FindBall::GetInstance());
-
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
+    
+	StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_PathPlan::GetInstance());
 
-    //StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
+   // StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Avoid::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_VelocityControl::GetInstance());
-
+#endif
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Motion::GetInstance());
 
     //StrategyManager::GetInstance()->SetEnable(true);

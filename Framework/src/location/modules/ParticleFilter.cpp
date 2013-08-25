@@ -35,25 +35,25 @@ void ParticleFilter::Process( void )
 
     //printf("Best: %f, %f, %f\n", BestParticle.Position.x, BestParticle.Position.y, BestParticle.Direction);
     //---- 計算蒙地卡羅粒子感測修正 (當總位移量 或 總旋轉量 超過設定數值後執行)
-    //if (PastMovement > Def_ResamplingDis|| fabs(PastDirection) > Def_ResamplingAngle ||
-    //    LocationStatus::FlagCoerceEvaluatuon  )
-    if(true)
-    {
-        if(LocationStatus::FlagEvaluatuonEnable || LocationStatus::FlagCoerceEvaluatuon)
-        {
-            // Correction Step of PF
-            EvaluatuonParticles();
-            ResamplingParticles();
+    if (PastMovement > Def_ResamplingDis|| fabs(PastDirection) > Def_ResamplingAngle ||
+        LocationStatus::FlagCoerceEvaluatuon  )
+  // if(true)
+   {
+       if(LocationStatus::FlagEvaluatuonEnable || LocationStatus::FlagCoerceEvaluatuon)
+       {
+           // Correction Step of PF
+           EvaluatuonParticles();
+           ResamplingParticles();
 
-            PastMovement  = 0;
-            PastDirection = 0;
-        }
-    }
+           PastMovement  = 0;
+           PastDirection = 0;
+       }
+   }
     LocationStatus::Position = BestParticle.Position;
     LocationStatus::Handle   = BestParticle.Direction;
     LocationStatus::Position.x -= Def_LaserGap * cos(LocationStatus::Handle);
     LocationStatus::Position.y -= Def_LaserGap * sin(LocationStatus::Handle);
-    //getchar();
+ //   printf("x:%f y:%f w:%f \n",LocationStatus::Position.x,  LocationStatus::Position.y,LocationStatus::Handle);
 }
 
 void ParticleFilter::InitialParticleFilter() {
@@ -84,7 +84,7 @@ string ParticleFilter::InitialParticles(int ParticlesNum)
             //tempParticle.Position.y = (ProbEvaluation::GetInstance()->VirtualLineMap.rows)*((float)rand()/(float)RAND_MAX) ;
             tempParticle.Position.y = 20*((float)rand()/(float)RAND_MAX)-10+LocationStatus::Position.y;
             //tempParticle.Position.y = LocationStatus::Position.y;
-            tempParticle.Direction  = M_PI * ((float)rand()/(float)RAND_MAX) - M_PI;
+            tempParticle.Direction  = M_PI * ((float)rand()/(float)RAND_MAX) -0.5* M_PI;
             //tempParticle.Direction = LocationStatus::Handle;
             tempParticle.Probabilty = 1.0/ParticlesNum;
 
@@ -106,6 +106,8 @@ string ParticleFilter::PredictionParticles()
     i_size = (int)Particles.size();
     if(i_size <=0 ) return "ParticleFilter Prediction Failed" ;
     // ¨½µ{­p¸ê°T -> ¼Ë¥»¹w´ú
+    TCoordinate TmpBest;
+    TmpBest = BestParticle.Position;
     BestParticle.Position  = BestParticle.Position + (LocationStatus::FB_Movement.Position<< BestParticle.Direction) ;
     BestParticle.Direction += LocationStatus::FB_Movement.Direction;
     for(i=0 ; i< i_size; i++) {

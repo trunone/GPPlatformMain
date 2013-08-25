@@ -38,7 +38,7 @@ void Stra_VelocityControl::Initialize(void)
 }
 
 void Stra_VelocityControl::Process(void)
-{
+{     
 #ifndef Def_OMNIDIRECTION_SYSTEM
 
     if( StrategyStatus::MotionDistance != 0 )
@@ -69,19 +69,23 @@ void Stra_VelocityControl::Process(void)
             {
 
                 StrategyStatus::Direction = StrategyStatus::MotionAngle;
-                //printf("%f\n",StrategyStatus::Direction);
 
             }
         }
 
     }
+	else if( StrategyStatus::MotionDistance == 0 && StrategyStatus::MotionAngle == 0 )
+	{
+		StrategyStatus::MotionDistance = 0;
+		StrategyStatus::MotionAngle = 0;
+		StrategyStatus::Direction = 0;
+	}
 
 #endif
 
     //------------------------------------------------------------------------
 
     VelocityTransform( StrategyStatus::MotionDistance, StrategyStatus::MotionAngle, StrategyStatus::Direction );
-
 }
 
 
@@ -92,6 +96,10 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
 
     TCoordinate Vector( dTargetCutAng );
 
+    double Speed = 0;
+
+    if( dTargetDis == 0){
+
     //printf("%f\n",Vector.x);
     //printf("%f\n",Vector.y);
 
@@ -100,7 +108,7 @@ void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetC
     if( dTargetDis == 0)
 
         Speed = 0;
-
+	}
     else if( dTargetDis > this->DistanceMax )
 
         Speed = SpeedMax;

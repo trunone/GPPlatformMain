@@ -48,7 +48,6 @@ class Stra_Task : public StrategyModule
 
         etMakeSoundMove
 
-
     } teAvtiveState;
 
     typedef enum {

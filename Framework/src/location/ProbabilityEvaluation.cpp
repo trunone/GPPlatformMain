@@ -99,7 +99,6 @@ double ProbEvaluation::GetProbability(int x,int y ,float angle)
 #ifdef DRAW_PARTICLE_SCANLINE
     //Mat tmpMat = cvLoadImage("Image.jpg", 0);
 #endif
-
     vector<long>::iterator it = LocationStatus::LaserData.end()-1;
     for(int i=0; i<ScanLinesNum ; i++) {
         double ScanLine = *it/10.0;

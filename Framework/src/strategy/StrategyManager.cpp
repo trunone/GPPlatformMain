@@ -118,8 +118,7 @@ void StrategyManager::Process()
 			StrategyStatus::CatchBallMode);
 	}
 
-
-    if(m_IsLogging)
+   if(m_IsLogging)
     {
         for(int id = 1; id <= mMotors->NUMBER_OF_MOTORS; id++)
         {
@@ -234,6 +233,11 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
         if(child != NULL) {
             child->Attribute("x", &StrategyStatus::ChrgCen.x);
             child->Attribute("y", &StrategyStatus::ChrgCen.y);
+        }
+		child=element->FirstChildElement("EndPosition");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::EndPosition.x);
+			child->Attribute("y", &StrategyStatus::EndPosition.y);						
         }
     }
     else
