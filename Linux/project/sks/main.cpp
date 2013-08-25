@@ -338,7 +338,7 @@ int main(void)
                 cout << "[Disconnected]" << endl;
             }
         }
-    }
+	}
     catch ( LinuxSocketException& e )
     {
         cout << "Exception was caught:" << e.description() << "\nExiting.\n";

@@ -26,7 +26,9 @@ unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::Im
 int VisionStatus::Xmax(0),VisionStatus::Xmin(0),VisionStatus::Ymax(0),VisionStatus::Ymin(0);
 int VisionStatus::PointCnt(0);
 //-----door number status
-int VisionStatus::door_status(0);
+int VisionStatus::door_red(0);
+int VisionStatus::door_green(0);
+int VisionStatus::door_blue(0);
 
 //-----ball posistion
 int VisionStatus::Red_X(0);
@@ -40,7 +42,7 @@ VisionStatus::ColorRange VisionStatus::hsvBlueRange = {1.0, 0.0, 1.0, 0.0, 1.0, 
 
 VisionStatus::ColorRange VisionStatus::hsvRedRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
 
-VisionStatus::ColorRange VisionStatus::hsvGreenRange = {1.0, 0.0, 1.0, 0.0, 1.0, 0.0};
+VisionStatus::ColorRange VisionStatus::hsvGreenRange = {0.51, 0.15, 1.0, 0.0, 1.0, 0.0};
 
 //------ FaceData ----------------------------------------------------------
 //------ FaceDetection ----------------------------------------------------------
