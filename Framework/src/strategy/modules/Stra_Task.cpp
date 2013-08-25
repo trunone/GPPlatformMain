@@ -95,12 +95,6 @@ void Stra_Task::Process(void)
     //------face det part---------
     TCoordinate Livfacefront = aVector(StrategyStatus::LivRMDoor.x, StrategyStatus::LivRMDoor.y);
     TCoordinate Livface = aVector(StrategyStatus::LivRMDoor.x, 0);
-    TCoordinate Dinfacefront = aVector(70, StrategyStatus::DinRMDoor.y);
-    TCoordinate Dinface = aVector(0, StrategyStatus::DinRMDoor.y);
-    TCoordinate Bedfacefront = aVector(StrategyStatus::BedRMDoor.x + 60, StrategyStatus::BedRMDoor.y);
-    TCoordinate Bedface = aVector(400, 500);
-    TCoordinate Libfacefront = aVector(StrategyStatus::LibDoor.x - 50, StrategyStatus::LibDoor.y);
-    TCoordinate Libface = aVector(400, 160);
     //------------------------------
     if( StrategyStatus::FlagRoomRenew == true )
     {
