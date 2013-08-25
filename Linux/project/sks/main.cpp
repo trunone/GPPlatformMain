@@ -3,10 +3,10 @@
  *
  *   Author: Wu Chih-En
  */
-#define ENABLE_STRATEGY
-//#define ENABLE_VISION
-//#define ENABLE_VISION_FACEDETECTION
-#define ENABLE_LOCATION
+//#define ENABLE_STRATEGY
+#define ENABLE_VISION
+#define ENABLE_VISION_FACEDETECTION
+//#define ENABLE_LOCATION
 
 //#define ENABLE_SIMULATOR
 //#define ENABLE_MANUAL
@@ -236,7 +236,7 @@ int main(void)
     VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
 #endif
 
-    VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+   // VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();

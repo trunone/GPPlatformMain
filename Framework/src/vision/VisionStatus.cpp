@@ -49,8 +49,10 @@ VisionStatus::ColorRange VisionStatus::hsvGreenRange = {0.51, 0.15, 1.0, 0.0, 1.
 
 
 //------ ImgProcess -----------------------------------------------------------
-Mat VisionStatus::Favg_Face;
-float VisionStatus::FeatureFaceW[40*40];
+Mat VisionStatus::Favg_Face_20cm;
+float VisionStatus::FeatureFaceW_20cm[40*40];
+Mat VisionStatus::Favg_Face_50cm;
+float VisionStatus::FeatureFaceW_50cm[40*40];
 float VisionStatus::cvGet2D_1(0);
 float VisionStatus::cvGet2D_2(0);
 float VisionStatus::cvGet2D_3(0);
@@ -65,12 +67,12 @@ float VisionStatus::cvGet2D_11(0);
 float VisionStatus::cvGet2D_12(0);
 
 //------ ImgProcess ----------------------------------------------------------
-int VisionStatus::counter1(0);
-int VisionStatus::counter2(0);
-int VisionStatus::counter3(0);
-int VisionStatus::counter4(0);
-int VisionStatus::counter5(0);
-int VisionStatus::counter6(0);
-int VisionStatus::counter7(0);
+int VisionStatus::Grandfa_counter(0);
+int VisionStatus::Grandma_counter(0);
+int VisionStatus::Mother_counter(0);
+int VisionStatus::Father_counter(0);
+int VisionStatus::Girl_counter(0);
+int VisionStatus::Boy_counter(0);
+int VisionStatus::Thief_counter(0);
 
 

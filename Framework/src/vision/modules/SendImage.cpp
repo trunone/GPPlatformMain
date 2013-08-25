@@ -14,7 +14,7 @@ void SendImage::Initialize() {
 }
 
 void SendImage::Process() {
-    FILE *file_fd=fopen("1.jpg","r+");
+    FILE *file_fd=fopen("Thief.jpg","r+");
     unsigned long pos=ftell(file_fd);
     fseek(file_fd,0L,SEEK_END);
     unsigned long  size=ftell(file_fd);
