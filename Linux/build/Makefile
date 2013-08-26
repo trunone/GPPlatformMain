@@ -36,6 +36,7 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
 		../../Framework/src/vision/modules/Segmentation.o\
 		../../Framework/src/vision/modules/Doornumber_detect.o\
         ../../Framework/src/vision/modules/FaceDetection.o\
+	../../Framework/src/vision/modules/FaceDetection_Stage2.o\
 		../../Framework/src/vision/modules/SendImage.o\
 		../../Framework/src/vision/modules/ColorModel.o\
 		../../Framework/src/vision/VisionManager.o\

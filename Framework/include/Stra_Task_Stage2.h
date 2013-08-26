@@ -129,8 +129,6 @@ private:
 
     bool FlagTaskFinish;
 
-	bool FlagThief;
-
     int ActiveState;
 
     int GotoRoomStep;

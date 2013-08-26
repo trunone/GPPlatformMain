@@ -57,6 +57,7 @@ bool StrategyStatus::SimulatorFlag;
 //----------Test int----------------------------------------------------
 
 int StrategyStatus::FamilyMember;
+bool StrategyStatus::FlagThief;
 
 //---------- Strategy --------------------------------------------------
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector

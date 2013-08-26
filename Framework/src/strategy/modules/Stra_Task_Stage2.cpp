@@ -7,6 +7,7 @@
 
 #include "Stra_Task_Stage2.h"
 #include "VisionStatus.h"
+#include "StrategyStatus.h"
 #include "LinuxActionScript.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -266,7 +267,7 @@ void Stra_Task_Stage2::Process(void)
 					SetAStar( StrategyStatus::BedRMAStarPos );
 				else if( VisionStatus::Flagdoor_blue == true )
 					SetAStar( StrategyStatus::LibAStarPos );
-			if( FlagThief == true ){
+			if( StrategyStatus::FlagThief == true ){
 				ThiefEvent();
 			}
 			break;
@@ -278,7 +279,7 @@ void Stra_Task_Stage2::Process(void)
                 GoalAngle = ( aVector(565,325) - LocationStatus::Position ).Angle();
             else if( VisionStatus::Flagdoor_blue == true )
             	GoalAngle = ( aVector(345,175) - LocationStatus::Position ).Angle();
-			if( FlagThief == true ){
+			if( StrategyStatus::FlagThief == true ){
 				ThiefEvent();
 			}
 			break;
@@ -290,7 +291,7 @@ void Stra_Task_Stage2::Process(void)
                 GoalAngle = ( aVector(345,565) - LocationStatus::Position ).Angle();
             else if( VisionStatus::Flagdoor_blue == true )
             	GoalAngle = ( aVector(565,35) - LocationStatus::Position ).Angle();
-			if( FlagThief == true ){
+			if( StrategyStatus::FlagThief == true ){
 				ThiefEvent();
 			}
 			break;*/

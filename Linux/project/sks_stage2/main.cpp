@@ -4,8 +4,8 @@
  *   Author: Wu Chih-En
  */
 #define ENABLE_STRATEGY
-//#define ENABLE_VISION
-//#define ENABLE_VISION_FACEDETECTION
+#define ENABLE_VISION
+#define ENABLE_VISION_FACEDETECTION_STAGE2
 //#define ENABLE_LOCATION
 
 #define ENABLE_SIMULATOR
@@ -232,8 +232,8 @@ int main(void)
 
     VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
-#ifdef ENABLE_VISION_FACEDETECTION
-    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection::GetInstance());
+#ifdef ENABLE_VISION_FACEDETECTION_STAGE2
+    VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection_Stage2::GetInstance());
 #endif
 
     // VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
