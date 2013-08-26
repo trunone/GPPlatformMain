@@ -22,9 +22,9 @@
             <LivRM/><DinRM/><BedRM/><Lib/>
         </RoomList>
         <!--<Members x="240" y="225" Member_x="240" Member_y="0" room="LivRM">-->
-        <Members x="70" y="355" Member_x="0" Member_y="355" room="DinRM">
-        <Members x="465" y="345" Member_x="400" Member_y="500" room="BedRM">
-        <Members x="395" y="165" Member_x="400" Member_y="160" room="Lib">
+        <Members x="70" y="355" Member_x="0" Member_y="355" room="DinRM" />
+        <Members x="465" y="345" Member_x="400" Member_y="500" room="BedRM" />
+        <Members x="395" y="165" Member_x="400" Member_y="160" room="Lib" />
      </Stra_Task>
   </StraConfig>
   <ColorModel>

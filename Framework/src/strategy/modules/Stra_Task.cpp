@@ -110,7 +110,6 @@ void Stra_Task::Process(void)
     {
         switch( GotoRoomStep )
         {
-            break;
         case 0://到房間門口
             ActiveState = etAStar;
             if( !FlagSetInitialData )
@@ -128,6 +127,7 @@ void Stra_Task::Process(void)
         case 3:
             ActiveState = etTurnToAngle;
             GoalAngle = (Livfacefront - Livface).Angle();
+            break;
         case 4:
             if(StrategyStatus::FlagMember == true) {
                 EncounterPeople();
@@ -190,8 +190,9 @@ void Stra_Task::Process(void)
                 GoalAngle = (StrategyStatus::LibCen -StrategyStatus::LibDoor).Angle();
             break;
         case 4:
+            MemberIndex = 0;
             if(Room.SortList[Room.Cnt] == etDinRM) {
-                for(; MemberIndex<MEMBERS-1; MemberIndex++) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
                     if(Members[MemberIndex].Room == etDinRM) {
                         ActiveState = etAStar;
                         if( !FlagSetInitialData )
@@ -200,7 +201,7 @@ void Stra_Task::Process(void)
                 }
             }
             else if(Room.SortList[Room.Cnt] == etBedRM) {
-                for(; MemberIndex<MEMBERS-1; MemberIndex++) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
                     if(Members[MemberIndex].Room == etBedRM) {
                         ActiveState = etAStar;
                         if( !FlagSetInitialData )
@@ -209,7 +210,7 @@ void Stra_Task::Process(void)
                 }
             }
             else if(Room.SortList[Room.Cnt] == etLib) {
-                for(; MemberIndex<MEMBERS-1; MemberIndex++) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
                     if(Members[MemberIndex].Room == etLib) {
                         ActiveState = etAStar;
                         if( !FlagSetInitialData )
@@ -219,8 +220,9 @@ void Stra_Task::Process(void)
             }
             break;
         case 5:
+            MemberIndex = 0;
             if(Room.SortList[Room.Cnt] == etDinRM) {
-                for(; MemberIndex<MEMBERS-1; MemberIndex++) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
                     if(Members[MemberIndex].Room == etDinRM) {
                         ActiveState = etTurnToAngle;
                         GoalAngle = ( Members[MemberIndex].MemberPosition - Members[MemberIndex].FrontPosition ).Angle();
@@ -230,7 +232,7 @@ void Stra_Task::Process(void)
                 }
             }
             else if(Room.SortList[Room.Cnt] == etBedRM) {
-                for(; MemberIndex<MEMBERS-1; MemberIndex++) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
                     if(Members[MemberIndex].Room == etBedRM) {
                         ActiveState = etTurnToAngle;
                         GoalAngle = ( Members[MemberIndex].MemberPosition - Members[MemberIndex].FrontPosition ).Angle();
@@ -240,8 +242,8 @@ void Stra_Task::Process(void)
                 }
             }
             else if(Room.SortList[Room.Cnt] == etLib) {
-                for(int i=0; MemberIndex<MEMBERS-1; i++) {
-                    if(Members[i].Room == etLib) {
+                for(; MemberIndex<MEMBERS; MemberIndex++) {
+                    if(Members[MemberIndex].Room == etLib) {
                         ActiveState = etTurnToAngle;
                         GoalAngle = ( Members[MemberIndex].MemberPosition - Members[MemberIndex].FrontPosition ).Angle();
                         if(StrategyStatus::FlagMember == true) EncounterPeople();
@@ -255,7 +257,6 @@ void Stra_Task::Process(void)
                 FlagTaskFinish = false;
             else
                 FlagTaskFinish = true;
-            break;
             break;
         case 7:
             ActiveState = etTurnToAngle;

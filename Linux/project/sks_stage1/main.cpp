@@ -428,7 +428,8 @@ int main(void)
                     }
                     else if(strcmp(cmd, "start") == 0)
                     {
-                        while(motors.OpenDeviceAll());
+                        motors.OpenDeviceAll();
+                        while(motors.SetEnableAll());
                         dxl.OpenDevice(0);
 #ifdef ENABLE_VISION
                         VisionCapture = cvCaptureFromCAM( -1 );
@@ -439,7 +440,6 @@ int main(void)
                             fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
 #endif
                         StartMission();
-
                     }
                     else if(strcmp(cmd, "mon") == 0)
                     {

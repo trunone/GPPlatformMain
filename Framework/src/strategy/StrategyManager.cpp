@@ -35,7 +35,6 @@ bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
 
     if(motors == NULL)
         return false;
-    mMotors->SetEnableAll();
     mMotors->SetVelocityProfileAll(1000, 500);
     mMotors->ActivateProfileVelocityModeAll();
 
