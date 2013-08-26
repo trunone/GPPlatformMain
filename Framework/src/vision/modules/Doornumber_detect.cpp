@@ -168,9 +168,9 @@ void Doornumber_detect::Process() {
         {
             b=0;
             w=0;
-            VisionStatus::door_red = 1; //red
+            VisionStatus::Flagdoor_red = true; //red
         } else {
-            VisionStatus::door_red = 0;
+            VisionStatus::Flagdoor_red = false;
             b=0;
             w=0;
         }
@@ -186,9 +186,9 @@ void Doornumber_detect::Process() {
         {
             b=0;
             w=0;
-            VisionStatus::door_green = 1; //green
+            VisionStatus::Flagdoor_green = true; //green
         } else {
-            VisionStatus::door_green = 0;
+            VisionStatus::Flagdoor_green = false; 
             b=0;
             w=0;
         }
@@ -204,9 +204,9 @@ void Doornumber_detect::Process() {
         {
             b=0;
             w=0;
-            VisionStatus::door_blue = 1; //blue
+            VisionStatus::Flagdoor_blue = true; //blue
         } else {
-            VisionStatus::door_green = 0;
+            VisionStatus::Flagdoor_blue = false;
             b=0;
             w=0;
         }

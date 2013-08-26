@@ -119,11 +119,17 @@ private:
 
     void MakeSound();
 
+	void ReadBillBoard();
+
+	void ThiefEvent();
+
     int Past_RoomCnt;
 
     bool FlagSetInitialData;
 
     bool FlagTaskFinish;
+
+	bool FlagThief;
 
     int ActiveState;
 
@@ -147,7 +153,11 @@ private:
 
     TCoordinate CenterVector;
 
+	int LivRM , DinRM , Lib , BedRM;
+
     int MemberIndex;
+
+	int TmpCnt;
 
 public:
     //---------loadxml----------

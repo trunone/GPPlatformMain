@@ -32,19 +32,23 @@ TCoordinate StrategyStatus::BedRMDoor;
 TCoordinate StrategyStatus::BedRMCen;
 TCoordinate StrategyStatus::ChrgDoor;
 TCoordinate StrategyStatus::ChrgCen;
+int StrategyStatus::FlagEatBall;
+TCoordinate StrategyStatus::DinRMAStarPos;
+TCoordinate StrategyStatus::LibAStarPos;
+TCoordinate StrategyStatus::BedRMAStarPos;
+TCoordinate StrategyStatus::ThiefPos;
+
+TCoordinate StrategyStatus::BluePos;
+TCoordinate StrategyStatus::RedPos;
+TCoordinate StrategyStatus::GreenPos;
 
 bool StrategyStatus::FlagRoomRenew;
 bool StrategyStatus::FlagMember;
-bool StrategyStatus::FlagGrandPa;
-bool StrategyStatus::FlagGrandMa;
-bool StrategyStatus::FlagFather;
-bool StrategyStatus::FlagMother;
-bool StrategyStatus::FlagSon;
-bool StrategyStatus::Flagdaughter;
 int StrategyStatus::CurrentBallState;
 
 int StrategyStatus::GotoRoomStep;
 
+StrategyStatus::tsRoomInfo StrategyStatus::Room;
 
 int StrategyStatus::RoomSort;
 int StrategyStatus::FindBallEn;

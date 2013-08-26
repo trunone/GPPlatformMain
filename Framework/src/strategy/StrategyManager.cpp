@@ -239,6 +239,30 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
             child->Attribute("x", &StrategyStatus::EndPosition.x);
             child->Attribute("y", &StrategyStatus::EndPosition.y);
         }
+		child=element->FirstChildElement("DinRMAStarPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::DinRMAStarPos.x);
+			child->Attribute("y", &StrategyStatus::DinRMAStarPos.y);						
+        }
+		child=element->FirstChildElement("LibAStarPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LibAStarPos.x);
+			child->Attribute("y", &StrategyStatus::LibAStarPos.y);						
+        }
+		child=element->FirstChildElement("BedRMAStarPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::LibAStarPos.x);
+			child->Attribute("y", &StrategyStatus::LibAStarPos.y);				
+        }
+		child=element->FirstChildElement("EatBall");
+		if(child != NULL){
+			child->Attribute("flag", &StrategyStatus::FlagEatBall);
+        }
+		child=element->FirstChildElement("ThiefPos");
+		if(child != NULL){
+			child->Attribute("x", &StrategyStatus::ThiefPos.x);
+			child->Attribute("y", &StrategyStatus::ThiefPos.y);				
+        }
 
     }
     else

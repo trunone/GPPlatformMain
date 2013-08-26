@@ -72,9 +72,9 @@ public:
     static int PointCnt;
     static int Red_X,Red_Y,Green_X,Green_Y,Blue_X,Blue_Y;
     //-----door number status
-    static int door_red;
-    static int door_green;
-    static int door_blue;
+    static bool Flagdoor_red;
+    static bool Flagdoor_green;
+    static bool Flagdoor_blue;
 
     //--- ModelUnit
     static ColorRange hsvGreenRange, hsvBlueRange, hsvRedRange;

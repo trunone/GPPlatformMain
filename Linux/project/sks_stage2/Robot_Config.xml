@@ -27,6 +27,10 @@
     <ChrgDoor x="545" y="325" />
     <ChrgCen x="560" y="325" />
     <EndPosition x="92" y="267" />
+	<DinRMAStarPos x="111" y="111" />
+	<LibAStarPos x="111" y="111" />
+	<BedRMAStarPos x="111" y="111" />
+	<EatBall flag="0"/>
   </BasicConfig>
   <StraConfig>
     <Stra_Astar PathErrRange="35" AchieveErrRange="15" />
