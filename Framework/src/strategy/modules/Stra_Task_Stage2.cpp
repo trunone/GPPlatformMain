@@ -1,11 +1,11 @@
 /*
- *   Stra_Task.cpp
+ *   Stra_Task_Stage2.cpp
  *
  *   Author: Wu Chih-En
  *
  */
 
-#include "Stra_Task.h"
+#include "Stra_Task_Stage2.h"
 #include "VisionStatus.h"
 #include "LinuxActionScript.h"
 #define _USE_MATH_DEFINES
@@ -15,19 +15,19 @@
 using namespace Robot;
 using namespace std;
 
-Stra_Task* Stra_Task::m_UniqueInstance = new Stra_Task();
+Stra_Task_Stage2* Stra_Task_Stage2::m_UniqueInstance = new Stra_Task_Stage2();
 
-Stra_Task::Stra_Task()
+Stra_Task_Stage2::Stra_Task_Stage2()
 {
 
 }
 
-Stra_Task::~Stra_Task()
+Stra_Task_Stage2::~Stra_Task_Stage2()
 {
 
 }
 //---------------------------------------------------------------------------xml
-int Stra_Task::LoadXMLSettings (TiXmlElement* element) {
+int Stra_Task_Stage2::LoadXMLSettings (TiXmlElement* element) {
     if(element != NULL) {
         element->Attribute("LivRM", &LivRM);
         element->Attribute("DinRM", &DinRM);
@@ -37,7 +37,7 @@ int Stra_Task::LoadXMLSettings (TiXmlElement* element) {
     return 0;
 }
 //---------------------------------------------------------------------------
-void Stra_Task::Initialize(void)
+void Stra_Task_Stage2::Initialize(void)
 {
     FlagTaskFinish      = false;
     StrategyStatus::FlagMember	= false;
@@ -51,7 +51,7 @@ void Stra_Task::Initialize(void)
 	//StrategyStatus::CatchBallMode = DXL::STOP;
 }
 //---------------------------------------------------------------------------
-void Stra_Task::Process(void)
+void Stra_Task_Stage2::Process(void)
 {
     TCoordinate LivTmp = aVector(StrategyStatus::LivRMDoor.x, 0);
     TCoordinate DinTmp = aVector(0, StrategyStatus::DinRMDoor.y);
@@ -350,7 +350,7 @@ void Stra_Task::Process(void)
         ActiveFunction();
 }
 //---------------------------------------------------------------------------
-void Stra_Task::ActiveFunction()
+void Stra_Task_Stage2::ActiveFunction()
 {
     switch( ActiveState )
     {
@@ -385,7 +385,7 @@ void Stra_Task::ActiveFunction()
     }
 }
 //---------------------------------------------------------------------------
-void Stra_Task::WaitCatchball()
+void Stra_Task_Stage2::WaitCatchball()
 {
     ActiveState = etIdle;
     if( StrategyStatus::Room.SKSRoomState == StrategyStatus::etCatchFinish )
@@ -402,7 +402,7 @@ void Stra_Task::WaitCatchball()
     }
 }
 //---------------------------------------------------------------------------
-void Stra_Task::ReadBillBoard()
+void Stra_Task_Stage2::ReadBillBoard()
 {
 	ActiveState = etIdle;
 	if( VisionStatus::Flagdoor_red == true){
@@ -416,14 +416,14 @@ void Stra_Task::ReadBillBoard()
 	}
 }
 //---------------------------------------------------------------------------
-void Stra_Task::ThiefEvent()
+void Stra_Task_Stage2::ThiefEvent()
 {
 	ActiveState = etIdle;
 	LinuxActionScript::PlayMP3("../../../Data/mp3/Detect_Intruduer.mp3");
 	FlagTaskFinish = true;
 }
 //---------------------------------------------------------------------------
-void Stra_Task::SetAStar( TCoordinate  Goal )
+void Stra_Task_Stage2::SetAStar( TCoordinate  Goal )
 {
     FlagSetInitialData = true;
     StartPos = LocationStatus::Position;
@@ -433,7 +433,7 @@ void Stra_Task::SetAStar( TCoordinate  Goal )
     StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
 }
 //---------------------------------------------------------------------------
-bool Stra_Task::MotionToPosition( TCoordinate  Goal )
+bool Stra_Task_Stage2::MotionToPosition( TCoordinate  Goal )
 {
     if( (Goal - LocationStatus::Position).Length()  > 10 )
     {
@@ -445,7 +445,7 @@ bool Stra_Task::MotionToPosition( TCoordinate  Goal )
     }
 }
 //---------------------------------------------------------------------------
-bool Stra_Task::TurnToAngle( float GoalAngle )
+bool Stra_Task_Stage2::TurnToAngle( float GoalAngle )
 {
     StrategyStatus::Goal1 = aVector(0,0);
     float AngleError = NormalizeAngle(GoalAngle - LocationStatus::Handle);
@@ -471,7 +471,7 @@ bool Stra_Task::TurnToAngle( float GoalAngle )
     }
 }
 //---------------------------------------------------------------------------
-bool Stra_Task::TouchButton()
+bool Stra_Task_Stage2::TouchButton()
 {
     if( TouchCnt < 20 )
     {
@@ -487,7 +487,7 @@ bool Stra_Task::TouchButton()
     }
 }
 //---------------------------------------------------------------------------
-bool Stra_Task::Backward()
+bool Stra_Task_Stage2::Backward()
 {
     if( TouchCnt < 30 )
     {
@@ -504,7 +504,7 @@ bool Stra_Task::Backward()
     }
 }
 //---------------------------------------------------------------------------
-void Stra_Task::MakeSound()
+void Stra_Task_Stage2::MakeSound()
 {
 	if( VisionStatus::Flagdoor_red == true && TmpCnt == 1 ){
 		LinuxActionScript::PlayMP3("../../../Data/mp3/Enter_SuspiciousRoom.mp3");
@@ -532,7 +532,7 @@ void Stra_Task::MakeSound()
 	}
 }
 //---------------------------------------------------------------------------
-void Stra_Task::EncounterPeople()
+void Stra_Task_Stage2::EncounterPeople()
 {
     if(StrategyStatus::FamilyMember == VisionStatus::etGrandPa)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Grandpa.mp3");
     else if(StrategyStatus::FamilyMember == VisionStatus::etGrandMa)	LinuxActionScript::PlayMP3("../../../Data/mp3/Hi_Grandma.mp3");

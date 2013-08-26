@@ -187,9 +187,9 @@ void XMLLoadConfig ()
         if(child != NULL) {
             Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
         }
-        child = element->FirstChildElement("Stra_Task");
+        child = element->FirstChildElement("Stra_Task_Stage2");
         if(child != NULL) {
-            Stra_Task::GetInstance()->LoadXMLSettings(child);
+            Stra_Task_Stage2::GetInstance()->LoadXMLSettings(child);
         }
     }
 }
@@ -274,7 +274,7 @@ int main(void)
 #endif
 
 #ifndef ENABLE_MANUAL
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task_Stage2::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 

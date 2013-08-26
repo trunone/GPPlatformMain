@@ -11,7 +11,7 @@
 #include "TCoordinate.h"
 #include "Vector.h"
 #include <vector>
-#include "Stra_Task.h"
+#include "Stra_Task_Stage2.h"
 #include <tinyxml.h>
 
 namespace Robot
