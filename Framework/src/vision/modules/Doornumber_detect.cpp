@@ -223,5 +223,4 @@ void Doornumber_detect::Process(){
 			w=0;
 		}
 	}
-	//cout<<VisionStatus::door_status<<endl;	
 }

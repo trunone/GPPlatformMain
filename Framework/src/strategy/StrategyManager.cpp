@@ -41,7 +41,7 @@ bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
 
     if(dxl == NULL)
         return false;
-    dxl->GoToDegree(0);
+    dxl->GoToDegree(17);
     dxl->EndlessTurn(0);
     return true;
 }

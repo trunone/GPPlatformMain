@@ -4,11 +4,11 @@
  *   Author: Wu Chih-En
  */
 #define ENABLE_STRATEGY
-//#define ENABLE_VISION
-//#define ENABLE_VISION_FACEDETECTION
-//#define ENABLE_LOCATION
+#define ENABLE_VISION
+#define ENABLE_VISION_FACEDETECTION
+#define ENABLE_LOCATION
 
-#define ENABLE_SIMULATOR
+//#define ENABLE_SIMULATOR
 //#define ENABLE_MANUAL
 
 #define NETWORK_INTERFACE
@@ -187,7 +187,7 @@ void XMLLoadConfig ()
         if(child != NULL) {
             Stra_VelocityControl::GetInstance()->LoadXMLSettings(child);
         }
-        child = element->FirstChildElement("Stra_Task_Stage2");
+        child = element->FirstChildElement("Stra_Task");
         if(child != NULL) {
             Stra_Task_Stage2::GetInstance()->LoadXMLSettings(child);
         }
@@ -205,7 +205,7 @@ int main(void)
     signal(SIGTSTP, &sigtstp_handler);
 
     change_current_dir();
-    //motors.OpenDeviceAll();
+    motors.OpenDeviceAll();
 
     dxl.OpenDevice(0);
 
@@ -226,9 +226,9 @@ int main(void)
         return 1;
     }
 
-    //VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
+    VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
 
-    //VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+//    VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
 
     VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 

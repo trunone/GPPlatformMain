@@ -67,7 +67,7 @@ class Stra_Task_Stage2 : public StrategyModule
 
     typedef struct {
         tsRoom Info[5];
-        teRoom SortList[5];
+        teRoom SortList[4];
         int Cnt;
         teSKSState SKSRoomState;
     } tsRoomInfo;
@@ -119,17 +119,13 @@ private:
 
     void MakeSound();
 
-	void ReadBillBoard();
+	int ReadBillBoard();
 
 	void ThiefEvent();
-
-    int Past_RoomCnt;
 
     bool FlagSetInitialData;
 
     bool FlagTaskFinish;
-
-	bool FlagThief;
 
     int ActiveState;
 
@@ -145,19 +141,9 @@ private:
 
     bool DoorState;     //true: open, false: close
 
-    int TouchCnt;
-
-    int *PastScanLineData;
-
     TCoordinate RoomVector;
 
     TCoordinate CenterVector;
-
-	int LivRM , DinRM , Lib , BedRM;
-
-    int MemberIndex;
-
-	int TmpCnt;
 
 public:
     //---------loadxml----------
