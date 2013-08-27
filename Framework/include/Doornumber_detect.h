@@ -3,8 +3,7 @@
 #include "VisionModule.h"
 #include "VisionStatus.h"
 #include "SegmentFunction.h"
-#include "ColorCheck.h"
-
+#include "opencv2/imgproc/imgproc.hpp"
 using namespace std;
 //----------------------------
 
@@ -16,10 +15,6 @@ class Doornumber_detect : public VisionModule
 private:
     Doornumber_detect();
     static Doornumber_detect* m_UniqueInstance;
-    void Gray_binarize(unsigned char *source, unsigned char *graybuffer);
-    void Segment(unsigned char * TMPWebcamBoolBuffer);
-    void merge(unsigned char *graybuffer, unsigned char *door, unsigned char *mix);
-    void background_check(unsigned char *mix, int *b,int *w);
 public:
 
     static Doornumber_detect* GetInstance() {
@@ -28,7 +23,6 @@ public:
 
     ~Doornumber_detect();
     void Initialize();
-    void doornumber_check(Mat frame);
     void Process();
 };
 }

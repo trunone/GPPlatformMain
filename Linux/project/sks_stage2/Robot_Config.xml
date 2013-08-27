@@ -18,13 +18,7 @@
     <Stra_PathPlan DetourConst="85" />
     <Stra_VelocityControl dis_max="100" dis_min="10" spd_max="200" spd_min="30" sita_max="1.047197552" sita_min="0.05" w_max="21" w_min="9" />
     <Stra_Task>
-        <RoomList>
-            <LivRM/><DinRM/><BedRM/><Lib/>
-        </RoomList>
-        <!--<Members x="240" y="225" Member_x="240" Member_y="0" room="LivRM">-->
-        <Members x="70" y="355" Member_x="0" Member_y="355" room="DinRM"/>
         <Members x="465" y="345" Member_x="400" Member_y="500" room="BedRM"/>
-        <Members x="395" y="165" Member_x="400" Member_y="160" room="Lib"/>
      </Stra_Task>
   </StraConfig>
 	<ColorModel>

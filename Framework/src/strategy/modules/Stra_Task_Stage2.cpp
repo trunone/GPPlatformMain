@@ -86,6 +86,16 @@ void Stra_Task_Stage2::Process(void)
             break;
         case 2:
             ActiveState = etIdle;
+            if(!FlagSetInitialData){
+                VisionStatus::doordet_enable = true;
+                FlagSetInitialData = true;
+            }else{
+                if(!VisionStatus::doordet_enable)
+                    FlagTaskFinish = true;
+            }
+            break;
+        case 3:
+            ActiveState = etIdle;
             if(!ReadBillBoard())
                 FlagTaskFinish = true;
             break;
@@ -162,6 +172,7 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
+                    VisionStatus::sendimg_enable = true;
                     ThiefEvent();
                 }
             }
@@ -170,6 +181,7 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
+                    VisionStatus::sendimg_enable = true;
                     ThiefEvent();
                 }
             }
@@ -178,6 +190,7 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
+                    VisionStatus::sendimg_enable = true;
                     ThiefEvent();
                 }
             }
@@ -315,17 +328,7 @@ void Stra_Task_Stage2::WaitCatchball()
 //---------------------------------------------------------------------------
 int Stra_Task_Stage2::ReadBillBoard()
 {
-	if( VisionStatus::Flagdoor_red == true){
-        Room.SortList[1] = etDinRM;   
-        Room.SortList[2] = etBedRM;    
-        Room.SortList[3] = etLib;    
-        return 0; 
-    }else if( VisionStatus::Flagdoor_blue == true){
-        Room.SortList[1] = etLib;   
-        Room.SortList[2] = etBedRM;    
-        Room.SortList[3] = etDinRM;    
-        return 0; 
-	}else if( VisionStatus::Flagdoor_green == true){
+	if( VisionStatus::Flagdoor_green == true){
         if(StrategyStatus::EndPosition.x <= 300){
             Room.SortList[1] = etBedRM;   
             Room.SortList[2] = etLib;    
@@ -335,7 +338,17 @@ int Stra_Task_Stage2::ReadBillBoard()
             Room.SortList[2] = etDinRM;    
             Room.SortList[3] = etLib;    
         }
+        return 0; 
+    }else if( VisionStatus::Flagdoor_red == true){
+        Room.SortList[1] = etDinRM;   
+        Room.SortList[2] = etBedRM;    
+        Room.SortList[3] = etLib;    
         return 0; 	
+	}else if( VisionStatus::Flagdoor_blue == true){
+        Room.SortList[1] = etLib;   
+        Room.SortList[2] = etBedRM;    
+        Room.SortList[3] = etDinRM;    
+        return 0; 
     }else{
         return 1; 
     }

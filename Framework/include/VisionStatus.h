@@ -56,7 +56,8 @@ public:
     };
 
     unsigned char *yiqColorModel;
-
+    static bool doordet_enable;
+    static bool sendimg_enable;
     //---seg
 
     //--- Global

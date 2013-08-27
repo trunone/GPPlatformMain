@@ -144,7 +144,8 @@ private:
     TCoordinate RoomVector;
 
     TCoordinate CenterVector;
-
+    
+    int doordet_cnt;
 public:
     //---------loadxml----------
     int LoadXMLSettings(TiXmlElement* element);
