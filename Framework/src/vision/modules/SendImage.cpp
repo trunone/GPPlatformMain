@@ -27,7 +27,7 @@ void SendImage::Process() {
 
     LinuxSocket client;
     client.create();
-    if( client.connect ( "192.168.137.100" , port ) )
+    if( client.connect ( "192.168.137.200" , port ) )
     {
 
         client.send(buf,readBytes);

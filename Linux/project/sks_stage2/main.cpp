@@ -5,15 +5,13 @@
  */
 #define ENABLE_STRATEGY
 #define ENABLE_VISION
-//#define ENABLE_VISION_FACEDETECTION
 #define ENABLE_LOCATION
-#define ENABLE_VISION_FACEDETECTION_STAGE2
 
 //#define ENABLE_SIMULATOR
 //#define ENABLE_MANUAL
 
-#define NETWORK_INTERFACE
-//#define INTERACTIVE_INTERFACE
+//#define NETWORK_INTERFACE
+#define INTERACTIVE_INTERFACE
 
 #include <stdio.h>
 #include <unistd.h>
@@ -195,29 +193,7 @@ void XMLLoadConfig ()
     }
 }
 
-int main(void)
-{
-    XMLLoadConfig();
-
-    signal(SIGABRT, &sighandler);
-    signal(SIGTERM, &sighandler);
-    signal(SIGQUIT, &sighandler);
-    signal(SIGINT, &sighandler);
-    signal(SIGTSTP, &sigtstp_handler);
-
-    change_current_dir();
-    motors.OpenDeviceAll();
-
-    dxl.OpenDevice(0);
-
-#ifdef ENABLE_VISION
-    VisionCapture = cvCaptureFromCAM( -1 );
-#endif
-
-#ifdef ENABLE_LOCATION
-    if (!urg.open("/dev/ttyACM0", 115200, qrk::Urg_driver::Serial ))
-        fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
-#endif
+int StartMission() {
 
     ////////////////// Framework Initialize ////////////////////////////
 #ifdef ENABLE_VISION
@@ -227,17 +203,15 @@ int main(void)
         return 1;
     }
 
-    VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
+    //VisionManager::GetInstance()->AddModule((VisionModule*)ColorModel::GetInstance());
 
     VisionManager::GetInstance()->AddModule((VisionModule*)Doornumber_detect::GetInstance());
 
-//    VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
+    //VisionManager::GetInstance()->AddModule((VisionModule*)Segmentation::GetInstance());
 
-#ifdef ENABLE_VISION_FACEDETECTION_STAGE2
     VisionManager::GetInstance()->AddModule((VisionModule*)FaceDetection_Stage2::GetInstance());
-#endif
 
-     VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
+    VisionManager::GetInstance()->AddModule((VisionModule*)SendImage::GetInstance());
 
     LinuxVisionTimer *vision_timer = new LinuxVisionTimer(VisionManager::GetInstance());
     vision_timer->Start();
@@ -293,6 +267,19 @@ int main(void)
     strategy_timer->Start();
     //StrategyManager::GetInstance()->StartLogging();
 #endif
+
+}
+
+int main(void)
+{
+
+    signal(SIGABRT, &sighandler);
+    signal(SIGTERM, &sighandler);
+    signal(SIGQUIT, &sighandler);
+    signal(SIGINT, &sighandler);
+    signal(SIGTSTP, &sigtstp_handler);
+
+    change_current_dir();
 
 #ifdef NETWORK_INTERFACE
     try
@@ -454,6 +441,21 @@ int main(void)
                         //Walking::GetInstance()->SaveINISettings(ini);
                         SaveCmd();
 
+                    }
+                    else if(strcmp(cmd, "start") == 0)
+                    {
+                        motors.OpenDeviceAll();
+                        while(motors.SetEnableAll());
+                        dxl.OpenDevice(0);
+                    #ifdef ENABLE_VISION
+                        VisionCapture = cvCaptureFromCAM( -1 );
+                    #endif
+
+                    #ifdef ENABLE_LOCATION
+                        if (!urg.open("/dev/ttyACM0", 115200, qrk::Urg_driver::Serial ))
+                            fprintf(stderr,  "Urg_driver::open(    ): %s\n", urg.what());
+                    #endif
+                        StartMission();
                     }
                     else if(strcmp(cmd, "mon") == 0)
                     {

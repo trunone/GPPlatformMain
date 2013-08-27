@@ -172,8 +172,10 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
-                    VisionStatus::sendimg_enable = true;
-                    ThiefEvent();
+                    if( !FlagSetInitialData ) {
+                        VisionStatus::sendimg_enable = true;
+                        ThiefEvent();
+                    }
                 }
             }
             else if(Room.SortList[Room.Cnt] == etBedRM) {
@@ -181,8 +183,10 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
-                    VisionStatus::sendimg_enable = true;
-                    ThiefEvent();
+                    if( !FlagSetInitialData ) {
+                        VisionStatus::sendimg_enable = true;
+                        ThiefEvent();
+                    }
                 }
             }
             else if(Room.SortList[Room.Cnt] == etLib) {
@@ -190,8 +194,10 @@ void Stra_Task_Stage2::Process(void)
                     ActiveState = etTurnToAngle;
                     GoalAngle = ( Members[0].MemberPosition - Members[0].FrontPosition ).Angle();
                     //if(StrategyStatus::FlagThief == true)
-                    VisionStatus::sendimg_enable = true;
-                    ThiefEvent();
+                    if( !FlagSetInitialData ) {
+                        VisionStatus::sendimg_enable = true;
+                        ThiefEvent();
+                    }
                 }
             }
             break;
