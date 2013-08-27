@@ -28,6 +28,7 @@
 #include "Stra_Avoid.h"
 #include "Stra_VelocityControl.h"
 #include "FaceDetection.h"
+#include "FaceDetection_Stage2.h"
 #include "ColorModel.h"
 #include "Odometer.h"
 #include "ParticleFilter.h"

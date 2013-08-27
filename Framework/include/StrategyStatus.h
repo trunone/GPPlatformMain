@@ -101,6 +101,8 @@ namespace Robot
 
 		static int FamilyMember;
 
+    		static bool FlagThief;
+
 		static bool FlagMember;
 
 		static bool FlagRoomRenew;

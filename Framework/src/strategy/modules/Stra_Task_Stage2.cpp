@@ -7,6 +7,7 @@
 
 #include "Stra_Task_Stage2.h"
 #include "VisionStatus.h"
+#include "StrategyStatus.h"
 #include "LinuxActionScript.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
