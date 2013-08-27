@@ -40,7 +40,7 @@ bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
 
     if(dxl == NULL)
         return false;
-    dxl->GoToDegree(0);
+    dxl->GoToDegree(17);
     dxl->EndlessTurn(0);
     return true;
 }
@@ -253,7 +253,6 @@ int StrategyManager::LoadXMLSettings(TiXmlElement* element) {
             child->Attribute("x", &StrategyStatus::EndPosition.x);
             child->Attribute("y", &StrategyStatus::EndPosition.y);
         }
-
     }
     else
         return 1;

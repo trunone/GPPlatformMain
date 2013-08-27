@@ -7,10 +7,10 @@
 #define ENABLE_VISION
 #define ENABLE_LOCATION
 
-//#define ENABLE_SIMULATOR
-//#define ENABLE_MANUAL
+#define ENABLE_SIMULATOR
+#define ENABLE_MANUAL
 
-//#define NETWORK_INTERFACE
+#define NETWORK_INTERFACE
 #define INTERACTIVE_INTERFACE
 
 #include <stdio.h>

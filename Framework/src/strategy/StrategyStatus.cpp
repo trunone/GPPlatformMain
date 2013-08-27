@@ -33,26 +33,23 @@ TCoordinate StrategyStatus::BedRMCen;
 TCoordinate StrategyStatus::ChrgDoor;
 TCoordinate StrategyStatus::ChrgCen;
 
-bool StrategyStatus::FlagRoomRenew;
 bool StrategyStatus::FlagMember;
 bool StrategyStatus::FlagGrandPa;
 bool StrategyStatus::FlagGrandMa;
-bool StrategyStatus::FlagFather;
+bool StrategyStatus::FlagFather;	
 bool StrategyStatus::FlagMother;
 bool StrategyStatus::FlagSon;
 bool StrategyStatus::Flagdaughter;
+bool StrategyStatus::FlagRoomRenew;
+int  StrategyStatus::FamilyMember;
 int StrategyStatus::CurrentBallState;
 
 int StrategyStatus::GotoRoomStep;
-
 
 int StrategyStatus::RoomSort;
 int StrategyStatus::FindBallEn;
 //----------SIM_FLAG---------------------------------------------------
 bool StrategyStatus::SimulatorFlag;
-//----------Test int----------------------------------------------------
-
-int StrategyStatus::FamilyMember;
 
 //---------- Strategy --------------------------------------------------
 TCoordinate StrategyStatus::Goal1;                   // Target1 vector

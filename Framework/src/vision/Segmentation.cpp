@@ -77,7 +77,7 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer , int colordoor)
 				//cout << s <<endl;
 				if (temp<s && s>150  &&  s<15000)
 				{
-//					cout<< s << endl;
+					cout<< s << endl;
 					temp = s;
 					x1_temp=VisionStatus::Xmin;
 					x2_temp=VisionStatus::Xmax;
@@ -87,7 +87,7 @@ void Segmentation::Segment(unsigned char * TMPWebcamBoolBuffer , int colordoor)
 			}
 		}
 	}
-	if(temp>100){
+	if(temp>650){
 		if(colordoor == 1){			
 			VisionStatus::Flagdoor_blue = true; 
 			cout<<"B"<<endl;

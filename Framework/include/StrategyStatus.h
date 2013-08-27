@@ -12,6 +12,7 @@
 #include "Vector.h"
 #include <vector>
 #include "Stra_Task_stage1.h"
+#include "Stra_Task_Stage2.h"
 #include <tinyxml.h>
 
 namespace Robot

@@ -124,7 +124,7 @@ void FaceDetection::Process()
         {
             //		printf("%d\n",faces[i].width);
 //		printf("%f\n",cvGet2D(SumWP,0,0).val[0]);
-            if(( 10000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<19000 ) {
+            if(( 10000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<18000 ) {
 //			printf("Grandfa\n");
                 VisionStatus::Grandfa_counter++;
                 VisionStatus::Grandma_counter=0;
@@ -154,7 +154,7 @@ void FaceDetection::Process()
                 VisionStatus::Boy_counter=0;
                 VisionStatus::Thief_counter=0;
             }
-            else if(( 30000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<56500 ) {
+            else if(( 18000<cvGet2D(SumWP,0,0).val[0] )&&( cvGet2D(SumWP,0,0).val[0])<60000 ) {
 //			printf("Girl\n");
                 VisionStatus::Grandfa_counter=0;
                 VisionStatus::Grandma_counter=0;

@@ -26,9 +26,11 @@ unsigned char VisionStatus::Red_Ball[VisionStatus::ImageWidth * VisionStatus::Im
 int VisionStatus::Xmax(0),VisionStatus::Xmin(0),VisionStatus::Ymax(0),VisionStatus::Ymin(0);
 int VisionStatus::PointCnt(0);
 //-----door number status
-int VisionStatus::door_red(0);
-int VisionStatus::door_green(0);
-int VisionStatus::door_blue(0);
+bool VisionStatus::doordet_enable = false;
+bool VisionStatus::sendimg_enable = false;
+bool VisionStatus::Flagdoor_red = false;
+bool VisionStatus::Flagdoor_green = false;
+bool VisionStatus::Flagdoor_blue = false;
 
 //-----ball posistion
 int VisionStatus::Red_X(0);

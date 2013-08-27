@@ -36,6 +36,7 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
 		../../Framework/src/vision/modules/Segmentation.o\
 		../../Framework/src/vision/modules/Doornumber_detect.o\
         ../../Framework/src/vision/modules/FaceDetection.o\
+	../../Framework/src/vision/modules/FaceDetection_Stage2.o\
 		../../Framework/src/vision/modules/SendImage.o\
 		../../Framework/src/vision/modules/ColorModel.o\
 		../../Framework/src/vision/VisionManager.o\
@@ -45,6 +46,7 @@ OBJS =  ../../Framework/src/location/LocationManager.o\
         ../../Framework/src/strategy/StrategyStatus.o\
 		../../Framework/src/strategy/AstarTool.o\
         ../../Framework/src/strategy/modules/Stra_Task_stage1.o\
+        ../../Framework/src/strategy/modules/Stra_Task_Stage2.o\
 		../../Framework/src/strategy/modules/Stra_Avoid.o\
 		../../Framework/src/strategy/modules/Stra_PathPlan.o\
 		../../Framework/src/strategy/modules/Stra_VelocityControl.o\

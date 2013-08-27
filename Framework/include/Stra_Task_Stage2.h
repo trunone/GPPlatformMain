@@ -1,12 +1,12 @@
 /*
- *   Stra_Task.h
+ *   Stra_Task_Stage2.h
  *
  *   Author: ROBOTIS
  *
  */
 
-#ifndef _STRA_TASK_H_
-#define _STRA_TASK_H_
+#ifndef _Stra_Task_Stage2_H_
+#define _Stra_Task_Stage2_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +23,7 @@ using namespace std;
 
 namespace Robot
 {
-class Stra_Task : public StrategyModule
+class Stra_Task_Stage2 : public StrategyModule
 {
     typedef enum
     {
@@ -67,7 +67,7 @@ class Stra_Task : public StrategyModule
 
     typedef struct {
         tsRoom Info[5];
-        teRoom SortList[5];
+        teRoom SortList[4];
         int Cnt;
         teSKSState SKSRoomState;
     } tsRoomInfo;
@@ -93,9 +93,9 @@ class Stra_Task : public StrategyModule
     tsMember Members[3];
 
 private:
-    static Stra_Task* m_UniqueInstance;
+    static Stra_Task_Stage2* m_UniqueInstance;
 
-    Stra_Task();
+    Stra_Task_Stage2();
 
     void SetAStar( TCoordinate  Goal );
 
@@ -119,7 +119,9 @@ private:
 
     void MakeSound();
 
-    int Past_RoomCnt;
+	int ReadBillBoard();
+
+	void ThiefEvent();
 
     bool FlagSetInitialData;
 
@@ -139,25 +141,20 @@ private:
 
     bool DoorState;     //true: open, false: close
 
-    int TouchCnt;
-
-    int *PastScanLineData;
-
     TCoordinate RoomVector;
 
     TCoordinate CenterVector;
-
-    int MemberIndex;
-
+    
+    int doordet_cnt;
 public:
     //---------loadxml----------
     int LoadXMLSettings(TiXmlElement* element);
 
-    static Stra_Task* GetInstance() {
+    static Stra_Task_Stage2* GetInstance() {
         return m_UniqueInstance;
     }
 
-    ~Stra_Task();
+    ~Stra_Task_Stage2();
 
     void Initialize();
 

@@ -1,4 +1,5 @@
 #include "SendImage.h"
+#include "VisionStatus.h"
 using namespace Robot;
 using namespace std;
 
@@ -14,6 +15,8 @@ void SendImage::Initialize() {
 }
 
 void SendImage::Process() {
+    if(!VisionStatus::sendimg_enable) return ;
+
     FILE *file_fd=fopen("Thief.jpg","r+");
     unsigned long pos=ftell(file_fd);
     fseek(file_fd,0L,SEEK_END);
@@ -24,7 +27,7 @@ void SendImage::Process() {
 
     LinuxSocket client;
     client.create();
-    if( client.connect ( "192.168.230.1" , port ) )
+    if( client.connect ( "192.168.137.200" , port ) )
     {
 
         client.send(buf,readBytes);
@@ -39,4 +42,5 @@ void SendImage::Process() {
         }
         //exit(0);
     }
+    VisionStatus::sendimg_enable = false;
 }
