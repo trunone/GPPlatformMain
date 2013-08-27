@@ -26,7 +26,7 @@ public:
     static double y;
     static double w;
     static double FI;
-    static double CmeraAngle;
+    static double CameraAngle;
     static bool SimulatorFlag;
     static TCoordinate StartPosition;
     static TCoordinate EscapePosition;
@@ -133,7 +133,6 @@ public:
     //----------------------------------------------------------------------
     //----------- Ball Data ------------------------------------------------
     static tsStraBallInfo RadBallInfo;
-    static int AX12_Angle;
     //tsObjectiveInfo RedBall;
     static unsigned char FindBallCnt;
     static bool FlagRecognize;
@@ -151,6 +150,8 @@ public:
     //----------------------------------------------------------------------
     static bool FindLocResample;
     static TCoordinate RseLocPos;
+
+    static bool AStarEnable;
 };
 }
 #endif

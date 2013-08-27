@@ -80,11 +80,8 @@ void Stra_PathPlan::Process( void )
     else {
 
         StrategyStatus::GoalVector = StrategyStatus::Goal1;
-        //printf("goal vector %f %f\n",StrategyStatus::Goal1.x,StrategyStatus::Goal1.y);
 
     }
-
-    //printf("%f %f\n",StrategyStatus::Goal1.x ,StrategyStatus::Goal1.y);
 
     StrategyStatus::MotionDistance =  StrategyStatus::GoalVector.Length();
 

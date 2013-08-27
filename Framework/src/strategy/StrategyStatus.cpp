@@ -72,7 +72,7 @@ bool StrategyStatus::FlagAvoidEnable;
 TCoordinate StrategyStatus::CorrectionVector;
 //----------------------------------------------------------------------
 //----------- Velocity Control -----------------------------------------
-float StrategyStatus::FixSpeed;                                 // Speed Power 1~100 %
+float StrategyStatus::FixSpeed(0.0);                                 // Speed Power 1~100 %
 double StrategyStatus::MotionDistance;
 double StrategyStatus::MotionAngle;
 TCoordinate StrategyStatus::PathMotion;
@@ -85,9 +85,6 @@ bool StrategyStatus::PathR_Priority;
 
 StrategyStatus::tsStraBallInfo StrategyStatus::RadBallInfo;
 
-//tsObjectiveInfo RedBall;
-
-int StrategyStatus::AX12_Angle;
 int StrategyStatus::CatchBallMode;
 unsigned char StrategyStatus::FindBallCnt;
 bool StrategyStatus::FlagRecognize;
@@ -104,4 +101,6 @@ int StrategyStatus::FindBallState;
 bool StrategyStatus::FindLocResample;
 TCoordinate StrategyStatus::RseLocPos;
 
+bool StrategyStatus::AStarEnable(true);
 
+double StrategyStatus::CameraAngle;

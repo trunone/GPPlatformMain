@@ -34,8 +34,9 @@ void Stra_AStar::Initialize(void)
 //-----------------------------------------------------------------
 void Stra_AStar::Process(void)
 {
+    if(!StrategyStatus::AStarEnable) return;
     if( StrategyStatus::AStarPath.GoalPos  == aVector(-999, -999) ||
-            StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ) {
+        StrategyStatus::AStarPath.StartPos ==  aVector(-999, -999) ) {
         return ;
     }
     if( !(GoalPos  == StrategyStatus::AStarPath.GoalPos) && !(StartPos == StrategyStatus::AStarPath.StartPos) )
@@ -107,6 +108,5 @@ void Stra_AStar::Behavior_AstarPath( void )
         StrategyStatus::AStarPath.Status = StrategyStatus::etAchieve;
         StrategyStatus::Goal1 = aVector(0,0);
     }
-
 }
 

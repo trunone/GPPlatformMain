@@ -11,7 +11,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define MEMBERS 3
 
 using namespace Robot;
 using namespace std;
@@ -30,7 +29,7 @@ Stra_Task_stage1::~Stra_Task_stage1()
 //---------------------------------------------------------------------------xml
 int Stra_Task_stage1::LoadXMLSettings (TiXmlElement* element) {
     if(element != NULL) {
-        TiXmlElement *childelement = element->FirstChildElement();
+        TiXmlElement *childelement = element->FirstChildElement("RoomList");
         TiXmlElement *child = childelement->FirstChildElement();
         for(int i = 0; child != NULL; i++) {
             if(!strcmp("LivRM", child->Value()))
@@ -43,6 +42,7 @@ int Stra_Task_stage1::LoadXMLSettings (TiXmlElement* element) {
                 Room.SortList[i] = etBedRM;
             child=child->NextSiblingElement();
         }
+        childelement = childelement->NextSiblingElement();
         for(int i = 0; childelement != NULL; i++) {
             string tmp;
             childelement->Attribute("x", &Members[i].FrontPosition.x);
@@ -78,12 +78,10 @@ void Stra_Task_stage1::Initialize(void)
     FlagSetInitialData  = false;
     GotoRoomStep  = 0;
     ActiveState   = etIdle;
-    DoorState     = false;
-    Past_RoomCnt  = -1;
     TouchCnt      = 0;
-    PastScanLineData = new int[24];
     Room.SKSRoomState = etSKSMoving;
     MemberIndex = 0;
+    Room.Cnt = 0;
 }
 //---------------------------------------------------------------------------
 void Stra_Task_stage1::Process(void)
@@ -92,10 +90,6 @@ void Stra_Task_stage1::Process(void)
     TCoordinate DinTmp = aVector(0, StrategyStatus::DinRMDoor.y);
     TCoordinate BedTmp = aVector(0, StrategyStatus::BedRMDoor.y);
     TCoordinate LibTmp = aVector(0, StrategyStatus::LibDoor.y);
-    //------face det part---------
-    TCoordinate Livfacefront = aVector(StrategyStatus::LivRMDoor.x, StrategyStatus::LivRMDoor.y);
-    TCoordinate Livface = aVector(StrategyStatus::LivRMDoor.x, 0);
-    //------------------------------
     if( StrategyStatus::FlagRoomRenew == true )
     {
         ActiveState  = etIdle;
@@ -106,7 +100,7 @@ void Stra_Task_stage1::Process(void)
         StrategyStatus::FlagRoomRenew = false;
     }
     //---------------- by yao 2012/08/28-----------------------------------------------
-    if( Room.SortList[Room.Cnt] == etLivRM)  //客廳
+    if( Room.SortList[Room.Cnt] == etLivRM && Room.Cnt < MEMBERS)  //客廳
     {
         switch( GotoRoomStep )
         {
@@ -120,28 +114,33 @@ void Stra_Task_stage1::Process(void)
             GoalAngle = ( StrategyStatus::LivRMCen - StrategyStatus::LivRMDoor ).Angle();
             break;
         case 2:
-            ActiveState = etAStar;
-            if( !FlagSetInitialData )
-                SetAStar( Livfacefront );
-            break;
-        case 3:
-            ActiveState = etTurnToAngle;
-            GoalAngle = (Livfacefront - Livface).Angle();
-            break;
-        case 4:
-            if(StrategyStatus::FlagMember == true) {
-                EncounterPeople();
-            } else {
-                GotoRoomStep++;
+            MemberIndex = 0;
+            for(; MemberIndex<MEMBERS; MemberIndex++) {
+                if(Members[MemberIndex].Room == etLivRM) {
+                    ActiveState = etAStar;
+                    if( !FlagSetInitialData )
+                        SetAStar(Members[MemberIndex].FrontPosition);
+                }
             }
             break;
-        case 5:
+        case 3:
+            MemberIndex = 0;
+            for(; MemberIndex<MEMBERS; MemberIndex++) {
+                if(Members[MemberIndex].Room == etLivRM) {
+                    ActiveState = etTurnToAngle;
+                    GoalAngle = ( Members[MemberIndex].MemberPosition - Members[MemberIndex].FrontPosition ).Angle();
+                    if(StrategyStatus::FlagMember == true) EncounterPeople();
+                }
+            }
+            break;
+        case 4:
+            ActiveState = etIdle;
             if(LinuxActionScript::GetPlayable() == 0)
                 FlagTaskFinish = false;
             else
                 FlagTaskFinish = true;
             break;
-        case 6:
+        case 5:
             ActiveState = etTurnToAngle;
             GoalAngle = (StrategyStatus::LivRMDoor - LivTmp).Angle();
             break;
@@ -154,9 +153,9 @@ void Stra_Task_stage1::Process(void)
             break;
         }
     }
-    else if( Room.SortList[Room.Cnt] == etDinRM ||
+    else if( (Room.SortList[Room.Cnt] == etDinRM ||
              Room.SortList[Room.Cnt] == etLib ||
-             Room.SortList[Room.Cnt] == etBedRM )
+             Room.SortList[Room.Cnt] == etBedRM) && Room.Cnt < MEMBERS)
     {
 
         switch( GotoRoomStep )
@@ -172,6 +171,7 @@ void Stra_Task_stage1::Process(void)
                     SetAStar( StrategyStatus::LibDoor );
             break;
         case 1:
+            ActiveState = etIdle;
             MakeSound();
             break;
         case 2:
@@ -253,6 +253,7 @@ void Stra_Task_stage1::Process(void)
             }
             break;
         case 6:
+            ActiveState = etIdle;
             if(LinuxActionScript::GetPlayable() == 0)
                 FlagTaskFinish = false;
             else
@@ -355,28 +356,11 @@ void Stra_Task_stage1::ActiveFunction()
     }
 }
 //---------------------------------------------------------------------------
-void Stra_Task_stage1::WaitCatchball()
-{
-    ActiveState = etIdle;
-    if( Room.SKSRoomState == etCatchFinish )
-    {
-        GotoRoomStep++;
-        Room.SKSRoomState = etSKSMoving;
-        FlagSetInitialData = false;
-    }
-    else
-    {
-        Room.SKSRoomState = etSKSCatchBall;
-    }
-}
-//---------------------------------------------------------------------------
 void Stra_Task_stage1::SetAStar( TCoordinate  Goal )
 {
     FlagSetInitialData = true;
     StartPos = LocationStatus::Position;
-
     GoalPos  = Goal;
-
     StrategyStatus::AStarPath.Status = StrategyStatus::etMotion;
 }
 //---------------------------------------------------------------------------
@@ -419,16 +403,17 @@ bool Stra_Task_stage1::TurnToAngle( float GoalAngle )
 }
 bool Stra_Task_stage1::TouchButton()
 {
-    if( TouchCnt < 40)
+    if( LocationStatus::LaserData[36] > 190) 
     {
-        StrategyStatus::Goal1 = aVector(120,0);
-        StrategyStatus::FixSpeed = 70;
-        TouchCnt++;
+        StrategyStatus::AStarEnable = false;
+        StrategyStatus::Goal1.AssignAngle(LocationStatus::Handle+(M_PI/2));
+        StrategyStatus::Goal1.AssignLength(100.0);
         return false;
     }
     else
     {
-        TouchCnt = 0;
+        StrategyStatus::AStarEnable = true;
+        StrategyStatus::Goal1 = aVector(0,0);
         return true;
     }
 }

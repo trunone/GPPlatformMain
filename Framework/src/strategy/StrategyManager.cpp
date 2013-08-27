@@ -45,6 +45,21 @@ bool StrategyManager::Initialize(Motors *motors,DXL *dxl)
     return true;
 }
 
+bool StrategyManager::Initialize(Motors *motors)
+{
+    mMotors = motors;
+    mDXL = NULL;
+    m_Enabled = false;
+    m_ProcessEnable = true;
+
+    if(motors == NULL)
+        return false;
+    mMotors->SetVelocityProfileAll(1000, 500);
+    mMotors->ActivateProfileVelocityModeAll();
+
+    return true;
+}
+
 bool StrategyManager::Initialize()
 {
     mMotors = NULL;
@@ -112,7 +127,7 @@ void StrategyManager::Process()
 
     if(mDXL != NULL) {
         mDXL->GoToDegree(
-            StrategyStatus::AX12_Angle);
+            StrategyStatus::CameraAngle);
         mDXL->EndlessTurn(
             StrategyStatus::CatchBallMode);
     }

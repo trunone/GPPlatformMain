@@ -227,7 +227,7 @@ int StartMission() {
         return 1;
     }
 #else
-    if(StrategyManager::GetInstance()->Initialize(&motors, &dxl) == false)
+    if(StrategyManager::GetInstance()->Initialize(&motors) == false)
     {
         printf("Fail to initialize Strategy Manager!\n");
         return 1;
@@ -430,7 +430,6 @@ int main(void)
                     {
                         motors.OpenDeviceAll();
                         while(motors.SetEnableAll());
-                        dxl.OpenDevice(0);
 #ifdef ENABLE_VISION
                         VisionCapture = cvCaptureFromCAM( -1 );
 #endif

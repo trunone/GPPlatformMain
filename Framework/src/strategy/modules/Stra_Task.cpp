@@ -292,8 +292,13 @@ void Stra_Task::Process(void)
             GoalAngle = (StrategyStatus::ChrgCen -StrategyStatus::ChrgDoor).Angle();
             break;
         case 2: // 碰擊充電開關 by yao
-            ActiveState = etTouchButton;
-            StrategyStatus::FlagAvoidEnable = false; //關閉避障
+            //ActiveState = etTouchButton;
+            //StrategyStatus::FlagAvoidEnable = false; //關閉避障
+            ActiveState =  etAStar;
+            if( !FlagSetInitialData )
+            {
+                SetAStar( StrategyStatus::ChrgDoor );
+            }
             break;
         default:
             ActiveState = etIdle;
@@ -421,13 +426,14 @@ bool Stra_Task::TouchButton()
 {
     if( TouchCnt < 40)
     {
+        StrategyStatus::AStartEnable = false;
         StrategyStatus::Goal1 = aVector(120,0);
-        StrategyStatus::FixSpeed = 70;
         TouchCnt++;
         return false;
     }
     else
     {
+        StrategyStatus::AStartEnable = true;
         TouchCnt = 0;
         return true;
     }

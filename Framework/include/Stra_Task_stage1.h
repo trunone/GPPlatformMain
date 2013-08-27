@@ -17,6 +17,8 @@
 #include "TCoordinate.h"
 #include <tinyxml.h>
 
+#define MEMBERS 4
+
 #define Def_AnglePrecision (5*M_PI/180.0)
 #define Def_MinTurnAngle (20*M_PI/180.0)
 using namespace std;
@@ -67,7 +69,7 @@ class Stra_Task_stage1 : public StrategyModule
 
     typedef struct {
         tsRoom Info[5];
-        teRoom SortList[5];
+        teRoom SortList[4];
         int Cnt;
         teSKSState SKSRoomState;
     } tsRoomInfo;
@@ -82,15 +84,13 @@ class Stra_Task_stage1 : public StrategyModule
 
     } teGeneralRoomState;
 
-
-
     typedef struct {
         TCoordinate FrontPosition;
         TCoordinate MemberPosition;
         teRoom Room;
     } tsMember;
 
-    tsMember Members[3];
+    tsMember Members[MEMBERS];
 
 private:
     static Stra_Task_stage1* m_UniqueInstance;
@@ -112,8 +112,6 @@ private:
     bool Backward();
 
     //=============
-
-    void WaitCatchball();
 
     void EncounterPeople();
 
@@ -137,17 +135,15 @@ private:
 
     int Past_LaserData;
 
-    bool DoorState;     //true: open, false: close
-
     int TouchCnt;
-
-    int *PastScanLineData;
 
     TCoordinate RoomVector;
 
     TCoordinate CenterVector;
 
     int MemberIndex;
+
+    double TouchDist;
 
 public:
     //---------loadxml----------

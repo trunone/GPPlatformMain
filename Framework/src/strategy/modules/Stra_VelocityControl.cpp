@@ -87,7 +87,6 @@ void Stra_VelocityControl::Process(void)
 
 void Stra_VelocityControl::VelocityTransform( double dTargetDis, double dTargetCutAng, double Theta )
 {
-
     TCoordinate Vector( dTargetCutAng );
 
     double Speed = 0;

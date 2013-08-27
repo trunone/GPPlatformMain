@@ -47,6 +47,7 @@ public:
         return m_UniqueInstance;
     }
     bool Initialize(Motors*,DXL*);
+    bool Initialize(Motors *);
     bool Initialize();
     bool Reinitialize();
     void Process();
