@@ -22,7 +22,7 @@
 #include "Matrix.h"
 #include "Plane.h"
 #include "Motion.h"
-#include "Stra_Task.h"
+#include "Stra_Task_stage1.h"
 #include "Stra_FindBall.h"
 #include "Stra_AStar.h"
 #include "Stra_PathPlan.h"

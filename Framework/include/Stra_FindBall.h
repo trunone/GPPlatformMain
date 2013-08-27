@@ -17,7 +17,7 @@
 #include "LocationStatus.h"
 #include <time.h>
 #include "TCoordinate.h"
-#include "Stra_Task.h"
+#include "Stra_Task_stage1.h"
 namespace Robot {
 class Stra_FindBall : public StrategyModule
 {

@@ -183,7 +183,7 @@ void XMLLoadConfig ()
         }
         child = element->FirstChildElement("Stra_Task");
         if(child != NULL) {
-            Stra_Task::GetInstance()->LoadXMLSettings(child);
+            Stra_Task_stage1::GetInstance()->LoadXMLSettings(child);
         }
     }
 }
@@ -235,7 +235,7 @@ int StartMission() {
 #endif
 
 #ifndef ENABLE_MANUAL
-    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task::GetInstance());
+    StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_Task_stage1::GetInstance());
 
     StrategyManager::GetInstance()->AddModule((StrategyModule*)Stra_AStar::GetInstance());
 
